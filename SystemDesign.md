@@ -127,13 +127,16 @@ When an element must appear above everything (modals, popovers, sticky headers):
 ### Signature Component: The "Curator’s Tray"
 A wide, horizontal container with `surface_container_highest` background and `xl` (1.5rem) rounded corners. Use this to group related academic resources or metadata, utilizing the new Sage Green for category chips within the tray.
 
+### Typography
+**Typography** — Noto Serif for headings, Poppins for body/labels
+
 ---
 
 ## 6. Do's and Don'ts
 
 ### Do
 - **Do** use `spacing-16` (5.5rem) between major sections to emphasize the premium, airy feel.
-- **Do** mix the typography: use a `headline-sm` (Serif) next to a `label-md` (Sans) to create an "annotated" look.
+- **Do** mix the typography: use a `headline-sm` (Noto Serif) next to a `label-md` (Poppins) to create an "annotated" look.
 - **Do** use Sage Green (`secondary`) for "Success" or "Complete" states to maintain the earthy, academic tone instead of a generic bright green.
 
 ### Don’t
@@ -148,3 +151,5 @@ A wide, horizontal container with `surface_container_highest` background and `xl
 
 # Source
 - https://www.nngroup.com/articles/glassmorphism/ 
+
+Gather all the information you can on glassmorphism tips and best practices and update this document. You can also reference this page in addition: https://uxpilot.ai/blogs/glassmorphism-ui
