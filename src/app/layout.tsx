@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Noto_Serif } from "next/font/google";
+import { Geist_Mono, Poppins, Noto_Serif } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const notoSerifHeading = Noto_Serif({subsets:['latin'],variable:'--font-heading'});
-
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSerifHeading = Noto_Serif({
   subsets: ["latin"],
+  variable: "--font-heading",
+  weight: ["400", "700"],
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistMono = Geist_Mono({
@@ -30,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, notoSerifHeading.variable)}
+      className={cn("h-full", "antialiased", poppins.variable, geistMono.variable, "font-sans", notoSerifHeading.variable)}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
