@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Poppins, Noto_Serif } from "next/font/google";
+import { Poppins, Noto_Serif } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const notoSerifHeading = Noto_Serif({
+const notoSerif = Noto_Serif({
   subsets: ["latin"],
   variable: "--font-heading",
   weight: ["400", "700"],
@@ -15,10 +15,10 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,7 +33,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", poppins.variable, geistMono.variable, "font-sans", notoSerifHeading.variable)}
+      // className={cn("h-full", "antialiased", poppins.variable, geistMono.variable, "font-sans", notoSerif.variable)}
+      className={cn("h-full", poppins.variable, notoSerif.variable)}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

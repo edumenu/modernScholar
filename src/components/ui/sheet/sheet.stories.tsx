@@ -8,7 +8,7 @@ import {
   SheetDescription,
   SheetFooter,
 } from "./sheet";
-import { Button } from "./button";
+import { Button } from "../button/button";
 
 const meta: Meta<typeof Sheet> = {
   title: "UI/Sheet",

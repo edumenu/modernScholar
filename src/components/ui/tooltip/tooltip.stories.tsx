@@ -5,7 +5,7 @@ import {
   TooltipContent,
   TooltipProvider,
 } from "./tooltip";
-import { Button } from "./button";
+import { Button } from "../button/button";
 
 const meta: Meta<typeof Tooltip> = {
   title: "UI/Tooltip",

@@ -1,7 +1,45 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:www.nngroup.com)"
+      "WebFetch(domain:www.nngroup.com)",
+      "Read(//Users/edemdumenu/.claude/plugins/marketplaces/claude-plugins-official/plugins/skill-creator/skills/skill-creator/**)",
+      "Bash(python -m scripts.aggregate_benchmark /Users/edemdumenu/.claude/skills/motion-designer-workspace/iteration-1 --skill-name motion-designer)",
+      "Bash(python3 -m scripts.aggregate_benchmark /Users/edemdumenu/.claude/skills/motion-designer-workspace/iteration-1 --skill-name motion-designer)",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar -not -path */node_modules/* -not -path */.next/* -not -path */.git/* -type f -o -type d)",
+      "mcp__plugin_figma_figma__get_design_context",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "Bash(gh repo:*)",
+      "Bash(gh label:*)",
+      "Bash(gh auth:*)",
+      "Bash(git checkout:*)",
+      "Bash(node:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npx next:*)",
+      "Bash(npx shadcn@latest add card input label badge separator --yes)",
+      "Bash(npx shadcn@latest add dialog popover dropdown-menu tooltip sonner --yes)",
+      "Bash(npx shadcn@latest add popover dropdown-menu tooltip sonner --overwrite --yes)",
+      "Bash(npx shadcn@latest add avatar table --yes)",
+      "Bash(npx storybook@latest init --framework @storybook/nextjs --skip-install --yes)",
+      "Bash(npx storybook@latest init --yes)",
+      "Bash(npm install:*)",
+      "Bash(npx storybook:*)",
+      "Bash(npx eslint:*)",
+      "Bash(lsof:*)",
+      "Bash(kill:*)",
+      "Bash(npx tsc:*)",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar -name *.json -path */tailwind* -o -name *tailwind* -type f)",
+      "Bash(grep -r fontFamily /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar --include=*.ts --include=*.tsx --include=*.js --include=*.mjs --include=*.json --exclude-dir=node_modules --exclude-dir=.next)",
+      "Bash(grep -r \"theme\\\\|extend\" /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src --include=*.css --include=*.ts --include=*.tsx)",
+      "Bash(pnpm build:*)",
+      "WebFetch(domain:21st.dev)",
+      "WebFetch(domain:neumorphism.io)",
+      "Bash(grep -r \"from [''''\"\"]\\\\./\" /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/components/ui/*.stories.tsx)",
+      "Bash(mv button.tsx button.stories.tsx cta-button.tsx cta-button.stories.tsx button/)",
+      "Bash(mv avatar.tsx avatar.stories.tsx avatar/)",
+      "Bash(mv badge.tsx badge.stories.tsx badge/)",
+      "Bash(mv card.tsx card.stories.tsx card/)",
+      "Bash(mv dialog.tsx dialog.stories.tsx dialog/)"
     ]
   }
 }
