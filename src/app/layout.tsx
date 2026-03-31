@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Noto_Serif } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "next-themes";
 
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
@@ -33,10 +34,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      // className={cn("h-full", "antialiased", poppins.variable, geistMono.variable, "font-sans", notoSerif.variable)}
+      suppressHydrationWarning
       className={cn("h-full", poppins.variable, notoSerif.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
