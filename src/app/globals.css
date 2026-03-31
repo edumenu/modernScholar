@@ -437,6 +437,26 @@
 }
 
 /* ============================================
+   View Transitions — Theme Toggle
+   ============================================ */
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: theme-fade-in 0.4s ease-in-out;
+}
+
+@keyframes theme-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
    Base Layer
    ============================================ */
 @layer base {

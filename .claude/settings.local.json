@@ -39,7 +39,13 @@
       "Bash(mv avatar.tsx avatar.stories.tsx avatar/)",
       "Bash(mv badge.tsx badge.stories.tsx badge/)",
       "Bash(mv card.tsx card.stories.tsx card/)",
-      "Bash(mv dialog.tsx dialog.stories.tsx dialog/)"
+      "Bash(mv dialog.tsx dialog.stories.tsx dialog/)",
+      "WebFetch(domain:developers.asana.com)",
+      "mcp__plugin_asana_asana__asana_list_workspaces",
+      "mcp__plugin_asana_asana__asana_get_projects_for_workspace",
+      "mcp__plugin_asana_asana__asana_get_project_sections",
+      "mcp__plugin_asana_asana__asana_get_tasks",
+      "Bash(gh issue:*)"
     ]
   }
 }
