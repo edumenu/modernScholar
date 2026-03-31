@@ -45,7 +45,11 @@
       "mcp__plugin_asana_asana__asana_get_projects_for_workspace",
       "mcp__plugin_asana_asana__asana_get_project_sections",
       "mcp__plugin_asana_asana__asana_get_tasks",
-      "Bash(gh issue:*)"
+      "Bash(gh issue:*)",
+      "mcp__figma__get_design_context",
+      "WebFetch(domain:blog.olivierlarose.com)",
+      "Bash(npm run:*)",
+      "mcp__plugin_asana_asana__asana_update_task"
     ]
   }
 }
