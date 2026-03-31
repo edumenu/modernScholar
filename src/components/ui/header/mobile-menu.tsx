@@ -12,8 +12,7 @@ const navItems = [
   { title: "Home", href: "/" },
   { title: "Scholarships", href: "/scholarships" },
   { title: "Blog", href: "/blog" },
-  { title: "Contact", href: "/contact" },
-  { title: "About", href: "/about" },
+  { title: "Contact Us", href: "/contact" },
 ]
 
 const menuSlide = {
