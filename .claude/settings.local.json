@@ -75,7 +75,12 @@
       "mcp__playwright__browser_close",
       "Bash(pkill -f \"mcp-chrome\")",
       "mcp__playwright__browser_hover",
-      "mcp__playwright__browser_run_code"
+      "mcp__playwright__browser_run_code",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/node_modules/next/dist/docs -name *link* -type f)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:github.com)",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_click"
     ]
   }
 }

@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Icon } from "@iconify/react"
+import { cn } from "@/lib/utils";
 
 const quickLinks = [
   { title: "Scholarships", href: "/scholarships" },
@@ -35,23 +36,30 @@ const socialLinks = [
 export function Footer() {
   return (
     <div
-      className="relative h-screen lg:h-125"
+      className="relative h-screen lg:h-135"
       style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
     >
-      <div className="fixed bottom-0 left-0 right-0 h-screen lg:h-125">
+      <div className="fixed bottom-0 left-0 right-0 h-screen lg:h-135">
         <footer className="flex h-full flex-col bg-surface-container-highest">
-          <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-between px-6 pt-16 pb-8 lg:px-8">
+          <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-between px-6 py-10 lg:px-8">
             {/* Main footer content */}
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_1fr_1fr]">
               {/* Brand column */}
               <div className="flex flex-col gap-6">
                 <Link href="/" className="inline-flex w-fit" aria-label="Home">
                   <Image
+                    src="/iconWhite.png"
+                    alt="Modern Scholar"
+                    width={50}
+                    height={50}
+                    className={cn("size-24 object-contain hidden dark:block")}
+                  />
+                  <Image
                     src="/iconBurgundy.png"
                     alt="Modern Scholar"
-                    width={40}
-                    height={40}
-                    className="size-10 object-contain"
+                    width={50}
+                    height={50}
+                    className={cn("size-24 object-contain block dark:hidden")}
                   />
                 </Link>
                 <p className="max-w-sm text-xs lg:text-sm leading-relaxed text-on-surface-variant">
@@ -127,7 +135,7 @@ export function Footer() {
 
             {/* Large decorative brand text */}
             <div className="overflow-hidden">
-              <p className="font-heading text-[clamp(2rem,10vw,10rem)] font-bold leading-none tracking-tighter text-on-surface/4">
+              <p className="font-heading text-[clamp(2rem,10vw,10rem)] font-bold leading-none tracking-tighter text-on-surface/8">
                 Modern Scholar
               </p>
             </div>

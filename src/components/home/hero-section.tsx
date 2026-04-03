@@ -4,6 +4,8 @@ import { Suspense, lazy } from "react"
 import { useRouter } from "next/navigation"
 import { CTAButton } from "@/components/ui/button/cta-button"
 import { AnimatedSection } from "./animated-section"
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 // const SplineScene = lazy(() =>
 //   import("./spline-scene").then((m) => ({ default: m.SplineScene }))
@@ -30,20 +32,57 @@ export function HeroSection() {
         </Suspense>
       </div>
 
-      {/* Headline + CTA — overlaid at bottom */}
-      <AnimatedSection className="relative z-10 flex flex-col items-center gap-8 px-6 text-center md:px-8">
+      {/* Company name*/}
+      <AnimatedSection
+        delay={0.5}
+        className="relative z-10 flex flex-col items-center gap-6 px-6 text-center md:px-8"
+      >
+        <div className="flex justify-center items-center">
+          <Image
+            src="/iconWhite.png"
+            alt="Modern Scholar"
+            width={36}
+            height={36}
+            className={cn("size-14 object-contain hidden dark:block")}
+          />
+          <Image
+            src="/iconBurgundy.png"
+            alt="Modern Scholar"
+            width={36}
+            height={36}
+            className={cn("size-14 object-contain block dark:hidden")}
+          />
+          <h4
+            id="hero-heading"
+            className="max-w-4xl font-heading text-xl font-medium leading-[1.15] tracking-tight text-primary dark:text-primary-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] sm:text-5xl md:text-[1.5rem]"
+          >
+            Modern Scholar
+          </h4>
+        </div>
+      </AnimatedSection>
+      {/* Headline */}
+      <AnimatedSection
+        delay={0.1}
+        variant="scaleIn"
+        className="relative z-10 flex flex-col items-center gap-6 px-6 text-center md:px-8"
+      >
         <h1
           id="hero-heading"
-          className="max-w-4xl font-heading text-4xl font-bold leading-[1.15] tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] sm:text-5xl md:text-[3.5rem]"
+          className="max-w-3xl font-heading text-4xl font-bold leading-none tracking-tight text-primary dark:text-primary-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] sm:text-5xl md:text-[3rem]"
         >
           Your scholarship journey starts here
         </h1>
-
+      </AnimatedSection>
+      {/* Headline + CTA — overlaid at bottom */}
+      <AnimatedSection
+        delay={0.7}
+        className="relative z-10 flex flex-col items-center gap-6 px-6 text-center md:px-8"
+      >
         <CTAButton
           label="Explore"
           onClick={() => router.push("/scholarships")}
         />
       </AnimatedSection>
     </section>
-  )
+  );
 }
