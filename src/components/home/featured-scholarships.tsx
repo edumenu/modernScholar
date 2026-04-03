@@ -2,6 +2,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { AnimatedSection } from "./animated-section"
+import { ButtonLink } from "@/components/ui/button/button-link";
+import { IconArrowRight } from "@tabler/icons-react";
 
 interface Scholarship {
   id: string
@@ -137,7 +139,10 @@ function ScholarshipCard({
 
 export function FeaturedScholarships() {
   return (
-    <section aria-labelledby="featured-heading" className="flex min-h-dvh flex-col justify-center">
+    <section
+      aria-labelledby="featured-heading"
+      className="flex min-h-dvh flex-col justify-center"
+    >
       <AnimatedSection>
         {/* Header */}
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
@@ -156,13 +161,9 @@ export function FeaturedScholarships() {
               programs.
             </p>
           </div>
-          <Link
-            href="/scholarships"
-            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/50 bg-white/30 px-5 py-2.5 text-sm font-medium text-on-surface shadow-[0_8px_32px_rgba(31,38,135,0.2)] transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.28)]"
-          >
-            View All Scholarships
-            <span aria-hidden="true">&rarr;</span>
-          </Link>
+          <ButtonLink href="/scholarships" variant="tertiary" animateIcon>
+            View All Scholarships <IconArrowRight data-icon="inline-end" />
+          </ButtonLink>
         </div>
       </AnimatedSection>
 
@@ -195,5 +196,5 @@ export function FeaturedScholarships() {
         </AnimatedSection>
       </div>
     </section>
-  )
+  );
 }

@@ -9,7 +9,13 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "secondary", "ghost", "outline", "destructive", "link"],
+      options: ["default", "secondary", "tertiary", "ghost", "outline", "destructive", "link"],
+    },
+    animateIcon: { control: "boolean" },
+    animateText: { control: "boolean" },
+    hoverTrigger: {
+      control: "select",
+      options: ["self", "parent"],
     },
     size: {
       control: "select",
@@ -30,8 +36,12 @@ export const Secondary: Story = {
   args: { children: "Secondary", variant: "secondary" },
 };
 
+export const Tertiary: Story = {
+  args: { children: "Tertiary", variant: "tertiary" },
+};
+
 export const Ghost: Story = {
-  args: { children: "Tertiary Action", variant: "ghost" },
+  args: { children: "Ghost Action", variant: "ghost" },
 };
 
 export const Outline: Story = {
@@ -67,6 +77,7 @@ export const AllVariants: Story = {
     <div className="flex flex-wrap items-center gap-4">
       <Button>Primary</Button>
       <Button variant="secondary">Secondary</Button>
+      <Button variant="tertiary">Tertiary</Button>
       <Button variant="ghost">Ghost</Button>
       <Button variant="outline">Outline</Button>
       <Button variant="destructive">Destructive</Button>
@@ -192,6 +203,57 @@ export const WithIconEnd: Story = {
         <Button variant="outline">Explore <IconArrowRight data-icon="inline-end" /></Button>
         <Button variant="outline" size="lg">Explore <IconArrowRight data-icon="inline-end" /></Button>
         <Button variant="outline" size="xl">Explore <IconArrowRight data-icon="inline-end" /></Button>
+      </div>
+    </div>
+  ),
+};
+
+export const WithAnimatedIconStart: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-4">
+      <Button animateIcon size="sm"><IconPlus data-icon="inline-start" /> Create</Button>
+      <Button animateIcon><IconPlus data-icon="inline-start" /> Create</Button>
+      <Button animateIcon size="lg"><IconPlus data-icon="inline-start" /> Create</Button>
+      <Button animateIcon variant="secondary"><IconHeart data-icon="inline-start" /> Save</Button>
+      <Button animateIcon variant="outline"><IconShare data-icon="inline-start" /> Share</Button>
+    </div>
+  ),
+};
+
+export const WithAnimatedIconEnd: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-4">
+      <Button animateIcon size="sm">Next <IconArrowRight data-icon="inline-end" /></Button>
+      <Button animateIcon>Next <IconArrowRight data-icon="inline-end" /></Button>
+      <Button animateIcon size="lg">Next <IconArrowRight data-icon="inline-end" /></Button>
+      <Button animateIcon variant="secondary">Learn More <IconArrowRight data-icon="inline-end" /></Button>
+      <Button animateIcon variant="outline">Explore <IconArrowRight data-icon="inline-end" /></Button>
+    </div>
+  ),
+};
+
+export const WithAnimatedText: Story = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-4">
+      <Button animateText><IconPlus data-icon="inline-start" /><span data-label>Create</span></Button>
+      <Button animateText variant="secondary"><IconHeart data-icon="inline-start" /><span data-label>Save</span></Button>
+      <Button animateText variant="outline"><IconShare data-icon="inline-start" /><span data-label>Share</span></Button>
+      <Button animateText variant="tertiary"><IconBookmark data-icon="inline-start" /><span data-label>Bookmark</span></Button>
+      <Button animateText size="lg"><IconArrowRight data-icon="inline-end" /><span data-label>Next</span></Button>
+    </div>
+  ),
+};
+
+export const WithParentHoverTrigger: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <div className="group rounded-2xl border border-border p-6 transition-shadow hover:shadow-lg">
+        <p className="mb-4 text-sm text-muted-foreground">Hover this card to trigger the button animations</p>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button animateIcon hoverTrigger="parent"><IconPlus data-icon="inline-start" /> Create</Button>
+          <Button animateText hoverTrigger="parent"><IconHeart data-icon="inline-start" /><span data-label>Save</span></Button>
+          <Button animateIcon hoverTrigger="parent" variant="outline">Explore <IconArrowRight data-icon="inline-end" /></Button>
+        </div>
       </div>
     </div>
   ),
