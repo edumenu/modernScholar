@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { PageShell } from "@/components/ui/page-shell";
+import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
@@ -42,9 +43,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Header />
-          <PageShell className="pt-24">{children}</PageShell>
-          <Footer />
+          <SmoothScrollProvider>
+            <Header />
+            <PageShell className="">{children}</PageShell>
+            <Footer />
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>

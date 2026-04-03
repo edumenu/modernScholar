@@ -39,7 +39,7 @@ export function Footer() {
       style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
     >
       <div className="fixed bottom-0 left-0 right-0 h-screen lg:h-125">
-        <footer className="flex h-full flex-col bg-surface-container-low">
+        <footer className="flex h-full flex-col bg-surface-container-highest">
           <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-between px-6 pt-16 pb-8 lg:px-8">
             {/* Main footer content */}
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_1fr_1fr]">
@@ -120,7 +120,8 @@ export function Footer() {
             {/* Bottom bar */}
             <div className="flex flex-col gap-4 border-t border-outline-variant/20 pt-6 lg:flex-row md:items-center lg:justify-between">
               <p className="text-sm text-on-surface-variant">
-                &copy; {new Date().getFullYear()} Modern Scholar. All rights reserved.
+                &copy; {new Date().getFullYear()} Modern Scholar. All rights
+                reserved.
               </p>
             </div>
 
@@ -134,5 +135,5 @@ export function Footer() {
         </footer>
       </div>
     </div>
-  )
+  );
 }

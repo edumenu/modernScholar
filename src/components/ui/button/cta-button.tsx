@@ -12,10 +12,12 @@ interface CTAButtonProps extends ComponentProps<"button"> {
 
 const variantStyles = {
   primary: {
-    wrapper: "bg-primary-50 dark:bg-primary-900",
-    circle: "bg-primary dark:bg-primary-400",
-    arrow: "text-primary-foreground dark:text-primary-900",
-    text: "text-primary dark:text-primary-100 group-hover:text-primary-foreground dark:group-hover:text-primary-900",
+    // wrapper: "bg-primary-50 dark:bg-primary-900",
+    wrapper: "",
+    circle:
+      "bg-primary dark:bg-primary-400 aria-expanded:bg-primary shadow-neu-primary",
+    arrow: "text-primary-foreground dark:text-primary-100",
+    text: "text-primary dark:text-primary-100 group-hover:text-primary-foreground dark:group-hover:text-primary-100",
   },
   secondary: {
     wrapper: "bg-secondary-50 dark:bg-secondary-900",
@@ -29,7 +31,7 @@ const variantStyles = {
     arrow: "text-tertiary-foreground dark:text-tertiary-900",
     text: "text-tertiary dark:text-tertiary-100 group-hover:text-tertiary-foreground dark:group-hover:text-tertiary-900",
   },
-}
+};
 
 const CTAButton: FC<CTAButtonProps> = ({
   label,
@@ -42,7 +44,7 @@ const CTAButton: FC<CTAButtonProps> = ({
   return (
     <button
       className={cn(
-        "group relative h-auto w-50 cursor-pointer rounded-full border-none p-1 outline-none shadow-[1px_1px_4px_rgba(32,26,25,0.1),-5px_-5px_10px_rgba(255,255,255,0.8)] transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "group relative h-auto w-50 cursor-pointer rounded-full border-none p-1 outline-none transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50",
         styles.wrapper,
         className,
       )}

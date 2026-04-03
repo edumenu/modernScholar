@@ -1,7 +1,7 @@
 "use client"
 
 import { useTheme } from "next-themes"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "motion/react"
 
 import { Icon } from "@iconify/react"
@@ -9,9 +9,11 @@ import { cn } from "@/lib/utils"
 
 function ThemeToggleInner({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => setMounted(true), [])
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const handleToggle = useCallback(() => {
     const nextTheme = resolvedTheme === "dark" ? "light" : "dark"
@@ -87,7 +89,7 @@ function ThemeToggleInner({ className }: { className?: string }) {
               icon={
                 isDark ? "solar:moon-line-duotone" : "solar:sun-line-duotone"
               }
-              className="size-3 lg:size-3.5 text-on-surface"
+              className={cn("size-3 lg:size-3.5", "text-primary")}
             />
           </motion.span>
         </AnimatePresence>
