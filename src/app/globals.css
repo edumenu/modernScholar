@@ -104,6 +104,18 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Shadow tokens */
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+
+  /* Neumorphic shadow tokens (buttons) */
+  --shadow-neu-primary: var(--shadow-neu-primary);
+  --shadow-neu-outline: var(--shadow-neu-outline);
+  --shadow-neu-secondary: var(--shadow-neu-secondary);
 }
 
 /* ============================================
@@ -162,10 +174,10 @@
     --tertiary-800: oklch(0.438 0.0928 31.1);
     --tertiary-900: oklch(0.393 0.0820 30.6);
     --tertiary-950: oklch(0.351 0.0710 31.0);
-  /* Background & Surface: #F9F3F2 */
-  --background: oklch(0.969 0.0065 28.2);
+  /* Background & Surface: #F7EEEC */
+  --background: oklch(0.9556 0.0101 32.2);
   --foreground: oklch(0.225 0.0097 29.0);
-  --surface: oklch(0.969 0.0065 28.2);
+  --surface: oklch(0.9556 0.0101 32.2);
 
   /* Tonal Surface Layering */
   --surface-container-lowest: oklch(0.984 0.0079 36.1);
@@ -189,7 +201,7 @@
   --card-foreground: oklch(0.225 0.0097 29.0);
 
   /* Popover: surface base */
-  --popover: oklch(0.969 0.0065 28.2);
+  --popover: oklch(0.9556 0.0101 32.2);
   --popover-foreground: oklch(0.225 0.0097 29.0);
 
   /* Muted: surface-container */
@@ -219,6 +231,18 @@
 
   /* Radius: design system md = 0.75rem */
   --radius: 1rem;
+
+  /* Shadows — warm brown base matching foreground */
+  --shadow-xs: 0 1px 3px rgba(32, 26, 25, 0.06);
+  --shadow-sm: 0 2px 8px rgba(32, 26, 25, 0.08);
+  --shadow-md: 0 8px 32px rgba(32, 26, 25, 0.08);
+  --shadow-lg: 0 12px 40px rgba(32, 26, 25, 0.12);
+  --shadow-xl: 0 16px 48px rgba(32, 26, 25, 0.16);
+
+  /* Neumorphic shadows — buttons */
+  --shadow-neu-primary: 1px 1px 4px rgba(74, 24, 22, 0.4), -5px -5px 10px rgba(142, 98, 95, 0.3);
+  --shadow-neu-outline: 1px 1px 4px rgba(32, 26, 25, 0.08), -5px -5px 10px rgba(255, 255, 255, 0.7);
+  --shadow-neu-secondary: 1px 1px 4px rgba(69, 77, 70, 0.4), -5px -5px 10px rgba(150, 164, 152, 0.3);
 
   /* Sidebar */
   --sidebar: oklch(0.949 0.0136 34.0);
@@ -312,6 +336,18 @@
   --chart-3: oklch(0.563 0.1256 30.7);
   --chart-4: oklch(0.477 0.1193 31.2);
   --chart-5: oklch(0.408 0.098 25.7);
+
+  /* Shadows — stronger against dark surfaces */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
+
+  /* Neumorphic shadows — buttons */
+  --shadow-neu-primary: 1px 1px 4px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.05);
+  --shadow-neu-outline: 1px 1px 4px rgba(0, 0, 0, 0.4), -5px -5px 10px rgba(255, 255, 255, 0.03);
+  --shadow-neu-secondary: 1px 1px 4px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.05);
 
   /* Sidebar */
   --sidebar: oklch(0.200 0.010 28.0);

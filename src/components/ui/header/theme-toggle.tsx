@@ -1,29 +1,34 @@
 "use client"
 
 import { useTheme } from "next-themes"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "motion/react"
+import useSound from "use-sound";
 
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 
 function ThemeToggleInner({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => setMounted(true), [])
+  const [playSwitch] = useSound("/sounds/switch-click.mp3", { volume: 0.3 });
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const handleToggle = useCallback(() => {
-    const nextTheme = resolvedTheme === "dark" ? "light" : "dark"
+    playSwitch();
+    const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
 
     if (document.startViewTransition) {
       document.startViewTransition(() => {
-        setTheme(nextTheme)
-      })
+        setTheme(nextTheme);
+      });
     } else {
-      setTheme(nextTheme)
+      setTheme(nextTheme);
     }
-  }, [resolvedTheme, setTheme])
+  }, [resolvedTheme, setTheme, playSwitch]);
 
   if (!mounted) {
     return (
@@ -87,7 +92,7 @@ function ThemeToggleInner({ className }: { className?: string }) {
               icon={
                 isDark ? "solar:moon-line-duotone" : "solar:sun-line-duotone"
               }
-              className="size-3 lg:size-3.5 text-on-surface"
+              className={cn("size-3 lg:size-3.5", "text-primary")}
             />
           </motion.span>
         </AnimatePresence>

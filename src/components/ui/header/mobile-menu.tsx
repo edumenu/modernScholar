@@ -7,6 +7,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import Image from "next/image";
 import { ThemeToggle } from "./theme-toggle";
+import { glassPill } from "./styles";
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -59,9 +60,6 @@ const indicatorScale = {
     transition: { duration: 0.3, ease: [0.76, 0, 0.24, 1] as const },
   },
 }
-
-const glassPill =
-  "rounded-full border border-white/40 bg-white/25 shadow-[0_8px_32px_rgba(31,38,135,0.15)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]";
 
 function Curve() {
   const initialPath = `M100 0 L100 ${typeof window !== "undefined" ? window.innerHeight : 900} Q-100 ${typeof window !== "undefined" ? window.innerHeight / 2 : 450} 100 0`

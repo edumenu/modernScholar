@@ -1,11 +1,50 @@
 "use client"
-
+import { useState } from "react";
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "./theme-toggle"
 import { MobileMenuButton } from "./mobile-menu"
+import { glassPill } from "./styles";
+import { useScroll, useMotionValueEvent, motion } from "motion/react";
+
+const HEADER_HEIGHT = 112; // 28 * 4 (h-28 in Tailwind = 112px)
+
+// ============================================================================
+// Scroll-Animated Header Wrapper
+// This component handles scroll animation independently to prevent re-renders
+// of the navbar content when scrolling
+// ============================================================================
+function ScrollAnimatedHeader({ children }: { children: React.ReactNode }) {
+  const [headerOffset, setHeaderOffset] = useState(0);
+  const { scrollY } = useScroll();
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const difference = latest - lastScrollY;
+    if (latest < 600) {
+      setHeaderOffset(0);
+    } else {
+      const newOffset = headerOffset + difference;
+      const clampedOffset = Math.max(0, Math.min(HEADER_HEIGHT, newOffset));
+      setHeaderOffset(clampedOffset);
+    }
+    setLastScrollY(latest);
+  });
+
+  return (
+    <motion.header
+      style={{
+        transform: `translateY(-${headerOffset}px)`,
+      }}
+      transition={{ duration: 0, ease: "easeInOut" }}
+      className="fixed top-0 left-0 right-0 z-50"
+    >
+      {children}
+    </motion.header>
+  );
+}
 
 const navItems = [
   { title: "Scholarships", href: "/scholarships" },
@@ -13,14 +52,12 @@ const navItems = [
   { title: "Contact Us", href: "/contact" },
 ];
 
-const glassPill =
-  "rounded-full border border-white/40 bg-white/25 shadow-[0_8px_32px_rgba(31,38,135,0.15)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
-
 export function Header() {
   const pathname = usePathname()
+  const isHome = pathname === "/";
 
   return (
-    <>
+    <ScrollAnimatedHeader>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none"
@@ -35,6 +72,8 @@ export function Header() {
             className={cn(
               glassPill,
               "lg:flex hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)]",
+              "dark:bg-primary-400",
+              `${isHome} && bg-primary-400`,
             )}
             aria-label="Home"
           >
@@ -43,7 +82,20 @@ export function Header() {
               alt="Modern Scholar"
               width={36}
               height={36}
-              className="size-20 object-contain"
+              className={cn(
+                "size-20 object-contain dark:hidden",
+                isHome && "hidden",
+              )}
+            />
+            <Image
+              src="/iconWhite.png"
+              alt="Modern Scholar"
+              width={36}
+              height={36}
+              className={cn(
+                "size-20 object-contain",
+                isHome ? "block" : "hidden dark:block",
+              )}
             />
           </Link>
 
@@ -88,6 +140,6 @@ export function Header() {
           <MobileMenuButton />
         </nav>
       </header>
-    </>
+    </ScrollAnimatedHeader>
   );
 }
