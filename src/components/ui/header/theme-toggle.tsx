@@ -3,12 +3,14 @@
 import { useTheme } from "next-themes"
 import { useCallback, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "motion/react"
+import useSound from "use-sound";
 
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 
 function ThemeToggleInner({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme()
+  const [playSwitch] = useSound("/sounds/switch-click.mp3", { volume: 0.3 });
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
@@ -16,16 +18,17 @@ function ThemeToggleInner({ className }: { className?: string }) {
   );
 
   const handleToggle = useCallback(() => {
-    const nextTheme = resolvedTheme === "dark" ? "light" : "dark"
+    playSwitch();
+    const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
 
     if (document.startViewTransition) {
       document.startViewTransition(() => {
-        setTheme(nextTheme)
-      })
+        setTheme(nextTheme);
+      });
     } else {
-      setTheme(nextTheme)
+      setTheme(nextTheme);
     }
-  }, [resolvedTheme, setTheme])
+  }, [resolvedTheme, setTheme, playSwitch]);
 
   if (!mounted) {
     return (

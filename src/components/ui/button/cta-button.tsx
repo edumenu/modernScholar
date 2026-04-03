@@ -1,7 +1,14 @@
 "use client"
 
-import { type ComponentProps, type FC } from "react"
+import {
+  useCallback,
+  useRef,
+  useState,
+  type ComponentProps,
+  type FC,
+} from "react";
 import { IconArrowRight } from "@tabler/icons-react"
+import { motion, AnimatePresence } from "motion/react";
 
 import { cn } from "@/lib/utils"
 
@@ -12,8 +19,7 @@ interface CTAButtonProps extends ComponentProps<"button"> {
 
 const variantStyles = {
   primary: {
-    // wrapper: "bg-primary-50 dark:bg-primary-900",
-    wrapper: "",
+    wrapper: "bg-primary-50 dark:bg-surface",
     circle:
       "bg-primary dark:bg-primary-400 aria-expanded:bg-primary shadow-neu-primary",
     arrow: "text-primary-foreground dark:text-primary-100",
@@ -33,6 +39,20 @@ const variantStyles = {
   },
 };
 
+const rippleColorMap: Record<string, string> = {
+  primary: "var(--primary-600)",
+  secondary: "var(--secondary-950)",
+  tertiary: "var(--tertiary-600)",
+};
+
+interface RippleState {
+  x: number;
+  y: number;
+  size: number;
+  key: number;
+  isLeaving?: boolean;
+}
+
 const CTAButton: FC<CTAButtonProps> = ({
   label,
   variant = "primary",
@@ -40,34 +60,125 @@ const CTAButton: FC<CTAButtonProps> = ({
   ...props
 }) => {
   const styles = variantStyles[variant]
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [ripple, setRipple] = useState<RippleState | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const createRipple = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (isHovered || !buttonRef.current) return;
+      setIsHovered(true);
+
+      const rect = buttonRef.current.getBoundingClientRect();
+      const rippleSize = Math.max(rect.width, rect.height) * 2;
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      setRipple({ x, y, size: rippleSize, key: Date.now() });
+    },
+    [isHovered],
+  );
+
+  const removeRipple = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setIsHovered(false);
+
+      if (!buttonRef.current) return;
+      const rect = buttonRef.current.getBoundingClientRect();
+      const rippleSize = Math.max(rect.width, rect.height) * 2;
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      setRipple({ x, y, size: rippleSize, key: Date.now(), isLeaving: true });
+    },
+    [],
+  );
+
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (!buttonRef.current || !isHovered || !ripple) return;
+
+      const rect = buttonRef.current.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      setRipple((prev) => (prev ? { ...prev, x, y } : null));
+    },
+    [isHovered, ripple],
+  );
 
   return (
     <button
+      ref={buttonRef}
       className={cn(
-        "group relative h-auto w-50 cursor-pointer rounded-full border-none p-1 outline-none transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "group relative h-auto w-50 cursor-pointer overflow-hidden rounded-full border-none p-1 outline-none transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50",
         styles.wrapper,
         className,
       )}
+      onMouseEnter={createRipple}
+      onMouseLeave={removeRipple}
+      onMouseMove={handleMouseMove}
       {...props}
     >
-      <span
-        className={cn(
-          "m-0 block h-12 w-12 overflow-hidden rounded-full duration-500 group-hover:w-full",
-          styles.circle,
-        )}
-        aria-hidden="true"
-      />
-      <div className="absolute top-1/2 left-4 -translate-y-1/2 translate-x-0 duration-500 group-hover:translate-x-[0.4rem]">
-        <IconArrowRight className={cn("size-6", styles.arrow)} />
-      </div>
-      <span
-        className={cn(
-          "absolute top-1/2 left-1/2 ml-4 -translate-x-1/2 -translate-y-1/2 text-center font-medium tracking-tight whitespace-nowrap duration-500",
-          styles.text,
-        )}
-      >
-        {label}
+      <span className="relative z-3 flex items-center h-12 pointer-events-none">
+        <span
+          className={cn(
+            "flex shrink-0 items-center justify-center size-12 rounded-full",
+            styles.circle,
+          )}
+          aria-hidden="true"
+        >
+          <IconArrowRight
+            className={cn(
+              "size-6 duration-500 group-hover:translate-x-[0.15rem]",
+              styles.arrow,
+            )}
+          />
+        </span>
+        <span
+          className={cn(
+            "flex-1 text-center font-medium tracking-tight whitespace-nowrap duration-500",
+            styles.text,
+          )}
+        >
+          {label}
+        </span>
       </span>
+
+      <AnimatePresence>
+        {ripple && (
+          <motion.span
+            key={ripple.key}
+            className="absolute rounded-full pointer-events-none z-1"
+            style={{
+              width: ripple.size,
+              height: ripple.size,
+              left: ripple.x,
+              top: ripple.y,
+              x: "-50%",
+              y: "-50%",
+              backgroundColor: rippleColorMap[variant],
+            }}
+            initial={{ scale: 0, opacity: 0.6 }}
+            animate={{
+              scale: ripple.isLeaving ? 0 : 1,
+              opacity: ripple.isLeaving ? 0 : 1,
+              x: "-50%",
+              y: "-50%",
+            }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeOut",
+            }}
+            onAnimationComplete={() => {
+              if (ripple.isLeaving) {
+                setRipple(null);
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
     </button>
   );
 }

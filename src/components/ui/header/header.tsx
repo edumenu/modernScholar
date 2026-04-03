@@ -54,6 +54,7 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname()
+  const isHome = pathname === "/";
 
   return (
     <ScrollAnimatedHeader>
@@ -72,6 +73,7 @@ export function Header() {
               glassPill,
               "lg:flex hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)]",
               "dark:bg-primary-400",
+              `${isHome} && bg-primary-400`,
             )}
             aria-label="Home"
           >
@@ -80,14 +82,20 @@ export function Header() {
               alt="Modern Scholar"
               width={36}
               height={36}
-              className="size-20 object-contain dark:hidden"
+              className={cn(
+                "size-20 object-contain dark:hidden",
+                isHome && "hidden",
+              )}
             />
             <Image
               src="/iconWhite.png"
               alt="Modern Scholar"
               width={36}
               height={36}
-              className="hidden size-20 object-contain dark:block"
+              className={cn(
+                "size-20 object-contain",
+                isHome ? "block" : "hidden dark:block",
+              )}
             />
           </Link>
 

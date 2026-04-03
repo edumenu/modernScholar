@@ -66,7 +66,16 @@
       "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --screenshot=/tmp/hero-v7.png --window-size=1440,900 --virtual-time-budget=5000 --disable-gpu http://localhost:3000)",
       "WebSearch",
       "Bash(pnpm add:*)",
-      "Bash(grep -r \"shadow\\\\|box-shadow\" /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/components/home/ --include=*.tsx)"
+      "Bash(grep -r \"shadow\\\\|box-shadow\" /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/components/home/ --include=*.tsx)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_snapshot",
+      "Bash(ffprobe -v quiet -print_format json -show_format -show_streams \"/Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/public/sounds/Light Switch Sound Effect.mp3\")",
+      "Bash(npx tailwindcss:*)",
+      "mcp__playwright__browser_close",
+      "Bash(pkill -f \"mcp-chrome\")",
+      "mcp__playwright__browser_hover",
+      "mcp__playwright__browser_run_code"
     ]
   }
 }
