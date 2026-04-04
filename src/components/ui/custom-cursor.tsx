@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useSyncExternalStore } from "react"
 import {
   motion,
   useMotionValue,
@@ -20,10 +20,22 @@ const variantStyles = {
   text: { width: 60, height: 30, opacity: 0.9 },
 }
 
+function useMediaQuery(query: string) {
+  return useSyncExternalStore(
+    (callback) => {
+      const mql = window.matchMedia(query)
+      mql.addEventListener("change", callback)
+      return () => mql.removeEventListener("change", callback)
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
+  )
+}
+
 export function CustomCursor() {
   const cursorEnabled = useSettingsStore((s) => s.cursorEnabled)
-  const [hasPointer, setHasPointer] = useState(false)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const hasPointer = useMediaQuery("(pointer: fine)")
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)")
   const [variant, setVariant] = useState<CursorVariant>("default")
   const [cursorText, setCursorText] = useState<string | null>(null)
 
@@ -33,25 +45,6 @@ export function CustomCursor() {
   const springConfig = prefersReducedMotion ? SNAP_CONFIG : SPRING_CONFIG
   const x = useSpring(mouseX, springConfig)
   const y = useSpring(mouseY, springConfig)
-
-  // Subscribe to pointer changes
-  useEffect(() => {
-    const mql = window.matchMedia("(pointer: fine)")
-    setHasPointer(mql.matches)
-    const handler = (e: MediaQueryListEvent) => setHasPointer(e.matches)
-    mql.addEventListener("change", handler)
-    return () => mql.removeEventListener("change", handler)
-  }, [])
-
-  // Subscribe to reduced motion changes
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setPrefersReducedMotion(mql.matches)
-    const handler = (e: MediaQueryListEvent) =>
-      setPrefersReducedMotion(e.matches)
-    mql.addEventListener("change", handler)
-    return () => mql.removeEventListener("change", handler)
-  }, [])
 
   // Toggle native cursor hiding
   useEffect(() => {
@@ -111,7 +104,7 @@ export function CustomCursor() {
     }
   }, [cursorEnabled, hasPointer, handleMouseOver, handleMouseOut])
 
-  if (!cursorEnabled || !hasPointer) return null
+  const isActive = cursorEnabled && hasPointer
 
   return (
     <motion.div
@@ -123,6 +116,7 @@ export function CustomCursor() {
         translateY: "-50%",
         backgroundColor: "var(--tertiary-600)",
         boxShadow: "0 0 0 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.15)",
+        display: isActive ? "flex" : "none",
       }}
       animate={variantStyles[variant]}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
