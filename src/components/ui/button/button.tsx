@@ -116,7 +116,7 @@ function Button({
 
       if (!buttonRef.current) return;
       const rect = buttonRef.current.getBoundingClientRect();
-      const rippleSize = Math.max(rect.width, rect.height) * 2;
+      const rippleSize = Math.max(rect.width, rect.height) * 1;
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
 
@@ -206,8 +206,8 @@ function Button({
               }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{
-                duration: 0.5,
-                ease: "easeOut",
+                duration: 0.8,
+                ease: "circOut",
               }}
               onAnimationComplete={() => {
                 if (ripple.isLeaving) {
