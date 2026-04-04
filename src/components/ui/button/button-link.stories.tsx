@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { IconArrowRight, IconPlus, IconHeart, IconShare } from "@tabler/icons-react";
+import { Icon } from "@iconify/react";
 import { ButtonLink } from "./button-link";
 
 const meta: Meta<typeof ButtonLink> = {
@@ -67,9 +67,9 @@ export const AllVariants: Story = {
 export const WithIconEnd: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
-      <ButtonLink href="#">View All <IconArrowRight data-icon="inline-end" /></ButtonLink>
-      <ButtonLink href="#" variant="secondary">Learn More <IconArrowRight data-icon="inline-end" /></ButtonLink>
-      <ButtonLink href="#" variant="outline">Explore <IconArrowRight data-icon="inline-end" /></ButtonLink>
+      <ButtonLink href="#">View All <Icon icon="solar:arrow-right-line-duotone" data-icon="inline-end" /></ButtonLink>
+      <ButtonLink href="#" variant="secondary">Learn More <Icon icon="solar:arrow-right-line-duotone" data-icon="inline-end" /></ButtonLink>
+      <ButtonLink href="#" variant="outline">Explore <Icon icon="solar:arrow-right-line-duotone" data-icon="inline-end" /></ButtonLink>
     </div>
   ),
 };
@@ -77,10 +77,10 @@ export const WithIconEnd: Story = {
 export const WithAnimatedIcon: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
-      <ButtonLink href="#" animateIcon><IconPlus data-icon="inline-start" /> Create</ButtonLink>
-      <ButtonLink href="#" animateIcon>View All <IconArrowRight data-icon="inline-end" /></ButtonLink>
-      <ButtonLink href="#" animateIcon variant="secondary"><IconHeart data-icon="inline-start" /> Save</ButtonLink>
-      <ButtonLink href="#" animateIcon variant="outline">Explore <IconArrowRight data-icon="inline-end" /></ButtonLink>
+      <ButtonLink href="#" animateIcon><Icon icon="solar:add-circle-line-duotone" data-icon="inline-start" /> Create</ButtonLink>
+      <ButtonLink href="#" animateIcon>View All <Icon icon="solar:arrow-right-line-duotone" data-icon="inline-end" /></ButtonLink>
+      <ButtonLink href="#" animateIcon variant="secondary"><Icon icon="solar:heart-line-duotone" data-icon="inline-start" /> Save</ButtonLink>
+      <ButtonLink href="#" animateIcon variant="outline">Explore <Icon icon="solar:arrow-right-line-duotone" data-icon="inline-end" /></ButtonLink>
     </div>
   ),
 };
@@ -88,10 +88,10 @@ export const WithAnimatedIcon: Story = {
 export const WithAnimatedText: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
-      <ButtonLink href="#" animateText><IconPlus data-icon="inline-start" /><span data-label>Create</span></ButtonLink>
-      <ButtonLink href="#" animateText variant="secondary"><IconHeart data-icon="inline-start" /><span data-label>Save</span></ButtonLink>
-      <ButtonLink href="#" animateText variant="outline"><IconShare data-icon="inline-start" /><span data-label>Share</span></ButtonLink>
-      <ButtonLink href="#" animateText size="lg"><IconArrowRight data-icon="inline-end" /><span data-label>Next</span></ButtonLink>
+      <ButtonLink href="#" animateText><Icon icon="solar:add-circle-line-duotone" data-icon="inline-start" /><span data-label>Create</span></ButtonLink>
+      <ButtonLink href="#" animateText variant="secondary"><Icon icon="solar:heart-line-duotone" data-icon="inline-start" /><span data-label>Save</span></ButtonLink>
+      <ButtonLink href="#" animateText variant="outline"><Icon icon="solar:share-line-duotone" data-icon="inline-start" /><span data-label>Share</span></ButtonLink>
+      <ButtonLink href="#" animateText size="lg"><Icon icon="solar:arrow-right-line-duotone" data-icon="inline-end" /><span data-label>Next</span></ButtonLink>
     </div>
   ),
 };
@@ -102,9 +102,9 @@ export const WithParentHoverTrigger: Story = {
       <div className="group rounded-2xl border border-border p-6 transition-shadow hover:shadow-lg">
         <p className="mb-4 text-sm text-muted-foreground">Hover this card to trigger the link animations</p>
         <div className="flex flex-wrap items-center gap-4">
-          <ButtonLink href="#" animateIcon hoverTrigger="parent"><IconPlus data-icon="inline-start" /> Create</ButtonLink>
-          <ButtonLink href="#" animateText hoverTrigger="parent"><IconHeart data-icon="inline-start" /><span data-label>Save</span></ButtonLink>
-          <ButtonLink href="#" animateIcon hoverTrigger="parent" variant="outline">Explore <IconArrowRight data-icon="inline-end" /></ButtonLink>
+          <ButtonLink href="#" animateIcon hoverTrigger="parent"><Icon icon="solar:add-circle-line-duotone" data-icon="inline-start" /> Create</ButtonLink>
+          <ButtonLink href="#" animateText hoverTrigger="parent"><Icon icon="solar:heart-line-duotone" data-icon="inline-start" /><span data-label>Save</span></ButtonLink>
+          <ButtonLink href="#" animateIcon hoverTrigger="parent" variant="outline">Explore <Icon icon="solar:arrow-right-line-duotone" data-icon="inline-end" /></ButtonLink>
         </div>
       </div>
     </div>

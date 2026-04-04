@@ -1,4 +1,4 @@
-import { IconBookmark } from "@tabler/icons-react"
+import { Icon } from "@iconify/react"
 import { AnimatedSection } from "./animated-section"
 
 interface ComingSoonFeature {
@@ -76,7 +76,7 @@ export function ComingSoon() {
                 className="flex size-10 items-center justify-center rounded-full border border-white/30 bg-white/20 shadow-sm"
                 aria-hidden="true"
               >
-                <IconBookmark className="size-4 text-white" />
+                <Icon icon="solar:bookmark-line-duotone" className="size-4 text-white" />
               </span>
             </div>
           </div>
@@ -101,7 +101,7 @@ export function ComingSoon() {
                   className="flex size-10 items-center justify-center rounded-full border border-white/50 bg-white/40 shadow-sm"
                   aria-hidden="true"
                 >
-                  <IconBookmark className="size-4 text-on-surface-variant" />
+                  <Icon icon="solar:bookmark-line-duotone" className="size-4 text-on-surface-variant" />
                 </span>
               </div>
             </div>
@@ -124,7 +124,7 @@ export function ComingSoon() {
                   className="flex size-10 items-center justify-center rounded-full border border-white/30 bg-white/20 shadow-sm"
                   aria-hidden="true"
                 >
-                  <IconBookmark className="size-4 text-white" />
+                  <Icon icon="solar:bookmark-line-duotone" className="size-4 text-white" />
                 </span>
               </div>
             </div>

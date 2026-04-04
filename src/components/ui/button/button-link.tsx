@@ -89,6 +89,7 @@ function ButtonLink({
     <Link
       ref={linkRef}
       data-slot="button-link"
+      data-cursor="fade"
       className={cn(
         buttonVariants({ variant, size, className }),
         animateIcon &&

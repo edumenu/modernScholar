@@ -5,7 +5,7 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button/button"
-import { IconX } from "@tabler/icons-react"
+import { Icon } from "@iconify/react"
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
@@ -70,7 +70,7 @@ function DialogContent({
               />
             }
           >
-            <IconX
+            <Icon icon="solar:close-circle-line-duotone"
             />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
