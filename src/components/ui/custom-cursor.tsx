@@ -22,16 +22,8 @@ const variantStyles = {
 
 export function CustomCursor() {
   const cursorEnabled = useSettingsStore((s) => s.cursorEnabled)
-  const [hasPointer, setHasPointer] = useState(() =>
-    typeof window !== "undefined"
-      ? window.matchMedia("(pointer: fine)").matches
-      : false,
-  )
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
-    typeof window !== "undefined"
-      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false,
-  )
+  const [hasPointer, setHasPointer] = useState(false)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [variant, setVariant] = useState<CursorVariant>("default")
   const [cursorText, setCursorText] = useState<string | null>(null)
 
@@ -45,6 +37,7 @@ export function CustomCursor() {
   // Subscribe to pointer changes
   useEffect(() => {
     const mql = window.matchMedia("(pointer: fine)")
+    setHasPointer(mql.matches)
     const handler = (e: MediaQueryListEvent) => setHasPointer(e.matches)
     mql.addEventListener("change", handler)
     return () => mql.removeEventListener("change", handler)
@@ -53,6 +46,7 @@ export function CustomCursor() {
   // Subscribe to reduced motion changes
   useEffect(() => {
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setPrefersReducedMotion(mql.matches)
     const handler = (e: MediaQueryListEvent) =>
       setPrefersReducedMotion(e.matches)
     mql.addEventListener("change", handler)

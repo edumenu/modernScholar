@@ -87,7 +87,10 @@
       "Bash(gh pr:*)",
       "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar -name tailwind.config.* -o -name tw*.config.*)",
       "Bash(ls:*)",
-      "WebFetch(domain:www.acceptandproceed.com)"
+      "WebFetch(domain:www.acceptandproceed.com)",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(item[''''text''''][:8000]\\) for item in data if item.get\\(''''type''''\\)==''''text'''']\")",
+      "Bash(pkill -f \"chromium.*mcp-chrome\")",
+      "Bash(git push:*)"
     ]
   }
 }
