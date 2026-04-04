@@ -5,6 +5,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "./theme-toggle"
+import { SettingsDropdown } from "./settings-dropdown"
 import { MobileMenuButton } from "./mobile-menu"
 import { glassPill } from "./styles";
 import { useScroll, useMotionValueEvent, motion } from "motion/react";
@@ -124,6 +125,7 @@ export function Header() {
                 </Link>
               );
             })}
+            <SettingsDropdown />
           </div>
 
           {/* Theme toggle pill */}

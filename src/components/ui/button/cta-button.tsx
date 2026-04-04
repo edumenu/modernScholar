@@ -7,7 +7,7 @@ import {
   type ComponentProps,
   type FC,
 } from "react";
-import { IconArrowRight } from "@tabler/icons-react"
+import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "motion/react";
 
 import { cn } from "@/lib/utils"
@@ -110,6 +110,7 @@ const CTAButton: FC<CTAButtonProps> = ({
   return (
     <button
       ref={buttonRef}
+      data-cursor="fade"
       className={cn(
         "group relative h-auto w-50 cursor-pointer overflow-hidden rounded-full border-none p-1 outline-none transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50",
         styles.wrapper,
@@ -128,7 +129,8 @@ const CTAButton: FC<CTAButtonProps> = ({
           )}
           aria-hidden="true"
         >
-          <IconArrowRight
+          <Icon
+            icon="solar:arrow-right-line-duotone"
             className={cn(
               "size-6 duration-500 group-hover:translate-x-[0.15rem]",
               styles.arrow,
@@ -173,7 +175,9 @@ const CTAButton: FC<CTAButtonProps> = ({
             }}
             onAnimationComplete={() => {
               if (ripple.isLeaving) {
-                setRipple(null);
+                setRipple((prev) =>
+                  prev && prev.key === ripple.key ? null : prev
+                );
               }
             }}
           />

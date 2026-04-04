@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { IconChevronDown } from "@tabler/icons-react"
+import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "motion/react"
 import { AnimatedSection } from "./animated-section"
 
@@ -63,7 +63,7 @@ function AccordionItem({
           className="shrink-0"
           aria-hidden="true"
         >
-          <IconChevronDown className="size-5 text-on-surface-variant" />
+          <Icon icon="solar:alt-arrow-down-line-duotone" className="size-5 text-on-surface-variant" />
         </motion.span>
       </button>
       <AnimatePresence initial={false}>

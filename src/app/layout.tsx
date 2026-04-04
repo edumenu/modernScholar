@@ -7,6 +7,7 @@ import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { PageShell } from "@/components/ui/page-shell";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
+import { CustomCursor } from "@/components/ui/custom-cursor";
 
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
@@ -44,6 +45,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <SmoothScrollProvider>
+            <CustomCursor />
             <Header />
             <PageShell className="">{children}</PageShell>
             <Footer />

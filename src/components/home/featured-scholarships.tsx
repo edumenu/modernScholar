@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { AnimatedSection } from "./animated-section";
 import { ButtonLink } from "@/components/ui/button/button-link";
 // import { Button } from "@/components/ui/button/button";
-import { IconArrowRight } from "@tabler/icons-react";
+import { Icon } from "@iconify/react";
 
 interface Scholarship {
   id: string;
@@ -179,7 +179,11 @@ const row2Items = scholarships.slice(5, 10);
 
 function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
   return (
-    <div className="group relative w-80 shrink-0 overflow-hidden rounded-2xl shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.9)] dark:shadow-lg">
+    <div
+      data-cursor="text"
+      data-cursor-text="View"
+      className="group relative w-80 cursor-pointer shrink-0 overflow-hidden rounded-2xl shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.9)] dark:shadow-lg"
+    >
       <Image
         src={scholarship.image}
         alt={scholarship.name}
@@ -233,7 +237,7 @@ function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
             hoverTrigger="parent"
             className="shrink-0 border-white/30 text-white shadow-none hover:border-white/50"
           >
-            <IconArrowRight data-icon="inline-start" className="size-4" />
+            <Icon icon="solar:arrow-right-line-duotone" data-icon="inline-start" className="size-4" />
             <span data-label>View</span>
           </Button>
         </div> */}
@@ -317,7 +321,11 @@ export function FeaturedScholarships() {
             </p>
           </div>
           <ButtonLink href="/scholarships" variant="tertiary" animateIcon>
-            View All Scholarships <IconArrowRight data-icon="inline-end" />
+            View All Scholarships{" "}
+            <Icon
+              icon="solar:arrow-right-line-duotone"
+              data-icon="inline-end"
+            />
           </ButtonLink>
         </div>
       </AnimatedSection>

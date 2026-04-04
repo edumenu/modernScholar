@@ -142,6 +142,7 @@ function Button({
     <ButtonPrimitive
       ref={buttonRef}
       data-slot="button"
+      data-cursor="fade"
       className={cn(
         buttonVariants({ variant, size, className }),
         animateIcon &&
