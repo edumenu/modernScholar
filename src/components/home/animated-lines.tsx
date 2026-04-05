@@ -1,0 +1,116 @@
+"use client";
+
+import { useRef } from "react";
+import { motion, useInView, type TargetAndTransition } from "motion/react";
+import { cn } from "@/lib/utils";
+import { useContainerWidth } from "@/lib/pretext/use-container-width";
+import { useTextLines } from "@/lib/pretext/use-text-lines";
+
+type AnimationVariant = "fadeUp" | "blurIn" | "slideUp";
+
+const lineVariants: Record<
+  AnimationVariant,
+  { initial: TargetAndTransition; animate: TargetAndTransition }
+> = {
+  fadeUp: {
+    initial: { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+  },
+  blurIn: {
+    initial: { opacity: 0, filter: "blur(6px)" },
+    animate: { opacity: 1, filter: "blur(0px)" },
+  },
+  slideUp: {
+    initial: { opacity: 0, y: 48 },
+    animate: { opacity: 1, y: 0 },
+  },
+};
+
+interface AnimatedLinesProps {
+  text: string;
+  font: string;
+  /** System fallback font for CLS prevention (e.g. "700 48px serif") */
+  fallbackFont?: string;
+  lineHeight: number;
+  as?: "h1" | "h2" | "h3" | "p" | "span";
+  className?: string;
+  /** Classes for the outer wrapper that controls width measurement (e.g. "max-w-3xl mx-auto") */
+  wrapperClassName?: string;
+  staggerDelay?: number;
+  initialDelay?: number;
+  variant?: AnimationVariant;
+}
+
+/**
+ * Splits text into its actual rendered lines (via pretext measurement)
+ * and animates each line in with a staggered Motion animation.
+ */
+export function AnimatedLines({
+  text,
+  font,
+  fallbackFont,
+  lineHeight,
+  as: Tag = "p",
+  className,
+  wrapperClassName,
+  staggerDelay = 0.1,
+  initialDelay = 0,
+  variant = "fadeUp",
+}: AnimatedLinesProps) {
+  const measureRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const width = useContainerWidth(measureRef);
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
+  const { lines, isReady } = useTextLines({
+    text,
+    font,
+    fallbackFont,
+    maxWidth: width,
+    lineHeight,
+  });
+
+  const { initial, animate } = lineVariants[variant];
+
+  return (
+    <div ref={sectionRef} className="w-full">
+      {/*
+        measureRef goes on a block-level div that matches the text element's
+        width constraint (e.g. max-w-3xl). This ensures pretext measures
+        against the same width the text actually renders at.
+      */}
+      <div ref={measureRef} className={cn("w-full", wrapperClassName)}>
+        <Tag className={cn(className)}>
+          {/* Before measurement, render invisible text to reserve space */}
+          {!isReady && (
+            <span className="invisible" aria-hidden="true">
+              {text}
+            </span>
+          )}
+
+          {/* After measurement, render each line as a staggered motion.span */}
+          {isReady && (
+            <span className="sr-only">{text}</span>
+          )}
+          {isReady &&
+            lines.map((line, i) => (
+              <motion.span
+                key={`${i}-${line}`}
+                className="block"
+                aria-hidden="true"
+                initial={initial}
+                animate={isInView ? animate : initial}
+                transition={{
+                  duration: 0.6,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: initialDelay + i * staggerDelay,
+                }}
+              >
+                {line}
+              </motion.span>
+            ))}
+        </Tag>
+      </div>
+    </div>
+  );
+}

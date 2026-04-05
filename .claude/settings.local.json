@@ -90,7 +90,13 @@
       "WebFetch(domain:www.acceptandproceed.com)",
       "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(item[''''text''''][:8000]\\) for item in data if item.get\\(''''type''''\\)==''''text'''']\")",
       "Bash(pkill -f \"chromium.*mcp-chrome\")",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)",
+      "mcp__playwright__browser_tabs",
+      "Bash(open -a \"Google Chrome\" http://localhost:3000)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(t[''''path'''']\\) for t in data.get\\(''''tree'''',[]\\)]\")",
+      "mcp__playwright__browser_resize"
     ]
   }
 }

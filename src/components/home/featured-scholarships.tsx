@@ -5,8 +5,9 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { AnimatedSection } from "./animated-section";
 import { ButtonLink } from "@/components/ui/button/button-link";
-// import { Button } from "@/components/ui/button/button";
 import { Icon } from "@iconify/react";
+import { useTextLayout } from "@/lib/pretext/use-text-layout";
+import { PRETEXT_FONTS } from "@/lib/pretext/fonts";
 
 interface Scholarship {
   id: string;
@@ -177,7 +178,31 @@ const row1Items = scholarships.slice(0, 5);
 const row2Items = scholarships.slice(5, 10);
 // const row3Items = scholarships.slice(10, 15);
 
+/** Card text area width: w-80 (320px) - p-5 (20px) * 2 = 280px */
+const CARD_TEXT_WIDTH = 280;
+/** text-lg line height (leading-snug = 1.375 * 18px ≈ 25px) */
+const TITLE_LINE_HEIGHT = 25;
+/** text-sm line height (default ~20px) */
+const PROVIDER_LINE_HEIGHT = 20;
+
 function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
+  const { lineCount: titleLines } = useTextLayout({
+    text: scholarship.name,
+    font: PRETEXT_FONTS.cardTitle,
+    maxWidth: CARD_TEXT_WIDTH,
+    lineHeight: TITLE_LINE_HEIGHT,
+  });
+
+  const { lineCount: providerLines } = useTextLayout({
+    text: scholarship.provider,
+    font: PRETEXT_FONTS.bodySmall,
+    maxWidth: CARD_TEXT_WIDTH,
+    lineHeight: PROVIDER_LINE_HEIGHT,
+  });
+
+  const titleOverflows = titleLines > 1;
+  const providerOverflows = providerLines > 1;
+
   return (
     <div
       data-cursor="text"
@@ -204,21 +229,21 @@ function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
               {scholarship.category}
             </span>
           </span>
-          {/* <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-1 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
-            <IconStarFilled className="size-3 text-amber-400" />
-            <span className="text-xs font-medium text-white">
-              {scholarship.rating}
-            </span>
-          </span> */}
         </div>
 
         {/* Bottom: Info */}
         <div className="flex items-end justify-start gap-3">
           <div className="flex min-w-0 flex-col gap-1">
-            <h3 className="truncate text-lg font-medium leading-snug text-white">
+            <h3
+              className="truncate text-lg font-medium leading-snug text-white"
+              title={titleOverflows ? scholarship.name : undefined}
+            >
               {scholarship.name}
             </h3>
-            <p className="truncate text-sm text-white/80">
+            <p
+              className="truncate text-sm text-white/80"
+              title={providerOverflows ? scholarship.provider : undefined}
+            >
               {scholarship.provider}
             </p>
             <p className="text-sm text-white/70">
@@ -229,18 +254,6 @@ function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
             </p>
           </div>
         </div>
-        {/* button */}
-        {/* <div className="flex w-full items-end justify-start gap-3">
-          <Button
-            variant="outline"
-            animateText
-            hoverTrigger="parent"
-            className="shrink-0 border-white/30 text-white shadow-none hover:border-white/50"
-          >
-            <Icon icon="solar:arrow-right-line-duotone" data-icon="inline-start" className="size-4" />
-            <span data-label>View</span>
-          </Button>
-        </div> */}
       </div>
     </div>
   );

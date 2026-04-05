@@ -140,14 +140,14 @@ function MobileNav({ onClose }: { onClose: () => void }) {
       initial="initial"
       animate="enter"
       exit="exit"
-      className="fixed inset-y-0 right-0 z-50 flex w-[min(480px,85vw)] flex-col bg-surface"
+      className="fixed top-0 right-0 z-50 flex h-dvh w-[min(480px,85vw)] flex-col bg-surface"
     >
       <Curve />
 
-      <div className="flex flex-1 flex-col justify-between px-10 pb-12 pt-16">
+      <div className="flex flex-1 flex-col justify-between pr-10 pb-12 pt-16">
         <div
           onMouseLeave={() => setSelectedIndicator(pathname)}
-          className="flex flex-col gap-3"
+          className="flex flex-col gap-3 pl-10"
         >
           <p className="mb-6 border-b border-outline-variant/30 pb-2 text-xs font-medium uppercase tracking-widest text-on-surface-variant">
             Navigation
@@ -162,17 +162,25 @@ function MobileNav({ onClose }: { onClose: () => void }) {
           ))}
         </div>
 
-        <div className="flex justify-start items-center gap-6 border-t border-outline-variant/30 pt-6">
-          <div>
+        <div className="flex flex-col gap-4 border-t border-outline-variant/30 pl-10 pt-6">
+          <div className="flex items-center gap-4">
             <Image
               src="/iconBurgundy.png"
               alt="Modern Scholar"
               width={36}
               height={36}
-              className="size-14 object-contain"
+              className="size-10 object-contain"
             />
+            <div
+              className={cn(
+                glassPill,
+                "flex h-8 w-fit items-center justify-center lg:px-2.5",
+              )}
+            >
+              <ThemeToggle />
+            </div>
           </div>
-          <div className="gap-6 flex">
+          <div className="flex gap-6">
             <a
               href="#"
               className="text-xs text-on-surface-variant transition-colors hover:text-on-surface"
@@ -191,15 +199,6 @@ function MobileNav({ onClose }: { onClose: () => void }) {
             >
               Twitter
             </a>
-          </div>
-          {/* Theme toggle pill */}
-          <div
-            className={cn(
-              glassPill,
-              "flex h-8 w-fit items-center justify-center lg:px-2.5",
-            )}
-          >
-            <ThemeToggle />
           </div>
         </div>
       </div>

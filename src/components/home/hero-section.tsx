@@ -4,6 +4,8 @@ import { Suspense, lazy } from "react"
 import { useRouter } from "next/navigation"
 import { CTAButton } from "@/components/ui/button/cta-button"
 import { AnimatedSection } from "./animated-section"
+import { AnimatedLines } from "./animated-lines"
+import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts"
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -60,19 +62,21 @@ export function HeroSection() {
           </h4>
         </div>
       </AnimatedSection>
-      {/* Headline */}
-      <AnimatedSection
-        delay={0.1}
-        variant="scaleIn"
-        className="relative z-10 flex flex-col items-center gap-6 px-6 text-center md:px-8"
-      >
-        <h1
-          id="hero-heading"
-          className="max-w-3xl font-heading text-4xl font-bold leading-none tracking-tight text-primary dark:text-primary-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] sm:text-5xl md:text-[3rem]"
-        >
-          Your scholarship journey starts here
-        </h1>
-      </AnimatedSection>
+      {/* Headline — line-by-line reveal via pretext measurement */}
+      <div className="relative z-10 flex w-full flex-col items-center gap-6 px-6 text-center md:px-8">
+        <AnimatedLines
+          text="Your scholarship journey starts here"
+          font={PRETEXT_FONTS.heroHeadline}
+          fallbackFont={PRETEXT_FALLBACK_FONTS.heroHeadline}
+          lineHeight={48}
+          as="h1"
+          wrapperClassName="max-w-3xl mx-auto"
+          className="font-heading text-4xl font-bold leading-none tracking-tight text-primary dark:text-primary-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] sm:text-5xl md:text-[3rem]"
+          staggerDelay={0.12}
+          initialDelay={0.1}
+          variant="fadeUp"
+        />
+      </div>
       {/* Headline + CTA — overlaid at bottom */}
       <AnimatedSection
         delay={0.7}
