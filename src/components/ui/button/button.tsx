@@ -21,7 +21,7 @@ const buttonVariants = cva(
         tertiary:
           "bg-tertiary text-tertiary-foreground text-white shadow-neu-tertiary aria-expanded:bg-tertiary aria-expanded:text-tertiary-foreground",
         ghost:
-          "font-heading text-surface-tint hover:text-white shadow-none aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
+          "text-surface-tint hover:text-primary-400 shadow-none aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
         destructive:
           "bg-destructive/10 text-destructive hover:text-white shadow-neu-outline focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40",
         link: "shadow-none text-primary underline-offset-4 hover:underline",
@@ -207,7 +207,7 @@ function Button({
               }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{
-                duration: 0.8,
+                duration: 0.3,
                 ease: "circOut",
               }}
               onAnimationComplete={() => {

@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react"
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "motion/react"
-import { AnimatedSection } from "./animated-section"
+import { AnimatedSection } from "../ui/animatedSection/animated-section";
 
 interface FAQItem {
   question: string

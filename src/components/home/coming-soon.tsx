@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react"
-import { AnimatedSection } from "./animated-section"
+import { AnimatedSection } from "../ui/animatedSection/animated-section";
 
 interface ComingSoonFeature {
   title: string
@@ -30,16 +30,19 @@ const features: ComingSoonFeature[] = [
 
 export function ComingSoon() {
   return (
-    <section aria-labelledby="coming-soon-heading" className="flex min-h-dvh flex-col justify-center">
+    <section
+      aria-labelledby="coming-soon-heading"
+      className="flex min-h-dvh flex-col justify-center"
+    >
       <AnimatedSection>
         {/* Header */}
         <div className="flex flex-col gap-2">
-          <p className="text-xs font-medium uppercase tracking-[0.1em] text-tertiary">
+          <p className="text-xs font-medium uppercase tracking-widest text-tertiary">
             Coming Soon
           </p>
           <h2
             id="coming-soon-heading"
-            className="font-heading text-3xl font-medium tracking-tight text-on-surface md:text-[3rem] md:leading-[1]"
+            className="font-heading text-3xl font-medium tracking-tight text-on-surface md:text-[3rem] md:leading-none"
           >
             What&apos;s Next
           </h2>
@@ -54,14 +57,14 @@ export function ComingSoon() {
       <AnimatedSection delay={0.15} className="mt-16">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Large featured card — primary dark */}
-          <div className="flex min-h-[360px] flex-col justify-between rounded-3xl border border-white/20 bg-primary-container p-6 text-primary-foreground shadow-md sm:p-8 lg:min-h-[536px]">
+          <div className="flex min-h-90 flex-col justify-between rounded-3xl border border-white/20 bg-primary-container p-6 text-primary-foreground shadow-md sm:p-8 lg:min-h-134">
             <div>
               <span className="inline-flex items-center rounded-full border border-white/20 bg-black/40 px-3.5 py-1 text-xs uppercase tracking-widest text-white/90">
                 Featured Symposium
               </span>
             </div>
             <div className="flex flex-col gap-3">
-              <h3 className="font-heading text-2xl font-medium leading-tight sm:text-3xl md:text-[3rem] md:leading-[1.25]">
+              <h3 className="font-heading text-2xl font-medium leading-tight sm:text-3xl md:text-[3rem] md:leading-tight">
                 {features[0].title}
               </h3>
               <p className="text-base italic text-white/80 sm:text-lg">
@@ -76,7 +79,10 @@ export function ComingSoon() {
                 className="flex size-10 items-center justify-center rounded-full border border-white/30 bg-white/20 shadow-sm"
                 aria-hidden="true"
               >
-                <Icon icon="solar:bookmark-line-duotone" className="size-4 text-white" />
+                <Icon
+                  icon="solar:bookmark-line-duotone"
+                  className="size-4 text-white"
+                />
               </span>
             </div>
           </div>
@@ -101,7 +107,10 @@ export function ComingSoon() {
                   className="flex size-10 items-center justify-center rounded-full border border-white/50 bg-white/40 shadow-sm"
                   aria-hidden="true"
                 >
-                  <Icon icon="solar:bookmark-line-duotone" className="size-4 text-on-surface-variant" />
+                  <Icon
+                    icon="solar:bookmark-line-duotone"
+                    className="size-4 text-on-surface-variant"
+                  />
                 </span>
               </div>
             </div>
@@ -124,7 +133,10 @@ export function ComingSoon() {
                   className="flex size-10 items-center justify-center rounded-full border border-white/30 bg-white/20 shadow-sm"
                   aria-hidden="true"
                 >
-                  <Icon icon="solar:bookmark-line-duotone" className="size-4 text-white" />
+                  <Icon
+                    icon="solar:bookmark-line-duotone"
+                    className="size-4 text-white"
+                  />
                 </span>
               </div>
             </div>
@@ -132,5 +144,5 @@ export function ComingSoon() {
         </div>
       </AnimatedSection>
     </section>
-  )
+  );
 }

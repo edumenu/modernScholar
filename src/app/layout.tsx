@@ -8,6 +8,7 @@ import { Footer } from "@/components/ui/footer";
 import { PageShell } from "@/components/ui/page-shell";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { CustomCursor } from "@/components/ui/custom-cursor";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
@@ -43,14 +44,16 @@ export default function RootLayout({
       className={cn("h-full", poppins.variable, notoSerif.variable)}
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <SmoothScrollProvider>
-            <CustomCursor />
-            <Header />
-            <PageShell className="">{children}</PageShell>
-            <Footer />
-          </SmoothScrollProvider>
-        </ThemeProvider>
+        <NuqsAdapter>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <SmoothScrollProvider>
+              <CustomCursor />
+              <Header />
+              <PageShell className="">{children}</PageShell>
+              <Footer />
+            </SmoothScrollProvider>
+          </ThemeProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

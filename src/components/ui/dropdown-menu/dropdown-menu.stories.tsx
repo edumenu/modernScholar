@@ -25,14 +25,14 @@ type Story = StoryObj<typeof DropdownMenu>;
 
 export const Default: Story = {
   render: () => (
-    <div className="flex min-h-[300px] items-start justify-center rounded-lg bg-gradient-to-br from-surface to-surface-container-high p-10">
+    <div className="flex min-h-75 items-start justify-center rounded-lg bg-linear-to-br from-surface to-surface-container-high p-10">
       <DropdownMenu>
         <DropdownMenuTrigger render={<Button variant="outline" />}>
           Actions
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>Manage Resource</DropdownMenuLabel>
           <DropdownMenuGroup>
+            <DropdownMenuLabel>Manage Resource</DropdownMenuLabel>
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuItem>Duplicate</DropdownMenuItem>
             <DropdownMenuItem>Archive</DropdownMenuItem>

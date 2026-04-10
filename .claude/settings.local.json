@@ -96,7 +96,30 @@
       "Bash(open -a \"Google Chrome\" http://localhost:3000)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(t[''''path'''']\\) for t in data.get\\(''''tree'''',[]\\)]\")",
-      "mcp__playwright__browser_resize"
+      "mcp__playwright__browser_resize",
+      "WebFetch(domain:motion.dev)",
+      "WebFetch(domain:nevflynn.com)",
+      "Bash(npx vitest:*)",
+      "Bash(open -a \"Google Chrome\" \"http://localhost:3000/scholarships\")",
+      "Bash(npx playwright:*)",
+      "Bash(grep -n \"^[[:space:]]*//\\\\|^[[:space:]]*\\\\/\\\\*\\\\|^[[:space:]]*\\\\*\" /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/components/scholarships/*.tsx)",
+      "Bash(grep:*)",
+      "WebFetch(domain:actbe.co.jp)",
+      "Bash(pkill -f \"chrome.*mcp-chrome\")",
+      "Bash(pkill -9 -f \"chrome\")",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar -name *AnimatedLines* -o -name *animated-lines*)",
+      "Bash(curl -s 'https://actbe.co.jp/assets/js/foundation.min.js')",
+      "Bash(tr ';' '\\\\n')",
+      "mcp__plugin_asana_asana__asana_search_tasks",
+      "mcp__plugin_asana_asana__asana_get_projects",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/app/scholarships -type f -name *.tsx -o -name *.ts -o -name *.json)",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/app/scholarships -type f -name *.tsx -o -name *.ts)",
+      "Bash(pnpm dlx:*)",
+      "Bash(pnpm exec:*)",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/app/scholarships -type f -name *.tsx)",
+      "mcp__playwright__browser_press_key",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/components/scholarships -type f -name *.tsx -o -name *.ts -o -name *.json)",
+      "Bash(find /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/src/app/scholarships -type f -name *.tsx -o -name *.ts -o -name *.css)"
     ]
   }
 }

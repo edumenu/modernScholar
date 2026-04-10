@@ -22,7 +22,11 @@ const meta: Meta<typeof AnimatedLines> = {
     },
     variant: {
       control: "select",
-      options: ["fadeUp", "blurIn", "slideUp"],
+      options: ["fadeUp", "blurIn", "slideUp", "revealUp"],
+    },
+    mode: {
+      control: "select",
+      options: ["lines", "chars"],
     },
     staggerDelay: { control: { type: "number", min: 0, max: 1, step: 0.01 } },
     initialDelay: { control: { type: "number", min: 0, max: 2, step: 0.1 } },
@@ -277,4 +281,51 @@ export const HeadingLevels: Story = {
       />
     </div>
   ),
+};
+
+/* ─── Character-by-character mode ─── */
+
+export const CharacterRevealUp: Story = {
+  args: {
+    text: "About Us",
+    font: PRETEXT_FONTS.heroHeadline,
+    lineHeight: 56,
+    as: "h1",
+    className:
+      "font-heading text-7xl font-normal leading-none tracking-tight text-on-surface sm:text-8xl md:text-9xl",
+    staggerDelay: 0.08,
+    initialDelay: 0,
+    variant: "revealUp",
+    mode: "chars",
+  },
+};
+
+export const CharacterRevealUpLong: Story = {
+  args: {
+    text: "Scholarships",
+    font: PRETEXT_FONTS.heroHeadline,
+    lineHeight: 56,
+    as: "h1",
+    className:
+      "font-heading text-7xl font-normal leading-none tracking-tight text-on-surface sm:text-8xl md:text-9xl",
+    staggerDelay: 0.08,
+    initialDelay: 0,
+    variant: "revealUp",
+    mode: "chars",
+  },
+};
+
+export const CharacterBlurIn: Story = {
+  args: {
+    text: "Contact",
+    font: PRETEXT_FONTS.heroHeadline,
+    lineHeight: 56,
+    as: "h1",
+    className:
+      "font-heading text-7xl font-normal leading-none tracking-tight text-on-surface sm:text-8xl md:text-9xl",
+    staggerDelay: 0.06,
+    initialDelay: 0,
+    variant: "blurIn",
+    mode: "chars",
+  },
 };
