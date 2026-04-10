@@ -18,5 +18,5 @@ export function PageShell({
     >
       {children}
     </main>
-  )
+  );
 }

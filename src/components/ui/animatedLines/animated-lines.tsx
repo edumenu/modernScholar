@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useContainerWidth } from "@/lib/pretext/use-container-width";
 import { useTextLines } from "@/lib/pretext/use-text-lines";
 
-type AnimationVariant = "fadeUp" | "blurIn" | "slideUp";
+type AnimationVariant = "fadeUp" | "blurIn" | "slideUp" | "revealUp";
 
 const lineVariants: Record<
   AnimationVariant,
@@ -24,6 +24,10 @@ const lineVariants: Record<
     initial: { opacity: 0, y: 48 },
     animate: { opacity: 1, y: 0 },
   },
+  revealUp: {
+    initial: { opacity: 1, y: "120%" },
+    animate: { opacity: 1, y: 0 },
+  },
 };
 
 interface AnimatedLinesProps {
@@ -39,11 +43,16 @@ interface AnimatedLinesProps {
   staggerDelay?: number;
   initialDelay?: number;
   variant?: AnimationVariant;
+  /** "lines" animates per rendered line (default), "chars" animates per character */
+  mode?: "lines" | "chars";
 }
 
 /**
  * Splits text into its actual rendered lines (via pretext measurement)
  * and animates each line in with a staggered Motion animation.
+ *
+ * In "chars" mode, each character is animated individually — useful for
+ * large display headings like page titles.
  */
 export function AnimatedLines({
   text,
@@ -56,6 +65,7 @@ export function AnimatedLines({
   staggerDelay = 0.1,
   initialDelay = 0,
   variant = "fadeUp",
+  mode = "lines",
 }: AnimatedLinesProps) {
   const measureRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -71,6 +81,44 @@ export function AnimatedLines({
   });
 
   const { initial, animate } = lineVariants[variant];
+
+  if (mode === "chars") {
+    const chars = text.split("");
+
+    return (
+      <div ref={sectionRef} className="w-full">
+        <div className={cn("w-full", wrapperClassName)}>
+          <Tag className={cn("overflow-hidden", className)}>
+            <span className="sr-only">{text}</span>
+            {chars.map((char, i) => (
+              <motion.span
+                key={`${i}-${char}`}
+                className="inline-block"
+                aria-hidden="true"
+                initial={initial}
+                animate={isInView ? animate : initial}
+                transition={
+                  variant === "revealUp"
+                    ? {
+                        duration: 1.2,
+                        ease: [0.4, 0, 0, 1],
+                        delay: initialDelay + i * staggerDelay,
+                      }
+                    : {
+                        duration: 0.6,
+                        ease: [0.22, 1, 0.36, 1],
+                        delay: initialDelay + i * staggerDelay,
+                      }
+                }
+              >
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </Tag>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={sectionRef} className="w-full">

@@ -7,7 +7,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import Image from "next/image";
 import { ThemeToggle } from "./theme-toggle";
-import { glassPill } from "./styles";
+import { glassPill } from "../styles";
 
 const navItems = [
   { title: "Home", href: "/" },

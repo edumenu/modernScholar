@@ -1,10 +1,10 @@
 "use client"
 
-import { Suspense, lazy } from "react"
+import { Suspense } from "react";
 import { useRouter } from "next/navigation"
 import { CTAButton } from "@/components/ui/button/cta-button"
-import { AnimatedSection } from "./animated-section"
-import { AnimatedLines } from "./animated-lines"
+import { AnimatedSection } from "../ui/animatedSection/animated-section";
+import { AnimatedLines } from "@/components/ui/animatedLines/animated-lines";
 import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts"
 import Image from "next/image";
 import { cn } from "@/lib/utils";

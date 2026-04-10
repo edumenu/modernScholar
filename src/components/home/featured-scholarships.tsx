@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { AnimatedSection } from "./animated-section";
+import { AnimatedSection } from "../ui/animatedSection/animated-section";
 import { ButtonLink } from "@/components/ui/button/button-link";
 import { Icon } from "@iconify/react";
 import { useTextLayout } from "@/lib/pretext/use-text-layout";

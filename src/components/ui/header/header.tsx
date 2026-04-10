@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils"
 import { ThemeToggle } from "./theme-toggle"
 import { SettingsDropdown } from "./settings-dropdown"
 import { MobileMenuButton } from "./mobile-menu"
-import { glassPill } from "./styles";
-import { useScroll, useMotionValueEvent, motion } from "motion/react";
+import { glassPill } from "../styles";
+import { useScroll, useMotionValueEvent, motion, LayoutGroup } from "motion/react";
 
 const HEADER_HEIGHT = 112; // 28 * 4 (h-28 in Tailwind = 112px)
 
@@ -56,7 +56,6 @@ const navItems = [
 export function Header() {
   const pathname = usePathname()
   const isHome = pathname === "/";
-
   return (
     <ScrollAnimatedHeader>
       <a
@@ -73,8 +72,7 @@ export function Header() {
             className={cn(
               glassPill,
               "lg:flex hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)]",
-              "dark:bg-primary-400",
-              `${isHome} && bg-primary-400`,
+              isHome && "bg-primary-100/80 dark:bg-primary/20",
             )}
             aria-label="Home"
           >
@@ -83,10 +81,7 @@ export function Header() {
               alt="Modern Scholar"
               width={36}
               height={36}
-              className={cn(
-                "size-20 object-contain dark:hidden",
-                isHome && "hidden",
-              )}
+              className={cn("size-20 object-contain block dark:hidden")}
             />
             <Image
               src="/iconWhite.png"
@@ -94,39 +89,44 @@ export function Header() {
               width={36}
               height={36}
               className={cn(
-                "size-20 object-contain",
-                isHome ? "block" : "hidden dark:block",
+                "size-20 object-contain hidden dark:block",
+                // isHome ? "block" : "dark:block",
               )}
             />
           </Link>
 
           {/* Desktop nav links pill */}
-          <div
-            className={cn(
-              glassPill,
-              "hidden h-11.5 items-stretch gap-8 p-1 lg:flex",
-            )}
-          >
-            {navItems.map((item) => {
-              const isActive =
-                pathname === item.href || pathname.startsWith(item.href + "/");
+          <LayoutGroup>
+            <div
+              className={cn(
+                glassPill,
+                "hidden h-11.5 items-stretch gap-8 p-1 lg:flex",
+              )}
+            >
+              {navItems.map((item) => {
+                const isActive =
+                  pathname === item.href || pathname.startsWith(item.href + "/");
 
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface transition-colors hover:text-primary",
-                    isActive &&
-                      "bg-primary-100 text-on-surface dark:bg-primary-900/40 hover:text-none",
-                  )}
-                >
-                  {item.title}
-                </Link>
-              );
-            })}
-            <SettingsDropdown />
-          </div>
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface"
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-highlight"
+                        className="absolute inset-0 rounded-full bg-primary-100/80 dark:bg-primary/20"
+                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                      />
+                    )}
+                    <span className="relative z-10">{item.title}</span>
+                  </Link>
+                );
+              })}
+              <SettingsDropdown />
+            </div>
+          </LayoutGroup>
 
           {/* Theme toggle pill */}
           <div

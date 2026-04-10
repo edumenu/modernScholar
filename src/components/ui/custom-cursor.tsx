@@ -114,8 +114,9 @@ export function CustomCursor() {
         y,
         translateX: "-50%",
         translateY: "-50%",
-        backgroundColor: "var(--tertiary-600)",
-        boxShadow: "0 0 0 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.15)",
+        backgroundColor: "var(--tertiary-400)",
+        boxShadow:
+          "0 0 0 1px rgba(255,255,255,0.15), 0 2px 8px rgba(0,0,0,0.15)",
         display: isActive ? "flex" : "none",
       }}
       animate={variantStyles[variant]}
@@ -136,5 +137,5 @@ export function CustomCursor() {
         )}
       </AnimatePresence>
     </motion.div>
-  )
+  );
 }
