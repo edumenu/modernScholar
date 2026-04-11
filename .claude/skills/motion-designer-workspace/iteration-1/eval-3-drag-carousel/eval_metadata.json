@@ -1,0 +1,32 @@
+{
+  "eval_id": 3,
+  "eval_name": "drag-carousel-with-momentum",
+  "prompt": "Create a horizontal image carousel in React where users can drag to scroll through items with momentum/snap behavior. Use motion for the physics.",
+  "assertions": [
+    {
+      "id": "drag-x",
+      "text": "Uses drag='x' for horizontal dragging",
+      "type": "code_check"
+    },
+    {
+      "id": "drag-constraints",
+      "text": "Sets dragConstraints to limit drag range",
+      "type": "code_check"
+    },
+    {
+      "id": "momentum-physics",
+      "text": "Uses dragTransition, dragElastic, or spring physics for momentum feel",
+      "type": "code_check"
+    },
+    {
+      "id": "correct-import",
+      "text": "Imports from 'motion/react' (not 'framer-motion')",
+      "type": "code_check"
+    },
+    {
+      "id": "horizontal-layout",
+      "text": "Items are laid out horizontally (flex row or similar)",
+      "type": "code_check"
+    }
+  ]
+}

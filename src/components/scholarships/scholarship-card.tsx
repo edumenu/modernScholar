@@ -28,6 +28,8 @@ export function ScholarshipCard({
         layout: true,
         layoutId: `card-${scholarship.id}`,
       })}
+      whileHover={{ scale: 1.009 }}
+      transition={{ type: "tween", stiffness: 300, damping: 20 }}
       className={cn(
         "group relative h-full cursor-pointer overflow-hidden rounded-2xl",
         "shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.9)]",
@@ -36,12 +38,16 @@ export function ScholarshipCard({
         dimmed && "pointer-events-none grayscale opacity-30",
         isExpanded && "invisible",
       )}
+      onClick={(e) => {
+        e.stopPropagation();
+        onExpand(scholarship.id);
+      }}
     >
       <Image
         src={scholarship.image}
         alt={scholarship.title}
         fill
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        className="object-cover"
         sizes="(max-width: 768px) 100vw, 33vw"
       />
 
@@ -70,18 +76,13 @@ export function ScholarshipCard({
             <h3 className="font-heading text-base font-medium leading-tight text-white md:text-xl">
               {scholarship.title}
             </h3>
-            {/* <p className="text-sm text-white/90">{scholarship.provider}</p> */}
-            <p className="text-sm text-white/80">
+            <p className="text-xs text-white/80 md:text-sm">
               {scholarship.amount}
               <span className="mx-3">&middot;</span>
               Deadline: {scholarship.deadline}
             </p>
           </div>
           <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              onExpand(scholarship.id);
-            }}
             animateIcon
             variant="outline"
             size="xs"
@@ -89,10 +90,7 @@ export function ScholarshipCard({
             hoverTrigger="parent"
           >
             View Details
-            <Icon
-              icon="solar:arrow-right-linear"
-              data-icon="inline-end"
-            />
+            <Icon icon="solar:arrow-right-linear" data-icon="inline-end" />
           </Button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { motion } from "motion/react"
+import { motion, LayoutGroup } from "motion/react";
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import {
@@ -53,31 +53,42 @@ export function ScholarshipFilters({
     <div className="flex flex-col gap-3">
       {/* Row 1: Category tabs + search */}
       <div className="flex items-center justify-between border-b border-outline-variant pb-2 dark:border-white/10">
-        <div className="flex items-center gap-1 overflow-x-auto scrollbar-none">
-          {SCHOLARSHIP_CATEGORIES.map((category) => {
-            const isActive = activeFilter === category;
-            return (
-              <Button
-                key={category}
-                variant={isActive ? "default" : "ghost"}
-                size="sm"
-                onClick={() => onFilterChange(category)}
-                aria-current={isActive ? "page" : undefined}
-                className={cn(
-                  "text-base",
-                  // isActive
-                  //   ? "text-on-surface dark:text-white"
-                  //   : "text-on-surface/60 hover:text-on-surface dark:text-white/50 dark:hover:text-white",
-                  isActive
-                    ? "shadow-none"
-                    : "text-on-surface/60 hover:text-primary-400",
-                )}
-              >
-                <span className="relative z-1">{category}</span>
-              </Button>
-            );
-          })}
-        </div>
+        <LayoutGroup>
+          <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-2 w-full">
+            {SCHOLARSHIP_CATEGORIES.map((category) => {
+              const isActive = activeFilter === category;
+              return (
+                <div key={category} className="relative">
+                  {isActive && (
+                    <motion.span
+                      layoutId="filter-highlight"
+                      className="absolute inset-0 rounded-full bg-primary/30 dark:bg-primary"
+                      transition={{
+                        type: "tween",
+                        stiffness: 350,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                  <Button
+                    variant={isActive ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => onFilterChange(category)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "relative z-1 text-sm md:text-base",
+                      isActive
+                        ? "shadow-none"
+                        : "text-on-surface/60 hover:text-primary-400",
+                    )}
+                  >
+                    {category}
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+        </LayoutGroup>
 
         {/* Search input — expands on focus, collapses on blur when empty */}
         <motion.div
@@ -112,7 +123,6 @@ export function ScholarshipFilters({
             }}
             placeholder="Search scholarships"
             aria-label="Search scholarships"
-            // className="min-w-0 flex-1 bg-transparent text-sm text-on-surface outline-none placeholder:text-on-surface/40 dark:text-white dark:placeholder:text-white/40"
           />
         </motion.div>
       </div>

@@ -1,0 +1,37 @@
+{
+  "eval_id": 2,
+  "eval_name": "modal-with-exit-animation",
+  "prompt": "Build me a confirmation dialog component in React that fades in with a backdrop blur, scales up from 95%, and animates out when dismissed. Use the motion library.",
+  "assertions": [
+    {
+      "id": "animate-presence-correct",
+      "text": "AnimatePresence stays mounted (not wrapped in conditional) — the conditional is INSIDE AnimatePresence",
+      "type": "code_check"
+    },
+    {
+      "id": "exit-animation",
+      "text": "Has exit prop on the animated element for unmount animation",
+      "type": "code_check"
+    },
+    {
+      "id": "backdrop-blur",
+      "text": "Backdrop includes blur effect (backdrop-blur or filter: blur)",
+      "type": "code_check"
+    },
+    {
+      "id": "scale-from-95",
+      "text": "Initial/animate includes scale transition from 0.95 to 1",
+      "type": "code_check"
+    },
+    {
+      "id": "correct-import",
+      "text": "Imports from 'motion/react' (not 'framer-motion')",
+      "type": "code_check"
+    },
+    {
+      "id": "unique-keys",
+      "text": "Children of AnimatePresence have unique key props",
+      "type": "code_check"
+    }
+  ]
+}
