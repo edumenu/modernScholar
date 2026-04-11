@@ -1,0 +1,23 @@
+{
+  "skill_name": "motion-designer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a Next.js app with a features section that has 6 cards in a grid. I want them to fade in and slide up one by one as the user scrolls down to them. Use motion.",
+      "expected_output": "A React component using motion's whileInView and staggerChildren for scroll-triggered staggered card reveal, with 'use client' directive for Next.js",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Build me a confirmation dialog component in React that fades in with a backdrop blur, scales up from 95%, and animates out when dismissed. Use the motion library.",
+      "expected_output": "A modal component using AnimatePresence correctly (staying mounted), with backdrop + dialog exit animations, spring physics",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Create a horizontal image carousel in React where users can drag to scroll through items with momentum/snap behavior. Use motion for the physics.",
+      "expected_output": "A drag carousel using motion's drag='x', dragConstraints, dragElastic, and dragTransition for physics-based momentum scrolling",
+      "files": []
+    }
+  ]
+}

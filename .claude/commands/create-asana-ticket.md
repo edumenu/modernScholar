@@ -51,6 +51,7 @@ User input: `$ARGUMENTS`
 ## Rules
 
 - Default project is **Scholarship Website** unless the user specifies another.
+- The default workspace is **My Workspace**
 - Never invent acceptance criteria, reproduction steps, or due dates — ask the user instead.
 - If the user provides a PRD file path or pastes PRD content, use it as the basis for the description (summarize if very long).
 - If the project has custom fields, call `mcp__plugin_asana_asana__asana_get_project` with `opt_fields: "custom_fields,custom_fields.name,custom_fields.enum_options"` to discover them and ask the user about relevant ones.

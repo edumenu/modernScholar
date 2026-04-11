@@ -3,23 +3,28 @@
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import {AnimatedLines} from "@/components/ui/animatedLines/animated-lines"
 import { PRETEXT_FONTS } from "@/lib/pretext/fonts";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 export function ScholarshipHero() {
+  const isMd = useMediaQuery("(min-width: 768px)");
+
   return (
     <>
       <div className="flex flex-col gap-4 pt-2 pb-2">
         <AnimatedLines
           text="Explore Scholarships"
-          font={PRETEXT_FONTS.heroHeadline}
-          lineHeight={56}
+          font={
+            isMd ? PRETEXT_FONTS.heroHeadline : PRETEXT_FONTS.heroHeadlineSm
+          }
+          lineHeight={isMd ? 56 : 44}
           as="h1"
           mode="chars"
-          className="font-heading text-7xl font-normal leading-none tracking-tight"
+          className="font-heading text-4xl md:text-5xl lg:text-7xl font-normal leading-none tracking-tight"
           staggerDelay={0.05}
-          variant="fadeUp"
+          variant="revealUp"
         />
         <AnimatedSection delay={0.4}>
-          <p className="max-w-2xl text-lg text-on-surface-variant md:text-xl">
+          <p className="max-w-2xl text-base text-on-surface-variant md:text-lg lg:text-xl">
             Discover opportunities tailored to your goals. Filter by category
             and find the perfect scholarship for your academic journey.
           </p>

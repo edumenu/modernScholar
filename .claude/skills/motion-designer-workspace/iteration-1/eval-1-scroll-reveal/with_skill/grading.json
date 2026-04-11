@@ -1,0 +1,31 @@
+{
+  "eval_id": 1,
+  "run_type": "with_skill",
+  "expectations": [
+    {
+      "text": "Uses whileInView or viewport-triggered animation",
+      "passed": true,
+      "evidence": "Line 95: whileInView={{ opacity: 1, y: 0, scale: 1 }}"
+    },
+    {
+      "text": "Implements staggered animation using staggerChildren or animation-delay",
+      "passed": true,
+      "evidence": "Line 101: delay: index * 0.1 — creates sequential reveal effect"
+    },
+    {
+      "text": "Imports from 'motion/react'",
+      "passed": true,
+      "evidence": "Line 3: import { motion } from \"motion/react\""
+    },
+    {
+      "text": "Includes 'use client' directive for Next.js",
+      "passed": true,
+      "evidence": "Line 1: \"use client\""
+    },
+    {
+      "text": "Renders 6 cards in a CSS grid layout",
+      "passed": true,
+      "evidence": "6 items in features array; Line 196: grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "eval_id": 2,
+  "run_type": "with_skill",
+  "expectations": [
+    {
+      "text": "AnimatePresence stays mounted (not wrapped in conditional)",
+      "passed": true,
+      "evidence": "Lines 25-88: AnimatePresence wraps the conditional {isOpen && ...}"
+    },
+    {
+      "text": "Has exit prop on the animated element",
+      "passed": true,
+      "evidence": "Line 34: exit={{ opacity: 0 }} on backdrop; Line 50: exit={{ opacity: 0, scale: 0.95 }} on dialog"
+    },
+    {
+      "text": "Backdrop includes blur effect",
+      "passed": true,
+      "evidence": "Line 31: className includes 'backdrop-blur-sm'"
+    },
+    {
+      "text": "Scale transition from 0.95 to 1",
+      "passed": true,
+      "evidence": "Line 48: initial={{ opacity: 0, scale: 0.95 }}, Line 49: animate={{ opacity: 1, scale: 1 }}"
+    },
+    {
+      "text": "Imports from 'motion/react'",
+      "passed": true,
+      "evidence": "Line 3: import { AnimatePresence, motion } from \"motion/react\""
+    },
+    {
+      "text": "Children of AnimatePresence have unique key props",
+      "passed": true,
+      "evidence": "Line 30: key=\"confirmation-backdrop\", Line 42: key=\"confirmation-dialog\""
+    }
+  ]
+}

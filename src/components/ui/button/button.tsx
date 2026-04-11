@@ -67,6 +67,7 @@ interface RippleState {
   size: number;
   key: number;
   isLeaving?: boolean;
+  snap?: boolean;
 }
 
 type ButtonProps = ButtonPrimitive.Props &
@@ -95,7 +96,7 @@ function Button({
   const hasRipple = variant !== "link";
 
   const createRipple = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
+    (event: Pick<React.MouseEvent<HTMLButtonElement>, "clientX" | "clientY">) => {
       if (isHovered || !buttonRef.current) return;
       setIsHovered(true);
 
@@ -110,8 +111,7 @@ function Button({
   );
 
   const removeRipple = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (event.target !== event.currentTarget) return;
+    (event: Pick<React.MouseEvent<HTMLButtonElement>, "clientX" | "clientY">) => {
       setIsHovered(false);
 
       if (!buttonRef.current) return;
@@ -125,8 +125,17 @@ function Button({
     [],
   );
 
+  const snapRipple = useCallback(() => {
+    setRipple((prev) => (prev ? { ...prev, snap: true } : null));
+  }, []);
+
+  const clearRipple = useCallback(() => {
+    setRipple(null);
+    setIsHovered(false);
+  }, []);
+
   const handleMouseMove = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
+    (event: Pick<React.MouseEvent<HTMLButtonElement>, "clientX" | "clientY">) => {
       if (!buttonRef.current || !isHovered || !ripple) return;
 
       const rect = buttonRef.current.getBoundingClientRect();
@@ -154,22 +163,47 @@ function Button({
             ? "max-w-(--btn-h) group-hover:max-w-64 duration-300 **:data-label:max-w-0 **:data-label:overflow-hidden **:data-label:opacity-0 group-hover:**:data-label:max-w-48 group-hover:**:data-label:opacity-100 **:data-label:transition-all **:data-label:duration-300"
             : "max-w-(--btn-h) hover:max-w-64 duration-300 **:data-label:max-w-0 **:data-label:overflow-hidden **:data-label:opacity-0 hover:**:data-label:max-w-48 hover:**:data-label:opacity-100 **:data-label:transition-all **:data-label:duration-300"),
       )}
+      {...props}
       onMouseEnter={
         hasRipple
-          ? (e: React.MouseEvent<HTMLButtonElement>) => {
+          ? (e) => {
+              props.onMouseEnter?.(e);
               if (e.target === e.currentTarget) createRipple(e);
             }
-          : undefined
+          : props.onMouseEnter
       }
       onMouseLeave={
         hasRipple
-          ? (e: React.MouseEvent<HTMLButtonElement>) => {
+          ? (e) => {
+              props.onMouseLeave?.(e);
               if (e.target === e.currentTarget) removeRipple(e);
             }
-          : undefined
+          : props.onMouseLeave
       }
-      onMouseMove={hasRipple ? handleMouseMove : undefined}
-      {...props}
+      onClick={
+        hasRipple
+          ? (e) => {
+              props.onClick?.(e);
+              clearRipple();
+            }
+          : props.onClick
+      }
+      onMouseDown={
+        hasRipple
+          ? (e) => {
+              props.onMouseDown?.(e);
+              snapRipple();
+            }
+          : props.onMouseDown
+      }
+      onMouseMove={
+        hasRipple
+          ? (e) => {
+              props.onMouseMove?.(e);
+              handleMouseMove(e);
+            }
+          : props.onMouseMove
+      }
     >
       <span
         className={cn(
@@ -207,7 +241,7 @@ function Button({
               }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{
-                duration: 0.3,
+                duration: ripple.snap ? 0 : 0.3,
                 ease: "circOut",
               }}
               onAnimationComplete={() => {

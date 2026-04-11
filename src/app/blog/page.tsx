@@ -1,14 +1,20 @@
+import { Suspense } from "react"
+import { BlogHero } from "@/components/blog/blog-hero"
+import { BlogGrid } from "@/components/blog/blog-grid"
+
 export const metadata = {
   title: "Blog | Modern Scholar",
   description:
-    "Read the latest news and updates from Modern Scholar.",
-};
+    "Expert advice, success stories, and practical tips to help you navigate your scholarship journey and achieve your educational goals.",
+}
 
 export default function BlogPage() {
   return (
-    <div className="page-padding-y">
-      This is the blog page. We are currently working on it. Please check
-      back later.
+    <div className="page-padding-y flex flex-col gap-16 h-auto">
+      <BlogHero />
+      <Suspense>
+        <BlogGrid />
+      </Suspense>
     </div>
-  );
+  )
 }

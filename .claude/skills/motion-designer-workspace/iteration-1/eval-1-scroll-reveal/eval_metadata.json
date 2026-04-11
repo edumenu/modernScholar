@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "eval_name": "scroll-triggered-staggered-reveal",
+  "prompt": "I have a Next.js app with a features section that has 6 cards in a grid. I want them to fade in and slide up one by one as the user scrolls down to them. Use motion.",
+  "assertions": [
+    {
+      "id": "uses-whileInView",
+      "text": "Uses whileInView or viewport-triggered animation (not manual scroll listeners)",
+      "type": "code_check"
+    },
+    {
+      "id": "stagger-children",
+      "text": "Implements staggered animation using staggerChildren or animation-delay",
+      "type": "code_check"
+    },
+    {
+      "id": "correct-import",
+      "text": "Imports from 'motion/react' (not 'framer-motion' or incorrect path)",
+      "type": "code_check"
+    },
+    {
+      "id": "use-client",
+      "text": "Includes 'use client' directive for Next.js compatibility",
+      "type": "code_check"
+    },
+    {
+      "id": "six-cards-grid",
+      "text": "Renders 6 cards in a CSS grid layout",
+      "type": "code_check"
+    }
+  ]
+}

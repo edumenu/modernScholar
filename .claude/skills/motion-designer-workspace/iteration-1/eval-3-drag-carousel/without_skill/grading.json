@@ -1,0 +1,31 @@
+{
+  "eval_id": 3,
+  "run_type": "without_skill",
+  "expectations": [
+    {
+      "text": "Uses drag='x' for horizontal dragging",
+      "passed": true,
+      "evidence": "Line 140: drag=\"x\""
+    },
+    {
+      "text": "Sets dragConstraints to limit drag range",
+      "passed": true,
+      "evidence": "Lines 141-144: dragConstraints={{ left: minDrag, right: maxDrag }}"
+    },
+    {
+      "text": "Uses dragTransition, dragElastic, or spring physics for momentum",
+      "passed": true,
+      "evidence": "Line 145: dragElastic={0.15}, Lines 146-149: dragTransition with power and timeConstant"
+    },
+    {
+      "text": "Imports from 'motion/react'",
+      "passed": true,
+      "evidence": "Line 4: import { motion, useMotionValue, useSpring, useTransform } from \"motion/react\""
+    },
+    {
+      "text": "Items are laid out horizontally",
+      "passed": true,
+      "evidence": "Line 135: className=\"flex cursor-grab active:cursor-grabbing\""
+    }
+  ]
+}

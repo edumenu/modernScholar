@@ -14,6 +14,7 @@ interface RippleState {
   size: number;
   key: number;
   isLeaving?: boolean;
+  snap?: boolean;
 }
 
 type ButtonLinkProps = ComponentProps<typeof Link> &
@@ -58,7 +59,6 @@ function ButtonLink({
 
   const removeRipple = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
-      if (event.target !== event.currentTarget) return;
       setIsHovered(false);
 
       if (!linkRef.current) return;
@@ -71,6 +71,10 @@ function ButtonLink({
     },
     [],
   );
+
+  const snapRipple = useCallback(() => {
+    setRipple((prev) => (prev ? { ...prev, snap: true } : null));
+  }, []);
 
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -115,6 +119,7 @@ function ButtonLink({
             }
           : undefined
       }
+      onMouseDown={hasRipple ? snapRipple : undefined}
       onMouseMove={hasRipple ? handleMouseMove : undefined}
       {...props}
     >
@@ -154,7 +159,7 @@ function ButtonLink({
               }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{
-                duration: 0.5,
+                duration: ripple.snap ? 0 : 0.5,
                 ease: "easeOut",
               }}
               onAnimationComplete={() => {

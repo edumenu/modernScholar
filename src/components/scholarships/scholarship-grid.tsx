@@ -1,12 +1,13 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useMemo } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { useLenis } from "lenis/react"
 import { Icon } from "@iconify/react"
 import Image from "next/image"
 import { useQueryState, parseAsInteger } from "nuqs"
 import { cn } from "@/lib/utils"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   scholarships as allScholarships,
   type Scholarship,
@@ -344,7 +345,7 @@ export function ScholarshipGrid() {
                     {expandedScholarship.provider}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-4 text-base text-gray-800/80">
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-800/80 md:text-base">
                     <span className="font-medium text-gray-800">
                       {expandedScholarship.amount}
                     </span>
@@ -405,90 +406,87 @@ interface BentoBlockProps {
  * - Outer cols (1 & 4): fixed width, 2 cards each.
  * - Inner cols (2 & 3): flex-grow, 3 cards each (middle is fixed-height).
  *
- * Responsive: collapses to a 2-col grid on `md` and a single column on mobile,
- * both using `aspect-[3/4]` cards.
+ * Renders only one layout at a time based on viewport width to halve
+ * the number of mounted card components.
  */
 function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
-  const renderCard = (item: SortedItem) => (
+  const isDesktop = useMediaQuery("(min-width: 1024px)")
+
+  const renderCard = (item: SortedItem, disableLayout = false) => (
     <ScholarshipCard
       scholarship={item.scholarship}
       dimmed={!item.matches}
       isExpanded={expandedId === item.scholarship.id}
+      disableLayoutAnimation={disableLayout}
       onExpand={onExpand}
     />
   )
 
-  // Distribute items so partial blocks still fill all 4 columns.
-  // Full block = [2,3,3,2]; smaller blocks shed cards from inner cols first
-  // so the 4-column shape stays consistent across the page.
-  const distribute = (n: number): [number, number, number, number] => {
-    if (n >= 10) return [2, 3, 3, 2]
-    if (n === 9) return [2, 3, 2, 2]
-    if (n === 8) return [2, 2, 2, 2]
-    if (n === 7) return [2, 2, 2, 1]
-    if (n === 6) return [2, 2, 1, 1]
-    if (n === 5) return [2, 1, 1, 1]
-    if (n === 4) return [1, 1, 1, 1]
-    if (n === 3) return [1, 1, 1, 0]
-    if (n === 2) return [1, 1, 0, 0]
-    if (n === 1) return [1, 0, 0, 0]
-    return [0, 0, 0, 0]
+  const renderedCols = useMemo(() => {
+    const distribute = (n: number): [number, number, number, number] => {
+      if (n >= 10) return [2, 3, 3, 2]
+      if (n === 9) return [2, 3, 2, 2]
+      if (n === 8) return [2, 2, 2, 2]
+      if (n === 7) return [2, 2, 2, 1]
+      if (n === 6) return [2, 2, 1, 1]
+      if (n === 5) return [2, 1, 1, 1]
+      if (n === 4) return [1, 1, 1, 1]
+      if (n === 3) return [1, 1, 1, 0]
+      if (n === 2) return [1, 1, 0, 0]
+      if (n === 1) return [1, 0, 0, 0]
+      return [0, 0, 0, 0]
+    }
+    const capacities = distribute(items.length)
+
+    const fillOrder: number[] = []
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 1) fillOrder.push(c)
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 3) fillOrder.push(c)
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 2) fillOrder.push(c)
+
+    const cols: SortedItem[][] = [[], [], [], []]
+    items.forEach((item, i) => {
+      cols[fillOrder[i]].push(item)
+    })
+    return cols
+      .map((col, idx) => ({ col, idx }))
+      .filter(({ col }) => col.length > 0)
+  }, [items])
+
+  // While the media query hasn't resolved yet (SSR / first paint),
+  // render an empty placeholder with min-height to prevent layout shift.
+  if (isDesktop === null) {
+    return <div className="min-h-205" />
   }
-  const capacities = distribute(items.length)
 
-  // Row-major fill order: items go top row across all cols, then middle row
-  // (only inner cols with 3 cards), then bottom row. Keeps filtered/matching
-  // items at the top of the visual grid instead of stacking down col 1.
-  const fillOrder: number[] = []
-  for (let c = 0; c < 4; c++) if (capacities[c] >= 1) fillOrder.push(c)
-  for (let c = 0; c < 4; c++) if (capacities[c] >= 3) fillOrder.push(c)
-  for (let c = 0; c < 4; c++) if (capacities[c] >= 2) fillOrder.push(c)
-
-  const cols: SortedItem[][] = [[], [], [], []]
-  items.forEach((item, i) => {
-    cols[fillOrder[i]].push(item)
-  })
-  const renderedCols = cols
-    .map((col, idx) => ({ col, idx }))
-    .filter(({ col }) => col.length > 0)
-
-  return (
-    <>
-      {/* Mobile + tablet fallback */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:hidden">
+  if (!isDesktop) {
+    return (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {items.map((item) => (
           <div key={item.scholarship.id} className="aspect-3/4">
-            <ScholarshipCard
-              scholarship={item.scholarship}
-              dimmed={!item.matches}
-              disableLayoutAnimation
-              onExpand={onExpand}
-            />
+            {renderCard(item, true)}
           </div>
         ))}
       </div>
+    )
+  }
 
-      {/* Desktop Figma layout (≥lg) */}
-      <div className="hidden lg:flex lg:h-205 lg:gap-4 lg:items-stretch">
-        {renderedCols.map(({ col, idx }) => {
-          const isOuter = idx === 0 || idx === 3;
-          const colClass = isOuter
-            ? "flex w-[230px] shrink-0 flex-col gap-4 xl:w-[325px]"
-            : "flex flex-1 min-w-0 flex-col gap-4";
-          return (
-            <div key={idx} className={colClass}>
-              {col.map((item) => {
-                const sizing = "flex-1 min-h-0";
-                return (
-                  <div key={item.scholarship.id} className={sizing}>
-                    {renderCard(item)}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-    </>
+  return (
+    <div className="flex h-205 gap-4 items-stretch">
+      {renderedCols.map(({ col, idx }) => {
+        const isOuter = idx === 0 || idx === 3;
+        const colClass = isOuter
+          ? "flex w-[230px] shrink-0 flex-col gap-4 xl:w-[325px]"
+          : "flex flex-1 min-w-0 flex-col gap-4";
+        return (
+          <div key={idx} className={colClass}>
+            {col.map((item) => (
+              <div key={item.scholarship.id} className="flex-1 min-h-0">
+                {renderCard(item)}
+              </div>
+            ))}
+          </div>
+        );
+      })}
+    </div>
   );
 }
