@@ -13,11 +13,13 @@ export function ScholarshipHero() {
       <div className="flex flex-col gap-4 pt-2 pb-2">
         <AnimatedLines
           text="Explore Scholarships"
-          font={isMd ? PRETEXT_FONTS.heroHeadline : PRETEXT_FONTS.heroHeadlineSm}
+          font={
+            isMd ? PRETEXT_FONTS.heroHeadline : PRETEXT_FONTS.heroHeadlineSm
+          }
           lineHeight={isMd ? 56 : 44}
           as="h1"
           mode="chars"
-          className="font-heading text-4xl md:text-5xl lg:text-7xl font-normal leading-none tracking-tight py-4"
+          className="font-heading text-4xl md:text-5xl lg:text-7xl font-normal leading-none tracking-tight"
           staggerDelay={0.05}
           variant="revealUp"
         />

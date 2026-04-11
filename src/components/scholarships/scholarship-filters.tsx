@@ -4,6 +4,7 @@ import { useState, useRef } from "react"
 import { motion, LayoutGroup } from "motion/react";
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   SCHOLARSHIP_CATEGORIES,
   type ScholarshipCategory,
@@ -21,7 +22,8 @@ import {
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu/dropdown-menu"
 import { glassPill } from "@/components/ui/styles"
-import {Input} from "@/components/ui/input/input";
+import { Input } from "@/components/ui/input/input"
+import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile"
 
 export type GridLayout = "bento" | "uniform"
 
@@ -48,6 +50,29 @@ export function ScholarshipFilters({
     topPick: false,
   })
   const [sortBy, setSortBy] = useState("deadline")
+
+  const isMobile = useMediaQuery("(max-width: 1023px)")
+
+  if (isMobile === null) {
+    return <div className="min-h-24" />
+  }
+
+  if (isMobile) {
+    return (
+      <ScholarshipFiltersMobile
+        activeFilter={activeFilter}
+        onFilterChange={onFilterChange}
+        layout={layout}
+        onLayoutChange={onLayoutChange}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        tagFilters={tagFilters}
+        onTagFiltersChange={setTagFilters}
+        sortBy={sortBy}
+        onSortByChange={setSortBy}
+      />
+    )
+  }
 
   return (
     <div className="flex flex-col gap-3">
@@ -92,6 +117,7 @@ export function ScholarshipFilters({
 
         {/* Search input — expands on focus, collapses on blur when empty */}
         <motion.div
+          initial={false}
           animate={{ width: searchOpen ? 240 : 36 }}
           transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
           className="flex shrink-0 cursor-text items-center gap-2 overflow-hidden rounded-full px-2.5 py-1.5"

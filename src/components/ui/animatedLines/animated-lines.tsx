@@ -88,31 +88,35 @@ export function AnimatedLines({
     return (
       <div ref={sectionRef} className="w-full">
         <div className={cn("w-full", wrapperClassName)}>
-          <Tag className={cn("overflow-hidden", className)}>
+          <Tag className={cn(className)}>
             <span className="sr-only">{text}</span>
             {chars.map((char, i) => (
-              <motion.span
+              <span
                 key={`${i}-${char}`}
-                className="inline-block"
+                className="inline-block overflow-hidden pb-[0.15em]"
                 aria-hidden="true"
-                initial={initial}
-                animate={isInView ? animate : initial}
-                transition={
-                  variant === "revealUp"
-                    ? {
-                        duration: 1.2,
-                        ease: [0.4, 0, 0, 1],
-                        delay: initialDelay + i * staggerDelay,
-                      }
-                    : {
-                        duration: 0.6,
-                        ease: [0.22, 1, 0.36, 1],
-                        delay: initialDelay + i * staggerDelay,
-                      }
-                }
               >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
+                <motion.span
+                  className="inline-block"
+                  initial={initial}
+                  animate={isInView ? animate : initial}
+                  transition={
+                    variant === "revealUp"
+                      ? {
+                          duration: 1.2,
+                          ease: [0.4, 0, 0, 1],
+                          delay: initialDelay + i * staggerDelay,
+                        }
+                      : {
+                          duration: 0.6,
+                          ease: [0.22, 1, 0.36, 1],
+                          delay: initialDelay + i * staggerDelay,
+                        }
+                  }
+                >
+                  {char === " " ? "\u00A0" : char}
+                </motion.span>
+              </span>
             ))}
           </Tag>
         </div>

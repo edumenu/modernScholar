@@ -16,7 +16,7 @@ export function BlogHero() {
         lineHeight={isMd ? 56 : 44}
         as="h1"
         mode="chars"
-        className="font-heading text-4xl md:text-5xl lg:text-7xl font-normal leading-none tracking-tight py-4"
+        className="font-heading text-4xl md:text-5xl lg:text-7xl font-normal leading-none tracking-tight"
         staggerDelay={0.05}
         variant="revealUp"
       />
