@@ -4,7 +4,7 @@ import * as React from "react"
 import { useCallback, useRef, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { cn } from "@/lib/utils"
-import { IconChevronLeft, IconChevronRight, IconDots } from "@tabler/icons-react"
+import { Icon } from "@iconify/react"
 
 /* ─── Number Link with Ink-Spread hover ─── */
 
@@ -113,7 +113,7 @@ function PaginationPreviousInkSpread({
         animate={{ x: hovered ? -4 : 0 }}
         transition={{ type: "spring", stiffness: 400, damping: 20 }}
       >
-        <IconChevronLeft className="size-4" />
+        <Icon icon="tabler:chevron-left" className="size-4" />
       </motion.span>
       <span className="hidden sm:block">{text}</span>
     </a>
@@ -148,7 +148,7 @@ function PaginationNextInkSpread({
         animate={{ x: hovered ? 4 : 0 }}
         transition={{ type: "spring", stiffness: 400, damping: 20 }}
       >
-        <IconChevronRight className="size-4" />
+        <Icon icon="tabler:chevron-right" className="size-4" />
       </motion.span>
     </a>
   )
@@ -170,7 +170,7 @@ function PaginationEllipsisInkSpread({
       )}
       {...props}
     >
-      <IconDots />
+      <Icon icon="tabler:dots" />
       <span className="sr-only">More pages</span>
     </span>
   )

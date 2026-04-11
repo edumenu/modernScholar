@@ -165,7 +165,7 @@ export function ScholarshipGrid() {
         - uniform: fixed-aspect 4-col responsive grid
       */}
       {layout === "bento" ? (
-        <div className="flex flex-col gap-6 pb-10 pt-2">
+        <div className="flex flex-col gap-4 pb-10 pt-2">
           {chunkItems(visibleItems, BENTO_CHUNK).map((chunk, chunkIdx) => (
             <BentoBlock
               key={chunkIdx}
@@ -176,7 +176,7 @@ export function ScholarshipGrid() {
           ))}
         </div>
       ) : (
-        <div className="grid gap-6 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {visibleItems.map(({ scholarship, matches }) => (
             <div key={scholarship.id} className="aspect-3/4">
               <ScholarshipCard
@@ -203,8 +203,8 @@ export function ScholarshipGrid() {
                     safePage === 1 && "pointer-events-none opacity-50",
                   )}
                   onClick={(e) => {
-                    e.preventDefault()
-                    if (safePage > 1) goToPage(safePage - 1)
+                    e.preventDefault();
+                    if (safePage > 1) goToPage(safePage - 1);
                   }}
                 />
               </PaginationItem>
@@ -220,8 +220,8 @@ export function ScholarshipGrid() {
                       href="#"
                       isActive={p === safePage}
                       onClick={(e) => {
-                        e.preventDefault()
-                        goToPage(p)
+                        e.preventDefault();
+                        goToPage(p);
                       }}
                     >
                       {p}
@@ -238,8 +238,8 @@ export function ScholarshipGrid() {
                     safePage === totalPages && "pointer-events-none opacity-50",
                   )}
                   onClick={(e) => {
-                    e.preventDefault()
-                    if (safePage < totalPages) goToPage(safePage + 1)
+                    e.preventDefault();
+                    if (safePage < totalPages) goToPage(safePage + 1);
                   }}
                 />
               </PaginationItem>
@@ -298,7 +298,10 @@ export function ScholarshipGrid() {
                     aria-label="Close"
                     autoFocus
                   >
-                    <Icon icon="solar:close-circle-linear" className="size-8 cursor-pointer" />
+                    <Icon
+                      icon="solar:close-circle-linear"
+                      className="size-8 cursor-pointer"
+                    />
                   </button>
 
                   <div className="absolute inset-0 flex flex-col justify-between p-8 md:p-12">
@@ -466,26 +469,26 @@ function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
       </div>
 
       {/* Desktop Figma layout (≥lg) */}
-      <div className="hidden lg:flex lg:h-205 lg:gap-6 lg:items-stretch">
+      <div className="hidden lg:flex lg:h-205 lg:gap-4 lg:items-stretch">
         {renderedCols.map(({ col, idx }) => {
-          const isOuter = idx === 0 || idx === 3
+          const isOuter = idx === 0 || idx === 3;
           const colClass = isOuter
-            ? "flex w-[230px] shrink-0 flex-col gap-6 xl:w-[325px]"
-            : "flex flex-1 min-w-0 flex-col gap-6"
+            ? "flex w-[230px] shrink-0 flex-col gap-4 xl:w-[325px]"
+            : "flex flex-1 min-w-0 flex-col gap-4";
           return (
             <div key={idx} className={colClass}>
               {col.map((item) => {
-                const sizing = "flex-1 min-h-0"
+                const sizing = "flex-1 min-h-0";
                 return (
                   <div key={item.scholarship.id} className={sizing}>
                     {renderCard(item)}
                   </div>
-                )
+                );
               })}
             </div>
-          )
+          );
         })}
       </div>
     </>
-  )
+  );
 }

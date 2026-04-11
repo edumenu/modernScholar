@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button/button"
-import { IconChevronLeft, IconChevronRight, IconDots } from "@tabler/icons-react"
+import { Icon } from "@iconify/react"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -74,7 +74,7 @@ function PaginationPrevious({
       className={cn("pl-2!", className)}
       {...props}
     >
-      <IconChevronLeft data-icon="inline-start" />
+      <Icon icon="tabler:chevron-left" data-icon="inline-start" />
       <span className="hidden sm:block">{text}</span>
     </PaginationLink>
   )
@@ -93,7 +93,7 @@ function PaginationNext({
       {...props}
     >
       <span className="hidden sm:block">{text}</span>
-      <IconChevronRight data-icon="inline-end" />
+      <Icon icon="tabler:chevron-right" data-icon="inline-end" />
     </PaginationLink>
   )
 }
@@ -112,8 +112,7 @@ function PaginationEllipsis({
       )}
       {...props}
     >
-      <IconDots
-      />
+      <Icon icon="tabler:dots" />
       <span className="sr-only">More pages</span>
     </span>
   )
