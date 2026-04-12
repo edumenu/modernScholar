@@ -1,26 +1,26 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react"
-import { Icon } from "@iconify/react"
-import type { BlogPost } from "@/data/blog-posts"
-import { glassPill } from "@/components/ui/styles"
-import { cn } from "@/lib/utils"
+import { motion } from "motion/react";
+import { Icon } from "@iconify/react";
+import type { BlogPost } from "@/data/blog-posts";
+import { glassPill } from "@/components/ui/styles";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button/button";
 
 interface BlogCardProps {
-  post: BlogPost
+  post: BlogPost;
 }
 
-export function BlogCard({ post }: BlogCardProps) {
+export function BlogCardRelated({ post }: BlogCardProps) {
   return (
     <Link href={`/blog/${post.slug}`} className="block h-full">
       <motion.div
         whileHover={{ scale: 1.009 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         className={cn(
-          "group relative flex h-full flex-col overflow-hidden cursor-pointer rounded-2xl border border-white/40 bg-white/25 p-8 shadow-md hover:shadow-xl transition-shadow duration-300",
+          "group relative flex h-full flex-col overflow-hidden cursor-pointer rounded-2xl border border-white/40 bg-white/25 p-8 shadow-sm hover:shadow-lg transition-shadow duration-300",
           "dark:border-white/10 dark:bg-white/10",
         )}
       >
@@ -57,20 +57,20 @@ export function BlogCard({ post }: BlogCardProps) {
         </p>
 
         {/* Metadata row */}
-        <div className="mt-auto flex items-center justify-between pt-4">
+        {/* <div className="mt-auto flex items-center justify-between pt-4">
           <div className="flex items-center gap-2 text-xs">
             <span className="text-on-surface-variant">Published</span>
             <span className="font-medium text-on-surface">
               {post.publishDate}
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* Footer: read time + arrow */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-on-surface">
+          {/* <span className="text-xs font-medium text-on-surface">
             {post.readTime}
-          </span>
+          </span> */}
           <Button
             onClick={(e) => {
               e.stopPropagation();
