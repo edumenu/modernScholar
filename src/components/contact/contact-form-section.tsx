@@ -8,7 +8,7 @@ import { AnimatedSection } from "@/components/ui/animatedSection/animated-sectio
 import { CTAButton } from "@/components/ui/button/cta-button"
 import { Button } from "@/components/ui/button/button"
 
-const EMAIL = "dearmodernscholar@gmail.com"
+const CONTACT_EMAIL = "dearmodernscholar@gmail.com"
 
 function NudgeArrow() {
   return (
@@ -48,10 +48,14 @@ function CopyEmailButton() {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = useCallback(async () => {
-    await navigator.clipboard.writeText(EMAIL)
-    setCopied(true)
-    toast.success("Email copied!")
-    setTimeout(() => setCopied(false), 2000)
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL)
+      setCopied(true)
+      toast.success("Email copied!")
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      toast.error("Failed to copy email")
+    }
   }, [])
 
   return (
@@ -157,7 +161,7 @@ export function ContactFormSection() {
               onMouseEnter={() => setIsButtonHovered(true)}
               onMouseLeave={() => setIsButtonHovered(false)}
             >
-              <a href={`mailto:${EMAIL}`}>
+              <a href={`mailto:${CONTACT_EMAIL}`}>
                 <CTAButton label="SEND EMAIL" variant="primary" type="button" />
               </a>
 
@@ -209,7 +213,7 @@ export function ContactFormSection() {
             {/* Email address + copy */}
             <div className="flex items-center gap-3">
               <span className="text-sm text-on-surface-variant tracking-wide">
-                {EMAIL}
+                {CONTACT_EMAIL}
               </span>
               <CopyEmailButton />
             </div>
