@@ -2,11 +2,11 @@ import { AnimatedSection } from "@/components/ui/animatedSection/animated-sectio
 import { AnimatedLines } from "@/components/ui/animatedLines/animated-lines"
 import { PRETEXT_FONTS } from "@/lib/pretext/fonts"
 
-export function BlogHero() {
+export function ContactHero() {
   return (
     <div className="flex flex-col gap-4 pt-2 pb-2">
       <AnimatedLines
-        text="Blogs"
+        text="Contact Us"
         font={PRETEXT_FONTS.heroHeadline}
         lineHeight={56}
         as="h1"
@@ -17,10 +17,10 @@ export function BlogHero() {
       />
       <AnimatedSection delay={0.4}>
         <p className="max-w-2xl text-base text-on-surface-variant md:text-lg lg:text-xl">
-          Expert advice, success stories, and practical tips to help you
-          navigate your scholarship journey and achieve your educational goals.
+          Have questions about scholarships? We&apos;re here to help you on your
+          educational journey.
         </p>
       </AnimatedSection>
     </div>
-  );
+  )
 }

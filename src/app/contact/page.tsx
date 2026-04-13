@@ -1,3 +1,5 @@
+import { ContactHero } from "@/components/contact/contact-hero"
+import { ContactFormSection } from "@/components/contact/contact-form-section"
 
 export const metadata = {
   title: "Contact Us | Modern Scholar",
@@ -7,8 +9,9 @@ export const metadata = {
 
 export default function ContactUsPage() {
   return (
-    <div className="page-padding-y">
-        This is the contact us page. We are currently working on it. Please check back later.
+    <div className="page-padding-y flex flex-col gap-16 min-h-screen">
+      <ContactHero />
+      <ContactFormSection />
     </div>
-  );
+  )
 }
