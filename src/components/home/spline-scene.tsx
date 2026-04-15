@@ -1,17 +1,37 @@
 "use client"
 
-const SPLINE_URL =
-  "https://my.spline.design/3dtextbluecopy-p3VhEDs3s7mx8Hjev2Jg6Y1x/"
+import { useState } from "react";
+import Spline from "@splinetool/react-spline";
 
-export function SplineScene({ className }: { className?: string }) {
+const DEFAULT_SCENE_URL =
+  "https://prod.spline.design/JY2cfwfllYa7FSve/scene.splinecode";
+
+export function SplineScene({
+  className,
+  scene = DEFAULT_SCENE_URL,
+}: {
+  className?: string;
+  scene?: string;
+}) {
+  const [loaded, setLoaded] = useState(false);
+
   return (
-    <iframe
-      src={SPLINE_URL}
-      className={className}
-      title="Interactive 3D model representing academic scholarship"
-      allow="autoplay"
-      loading="lazy"
-      style={{ border: "none" }}
-    />
-  )
+    <div className={className} style={{ position: "relative" }}>
+      {!loaded && (
+        <div className="flex size-full items-center justify-center">
+          <div className="size-12 animate-pulse rounded-full bg-surface-container" />
+        </div>
+      )}
+      <Spline
+        scene={scene}
+        onLoad={() => setLoaded(true)}
+        style={{
+          width: "100%",
+          height: "100%",
+          opacity: loaded ? 1 : 0,
+          transition: "opacity 0.5s ease-in-out",
+        }}
+      />
+    </div>
+  );
 }

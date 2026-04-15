@@ -1,12 +1,21 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, lazy, Suspense } from "react";
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "motion/react"
 import { toast } from "sonner"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import { CTAButton } from "@/components/ui/button/cta-button"
 import { Button } from "@/components/ui/button/button"
+
+const SplineScene = lazy(() =>
+  import("@/components/home/spline-scene").then((mod) => ({
+    default: mod.SplineScene,
+  })),
+);
+
+const CONTACT_SPLINE_URL =
+  "https://prod.spline.design/p0mZprPwlZ2CJwpI/scene.splinecode";
 
 const CONTACT_EMAIL = "dearmodernscholar@gmail.com"
 
@@ -95,52 +104,23 @@ function CopyEmailButton() {
   )
 }
 
-function GlassmorphicIllustration() {
-  return (
-    <div className="relative flex items-center justify-center h-[320px] w-[320px] mx-auto">
-      {/* Outer circle */}
-      <div className="absolute inset-0 flex items-center justify-center rounded-full border border-white/40 bg-white/20 shadow-[0px_8px_32px_0px_rgba(31,38,135,0.25)] backdrop-blur-sm">
-        {/* Inner circle */}
-        <div className="relative flex items-center justify-center size-64 rounded-full border border-white/50 bg-white/30 shadow-[inset_0px_4px_20px_0px_rgba(31,38,135,0.2)]">
-          <Icon
-            icon="solar:square-academic-cap-bold-duotone"
-            className="size-32 text-on-surface/70"
-          />
-        </div>
-      </div>
-
-      {/* Floating emoji bubble - books (top right) */}
-      <div className="absolute -top-4 -right-4 flex items-center justify-center size-20 rounded-full border border-white/50 bg-white/30 shadow-[0px_8px_32px_0px_rgba(31,38,135,0.2)] backdrop-blur-sm">
-        <span className="text-2xl" aria-hidden="true">
-          📚
-        </span>
-      </div>
-
-      {/* Floating emoji bubble - graduation cap (bottom left) */}
-      <div className="absolute bottom-0 -left-6 flex items-center justify-center size-24 rounded-full border border-white/50 bg-white/30 shadow-[0px_8px_32px_0px_rgba(31,38,135,0.2)] backdrop-blur-sm">
-        <span className="text-3xl" aria-hidden="true">
-          🎓
-        </span>
-      </div>
-    </div>
-  )
-}
-
 export function ContactFormSection() {
   const [isButtonHovered, setIsButtonHovered] = useState(false)
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      {/* Left column - Decorative illustration (desktop only) */}
-      <AnimatedSection
-        variant="scaleIn"
-        delay={0.3}
-        className="hidden lg:flex items-center justify-center"
-      >
-        <div aria-hidden="true">
-          <GlassmorphicIllustration />
-        </div>
-      </AnimatedSection>
+      {/* Left column - 3D Spline scene (desktop only) */}
+      <div className="hidden lg:flex items-center justify-center">
+        <Suspense
+          fallback={
+            <div className="flex size-full items-center justify-center">
+              <div className="size-12 animate-pulse rounded-full bg-surface-container" />
+            </div>
+          }
+        >
+          <SplineScene scene={CONTACT_SPLINE_URL} className="h-[600px] w-full" />
+        </Suspense>
+      </div>
 
       {/* Right column - Mailto contact section */}
       <AnimatedSection variant="fadeUp" delay={0.4}>
@@ -150,7 +130,8 @@ export function ContactFormSection() {
               Get in Touch
             </h2>
             <p className="text-on-surface-variant text-base md:text-lg max-w-lg">
-              Send us an email for any inquiries, feedback, or just to say hi! We’d love to hear from you.
+              Send us an email for any inquiries, feedback, or just to say hi!
+              We’d love to hear from you.
             </p>
           </div>
 
@@ -186,7 +167,11 @@ export function ContactFormSection() {
                         transition: { duration: 0.3, ease: "backIn" },
                       }}
                       transition={{
-                        opacity: { type: "spring", stiffness: 300, damping: 20 },
+                        opacity: {
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 20,
+                        },
                         scale: { type: "spring", stiffness: 300, damping: 20 },
                         x: { type: "spring", stiffness: 300, damping: 20 },
                         y: {
@@ -227,7 +212,7 @@ export function ContactFormSection() {
         </div>
       </AnimatedSection>
     </div>
-  )
+  );
 }
 
 /* ==========================================================================
