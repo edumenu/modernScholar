@@ -313,7 +313,7 @@ export function FeaturedScholarships() {
   return (
     <section
       aria-labelledby="featured-heading"
-      className="flex min-h-dvh flex-col justify-center"
+      className="flex min-h-dvh flex-col justify-center py-40"
     >
       <AnimatedSection>
         {/* Header */}
@@ -343,9 +343,9 @@ export function FeaturedScholarships() {
         </div>
       </AnimatedSection>
 
-      {/* Marquee Rows */}
+      {/* Marquee Rows — break out of PageShell to full viewport width */}
       <div
-        className="mt-16 flex flex-col gap-6"
+        className="relative left-1/2 mt-16 flex w-dvw -translate-x-1/2 flex-col gap-6"
         style={{
           maskImage:
             "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
@@ -359,7 +359,7 @@ export function FeaturedScholarships() {
             items={row1Items}
             direction="left"
             duration={200}
-            height="h-80"
+            height="h-100"
           />
         </AnimatedSection>
 
@@ -369,7 +369,7 @@ export function FeaturedScholarships() {
             items={row2Items}
             direction="right"
             duration={190}
-            height="h-64"
+            height="h-100"
             className="hidden md:block"
           />
         </AnimatedSection>

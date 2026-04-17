@@ -1,6 +1,6 @@
 import { HeroSection } from "@/components/home/hero-section"
 import { FeaturedScholarships } from "@/components/home/featured-scholarships"
-import { ComingSoon } from "@/components/home/coming-soon"
+import { WhatsNext } from "@/components/home/whats-next";
 import { FAQSection } from "@/components/home/faq-section"
 
 export default function Home() {
@@ -8,8 +8,8 @@ export default function Home() {
     <>
       <HeroSection />
       <FeaturedScholarships />
-      <ComingSoon />
+      <WhatsNext />
       <FAQSection />
     </>
-  )
+  );
 }

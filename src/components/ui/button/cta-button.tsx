@@ -112,7 +112,7 @@ const CTAButton: FC<CTAButtonProps> = ({
       ref={buttonRef}
       data-cursor="fade"
       className={cn(
-        "group relative h-auto w-50 cursor-pointer overflow-hidden rounded-full border-none p-1 outline-none transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "group relative h-auto w-50 cursor-pointer overflow-hidden rounded-full border-none p-1 shadow-md outline-none transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50",
         styles.wrapper,
         className,
       )}
@@ -176,7 +176,7 @@ const CTAButton: FC<CTAButtonProps> = ({
             onAnimationComplete={() => {
               if (ripple.isLeaving) {
                 setRipple((prev) =>
-                  prev && prev.key === ripple.key ? null : prev
+                  prev && prev.key === ripple.key ? null : prev,
                 );
               }
             }}

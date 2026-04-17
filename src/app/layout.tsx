@@ -43,7 +43,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("h-full", poppins.variable, notoSerif.variable)}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col overflow-x-hidden">
         <NuqsAdapter>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <SmoothScrollProvider>
