@@ -1,22 +1,6 @@
 "use client"
 
-import { ReactLenis, useLenis } from "lenis/react"
-import { useEffect } from "react"
-
-function LenisResizeObserver() {
-  const lenis = useLenis()
-
-  useEffect(() => {
-    if (!lenis) return
-    const ro = new ResizeObserver(() => {
-      lenis.resize()
-    })
-    ro.observe(document.body)
-    return () => ro.disconnect()
-  }, [lenis])
-
-  return null
-}
+import { ReactLenis } from "lenis/react"
 
 export function SmoothScrollProvider({
   children,
@@ -31,9 +15,9 @@ export function SmoothScrollProvider({
         duration: 1.3,
         smoothWheel: true,
         touchMultiplier: 2,
+        autoResize: true,
       }}
     >
-      <LenisResizeObserver />
       {children}
     </ReactLenis>
   );

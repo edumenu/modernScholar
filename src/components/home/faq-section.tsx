@@ -2,7 +2,8 @@
 
 import { useState, useCallback } from "react"
 import { Icon } from "@iconify/react"
-import { motion, AnimatePresence } from "motion/react"
+import { motion } from "motion/react"
+import { cn } from "@/lib/utils"
 import { AnimatedSection } from "../ui/animatedSection/animated-section";
 
 interface FAQItem {
@@ -63,26 +64,26 @@ function AccordionItem({
           className="shrink-0"
           aria-hidden="true"
         >
-          <Icon icon="solar:alt-arrow-down-line-duotone" className="size-5 text-on-surface-variant" />
+          <Icon
+            icon="solar:alt-arrow-down-line-duotone"
+            className="size-5 text-on-surface-variant"
+          />
         </motion.span>
       </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <p className="pb-5 text-sm leading-relaxed text-on-surface-variant">
-              {item.answer}
-            </p>
-          </motion.div>
+      <div
+        className={cn(
+          "grid transition-[grid-template-rows] duration-300 ease-in-out",
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
         )}
-      </AnimatePresence>
+      >
+        <div className="overflow-hidden">
+          <p className="pb-5 text-sm leading-relaxed text-on-surface-variant">
+            {item.answer}
+          </p>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export function FAQSection() {
@@ -93,7 +94,10 @@ export function FAQSection() {
   }, [])
 
   return (
-    <section aria-labelledby="faq-heading" className="flex min-h-screen flex-col justify-center">
+    <section
+      aria-labelledby="faq-heading"
+      className="py-24 md:py-32"
+    >
       <AnimatedSection>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-12">
           {/* Left column — heading */}
@@ -114,7 +118,7 @@ export function FAQSection() {
           </div>
 
           {/* Right column — accordion */}
-          <div className="border-t border-outline-variant/20 overflow-y-hidden">
+          <div className="border-t border-outline-variant/20">
             {faqs.map((faq, i) => (
               <AccordionItem
                 key={i}
@@ -127,5 +131,5 @@ export function FAQSection() {
         </div>
       </AnimatedSection>
     </section>
-  )
+  );
 }
