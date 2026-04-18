@@ -35,48 +35,42 @@ export function HeroSection() {
       </div>
 
       {/* Company name — top left */}
-      <AnimatedSection delay={0.5} className="relative z-10">
-        <div className="flex items-center">
-          <Image
-            src="/iconWhite.png"
-            alt="Modern Scholar"
-            width={36}
-            height={36}
-            className={cn("size-14 object-contain hidden dark:block")}
-          />
-          {/* <Image
-            src="/iconBurgundy.png"
-            alt="Modern Scholar"
-            width={36}
-            height={36}
-            className={cn("size-14 object-contain block dark:hidden")}
-          /> */}
-          <h3
-            id="hero-heading"
-            className="font-heading text-xl font-medium leading-[1.15] tracking-tight text-primary dark:text-primary-100 md:text-[2rem]"
-          >
-            Modern Scholar
-          </h3>
-        </div>
-      </AnimatedSection>
+      <div className="relative z-10 flex items-center">
+        <Image
+          src="/iconWhite.png"
+          alt="Modern Scholar"
+          width={36}
+          height={36}
+          className={cn("size-14 object-contain hidden dark:block")}
+        />
+        {/* <Image
+          src="/iconBurgundy.png"
+          alt="Modern Scholar"
+          width={36}
+          height={36}
+          className={cn("size-14 object-contain block dark:hidden")}
+        /> */}
+        <AnimatedLines
+          text="Modern Scholar"
+          font={PRETEXT_FONTS.heroHeadline}
+          fallbackFont={PRETEXT_FALLBACK_FONTS.heroHeadline}
+          lineHeight={32}
+          as="h3"
+          mode="chars"
+          className="font-heading text-xl font-medium leading-[1.15] tracking-tight text-primary dark:text-primary-100 md:text-[2rem]"
+          staggerDelay={0.05}
+          variant="revealUp"
+        />
+      </div>
 
       {/* Bottom row — headline left, CTA right */}
       <div className="relative z-10 flex w-full flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
         {/* Headline — bottom left */}
-        <div className="w-full min-w-0 flex-col text-left md:flex-1">
-          <AnimatedLines
-            text="Your scholarship journey starts here"
-            font={PRETEXT_FONTS.heroHeadline}
-            fallbackFont={PRETEXT_FALLBACK_FONTS.heroHeadline}
-            lineHeight={48}
-            as="h1"
-            wrapperClassName="max-w-3xl"
-            className="font-heading text-3xl font-bold leading-tight tracking-tight text-primary dark:text-primary-100 sm:text-4xl md:text-5xl md:leading-none"
-            staggerDelay={0.12}
-            initialDelay={0.1}
-            variant="fadeUp"
-          />
-        </div>
+        <AnimatedSection delay={0.4} className="w-full min-w-0 flex-col text-left md:flex-1">
+          <h1 className="max-w-3xl font-heading text-3xl font-bold leading-tight tracking-tight text-primary dark:text-primary-100 sm:text-4xl md:text-5xl md:leading-none">
+            Your scholarship journey starts here
+          </h1>
+        </AnimatedSection>
 
         {/* CTA — bottom right */}
         <AnimatedSection delay={0.7} className="shrink-0">

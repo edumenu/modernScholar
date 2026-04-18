@@ -1,5 +1,5 @@
 "use client"
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
@@ -8,7 +8,7 @@ import { ThemeToggle } from "./theme-toggle"
 import { SettingsDropdown } from "./settings-dropdown"
 import { MobileMenuButton } from "./mobile-menu"
 import { glassPill } from "../styles";
-import { useScroll, useMotionValueEvent, motion, LayoutGroup } from "motion/react";
+import { useScroll, useMotionValueEvent, motion } from "motion/react";
 
 const HEADER_HEIGHT = 112; // 28 * 4 (h-28 in Tailwind = 112px)
 
@@ -65,6 +65,27 @@ const navItems = [
 export function Header() {
   const pathname = usePathname()
   const isHome = pathname === "/";
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
+
+  const measureActive = useCallback(() => {
+    const activeItem = navItems.find(
+      (item) => pathname === item.href || pathname.startsWith(item.href + "/"),
+    );
+    if (activeItem) {
+      const el = linkRefs.current[activeItem.href];
+      if (el) {
+        setIndicator({ left: el.offsetLeft, width: el.offsetWidth });
+      }
+    } else {
+      setIndicator(null);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    measureActive();
+  }, [measureActive]);
+
   return (
     <ScrollAnimatedHeader>
       <a
@@ -105,37 +126,32 @@ export function Header() {
           </Link>
 
           {/* Desktop nav links pill */}
-          <LayoutGroup>
-            <div
-              className={cn(
-                glassPill,
-                "hidden h-11.5 items-stretch gap-8 p-1 lg:flex",
-              )}
-            >
-              {navItems.map((item) => {
-                const isActive =
-                  pathname === item.href || pathname.startsWith(item.href + "/");
-
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface"
-                  >
-                    {isActive && (
-                      <motion.span
-                        layoutId={`nav-highlight-${pathname}`}
-                        className="absolute inset-0 rounded-full bg-primary-100/80 dark:bg-primary/20"
-                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                      />
-                    )}
-                    <span className="relative z-10">{item.title}</span>
-                  </Link>
-                );
-              })}
-              <SettingsDropdown />
-            </div>
-          </LayoutGroup>
+          <div
+            className={cn(
+              glassPill,
+              "relative hidden h-11.5 items-stretch gap-8 p-1 lg:flex",
+            )}
+          >
+            {indicator && (
+              <motion.span
+                className="absolute inset-y-1 rounded-full bg-primary-100/80 dark:bg-primary/20"
+                initial={false}
+                animate={{ left: indicator.left, width: indicator.width }}
+                transition={{ type: "spring", stiffness: 350, damping: 30 }}
+              />
+            )}
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                ref={(el) => { linkRefs.current[item.href] = el; }}
+                className="relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface"
+              >
+                <span className="relative z-10">{item.title}</span>
+              </Link>
+            ))}
+            <SettingsDropdown />
+          </div>
 
           {/* Theme toggle pill */}
           <div

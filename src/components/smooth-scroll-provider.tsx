@@ -25,8 +25,7 @@ export function SmoothScrollProvider({
     <ReactLenis
       root
       options={{
-        lerp: 0.3,
-        duration: 0.5,
+        lerp: 0.1,
         smoothWheel: true,
         touchMultiplier: 2,
         autoResize: true,

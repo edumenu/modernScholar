@@ -182,7 +182,7 @@ export function BlogFilters({
               <div key={category} className="relative">
                 {isActive && (
                   <motion.span
-                    layoutId="filter-highlight"
+                    layoutId="blog-filter-highlight"
                     className="absolute inset-0 rounded-full bg-primary/30 dark:bg-primary"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
