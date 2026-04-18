@@ -285,6 +285,7 @@
   --tertiary-foreground: oklch(0.225 0.0097 29.0);
 
   /* Background & Surface: dark warm */
+  /* # 140f0f */
   --background: oklch(0.175 0.008 25.0);
   --foreground: oklch(0.915 0.0138 34.1);
   --surface: oklch(0.200 0.010 28.0);

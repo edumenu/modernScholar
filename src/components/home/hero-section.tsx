@@ -1,7 +1,8 @@
 "use client"
 
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import { useRouter } from "next/navigation"
+import { useTheme } from "next-themes"
 import { CTAButton } from "@/components/ui/button/cta-button"
 import { AnimatedSection } from "../ui/animatedSection/animated-section";
 import { AnimatedLines } from "@/components/ui/animatedLines/animated-lines";
@@ -14,8 +15,17 @@ const SplineScene = lazy(() =>
   import("./spline-scene").then((m) => ({ default: m.SplineScene })),
 );
 
+const HERO_SPLINE_URL_LIGHT =
+  "https://prod.spline.design/JY2cfwfllYa7FSve/scene.splinecode";
+const HERO_SPLINE_URL_DARK =
+  "https://prod.spline.design/X5b6ec1AfF1VBtXh/scene.splinecode";
+
 export function HeroSection() {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
+  const { resolvedTheme } = useTheme()
+
+  useEffect(() => { setMounted(true) }, [])
 
   return (
     <section
@@ -24,15 +34,21 @@ export function HeroSection() {
     >
       {/* Spline 3D Model — full viewport width, breaks out of PageShell */}
       <ParallaxLayer yRange={[0, 80]} className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2">
-        <Suspense
-          fallback={
+        {(() => {
+          const fallback = (
             <div className="flex size-full items-center justify-center">
               <div className="size-12 animate-pulse rounded-full bg-surface-container" />
             </div>
-          }
-        >
-          <SplineScene className="size-full" />
-        </Suspense>
+          );
+          const splineUrl = mounted && resolvedTheme === "dark" ? HERO_SPLINE_URL_DARK : HERO_SPLINE_URL_LIGHT;
+          return (
+            <Suspense fallback={fallback}>
+              {mounted ? (
+                <SplineScene key={resolvedTheme} scene={splineUrl} className="size-full" />
+              ) : fallback}
+            </Suspense>
+          );
+        })()}
       </ParallaxLayer>
 
       {/* Company name — top left */}

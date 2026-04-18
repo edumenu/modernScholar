@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useCallback, lazy, Suspense } from "react";
+import { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "motion/react"
 import { toast } from "sonner"
@@ -14,8 +15,10 @@ const SplineScene = lazy(() =>
   })),
 );
 
-const CONTACT_SPLINE_URL =
+const CONTACT_SPLINE_URL_LIGHT =
   "https://prod.spline.design/p0mZprPwlZ2CJwpI/scene.splinecode";
+const CONTACT_SPLINE_URL_DARK =
+  "https://prod.spline.design/TIEvLLUQbEXBkhx7/scene.splinecode";
 
 const CONTACT_EMAIL = "dearmodernscholar@gmail.com"
 
@@ -106,19 +109,38 @@ function CopyEmailButton() {
 
 export function ContactFormSection() {
   const [isButtonHovered, setIsButtonHovered] = useState(false)
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const splineUrl =
+    mounted && resolvedTheme === "dark"
+      ? CONTACT_SPLINE_URL_DARK
+      : CONTACT_SPLINE_URL_LIGHT;
+
+  const splineFallback = (
+    <div className="flex size-full items-center justify-center">
+      <div className="size-12 animate-pulse rounded-full bg-surface-container" />
+    </div>
+  );
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
       {/* Left column - 3D Spline scene (desktop only) */}
       <div className="hidden lg:flex items-center justify-center">
-        <Suspense
-          fallback={
-            <div className="flex size-full items-center justify-center">
-              <div className="size-12 animate-pulse rounded-full bg-surface-container" />
-            </div>
-          }
-        >
-          <SplineScene scene={CONTACT_SPLINE_URL} className="h-[600px] w-full" />
+        <Suspense fallback={splineFallback}>
+          {mounted ? (
+            <SplineScene
+              key={resolvedTheme}
+              scene={splineUrl}
+              className="h-150 w-full"
+            />
+          ) : (
+            splineFallback
+          )}
         </Suspense>
       </div>
 
