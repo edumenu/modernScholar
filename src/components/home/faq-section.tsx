@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react"
 import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 import { AnimatedSection } from "../ui/animatedSection/animated-section";
+import { ParallaxLayer } from "@/components/ui/parallax-layer";
 
 interface FAQItem {
   question: string
@@ -101,7 +102,7 @@ export function FAQSection() {
       <AnimatedSection>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-12">
           {/* Left column — heading */}
-          <div className="flex flex-col gap-2">
+          <ParallaxLayer yRange={[-15, 15]} className="flex flex-col gap-2">
             <p className="text-xs font-medium uppercase tracking-widest text-tertiary">
               FAQ
             </p>
@@ -115,10 +116,10 @@ export function FAQSection() {
               Everything you need to know about finding and applying for
               scholarships.
             </p>
-          </div>
+          </ParallaxLayer>
 
           {/* Right column — accordion */}
-          <div className="border-t border-outline-variant/20">
+          <ParallaxLayer yRange={[10, -10]} className="border-t border-outline-variant/20">
             {faqs.map((faq, i) => (
               <AccordionItem
                 key={i}
@@ -127,7 +128,7 @@ export function FAQSection() {
                 onToggle={() => handleToggle(i)}
               />
             ))}
-          </div>
+          </ParallaxLayer>
         </div>
       </AnimatedSection>
     </section>

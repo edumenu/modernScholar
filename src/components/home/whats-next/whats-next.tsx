@@ -116,7 +116,12 @@ export function WhatsNext({ enableColorTransition = true }: WhatsNextProps) {
               className="flex h-full min-w-screen items-center px-6 md:px-8"
             >
               <div className="mx-auto w-full max-w-7xl">
-                <SlideContent panel={panel} />
+                <SlideContent
+                  panel={panel}
+                  scrollYProgress={scrollYProgress}
+                  panelIndex={index}
+                  totalPanels={panels.length}
+                />
               </div>
             </div>
           ))}

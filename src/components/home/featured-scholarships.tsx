@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { AnimatedSection } from "../ui/animatedSection/animated-section";
+import { ParallaxLayer } from "@/components/ui/parallax-layer";
 import { ButtonLink } from "@/components/ui/button/button-link";
 import { Icon } from "@iconify/react";
 import { useTextLayout } from "@/lib/pretext/use-text-layout";
@@ -207,7 +208,7 @@ function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
     <div
       data-cursor="text"
       data-cursor-text="View"
-      className="group relative w-80 cursor-pointer shrink-0 overflow-hidden rounded-2xl shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.9)] dark:shadow-lg"
+      className="group relative w-80 cursor-pointer shrink-0 overflow-hidden rounded-2xl shadow-lg"
     >
       <Image
         src={scholarship.image}
@@ -313,39 +314,42 @@ export function FeaturedScholarships() {
   return (
     <section
       aria-labelledby="featured-heading"
-      className="flex min-h-dvh flex-col justify-center py-40"
+      className="flex min-h-dvh flex-col justify-center py-30"
     >
-      <AnimatedSection>
-        {/* Header */}
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium uppercase tracking-widest text-tertiary">
-              Curated for you
-            </p>
-            <h2
-              id="featured-heading"
-              className="font-heading text-3xl font-medium tracking-tight text-on-surface md:text-[3rem] md:leading-none"
-            >
-              Featured Scholarships
-            </h2>
-            <p className="mt-2 text-lg text-on-surface-variant md:text-xl">
-              Discover a world of educational possibilities and scholarship
-              programs.
-            </p>
+      <ParallaxLayer yRange={[-20, 20]}>
+        <AnimatedSection>
+          {/* Header */}
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-medium uppercase tracking-widest text-tertiary">
+                Curated for you
+              </p>
+              <h2
+                id="featured-heading"
+                className="font-heading text-3xl font-medium tracking-tight text-on-surface md:text-[3rem] md:leading-none"
+              >
+                Featured Scholarships
+              </h2>
+              <p className="mt-2 text-lg text-on-surface-variant md:text-xl">
+                Discover a world of educational possibilities and scholarship
+                programs.
+              </p>
+            </div>
+            <ButtonLink href="/scholarships" variant="tertiary" animateIcon>
+              View All Scholarships{" "}
+              <Icon
+                icon="solar:arrow-right-line-duotone"
+                data-icon="inline-end"
+              />
+            </ButtonLink>
           </div>
-          <ButtonLink href="/scholarships" variant="tertiary" animateIcon>
-            View All Scholarships{" "}
-            <Icon
-              icon="solar:arrow-right-line-duotone"
-              data-icon="inline-end"
-            />
-          </ButtonLink>
-        </div>
-      </AnimatedSection>
+        </AnimatedSection>
+      </ParallaxLayer>
 
       {/* Marquee Rows — break out of PageShell to full viewport width */}
-      <div
-        className="relative left-1/2 mt-16 flex w-dvw -translate-x-1/2 flex-col gap-6"
+      <ParallaxLayer
+        yRange={[30, -30]}
+        className="relative left-1/2 mt-16 flex w-dvw -translate-x-1/2 flex-col gap-6 py-10"
         style={{
           maskImage:
             "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
@@ -384,7 +388,7 @@ export function FeaturedScholarships() {
             className="hidden lg:block"
           />
         </AnimatedSection> */}
-      </div>
+      </ParallaxLayer>
     </section>
   );
 }

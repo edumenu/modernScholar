@@ -6,6 +6,7 @@ import { CTAButton } from "@/components/ui/button/cta-button"
 import { AnimatedSection } from "../ui/animatedSection/animated-section";
 import { AnimatedLines } from "@/components/ui/animatedLines/animated-lines";
 import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts"
+import { ParallaxLayer } from "@/components/ui/parallax-layer"
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -22,7 +23,7 @@ export function HeroSection() {
       className="relative flex min-h-dvh flex-col justify-between pt-20 pb-16 md:pb-28"
     >
       {/* Spline 3D Model — full viewport width, breaks out of PageShell */}
-      <div className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2">
+      <ParallaxLayer yRange={[0, 80]} className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2">
         <Suspense
           fallback={
             <div className="flex size-full items-center justify-center">
@@ -32,7 +33,7 @@ export function HeroSection() {
         >
           <SplineScene className="size-full" />
         </Suspense>
-      </div>
+      </ParallaxLayer>
 
       {/* Company name — top left */}
       <div className="relative z-10 flex items-center">
@@ -64,7 +65,7 @@ export function HeroSection() {
       </div>
 
       {/* Bottom row — headline left, CTA right */}
-      <div className="relative z-10 flex w-full flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
+      <ParallaxLayer yRange={[0, -30]} opacityRange={[1, 0.7]} className="relative z-10 flex w-full flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
         {/* Headline — bottom left */}
         <AnimatedSection delay={0.4} className="w-full min-w-0 flex-col text-left md:flex-1">
           <h1 className="max-w-3xl font-heading text-3xl font-bold leading-tight tracking-tight text-primary dark:text-primary-100 sm:text-4xl md:text-5xl md:leading-none">
@@ -79,7 +80,7 @@ export function HeroSection() {
             onClick={() => router.push("/scholarships")}
           />
         </AnimatedSection>
-      </div>
+      </ParallaxLayer>
     </section>
   );
 }
