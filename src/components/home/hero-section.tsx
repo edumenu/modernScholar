@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, lazy, useState, useEffect } from "react";
+import { Suspense, lazy, useState, useEffect, startTransition } from "react";
 import { useRouter } from "next/navigation"
 import { useTheme } from "next-themes"
 import { CTAButton } from "@/components/ui/button/cta-button"
@@ -25,7 +25,7 @@ export function HeroSection() {
   const [mounted, setMounted] = useState(false)
   const { resolvedTheme } = useTheme()
 
-  useEffect(() => { setMounted(true) }, [])
+  useEffect(() => { startTransition(() => setMounted(true)) }, [])
 
   return (
     <section

@@ -1,6 +1,13 @@
 "use client"
 
-import { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  lazy,
+  Suspense,
+  startTransition,
+} from "react";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "motion/react"
@@ -113,7 +120,7 @@ export function ContactFormSection() {
   const { resolvedTheme } = useTheme();
 
   useEffect(() => {
-    setMounted(true);
+    startTransition(() => setMounted(true));
   }, []);
 
   const splineUrl =

@@ -520,12 +520,10 @@ export const UseContainerWidth: Story = {
 };
 
 export const OverflowDetection: Story = {
-  name: "Overflow Detection",
   render: () => <OverflowDetectionDemo />,
 };
 
 export const WidthComparison: Story = {
-  name: "Width Comparison",
   render: () => (
     <div className="flex flex-col gap-4">
       <p className="text-sm text-on-surface-variant">
@@ -538,7 +536,6 @@ export const WidthComparison: Story = {
 };
 
 export const InteractivePlayground: Story = {
-  name: "Interactive Playground",
   render: () => (
     <div className="flex flex-col gap-4">
       <p className="text-sm text-on-surface-variant">

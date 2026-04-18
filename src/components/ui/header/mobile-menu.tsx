@@ -130,7 +130,7 @@ function NavLink({
   )
 }
 
-function MobileNav({ onClose }: { onClose: () => void }) {
+function MobileNav() {
   const pathname = usePathname()
   const [selectedIndicator, setSelectedIndicator] = useState(pathname)
 
@@ -252,7 +252,7 @@ export function MobileMenuButton() {
               className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
               onClick={() => setIsOpen(false)}
             />
-            <MobileNav onClose={() => setIsOpen(false)} />
+            <MobileNav />
           </>
         )}
       </AnimatePresence>
