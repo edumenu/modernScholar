@@ -165,31 +165,47 @@ export function ScholarshipGrid() {
         - bento: Figma 4-column block (chunks of 10) — responsive
         - uniform: fixed-aspect 4-col responsive grid
       */}
-      {layout === "bento" ? (
-        <div className="flex flex-col gap-4 pb-10 pt-2">
-          {chunkItems(visibleItems, BENTO_CHUNK).map((chunk, chunkIdx) => (
-            <BentoBlock
-              key={chunkIdx}
-              items={chunk}
-              expandedId={expandedId}
-              onExpand={handleExpand}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="grid gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {visibleItems.map(({ scholarship, matches }) => (
-            <div key={scholarship.id} className="aspect-3/4">
-              <ScholarshipCard
-                scholarship={scholarship}
-                dimmed={!matches}
-                isExpanded={expandedId === scholarship.id}
+      <AnimatePresence mode="wait">
+        {layout === "bento" ? (
+          <motion.div
+            key="bento"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="flex flex-col gap-4 pb-10 pt-2"
+          >
+            {chunkItems(visibleItems, BENTO_CHUNK).map((chunk, chunkIdx) => (
+              <BentoBlock
+                key={chunkIdx}
+                items={chunk}
+                expandedId={expandedId}
                 onExpand={handleExpand}
               />
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="grid"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="grid gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          >
+            {visibleItems.map(({ scholarship, matches }) => (
+              <div key={scholarship.id} className="aspect-3/4">
+                <ScholarshipCard
+                  scholarship={scholarship}
+                  dimmed={!matches}
+                  isExpanded={expandedId === scholarship.id}
+                  onExpand={handleExpand}
+                />
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ═══ Pagination Variant: Ink Spread ═══ */}
       {totalPages > 1 && (

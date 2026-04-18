@@ -146,7 +146,8 @@
       "Bash(echo \"System ruby: $\\(which ruby\\) - $\\(ruby --version 2>&1\\)\")",
       "Bash(brew --prefix)",
       "Bash(/opt/homebrew/opt/ruby/bin/ruby --version)",
-      "Bash(echo \"Brew ruby: $\\(brew --prefix\\)/opt/ruby/bin/ruby - $\\(/opt/homebrew/opt/ruby/bin/ruby --version 2>&1\\)\")"
+      "Bash(echo \"Brew ruby: $\\(brew --prefix\\)/opt/ruby/bin/ruby - $\\(/opt/homebrew/opt/ruby/bin/ruby --version 2>&1\\)\")",
+      "Bash(pkill -9 \"Google Chrome\")"
     ]
   }
 }

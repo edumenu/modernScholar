@@ -25,11 +25,10 @@ export function ScholarshipCard({
   return (
     <motion.div
       {...(!disableLayoutAnimation && {
-        layout: true,
         layoutId: `card-${scholarship.id}`,
       })}
       whileHover={{ scale: 1.009 }}
-      transition={{ type: "tween", stiffness: 300, damping: 20 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
       className={cn(
         "group relative h-full cursor-pointer overflow-hidden rounded-2xl",
         "shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.9)]",

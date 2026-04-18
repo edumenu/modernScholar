@@ -96,7 +96,7 @@ export function FAQSection() {
   return (
     <section
       aria-labelledby="faq-heading"
-      className="py-24 md:py-32"
+      className="flex justify-center items-center min-h-[75vh]"
     >
       <AnimatedSection>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.5fr] lg:gap-12">

@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useRef, useEffect } from "react";
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
@@ -14,36 +14,45 @@ const HEADER_HEIGHT = 112; // 28 * 4 (h-28 in Tailwind = 112px)
 
 // ============================================================================
 // Scroll-Animated Header Wrapper
-// This component handles scroll animation independently to prevent re-renders
-// of the navbar content when scrolling
+// Uses refs and direct DOM manipulation to avoid re-renders and prevent
+// Motion layout animations from triggering on scroll offset changes
 // ============================================================================
 function ScrollAnimatedHeader({ children }: { children: React.ReactNode }) {
-  const [headerOffset, setHeaderOffset] = useState(0);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const headerOffset = useRef(0);
+  const lastScrollY = useRef(0);
   const { scrollY } = useScroll();
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    headerOffset.current = 0;
+    lastScrollY.current = 0;
+    if (headerRef.current) {
+      headerRef.current.style.transform = "translateY(0px)";
+    }
+  }, [pathname]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const difference = latest - lastScrollY;
+    const difference = latest - lastScrollY.current;
     if (latest < 600) {
-      setHeaderOffset(0);
+      headerOffset.current = 0;
     } else {
-      const newOffset = headerOffset + difference;
-      const clampedOffset = Math.max(0, Math.min(HEADER_HEIGHT, newOffset));
-      setHeaderOffset(clampedOffset);
+      const newOffset = headerOffset.current + difference;
+      headerOffset.current = Math.max(0, Math.min(HEADER_HEIGHT, newOffset));
     }
-    setLastScrollY(latest);
+    lastScrollY.current = latest;
+    if (headerRef.current) {
+      headerRef.current.style.transform = `translateY(-${headerOffset.current}px)`;
+    }
   });
 
   return (
-    <motion.header
-      style={{
-        transform: `translateY(-${headerOffset}px)`,
-      }}
-      transition={{ duration: 0, ease: "easeInOut" }}
+    <div
+      ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50"
     >
       {children}
-    </motion.header>
+    </div>
   );
 }
 
@@ -115,7 +124,7 @@ export function Header() {
                   >
                     {isActive && (
                       <motion.span
-                        layoutId="nav-highlight"
+                        layoutId={`nav-highlight-${pathname}`}
                         className="absolute inset-0 rounded-full bg-primary-100/80 dark:bg-primary/20"
                         transition={{ type: "spring", stiffness: 350, damping: 30 }}
                       />

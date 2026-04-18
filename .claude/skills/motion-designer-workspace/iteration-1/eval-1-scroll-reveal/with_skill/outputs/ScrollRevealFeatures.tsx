@@ -1,56 +1,49 @@
 "use client";
 
 import { motion } from "motion/react";
-import {
-  IconWorld,
-  IconBrain,
-  IconUsers,
-  IconCode,
-  IconDeviceGamepad2,
-  IconRocket,
-} from "@tabler/icons-react";
+import { Icon } from "@iconify/react";
 
 /* ──────────────────────────────────────────────
    FEATURE DATA
    ────────────────────────────────────────────── */
 const features = [
   {
-    icon: IconWorld,
+    icon: "tabler:world",
     title: "Open Worlds",
     description:
       "Vast, seamlessly streaming environments with no loading screens. Every horizon is a promise — and we deliver.",
     accent: "cyan" as const,
   },
   {
-    icon: IconBrain,
+    icon: "tabler:brain",
     title: "Adaptive AI",
     description:
       "NPCs with emergent behaviors that learn from your playstyle. No two playthroughs are ever the same.",
     accent: "magenta" as const,
   },
   {
-    icon: IconUsers,
+    icon: "tabler:users",
     title: "Massive Multiplayer",
     description:
       "Shared persistent worlds supporting thousands of concurrent players in a single shard. Your actions reshape the world for everyone.",
     accent: "cyan" as const,
   },
   {
-    icon: IconCode,
+    icon: "tabler:code",
     title: "Modding SDK",
     description:
       "First-class modding tools shipped at launch. We build the engine — you build the universe.",
     accent: "magenta" as const,
   },
   {
-    icon: IconDeviceGamepad2,
+    icon: "tabler:device-gamepad-2",
     title: "Haptic Immersion",
     description:
       "Next-gen controller feedback engineered to make you feel every impact, every texture, every heartbeat.",
     accent: "cyan" as const,
   },
   {
-    icon: IconRocket,
+    icon: "tabler:rocket",
     title: "Cross-Platform",
     description:
       "Play anywhere. Your progress, your friends, your world — unified across every device.",
@@ -64,7 +57,7 @@ const features = [
    with a staggered delay based on its index.
    ────────────────────────────────────────────── */
 function FeatureCard({
-  icon: Icon,
+  icon,
   title,
   description,
   accent,
@@ -80,9 +73,11 @@ function FeatureCard({
         ${isCyan ? "border-neon-cyan/10 hover:border-neon-cyan/30" : "border-neon-magenta/10 hover:border-neon-magenta/30"}
         corner-accents
       `}
-      style={{
-        "--corner-color": isCyan ? "#00f0ff" : "#ff00aa",
-      } as React.CSSProperties}
+      style={
+        {
+          "--corner-color": isCyan ? "#00f0ff" : "#ff00aa",
+        } as React.CSSProperties
+      }
       /*
        * Scroll reveal animation:
        * - initial: card starts invisible, shifted 60px down, slightly scaled down
@@ -114,7 +109,7 @@ function FeatureCard({
         whileHover={{ rotate: 8, scale: 1.1 }}
         transition={{ type: "spring", damping: 15, stiffness: 300 }}
       >
-        <Icon size={24} strokeWidth={1.5} />
+        <Icon icon={icon} width={24} height={24} />
       </motion.div>
 
       {/* Number */}
@@ -137,7 +132,7 @@ function FeatureCard({
       {/* Bottom accent line */}
       <div
         className={`
-          absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-700
+          absolute bottom-0 left-0 h-0.5 w-0 group-hover:w-full transition-all duration-700
           ${isCyan ? "bg-neon-cyan/40" : "bg-neon-magenta/40"}
         `}
       />
@@ -162,7 +157,7 @@ export default function ScrollRevealFeatures() {
       {/* Background */}
       <div className="absolute inset-0 bg-void-light" />
       <div className="absolute inset-0 grid-bg" />
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neon-cyan/20 to-transparent" />
+      <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-neon-cyan/20 to-transparent" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section header */}

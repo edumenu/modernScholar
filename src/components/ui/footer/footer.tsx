@@ -36,12 +36,12 @@ const socialLinks = [
 export function Footer() {
   return (
     <div
-      className="relative h-screen lg:h-135"
+      className="relative h-[50vh]"
       style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
     >
-      <div className="fixed bottom-0 left-0 right-0 h-screen lg:h-135">
+      <div className="fixed bottom-0 left-0 right-0 h-[50vh]">
         <footer className="flex h-full flex-col bg-surface-container-highest">
-          <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-between px-6 py-10 lg:px-8">
+          <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-between px-6 py-8 lg:px-8">
             {/* Main footer content */}
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_1fr_1fr]">
               {/* Brand column */}
@@ -134,8 +134,8 @@ export function Footer() {
             </div>
 
             {/* Large decorative brand text */}
-            <div className="overflow-hidden">
-              <p className="font-heading text-[clamp(2rem,10vw,10rem)] font-bold leading-none tracking-tighter text-on-surface/8">
+            <div>
+              <p className="font-heading text-[clamp(2rem,8vw,5rem)] font-bold leading-none tracking-tighter text-on-surface/8">
                 Modern Scholar
               </p>
             </div>

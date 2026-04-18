@@ -70,13 +70,12 @@ function ThemeToggleInner({ className }: { className?: string }) {
 
       {/* Sliding knob */}
       <motion.span
-        layout
+        animate={{ x: isDark ? 32 : 0 }}
         transition={{ type: "spring", stiffness: 200, damping: 35 }}
         className={cn(
           "relative z-10 flex size-7 items-center justify-center rounded-full",
           "bg-surface-container-low shadow-[3px_3px_6px_rgba(0,0,0,0.15),-3px_-3px_6px_rgba(255,255,255,0.9)]",
           "dark:bg-surface-container-high dark:shadow-[3px_3px_6px_rgba(0,0,0,0.3),-3px_-3px_6px_rgba(255,255,255,0.05)]",
-          isDark ? "ml-auto" : "mr-auto",
         )}
       >
         <AnimatePresence mode="wait" initial={false}>
