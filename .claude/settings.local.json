@@ -150,7 +150,13 @@
       "Bash(pkill -9 \"Google Chrome\")",
       "Bash(git grep:*)",
       "Bash(xargs cat:*)",
-      "mcp__playwright__browser_navigate_back"
+      "mcp__playwright__browser_navigate_back",
+      "WebFetch(domain:goo-drop.learnframer.site)",
+      "WebFetch(domain:tympanus.net)",
+      "WebFetch(domain:css-tricks.com)",
+      "WebFetch(domain:framer.university)",
+      "WebFetch(domain:nyxui.com)",
+      "WebFetch(domain:gooey-react.netlify.app)"
     ]
   }
 }

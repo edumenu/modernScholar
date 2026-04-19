@@ -33,19 +33,31 @@ export function HeroSection() {
       className="relative flex min-h-dvh flex-col justify-between pt-20 pb-16 md:pb-28"
     >
       {/* Spline 3D Model — full viewport width, breaks out of PageShell */}
-      <ParallaxLayer yRange={[0, 80]} className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2">
+      <ParallaxLayer
+        yRange={[0, 80]}
+        className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2"
+      >
         {(() => {
           const fallback = (
             <div className="flex size-full items-center justify-center">
               <div className="size-12 animate-pulse rounded-full bg-surface-container" />
             </div>
           );
-          const splineUrl = mounted && resolvedTheme === "dark" ? HERO_SPLINE_URL_DARK : HERO_SPLINE_URL_LIGHT;
+          const splineUrl =
+            mounted && resolvedTheme === "dark"
+              ? HERO_SPLINE_URL_DARK
+              : HERO_SPLINE_URL_LIGHT;
           return (
             <Suspense fallback={fallback}>
               {mounted ? (
-                <SplineScene key={resolvedTheme} scene={splineUrl} className="size-full" />
-              ) : fallback}
+                <SplineScene
+                  key={resolvedTheme}
+                  scene={splineUrl}
+                  className="size-full"
+                />
+              ) : (
+                fallback
+              )}
             </Suspense>
           );
         })()}
@@ -53,13 +65,13 @@ export function HeroSection() {
 
       {/* Company name — top left */}
       <div className="relative z-10 flex items-center">
-        <Image
+        {/* <Image
           src="/iconWhite.png"
           alt="Modern Scholar"
           width={36}
           height={36}
           className={cn("size-14 object-contain hidden dark:block")}
-        />
+        /> */}
         {/* <Image
           src="/iconBurgundy.png"
           alt="Modern Scholar"
@@ -67,7 +79,7 @@ export function HeroSection() {
           height={36}
           className={cn("size-14 object-contain block dark:hidden")}
         /> */}
-        <AnimatedLines
+        {/* <AnimatedLines
           text="Modern Scholar"
           font={PRETEXT_FONTS.heroHeadline}
           fallbackFont={PRETEXT_FALLBACK_FONTS.heroHeadline}
@@ -77,17 +89,43 @@ export function HeroSection() {
           className="font-heading text-xl font-medium leading-[1.15] tracking-tight text-primary dark:text-primary-100 md:text-[2rem]"
           staggerDelay={0.05}
           variant="revealUp"
-        />
+        /> */}
       </div>
 
       {/* Bottom row — headline left, CTA right */}
-      <ParallaxLayer yRange={[0, -30]} opacityRange={[1, 0.7]} className="relative z-10 flex w-full flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
-        {/* Headline — bottom left */}
-        <AnimatedSection delay={0.4} className="w-full min-w-0 flex-col text-left md:flex-1">
-          <h1 className="max-w-3xl font-heading text-3xl font-bold leading-tight tracking-tight text-primary dark:text-primary-100 sm:text-4xl md:text-5xl md:leading-none">
-            Your scholarship journey starts here
-          </h1>
-        </AnimatedSection>
+      <ParallaxLayer
+        yRange={[0, -30]}
+        opacityRange={[1, 0.7]}
+        className="relative z-10 flex w-full flex-col items-start gap-6 md:flex-row md:items-end md:justify-between"
+      >
+        <div className="flex flex-col">
+          {/* Headline — bottom left */}
+          {/* <AnimatedSection
+            delay={0.4}
+            className="w-full min-w-0 flex-col text-left md:flex-1"
+          > */}
+          <AnimatedLines
+            text="Modern Scholar"
+            font={PRETEXT_FONTS.heroHeadline}
+            fallbackFont={PRETEXT_FALLBACK_FONTS.heroHeadline}
+            lineHeight={32}
+            as="h3"
+            mode="chars"
+            className="font-heading text-xl font-medium leading-[1.15] tracking-tight text-primary dark:text-primary-100 md:text-[1.5rem]"
+            staggerDelay={0.05}
+            variant="revealUp"
+          />
+          {/* </AnimatedSection> */}
+          {/* Headline — bottom left */}
+          <AnimatedSection
+            delay={0.4}
+            className="w-full min-w-0 flex-col text-left md:flex-1"
+          >
+            <h1 className="max-w-3xl font-heading text-3xl font-bold leading-tight tracking-tight text-primary dark:text-primary-100 sm:text-4xl md:text-5xl md:leading-none">
+              Your scholarship journey starts here
+            </h1>
+          </AnimatedSection>
+        </div>
 
         {/* CTA — bottom right */}
         <AnimatedSection delay={0.7} className="shrink-0">
