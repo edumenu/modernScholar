@@ -7,6 +7,7 @@ import {
   useSpring,
   AnimatePresence,
 } from "motion/react"
+import { usePathname } from "next/navigation"
 import { useSettingsStore } from "@/stores/settings-store"
 
 type CursorVariant = "default" | "fade" | "text"
@@ -36,6 +37,7 @@ export function CustomCursor() {
   const cursorEnabled = useSettingsStore((s) => s.cursorEnabled)
   const hasPointer = useMediaQuery("(pointer: fine)")
   const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)")
+  const pathname = usePathname()
   const [variant, setVariant] = useState<CursorVariant>("default")
   const [cursorText, setCursorText] = useState<string | null>(null)
 
@@ -53,7 +55,7 @@ export function CustomCursor() {
     return () => {
       document.documentElement.classList.remove("custom-cursor-active")
     }
-  }, [cursorEnabled, hasPointer])
+  }, [cursorEnabled, hasPointer, pathname])
 
   // Mouse tracking
   useEffect(() => {
@@ -77,6 +79,9 @@ export function CustomCursor() {
       const cursorType = target.dataset.cursor as CursorVariant
       setVariant(cursorType || "default")
       setCursorText(target.dataset.cursorText || null)
+    } else {
+      setVariant("default")
+      setCursorText(null)
     }
   }, [])
 

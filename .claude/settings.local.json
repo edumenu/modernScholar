@@ -149,7 +149,8 @@
       "Bash(echo \"Brew ruby: $\\(brew --prefix\\)/opt/ruby/bin/ruby - $\\(/opt/homebrew/opt/ruby/bin/ruby --version 2>&1\\)\")",
       "Bash(pkill -9 \"Google Chrome\")",
       "Bash(git grep:*)",
-      "Bash(xargs cat:*)"
+      "Bash(xargs cat:*)",
+      "mcp__playwright__browser_navigate_back"
     ]
   }
 }
