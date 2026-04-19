@@ -20,11 +20,11 @@ const menuSlide = {
   initial: { x: "100%" },
   enter: {
     x: "0%",
-    transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const },
+    transition: { duration: 0.45, ease: [0.76, 0, 0.24, 1] as const },
   },
   exit: {
     x: "100%",
-    transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] as const },
+    transition: { duration: 0.35, ease: [0.76, 0, 0.24, 1] as const },
   },
 }
 
@@ -34,16 +34,16 @@ const linkSlide = {
     x: 0,
     opacity: 1,
     transition: {
-      duration: 0.8,
+      duration: 0.45,
       ease: [0.76, 0, 0.24, 1] as const,
-      delay: 0.05 * i,
+      delay: 0.04 * i,
     },
   }),
   exit: (i: number) => ({
     x: 80,
     opacity: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.35,
       ease: [0.76, 0, 0.24, 1] as const,
       delay: 0.03 * i,
     },
@@ -69,16 +69,17 @@ function Curve() {
     initial: { d: initialPath },
     enter: {
       d: targetPath,
-      transition: { duration: 1, ease: [0.76, 0, 0.24, 1] as const },
+      transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] as const },
     },
     exit: {
       d: initialPath,
-      transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] as const },
+      transition: { duration: 0.35, ease: [0.76, 0, 0.24, 1] as const },
     },
   }
 
   return (
     <svg
+      aria-hidden="true"
       className="absolute -left-24.75 top-0 h-full w-25 fill-surface stroke-none"
     >
       <motion.path
@@ -182,19 +183,25 @@ function MobileNav() {
           </div>
           <div className="flex gap-6">
             <a
-              href="#"
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs text-on-surface-variant transition-colors hover:text-on-surface"
             >
               Instagram
             </a>
             <a
-              href="#"
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs text-on-surface-variant transition-colors hover:text-on-surface"
             >
               LinkedIn
             </a>
             <a
-              href="#"
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs text-on-surface-variant transition-colors hover:text-on-surface"
             >
               Twitter
@@ -208,6 +215,13 @@ function MobileNav() {
 
 export function MobileMenuButton() {
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
+  const [prevPathname, setPrevPathname] = useState(pathname)
+
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname)
+    if (isOpen) setIsOpen(false)
+  }
 
   return (
     <>

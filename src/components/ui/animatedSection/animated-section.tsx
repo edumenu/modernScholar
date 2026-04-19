@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import { motion, useInView, type TargetAndTransition, type Transition } from "motion/react"
+import { motion, useInView, useReducedMotion, type TargetAndTransition, type Transition } from "motion/react"
 import { cn } from "@/lib/utils"
 
 type AnimationVariant =
@@ -24,32 +24,32 @@ const presets: Record<AnimationVariant, AnimationPreset> = {
   fadeUp: {
     initial: { opacity: 0, y: 32 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
   fadeDown: {
     initial: { opacity: 0, y: -32 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
   fadeLeft: {
     initial: { opacity: 0, x: -40 },
     animate: { opacity: 1, x: 0 },
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
   fadeRight: {
     initial: { opacity: 0, x: 40 },
     animate: { opacity: 1, x: 0 },
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   },
   scaleIn: {
     initial: { opacity: 0, scale: 0.92 },
     animate: { opacity: 1, scale: 1 },
-    transition: { duration: 0.5, ease: [0.76, 0, 0.24, 1] },
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
   blurIn: {
     initial: { opacity: 0, filter: "blur(8px)" },
     animate: { opacity: 1, filter: "blur(0px)" },
-    transition: { duration: 0.7, ease: "easeOut" },
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
   slideUp: {
     initial: { opacity: 0, y: 64 },
@@ -84,8 +84,17 @@ export function AnimatedSection({
 }: AnimatedSectionProps) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
+  const prefersReducedMotion = useReducedMotion()
 
   const preset = presets[variant]
+
+  if (prefersReducedMotion) {
+    return (
+      <div ref={ref} className={cn(className)}>
+        {children}
+      </div>
+    )
+  }
 
   const initialValues = customInitial ?? preset.initial
   const animateValues = customAnimate ?? preset.animate

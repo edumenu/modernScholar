@@ -83,7 +83,13 @@ export function Header() {
   }, [pathname]);
 
   useEffect(() => {
-    measureActive();
+    document.fonts.ready.then(measureActive);
+
+    const observer = new ResizeObserver(measureActive);
+    const navEl = linkRefs.current[navItems[0]?.href]?.parentElement;
+    if (navEl) observer.observe(navEl);
+
+    return () => observer.disconnect();
   }, [measureActive]);
 
   return (
@@ -101,7 +107,7 @@ export function Header() {
             href="/"
             className={cn(
               glassPill,
-              "lg:flex hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)]",
+              "lg:flex hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",
               isHome && "bg-primary-100/80 dark:bg-primary/20",
             )}
             aria-label="Home"
@@ -109,19 +115,16 @@ export function Header() {
             <Image
               src="/iconBurgundy.png"
               alt="Modern Scholar"
-              width={36}
-              height={36}
-              className={cn("size-20 object-contain block dark:hidden")}
+              width={28}
+              height={28}
+              className="size-7 object-contain block dark:hidden"
             />
             <Image
               src="/iconWhite.png"
               alt="Modern Scholar"
-              width={36}
-              height={36}
-              className={cn(
-                "size-20 object-contain hidden dark:block",
-                // isHome ? "block" : "dark:block",
-              )}
+              width={28}
+              height={28}
+              className="size-7 object-contain hidden dark:block"
             />
           </Link>
 
@@ -140,16 +143,22 @@ export function Header() {
                 transition={{ type: "spring", stiffness: 350, damping: 30 }}
               />
             )}
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                ref={(el) => { linkRefs.current[item.href] = el; }}
-                className="relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface"
-              >
-                <span className="relative z-10">{item.title}</span>
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  ref={(el) => { linkRefs.current[item.href] = el; }}
+                  className={cn(
+                    "relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface",
+                    isActive && "text-primary font-medium",
+                  )}
+                >
+                  <span className="relative z-10">{item.title}</span>
+                </Link>
+              );
+            })}
             <SettingsDropdown />
           </div>
 
@@ -163,7 +172,31 @@ export function Header() {
             <ThemeToggle />
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile logo + menu button */}
+          <Link
+            href="/"
+            className={cn(
+              glassPill,
+              "flex lg:hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",
+              isHome && "bg-primary-100/80 dark:bg-primary/20",
+            )}
+            aria-label="Home"
+          >
+            <Image
+              src="/iconBurgundy.png"
+              alt="Modern Scholar"
+              width={24}
+              height={24}
+              className="size-6 object-contain block dark:hidden"
+            />
+            <Image
+              src="/iconWhite.png"
+              alt="Modern Scholar"
+              width={24}
+              height={24}
+              className="size-6 object-contain hidden dark:block"
+            />
+          </Link>
           <MobileMenuButton />
         </nav>
       </header>

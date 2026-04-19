@@ -156,7 +156,8 @@
       "WebFetch(domain:css-tricks.com)",
       "WebFetch(domain:framer.university)",
       "WebFetch(domain:nyxui.com)",
-      "WebFetch(domain:gooey-react.netlify.app)"
+      "WebFetch(domain:gooey-react.netlify.app)",
+      "Bash(pkill -f \"Google Chrome.*mcp-chrome\")"
     ]
   }
 }

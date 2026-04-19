@@ -1,21 +1,13 @@
 "use client"
 
-import { useCallback, useRef, useState, type ComponentProps } from "react";
+import { useRef, type ComponentProps } from "react";
 import Link from "next/link";
 import { type VariantProps } from "class-variance-authority"
 import { motion, AnimatePresence } from "motion/react";
+import { useRipple } from "@/hooks/use-ripple";
 
 import { cn } from "@/lib/utils"
 import { buttonVariants, rippleColorMap } from "./button"
-
-interface RippleState {
-  x: number;
-  y: number;
-  size: number;
-  key: number;
-  isLeaving?: boolean;
-  snap?: boolean;
-}
 
 type ButtonLinkProps = ComponentProps<typeof Link> &
   VariantProps<typeof buttonVariants> & {
@@ -37,56 +29,11 @@ function ButtonLink({
   const isParent = hoverTrigger === "parent";
 
   const linkRef = useRef<HTMLAnchorElement>(null);
-  const [ripple, setRipple] = useState<RippleState | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
-
   const hasRipple = variant !== "link";
 
-  const createRipple = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement>) => {
-      if (isHovered || !linkRef.current) return;
-      setIsHovered(true);
-
-      const rect = linkRef.current.getBoundingClientRect();
-      const rippleSize = Math.max(rect.width, rect.height) * 2;
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple({ x, y, size: rippleSize, key: Date.now() });
-    },
-    [isHovered],
-  );
-
-  const removeRipple = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement>) => {
-      setIsHovered(false);
-
-      if (!linkRef.current) return;
-      const rect = linkRef.current.getBoundingClientRect();
-      const rippleSize = Math.max(rect.width, rect.height) * 2;
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple({ x, y, size: rippleSize, key: Date.now(), isLeaving: true });
-    },
-    [],
-  );
-
-  const snapRipple = useCallback(() => {
-    setRipple((prev) => (prev ? { ...prev, snap: true } : null));
-  }, []);
-
-  const handleMouseMove = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement>) => {
-      if (!linkRef.current || !isHovered || !ripple) return;
-
-      const rect = linkRef.current.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple((prev) => (prev ? { ...prev, x, y } : null));
-    },
-    [isHovered, ripple],
+  const { ripple, rippleStyle, rippleMotionProps, handlers, onAnimationComplete } = useRipple(
+    linkRef,
+    { color: rippleColorMap[variant ?? "default"], disabled: !hasRipple },
   );
 
   return (
@@ -108,19 +55,19 @@ function ButtonLink({
       onMouseEnter={
         hasRipple
           ? (e: React.MouseEvent<HTMLAnchorElement>) => {
-              if (e.target === e.currentTarget) createRipple(e);
+              if (e.target === e.currentTarget) handlers.onMouseEnter?.(e);
             }
           : undefined
       }
       onMouseLeave={
         hasRipple
           ? (e: React.MouseEvent<HTMLAnchorElement>) => {
-              if (e.target === e.currentTarget) removeRipple(e);
+              if (e.target === e.currentTarget) handlers.onMouseLeave?.(e);
             }
           : undefined
       }
-      onMouseDown={hasRipple ? snapRipple : undefined}
-      onMouseMove={hasRipple ? handleMouseMove : undefined}
+      onMouseDown={hasRipple ? () => handlers.onMouseDown?.() : undefined}
+      onMouseMove={hasRipple ? (e: React.MouseEvent<HTMLAnchorElement>) => handlers.onMouseMove?.(e) : undefined}
       {...props}
     >
       <span
@@ -137,36 +84,13 @@ function ButtonLink({
 
       {hasRipple && (
         <AnimatePresence>
-          {ripple && (
+          {ripple && rippleStyle && rippleMotionProps && (
             <motion.span
               key={ripple.key}
               className="absolute rounded-full pointer-events-none z-1"
-              style={{
-                width: ripple.size,
-                height: ripple.size,
-                left: ripple.x,
-                top: ripple.y,
-                x: "-50%",
-                y: "-50%",
-                backgroundColor: rippleColorMap[variant ?? "default"],
-              }}
-              initial={{ scale: 0, opacity: 0.6 }}
-              animate={{
-                scale: ripple.isLeaving ? 0 : 1,
-                opacity: ripple.isLeaving ? 0 : 1,
-                x: "-50%",
-                y: "-50%",
-              }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{
-                duration: ripple.snap ? 0 : 0.5,
-                ease: "easeOut",
-              }}
-              onAnimationComplete={() => {
-                if (ripple.isLeaving) {
-                  setRipple(null);
-                }
-              }}
+              style={rippleStyle}
+              {...rippleMotionProps}
+              onAnimationComplete={onAnimationComplete}
             />
           )}
         </AnimatePresence>

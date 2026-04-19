@@ -8,6 +8,7 @@ import { Footer } from "@/components/ui/footer";
 import { PageShell } from "@/components/ui/page-shell";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { CustomCursor } from "@/components/ui/custom-cursor";
+import { PageTransition } from "@/components/ui/page-transition";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const notoSerif = Noto_Serif({
@@ -49,7 +50,9 @@ export default function RootLayout({
             <SmoothScrollProvider>
               <CustomCursor />
               <Header />
-              <PageShell className="">{children}</PageShell>
+              <PageShell className="">
+                <PageTransition>{children}</PageTransition>
+              </PageShell>
               <Footer />
             </SmoothScrollProvider>
           </ThemeProvider>
