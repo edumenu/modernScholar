@@ -8,6 +8,7 @@ import {
   Suspense,
   startTransition,
 } from "react";
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "motion/react"
@@ -29,10 +30,27 @@ const CONTACT_SPLINE_URL_DARK =
 
 const CONTACT_EMAIL = "dearmodernscholar@gmail.com"
 
+const QUESTION_ROUTES = [
+  {
+    icon: "solar:magnifer-line-duotone",
+    label: "Scholarship Help",
+    description: "Finding & applying",
+  },
+  {
+    icon: "solar:chat-round-dots-line-duotone",
+    label: "Platform Feedback",
+    description: "Bugs & suggestions",
+  },
+  {
+    icon: "solar:diploma-line-duotone",
+    label: "Partnership",
+    description: "Collaborate with us",
+  },
+];
+
 function NudgeArrow() {
   return (
     <div className="flex items-center gap-2">
-      {/* Curved arrow SVG pointing left toward the button */}
       <svg
         width="40"
         height="32"
@@ -55,12 +73,11 @@ function NudgeArrow() {
           strokeLinejoin="round"
         />
       </svg>
-      {/* Glassmorphic pill label */}
-      <span className="whitespace-nowrap rounded-full border border-white/50 bg-white/30 px-3 py-1.5 text-xs font-medium tracking-wide text-on-surface-variant shadow-[0px_4px_16px_0px_rgba(31,38,135,0.12)] backdrop-blur-sm">
+      <span className="whitespace-nowrap rounded-full border border-outline-variant/60 bg-surface-container/70 px-3 py-1.5 text-xs font-medium tracking-wide text-on-surface-variant shadow-[0px_4px_16px_0px_rgba(31,38,135,0.12)] backdrop-blur-sm">
         or copy email address
       </span>
     </div>
-  )
+  );
 }
 
 function CopyEmailButton() {
@@ -114,6 +131,60 @@ function CopyEmailButton() {
   )
 }
 
+function QuestionRouting() {
+  return (
+    <div className="grid grid-cols-3 gap-3">
+      {QUESTION_ROUTES.map((route) => (
+        <div
+          key={route.label}
+          className="flex flex-col items-center gap-2 rounded-2xl bg-surface-container-low p-4 text-center"
+        >
+          <Icon icon={route.icon} className="size-6 text-secondary" />
+          <span className="text-xs font-medium text-on-surface">
+            {route.label}
+          </span>
+          <span className="text-[11px] text-on-surface-variant">
+            {route.description}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MobileContactImage() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    startTransition(() => setMounted(true));
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="aspect-4/3 w-full animate-pulse rounded-3xl bg-surface-container" />
+    );
+  }
+
+  const src =
+    resolvedTheme === "dark"
+      ? "/darkContactPhone.png"
+      : "/lightContactPhone.png";
+
+  return (
+    <div className="overflow-hidden rounded-3xl bg-surface-container">
+      <Image
+        src={src}
+        alt="Modern Scholar contact illustration"
+        width={800}
+        height={600}
+        className="h-auto w-full object-cover"
+        priority
+      />
+    </div>
+  );
+}
+
 export function ContactFormSection() {
   const [isButtonHovered, setIsButtonHovered] = useState(false)
   const [mounted, setMounted] = useState(false);
@@ -135,152 +206,143 @@ export function ContactFormSection() {
   );
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      {/* Left column - 3D Spline scene (desktop only) */}
-      <div className="hidden lg:flex items-center justify-center">
-        <Suspense fallback={splineFallback}>
-          {mounted ? (
-            <SplineScene
-              key={resolvedTheme}
-              scene={splineUrl}
-              className="h-150 w-full"
-            />
-          ) : (
-            splineFallback
-          )}
-        </Suspense>
-      </div>
-
-      {/* Right column - Mailto contact section */}
-      <AnimatedSection variant="fadeUp" delay={0.4}>
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-3">
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl tracking-tight">
-              Get in Touch
-            </h2>
-            <p className="text-on-surface-variant text-base md:text-lg max-w-lg">
-              Send us an email for any inquiries, feedback, or just to say hi!
-              We’d love to hear from you.
-            </p>
+    <div className="rounded-3xl bg-surface-container-low p-8 md:p-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Left column - 3D Spline scene (desktop) / Static image (mobile) */}
+        <div className="flex items-center justify-center">
+          {/* Desktop: 3D scene in a styled container */}
+          <div className="hidden lg:block w-full rounded-3xl overflow-hidden bg-surface-container shadow-md">
+            <Suspense fallback={splineFallback}>
+              {mounted ? (
+                <SplineScene
+                  key={resolvedTheme}
+                  scene={splineUrl}
+                  className="h-120 w-full"
+                />
+              ) : (
+                splineFallback
+              )}
+            </Suspense>
           </div>
 
-          {/* Email CTA with nudge arrow */}
-          <div className="flex flex-col gap-6">
-            <div
-              className="relative flex flex-wrap items-center gap-4"
-              onMouseEnter={() => setIsButtonHovered(true)}
-              onMouseLeave={() => setIsButtonHovered(false)}
-            >
-              <a href={`mailto:${CONTACT_EMAIL}`}>
-                <CTAButton label="SEND EMAIL" variant="primary" type="button" />
-              </a>
-
-              {/* Floating nudge arrow — hides on hover, returns after */}
-              <div className="hidden sm:block">
-                <AnimatePresence>
-                  {!isButtonHovered && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.5, x: 20 }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1,
-                        x: 0,
-                        y: [0, -6, 0],
-                        rotate: [0, -2, 0],
-                      }}
-                      exit={{
-                        opacity: 0,
-                        scale: 0.6,
-                        x: 30,
-                        y: -10,
-                        transition: { duration: 0.3, ease: "backIn" },
-                      }}
-                      transition={{
-                        opacity: {
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 20,
-                        },
-                        scale: { type: "spring", stiffness: 300, damping: 20 },
-                        x: { type: "spring", stiffness: 300, damping: 20 },
-                        y: {
-                          repeat: Infinity,
-                          duration: 2,
-                          ease: "easeInOut",
-                          delay: 0.5,
-                        },
-                        rotate: {
-                          repeat: Infinity,
-                          duration: 2,
-                          ease: "easeInOut",
-                          delay: 0.5,
-                        },
-                      }}
-                    >
-                      <NudgeArrow />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-
-            {/* Email address + copy */}
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-on-surface-variant tracking-wide">
-                {CONTACT_EMAIL}
-              </span>
-              <CopyEmailButton />
-            </div>
-
-            {/* Location */}
-            <div className="flex items-center gap-2 text-sm text-on-surface-variant">
-              <Icon icon="solar:map-point-line-duotone" className="size-5" />
-              <span>Raleigh-Durham, North Carolina · EST</span>
-            </div>
+          {/* Mobile: theme-aware static image */}
+          <div className="block lg:hidden w-full">
+            <MobileContactImage />
           </div>
         </div>
-      </AnimatedSection>
+
+        {/* Right column - Contact section */}
+        <AnimatedSection variant="fadeUp" delay={0.4}>
+          <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-3">
+              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl tracking-tight">
+                Get in Touch
+              </h2>
+              <p className="text-on-surface-variant text-base md:text-lg max-w-lg">
+                Send us an email for any inquiries, feedback, or just to say hi!
+                We&apos;d love to hear from you.
+              </p>
+            </div>
+
+            {/* Question routing tiles */}
+            <QuestionRouting />
+
+            {/* Email CTA with nudge arrow */}
+            <div className="flex flex-col gap-6">
+              <div
+                className="relative flex flex-wrap items-center gap-4"
+                onMouseEnter={() => setIsButtonHovered(true)}
+                onMouseLeave={() => setIsButtonHovered(false)}
+              >
+                <a href={`mailto:${CONTACT_EMAIL}`}>
+                  <CTAButton
+                    label="SEND EMAIL"
+                    variant="primary"
+                    type="button"
+                  />
+                </a>
+
+                {/* Floating nudge arrow — hides on hover, returns after */}
+                <div className="hidden sm:block">
+                  <AnimatePresence>
+                    {!isButtonHovered && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.5, x: 20 }}
+                        animate={{
+                          opacity: 1,
+                          scale: 1,
+                          x: 0,
+                          y: [0, -6, 0],
+                          rotate: [0, -2, 0],
+                        }}
+                        exit={{
+                          opacity: 0,
+                          scale: 0.6,
+                          x: 30,
+                          y: -10,
+                          transition: { duration: 0.3, ease: "backIn" },
+                        }}
+                        transition={{
+                          opacity: {
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 20,
+                          },
+                          scale: {
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 20,
+                          },
+                          x: { type: "spring", stiffness: 300, damping: 20 },
+                          y: {
+                            repeat: Infinity,
+                            duration: 2,
+                            ease: "easeInOut",
+                            delay: 0.5,
+                          },
+                          rotate: {
+                            repeat: Infinity,
+                            duration: 2,
+                            ease: "easeInOut",
+                            delay: 0.5,
+                          },
+                        }}
+                      >
+                        <NudgeArrow />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Email address + copy */}
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-on-surface-variant tracking-wide">
+                  {CONTACT_EMAIL}
+                </span>
+                <CopyEmailButton />
+              </div>
+
+              {/* Response time expectation */}
+              <p className="text-sm text-on-surface-variant">
+                We typically respond within 1&ndash;2 business days.
+              </p>
+
+              {/* Team description */}
+              {/* <p className="text-sm text-on-surface-variant max-w-md">
+                We&apos;re a small team of educators and developers in North
+                Carolina, building better tools for scholarship discovery.
+              </p> */}
+
+              {/* Location */}
+              <div className="flex items-center gap-2 text-sm text-on-surface-variant">
+                <Icon icon="solar:map-point-line-duotone" className="size-5" />
+                <span>Raleigh-Durham, North Carolina &middot; EST</span>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+      </div>
     </div>
   );
 }
-
-/* ==========================================================================
-   PRESERVED: Original contact form for future use (backend integration)
-   ========================================================================== */
-/*
-import { Input } from "@/components/ui/input/input"
-import { Label } from "@/components/ui/label/label"
-import { Textarea } from "@/components/ui/textarea/textarea"
-
-const glassInputClasses =
-  "h-14 rounded-2xl border-white/40 bg-white/25 px-6 text-base text-on-surface placeholder:text-on-surface/50 shadow-[inset_0px_2px_10px_0px_rgba(31,38,135,0.1)] focus-visible:border-secondary focus-visible:ring-[3px] focus-visible:ring-secondary/30"
-
-const labelClasses =
-  "text-xs font-medium tracking-[1.2px] uppercase text-on-surface-variant"
-
-<form className="flex flex-col gap-6">
-  <div className="flex flex-col gap-3">
-    <Label htmlFor="name" className={labelClasses}>NAME*</Label>
-    <Input id="name" name="name" type="text" required className={glassInputClasses} />
-  </div>
-  <div className="flex flex-col gap-3">
-    <Label htmlFor="email" className={labelClasses}>EMAIL ADDRESS*</Label>
-    <Input id="email" name="email" type="email" required placeholder="yourname@email.com" className={glassInputClasses} />
-  </div>
-  <div className="flex flex-col gap-3">
-    <Label htmlFor="school" className={labelClasses}>SCHOOL NAME</Label>
-    <Input id="school" name="school" type="text" className={glassInputClasses} />
-  </div>
-  <div className="flex flex-col gap-3">
-    <Label htmlFor="subject" className={labelClasses}>SUBJECT</Label>
-    <Input id="subject" name="subject" type="text" className={glassInputClasses} />
-  </div>
-  <div className="flex flex-col gap-3">
-    <Label htmlFor="message" className={labelClasses}>YOUR MESSAGE</Label>
-    <Textarea id="message" name="message" placeholder="Write your message to us here" className={`${glassInputClasses} min-h-[178px] py-4 resize-none`} />
-  </div>
-  <div>
-    <CTAButton label="SUBMIT" variant="primary" type="button" />
-  </div>
-</form>
-*/
