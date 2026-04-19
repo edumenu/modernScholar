@@ -1,14 +1,13 @@
 "use client"
 
 import {
-  useCallback,
   useRef,
-  useState,
   type ComponentProps,
   type FC,
 } from "react";
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence } from "motion/react";
+import { useRipple } from "@/hooks/use-ripple";
 
 import { cn } from "@/lib/utils"
 
@@ -45,14 +44,6 @@ const rippleColorMap: Record<string, string> = {
   tertiary: "var(--tertiary-600)",
 };
 
-interface RippleState {
-  x: number;
-  y: number;
-  size: number;
-  key: number;
-  isLeaving?: boolean;
-}
-
 const CTAButton: FC<CTAButtonProps> = ({
   label,
   variant = "primary",
@@ -61,50 +52,10 @@ const CTAButton: FC<CTAButtonProps> = ({
 }) => {
   const styles = variantStyles[variant]
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [ripple, setRipple] = useState<RippleState | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
-  const createRipple = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (isHovered || !buttonRef.current) return;
-      setIsHovered(true);
-
-      const rect = buttonRef.current.getBoundingClientRect();
-      const rippleSize = Math.max(rect.width, rect.height) * 2;
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple({ x, y, size: rippleSize, key: Date.now() });
-    },
-    [isHovered],
-  );
-
-  const removeRipple = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      setIsHovered(false);
-
-      if (!buttonRef.current) return;
-      const rect = buttonRef.current.getBoundingClientRect();
-      const rippleSize = Math.max(rect.width, rect.height) * 2;
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple({ x, y, size: rippleSize, key: Date.now(), isLeaving: true });
-    },
-    [],
-  );
-
-  const handleMouseMove = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (!buttonRef.current || !isHovered || !ripple) return;
-
-      const rect = buttonRef.current.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple((prev) => (prev ? { ...prev, x, y } : null));
-    },
-    [isHovered, ripple],
+  const { ripple, rippleStyle, rippleMotionProps, handlers, onAnimationComplete } = useRipple(
+    buttonRef,
+    { color: rippleColorMap[variant] },
   );
 
   return (
@@ -112,13 +63,14 @@ const CTAButton: FC<CTAButtonProps> = ({
       ref={buttonRef}
       data-cursor="fade"
       className={cn(
-        "group relative h-auto w-50 cursor-pointer overflow-hidden rounded-full border-none p-1 shadow-md outline-none transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "group relative h-auto w-50 cursor-pointer overflow-hidden rounded-full border-none p-1 shadow-md outline-none transition-shadow duration-300 focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50",
         styles.wrapper,
         className,
       )}
-      onMouseEnter={createRipple}
-      onMouseLeave={removeRipple}
-      onMouseMove={handleMouseMove}
+      onMouseEnter={handlers.onMouseEnter}
+      onMouseLeave={handlers.onMouseLeave}
+      onMouseMove={handlers.onMouseMove}
+      onMouseDown={handlers.onMouseDown}
       {...props}
     >
       <span className="relative z-3 flex items-center h-12 pointer-events-none">
@@ -148,38 +100,13 @@ const CTAButton: FC<CTAButtonProps> = ({
       </span>
 
       <AnimatePresence>
-        {ripple && (
+        {ripple && rippleStyle && rippleMotionProps && (
           <motion.span
             key={ripple.key}
             className="absolute rounded-full pointer-events-none z-1"
-            style={{
-              width: ripple.size,
-              height: ripple.size,
-              left: ripple.x,
-              top: ripple.y,
-              x: "-50%",
-              y: "-50%",
-              backgroundColor: rippleColorMap[variant],
-            }}
-            initial={{ scale: 0, opacity: 0.6 }}
-            animate={{
-              scale: ripple.isLeaving ? 0 : 1,
-              opacity: ripple.isLeaving ? 0 : 1,
-              x: "-50%",
-              y: "-50%",
-            }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{
-              duration: 0.5,
-              ease: "easeOut",
-            }}
-            onAnimationComplete={() => {
-              if (ripple.isLeaving) {
-                setRipple((prev) =>
-                  prev && prev.key === ripple.key ? null : prev,
-                );
-              }
-            }}
+            style={rippleStyle}
+            {...rippleMotionProps}
+            onAnimationComplete={onAnimationComplete}
           />
         )}
       </AnimatePresence>

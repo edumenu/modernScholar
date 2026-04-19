@@ -1,9 +1,10 @@
 "use client"
 
-import { useCallback, useRef, useState } from "react";
+import { useRef } from "react";
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 import { motion, AnimatePresence } from "motion/react";
+import { useRipple } from "@/hooks/use-ripple";
 
 import { cn } from "@/lib/utils"
 
@@ -15,13 +16,13 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground hover:text-white shadow-neu-primary aria-expanded:bg-primary aria-expanded:text-primary-foreground",
         outline:
-          "border bg-input/30 border-border hover:text-white border-2 shadow-neu-outline aria-expanded:bg-muted aria-expanded:text-foreground",
+          "border bg-input/30 border-border hover:text-primary border-2 shadow-neu-outline aria-expanded:bg-muted aria-expanded:text-foreground",
         secondary:
           "bg-secondary text-secondary-foreground hover:text-white shadow-neu-secondary aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         tertiary:
           "bg-tertiary text-tertiary-foreground text-white shadow-neu-tertiary aria-expanded:bg-tertiary aria-expanded:text-tertiary-foreground",
         ghost:
-          "text-surface-tint hover:text-primary-400 shadow-none aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
+          "text-surface-tint hover:text-primary-400 hover:bg-primary-50/60 dark:hover:bg-muted/50 shadow-none aria-expanded:bg-muted aria-expanded:text-foreground",
         destructive:
           "bg-destructive/10 text-destructive hover:text-white shadow-neu-outline focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40",
         link: "shadow-none text-primary underline-offset-4 hover:underline",
@@ -47,10 +48,6 @@ const buttonVariants = cva(
   },
 );
 
-/**
- * Ripple fill color per variant, using design system tokens.
- * Maps to CSS custom properties defined in globals.css.
- */
 const rippleColorMap: Record<string, string> = {
   default: "var(--primary-600)",
   outline: "var(--primary-100)",
@@ -60,15 +57,6 @@ const rippleColorMap: Record<string, string> = {
   destructive: "var(--destructive)",
   link: "transparent",
 };
-
-interface RippleState {
-  x: number;
-  y: number;
-  size: number;
-  key: number;
-  isLeaving?: boolean;
-  snap?: boolean;
-}
 
 type ButtonProps = ButtonPrimitive.Props &
   VariantProps<typeof buttonVariants> & {
@@ -90,61 +78,11 @@ function Button({
   const isParent = hoverTrigger === "parent";
 
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [ripple, setRipple] = useState<RippleState | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
-
   const hasRipple = variant !== "link";
 
-  const createRipple = useCallback(
-    (event: Pick<React.MouseEvent<HTMLButtonElement>, "clientX" | "clientY">) => {
-      if (isHovered || !buttonRef.current) return;
-      setIsHovered(true);
-
-      const rect = buttonRef.current.getBoundingClientRect();
-      const rippleSize = Math.max(rect.width, rect.height) * 2;
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple({ x, y, size: rippleSize, key: Date.now() });
-    },
-    [isHovered],
-  );
-
-  const removeRipple = useCallback(
-    (event: Pick<React.MouseEvent<HTMLButtonElement>, "clientX" | "clientY">) => {
-      setIsHovered(false);
-
-      if (!buttonRef.current) return;
-      const rect = buttonRef.current.getBoundingClientRect();
-      const rippleSize = Math.max(rect.width, rect.height) * 1;
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple({ x, y, size: rippleSize, key: Date.now(), isLeaving: true });
-    },
-    [],
-  );
-
-  const snapRipple = useCallback(() => {
-    setRipple((prev) => (prev ? { ...prev, snap: true } : null));
-  }, []);
-
-  const clearRipple = useCallback(() => {
-    setRipple(null);
-    setIsHovered(false);
-  }, []);
-
-  const handleMouseMove = useCallback(
-    (event: Pick<React.MouseEvent<HTMLButtonElement>, "clientX" | "clientY">) => {
-      if (!buttonRef.current || !isHovered || !ripple) return;
-
-      const rect = buttonRef.current.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      setRipple((prev) => (prev ? { ...prev, x, y } : null));
-    },
-    [isHovered, ripple],
+  const { ripple, rippleStyle, rippleMotionProps, handlers, onAnimationComplete } = useRipple(
+    buttonRef,
+    { color: rippleColorMap[variant ?? "default"], disabled: !hasRipple },
   );
 
   return (
@@ -168,7 +106,7 @@ function Button({
         hasRipple
           ? (e) => {
               props.onMouseEnter?.(e);
-              if (e.target === e.currentTarget) createRipple(e);
+              if (e.target === e.currentTarget) handlers.onMouseEnter?.(e);
             }
           : props.onMouseEnter
       }
@@ -176,7 +114,7 @@ function Button({
         hasRipple
           ? (e) => {
               props.onMouseLeave?.(e);
-              if (e.target === e.currentTarget) removeRipple(e);
+              if (e.target === e.currentTarget) handlers.onMouseLeave?.(e);
             }
           : props.onMouseLeave
       }
@@ -184,7 +122,7 @@ function Button({
         hasRipple
           ? (e) => {
               props.onClick?.(e);
-              clearRipple();
+              handlers.onClick?.();
             }
           : props.onClick
       }
@@ -192,7 +130,7 @@ function Button({
         hasRipple
           ? (e) => {
               props.onMouseDown?.(e);
-              snapRipple();
+              handlers.onMouseDown?.();
             }
           : props.onMouseDown
       }
@@ -200,7 +138,7 @@ function Button({
         hasRipple
           ? (e) => {
               props.onMouseMove?.(e);
-              handleMouseMove(e);
+              handlers.onMouseMove?.(e);
             }
           : props.onMouseMove
       }
@@ -219,36 +157,13 @@ function Button({
 
       {hasRipple && (
         <AnimatePresence>
-          {ripple && (
+          {ripple && rippleStyle && rippleMotionProps && (
             <motion.span
               key={ripple.key}
               className="absolute rounded-full pointer-events-none z-1"
-              style={{
-                width: ripple.size,
-                height: ripple.size,
-                left: ripple.x,
-                top: ripple.y,
-                x: "-50%",
-                y: "-50%",
-                backgroundColor: rippleColorMap[variant ?? "default"],
-              }}
-              initial={{ scale: 0, opacity: 0.6 }}
-              animate={{
-                scale: ripple.isLeaving ? 0 : 1,
-                opacity: ripple.isLeaving ? 0 : 1,
-                x: "-50%",
-                y: "-50%",
-              }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{
-                duration: ripple.snap ? 0 : 0.3,
-                ease: "circOut",
-              }}
-              onAnimationComplete={() => {
-                if (ripple.isLeaving) {
-                  setRipple(null);
-                }
-              }}
+              style={rippleStyle}
+              {...rippleMotionProps}
+              onAnimationComplete={onAnimationComplete}
             />
           )}
         </AnimatePresence>

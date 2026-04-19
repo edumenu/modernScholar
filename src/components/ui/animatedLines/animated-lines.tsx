@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView, type TargetAndTransition } from "motion/react";
+import { motion, useInView, useReducedMotion, type TargetAndTransition } from "motion/react";
 import { cn } from "@/lib/utils";
 import { useContainerWidth } from "@/lib/pretext/use-container-width";
 import { useTextLines } from "@/lib/pretext/use-text-lines";
@@ -71,6 +71,7 @@ export function AnimatedLines({
   const sectionRef = useRef<HTMLDivElement>(null);
   const width = useContainerWidth(measureRef);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  const prefersReducedMotion = useReducedMotion();
 
   const { lines, isReady } = useTextLines({
     text,
@@ -81,6 +82,16 @@ export function AnimatedLines({
   });
 
   const { initial, animate } = lineVariants[variant];
+
+  if (prefersReducedMotion) {
+    return (
+      <div ref={sectionRef} className="w-full">
+        <div ref={measureRef} className={cn("w-full", wrapperClassName)}>
+          <Tag className={cn(className)}>{text}</Tag>
+        </div>
+      </div>
+    );
+  }
 
   if (mode === "chars") {
     const chars = text.split("");
@@ -126,21 +137,14 @@ export function AnimatedLines({
 
   return (
     <div ref={sectionRef} className="w-full">
-      {/*
-        measureRef goes on a block-level div that matches the text element's
-        width constraint (e.g. max-w-3xl). This ensures pretext measures
-        against the same width the text actually renders at.
-      */}
       <div ref={measureRef} className={cn("w-full", wrapperClassName)}>
         <Tag className={cn(className)}>
-          {/* Before measurement, render invisible text to reserve space */}
           {!isReady && (
             <span className="invisible" aria-hidden="true">
               {text}
             </span>
           )}
 
-          {/* After measurement, render each line as a staggered motion.span */}
           {isReady && (
             <span className="sr-only">{text}</span>
           )}
