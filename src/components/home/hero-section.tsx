@@ -8,8 +8,6 @@ import { AnimatedSection } from "../ui/animatedSection/animated-section";
 import { AnimatedLines } from "@/components/ui/animatedLines/animated-lines";
 import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts"
 import { ParallaxLayer } from "@/components/ui/parallax-layer"
-import Image from "next/image";
-import { cn } from "@/lib/utils";
 
 const SplineScene = lazy(() =>
   import("./spline-scene").then((m) => ({ default: m.SplineScene })),
@@ -63,34 +61,19 @@ export function HeroSection() {
         })()}
       </ParallaxLayer>
 
-      {/* Company name — top left */}
-      <div className="relative z-10 flex items-center">
-        {/* <Image
-          src="/iconWhite.png"
-          alt="Modern Scholar"
-          width={36}
-          height={36}
-          className={cn("size-14 object-contain hidden dark:block")}
-        /> */}
-        {/* <Image
-          src="/iconBurgundy.png"
-          alt="Modern Scholar"
-          width={36}
-          height={36}
-          className={cn("size-14 object-contain block dark:hidden")}
-        /> */}
-        {/* <AnimatedLines
-          text="Modern Scholar"
-          font={PRETEXT_FONTS.heroHeadline}
-          fallbackFont={PRETEXT_FALLBACK_FONTS.heroHeadline}
-          lineHeight={32}
-          as="h3"
-          mode="chars"
-          className="font-heading text-xl font-medium leading-[1.15] tracking-tight text-primary dark:text-primary-100 md:text-[2rem]"
-          staggerDelay={0.05}
-          variant="revealUp"
-        /> */}
+      {/* Mobile hero content — brand identity above the fold */}
+      <div className="relative z-10 flex flex-col gap-4 md:hidden">
+        <AnimatedSection delay={0.2} className="flex flex-col gap-2">
+          <p className="font-heading text-lg font-medium tracking-tight text-primary dark:text-primary-100">
+            Modern Scholar
+          </p>
+          <p className="max-w-xs text-sm text-on-surface-variant">
+            Discover and secure scholarships through a curated, design-forward experience.
+          </p>
+        </AnimatedSection>
       </div>
+      {/* Spacer for desktop — keeps bottom row pushed down */}
+      <div className="hidden md:block" />
 
       {/* Bottom row — headline left, CTA right */}
       <ParallaxLayer
@@ -109,11 +92,12 @@ export function HeroSection() {
             font={PRETEXT_FONTS.heroHeadline}
             fallbackFont={PRETEXT_FALLBACK_FONTS.heroHeadline}
             lineHeight={32}
-            as="h3"
+            as="span"
             mode="chars"
             className="font-heading text-xl font-medium leading-[1.15] tracking-tight text-primary dark:text-primary-100 md:text-[1.5rem]"
             staggerDelay={0.05}
             variant="revealUp"
+            aria-hidden="true"
           />
           {/* </AnimatedSection> */}
           {/* Headline — bottom left */}
