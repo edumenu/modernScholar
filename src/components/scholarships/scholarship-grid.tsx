@@ -5,14 +5,20 @@ import { AnimatePresence, motion } from "motion/react"
 import { useLenis } from "lenis/react"
 import { Icon } from "@iconify/react"
 import Image from "next/image"
-import { useQueryState, parseAsInteger } from "nuqs"
+import {
+  useQueryState,
+  parseAsInteger,
+  parseAsString,
+  parseAsArrayOf,
+} from "nuqs";
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   scholarships as allScholarships,
   type Scholarship,
   type ScholarshipCategory,
-} from "@/data/scholarships"
+  type ScholarshipTag,
+} from "@/data/scholarships";
 import { ScholarshipFilters, type GridLayout } from "./scholarship-filters"
 import { ScholarshipCard } from "./scholarship-card"
 import {
@@ -26,71 +32,186 @@ import {
   PaginationNextInkSpread,
   PaginationEllipsisInkSpread,
 } from "@/components/ui/pagination/pagination-ink-spread"
+import { Button } from "@/components/ui/button/button";
 
-/** Sort scholarships: matching items first (original order), non-matching after */
-export function sortByFilter(
+/* ── Helpers ─────────────────────────────────────────────── */
+
+type TagFilters = Record<"featured" | "popular" | "new" | "topPick", boolean>
+
+const TAG_KEY_TO_LABEL: Record<string, ScholarshipTag> = {
+  featured: "Featured",
+  popular: "Popular",
+  new: "New",
+  topPick: "Top Pick",
+}
+
+/** Parse "$10,000" → 10000 */
+function parseAmount(amount: string): number {
+  return Number(amount.replace(/[^0-9.]/g, "")) || 0
+}
+
+/** Parse "April 30, 2026" → Date */
+function parseDeadline(deadline: string): number {
+  return new Date(deadline).getTime() || 0
+}
+
+/** Full filtering pipeline: search → tags → category, then sort */
+export function filterAndSort(
   items: Scholarship[],
-  filter: ScholarshipCategory,
+  category: ScholarshipCategory,
+  searchQuery: string,
+  tagFilters: TagFilters,
+  sortBy: string,
 ): { scholarship: Scholarship; matches: boolean }[] {
-  if (filter === "All") {
-    return items.map((s) => ({ scholarship: s, matches: true }))
-  }
+  const query = searchQuery.toLowerCase().trim();
 
-  const matching: Scholarship[] = []
-  const nonMatching: Scholarship[] = []
+  // Determine active tag keys
+  const activeTags = Object.entries(tagFilters)
+    .filter(([, v]) => v)
+    .map(([k]) => TAG_KEY_TO_LABEL[k]);
 
-  for (const item of items) {
-    if (item.category === filter) {
-      matching.push(item)
-    } else {
-      nonMatching.push(item)
+  // Apply search + tag filters to get the filtered set
+  const filtered = items.filter((s) => {
+    // Text search across title, provider, description, category
+    if (query) {
+      const haystack =
+        `${s.title} ${s.provider} ${s.description ?? ""} ${s.category}`.toLowerCase();
+      if (!haystack.includes(query)) return false;
     }
+    // Tag filter (any active tag must match)
+    if (activeTags.length > 0 && (!s.tag || !activeTags.includes(s.tag))) {
+      return false;
+    }
+    return true;
+  });
+
+  // Sort
+  if (sortBy === "amount") {
+    filtered.sort((a, b) => parseAmount(b.amount) - parseAmount(a.amount));
+  } else if (sortBy === "rating") {
+    filtered.sort((a, b) => b.rating - a.rating);
+  } else {
+    // deadline (default): soonest first
+    filtered.sort(
+      (a, b) => parseDeadline(a.deadline) - parseDeadline(b.deadline),
+    );
   }
 
+  // Category: matching first, non-matching dimmed
+  if (category === "All") {
+    return filtered.map((s) => ({ scholarship: s, matches: true }));
+  }
+
+  const matching = filtered.filter((s) => s.category === category);
+  const nonMatching = filtered.filter((s) => s.category !== category);
   return [
     ...matching.map((s) => ({ scholarship: s, matches: true })),
     ...nonMatching.map((s) => ({ scholarship: s, matches: false })),
-  ]
+  ];
 }
 
-const PAGE_SIZE = 30
+const PAGE_SIZE = 15;
 
-/** Bento blocks render 10 cards in the Figma 4‑column pattern. */
+/** Bento blocks render 10 cards in the Figma 4-column pattern. */
 const BENTO_CHUNK = 10
+
+/* ── Main Component ──────────────────────────────────────── */
 
 export function ScholarshipGrid() {
   const [activeFilter, setActiveFilter] = useState<ScholarshipCategory>("All")
-  const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [page, setPage] = useQueryState(
-    "page",
-    parseAsInteger.withDefault(1),
-  )
-  const [layout, setLayout] = useState<GridLayout>("bento")
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [layout, setLayout] = useState<GridLayout>("bento");
+
+  // URL-persisted state
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [searchQuery, setSearchQuery] = useQueryState(
+    "q",
+    parseAsString.withDefault(""),
+  );
+  const [sortBy, setSortBy] = useQueryState(
+    "sort",
+    parseAsString.withDefault("deadline"),
+  );
+  const [tagsParam, setTagsParam] = useQueryState(
+    "tags",
+    parseAsArrayOf(parseAsString).withDefault([]),
+  );
+
+  // Derive tagFilters object from URL array
+  const tagFilters: TagFilters = useMemo(
+    () => ({
+      featured: tagsParam.includes("featured"),
+      popular: tagsParam.includes("popular"),
+      new: tagsParam.includes("new"),
+      topPick: tagsParam.includes("topPick"),
+    }),
+    [tagsParam],
+  );
+
+  const setTagFilters = useCallback(
+    (updater: TagFilters | ((prev: TagFilters) => TagFilters)) => {
+      const next =
+        typeof updater === "function" ? updater(tagFilters) : updater;
+      const arr = Object.entries(next)
+        .filter(([, v]) => v)
+        .map(([k]) => k);
+      setTagsParam(arr.length > 0 ? arr : null);
+    },
+    [tagFilters, setTagsParam],
+  );
 
   const lenis = useLenis()
 
-  const sortedItems = sortByFilter(allScholarships, activeFilter)
-  const totalPages = Math.max(1, Math.ceil(sortedItems.length / PAGE_SIZE))
-  const safePage = Math.min(Math.max(1, page), totalPages)
-  const start = (safePage - 1) * PAGE_SIZE
-  const visibleItems = sortedItems.slice(start, start + PAGE_SIZE)
+  const sortedItems = useMemo(
+    () =>
+      filterAndSort(
+        allScholarships,
+        activeFilter,
+        searchQuery,
+        tagFilters,
+        sortBy,
+      ),
+    [activeFilter, searchQuery, tagFilters, sortBy],
+  );
+
+  const totalPages = Math.max(1, Math.ceil(sortedItems.length / PAGE_SIZE));
+  const safePage = Math.min(Math.max(1, page), totalPages);
+  const start = (safePage - 1) * PAGE_SIZE;
+  const visibleItems = sortedItems.slice(start, start + PAGE_SIZE);
   const expandedScholarship = expandedId
-    ? allScholarships.find((s) => s.id === expandedId) ?? null
-    : null
+    ? (allScholarships.find((s) => s.id === expandedId) ?? null)
+    : null;
 
   // Normalize URL if requested page is out of range
   useEffect(() => {
     if (page !== safePage) {
-      setPage(safePage === 1 ? null : safePage)
+      setPage(safePage === 1 ? null : safePage);
     }
-  }, [page, safePage, setPage])
+  }, [page, safePage, setPage]);
+
+  // Reset page when filters change
+  const handleSearchChange = useCallback(
+    (q: string) => {
+      setSearchQuery(q || null);
+      setPage(null);
+    },
+    [setSearchQuery, setPage],
+  );
+
+  const handleSortChange = useCallback(
+    (sort: string) => {
+      setSortBy(sort === "deadline" ? null : sort);
+      setPage(null);
+    },
+    [setSortBy, setPage],
+  );
 
   // Recalculate Lenis scroll height whenever visible content changes
   useEffect(() => {
-    if (!lenis) return
-    const timer = setTimeout(() => lenis.resize(), 100)
-    return () => clearTimeout(timer)
-  }, [safePage, activeFilter, layout, lenis])
+    if (!lenis) return;
+    const timer = setTimeout(() => lenis.resize(), 100);
+    return () => clearTimeout(timer);
+  }, [safePage, activeFilter, layout, lenis, searchQuery, sortBy, tagsParam]);
 
   const handleFilterChange = useCallback(
     (category: ScholarshipCategory) => {
@@ -151,118 +272,163 @@ export function ScholarshipGrid() {
     return () => window.removeEventListener("keydown", handler)
   }, [expandedId, handleClose])
 
+  const clearAllFilters = useCallback(() => {
+    setActiveFilter("All");
+    setSearchQuery(null);
+    setSortBy(null);
+    setTagsParam(null);
+    setPage(null);
+  }, [setSearchQuery, setSortBy, setTagsParam, setPage]);
+
+  const resultCount = sortedItems.filter((i) => i.matches).length;
+
   return (
-    <div id="scholarship-grid-top" className="flex flex-col gap-8 scroll-mt-20">
+    <div
+      id="scholarship-grid-top"
+      className="flex w-full flex-col gap-8 scroll-mt-20"
+    >
       <ScholarshipFilters
         activeFilter={activeFilter}
         onFilterChange={handleFilterChange}
         layout={layout}
         onLayoutChange={setLayout}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        tagFilters={tagFilters}
+        onTagFiltersChange={setTagFilters}
+        sortBy={sortBy}
+        onSortByChange={handleSortChange}
+        resultCount={resultCount}
       />
 
-      {/*
-        Grid renders in one of two layouts:
-        - bento: Figma 4-column block (chunks of 10) — responsive
-        - uniform: fixed-aspect 4-col responsive grid
-      */}
-      <AnimatePresence mode="wait">
-        {layout === "bento" ? (
-          <motion.div
-            key="bento"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="flex flex-col gap-4 pb-10 pt-2"
-          >
-            {chunkItems(visibleItems, BENTO_CHUNK).map((chunk, chunkIdx) => (
-              <BentoBlock
-                key={chunkIdx}
-                items={chunk}
-                expandedId={expandedId}
-                onExpand={handleExpand}
-              />
-            ))}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="grid"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="grid gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-          >
-            {visibleItems.map(({ scholarship, matches }) => (
-              <div key={scholarship.id} className="aspect-3/4">
-                <ScholarshipCard
-                  scholarship={scholarship}
-                  dimmed={!matches}
-                  isExpanded={expandedId === scholarship.id}
-                  onExpand={handleExpand}
-                />
-              </div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Empty state */}
+      {sortedItems.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center justify-center gap-4 py-24"
+        >
+          <Icon
+            icon="solar:magnifer-zoom-in-linear"
+            className="size-16 text-on-surface/20"
+          />
+          <p className="text-lg font-medium text-on-surface/60">
+            No scholarships found
+          </p>
+          <p className="max-w-sm text-center text-sm text-on-surface-variant">
+            Try adjusting your search, filters, or category to discover more
+            opportunities.
+          </p>
+          <Button variant="outline" size="sm" onClick={clearAllFilters}>
+            Clear all filters
+          </Button>
+        </motion.div>
+      ) : (
+        <>
+          {/* Grid renders in one of two layouts */}
+          <AnimatePresence mode="wait">
+            {layout === "bento" ? (
+              <motion.div
+                key="bento"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex w-full flex-col gap-4 pb-10 pt-2"
+              >
+                {chunkItems(visibleItems, BENTO_CHUNK).map(
+                  (chunk, chunkIdx) => (
+                    <BentoBlock
+                      key={chunkIdx}
+                      items={chunk}
+                      expandedId={expandedId}
+                      onExpand={handleExpand}
+                    />
+                  ),
+                )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="grid"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="grid w-full gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              >
+                {visibleItems.map(({ scholarship, matches }) => (
+                  <div key={scholarship.id} className="aspect-3/4 w-full">
+                    <ScholarshipCard
+                      scholarship={scholarship}
+                      dimmed={!matches}
+                      isExpanded={expandedId === scholarship.id}
+                      onExpand={handleExpand}
+                    />
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-      {/* ═══ Pagination Variant: Ink Spread ═══ */}
-      {totalPages > 1 && (
-        <div className="flex flex-col items-center gap-2">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPreviousInkSpread
-                  href="#"
-                  aria-disabled={safePage === 1}
-                  className={cn(
-                    safePage === 1 && "pointer-events-none opacity-50",
-                  )}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (safePage > 1) goToPage(safePage - 1);
-                  }}
-                />
-              </PaginationItem>
-
-              {pageNumbers.map((p, i) =>
-                p === "ellipsis" ? (
-                  <PaginationItem key={`ellipsis-is-${i}`}>
-                    <PaginationEllipsisInkSpread />
-                  </PaginationItem>
-                ) : (
-                  <PaginationItem key={`is-${p}`}>
-                    <PaginationLinkInkSpread
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex flex-col items-center gap-2">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPreviousInkSpread
                       href="#"
-                      isActive={p === safePage}
+                      aria-disabled={safePage === 1}
+                      className={cn(
+                        safePage === 1 && "pointer-events-none opacity-50",
+                      )}
                       onClick={(e) => {
                         e.preventDefault();
-                        goToPage(p);
+                        if (safePage > 1) goToPage(safePage - 1);
                       }}
-                    >
-                      {p}
-                    </PaginationLinkInkSpread>
+                    />
                   </PaginationItem>
-                ),
-              )}
 
-              <PaginationItem>
-                <PaginationNextInkSpread
-                  href="#"
-                  aria-disabled={safePage === totalPages}
-                  className={cn(
-                    safePage === totalPages && "pointer-events-none opacity-50",
+                  {pageNumbers.map((p, i) =>
+                    p === "ellipsis" ? (
+                      <PaginationItem key={`ellipsis-is-${i}`}>
+                        <PaginationEllipsisInkSpread />
+                      </PaginationItem>
+                    ) : (
+                      <PaginationItem key={`is-${p}`}>
+                        <PaginationLinkInkSpread
+                          href="#"
+                          isActive={p === safePage}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            goToPage(p);
+                          }}
+                        >
+                          {p}
+                        </PaginationLinkInkSpread>
+                      </PaginationItem>
+                    ),
                   )}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (safePage < totalPages) goToPage(safePage + 1);
-                  }}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+
+                  <PaginationItem>
+                    <PaginationNextInkSpread
+                      href="#"
+                      aria-disabled={safePage === totalPages}
+                      className={cn(
+                        safePage === totalPages &&
+                          "pointer-events-none opacity-50",
+                      )}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (safePage < totalPages) goToPage(safePage + 1);
+                      }}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
+        </>
       )}
 
       {/* Expanded Card Overlay */}
@@ -286,18 +452,41 @@ export function ScholarshipGrid() {
               aria-modal="true"
               aria-label={expandedScholarship.title}
               onClick={handleClose}
+              onKeyDown={(e) => {
+                if (e.key === "Tab") {
+                  // Basic focus trap: keep focus within modal
+                  const modal = e.currentTarget.querySelector<HTMLElement>(
+                    "[data-modal-content]",
+                  );
+                  if (!modal) return;
+                  const focusable = modal.querySelectorAll<HTMLElement>(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+                  );
+                  if (focusable.length === 0) return;
+                  const first = focusable[0];
+                  const last = focusable[focusable.length - 1];
+                  if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                  } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                  }
+                }
+              }}
             >
               <motion.div
+                data-modal-content
                 onClick={(e) => e.stopPropagation()}
                 layoutId={`card-${expandedScholarship.id}`}
                 className={cn(
                   "relative flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl",
-                  "dark:shadow-2xl",
+                  "bg-background shadow-xl dark:shadow-2xl",
                   "max-h-[85vh]",
                 )}
               >
                 {/* Image section */}
-                <div className="relative min-h-80 w-full shrink-0 sm:min-h-100">
+                <div className="relative min-h-48 w-full shrink-0 sm:min-h-100">
                   <Image
                     src={expandedScholarship.image}
                     alt={expandedScholarship.title}
@@ -352,26 +541,51 @@ export function ScholarshipGrid() {
                   className="flex shrink flex-col gap-4 overflow-y-auto bg-background p-8 md:px-12 md:py-10"
                 >
                   {expandedScholarship.description && (
-                    <p className="text-sm leading-relaxed text-gray-800/70 md:text-base">
+                    <p className="text-sm leading-relaxed text-on-surface/70 md:text-base">
                       {expandedScholarship.description}
                     </p>
                   )}
 
-                  <p className="text-base text-gray-800/90 md:text-lg">
+                  <p className="text-base text-on-surface/90 md:text-lg">
                     {expandedScholarship.provider}
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-800/80 md:text-base">
-                    <span className="font-medium text-gray-800">
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-on-surface/80 md:text-base">
+                    <span className="font-medium text-on-surface">
                       {expandedScholarship.amount}
                     </span>
                     <span>&middot;</span>
                     <span>Deadline: {expandedScholarship.deadline}</span>
                   </div>
 
-                  <span className="inline-flex w-fit items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium text-gray-700">
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-secondary/15 px-4 py-1.5 text-sm font-medium text-secondary">
                     {expandedScholarship.category}
                   </span>
+
+                  {/* CTA row */}
+                  <div className="flex items-center gap-3 border-t border-outline-variant/30 pt-4 dark:border-white/10">
+                    <Button size="default" className="flex-1 sm:flex-none">
+                      Apply Now
+                      <Icon
+                        icon="solar:arrow-right-linear"
+                        data-icon="inline-end"
+                      />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      aria-label="Save scholarship"
+                    >
+                      <Icon icon="solar:bookmark-linear" className="size-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      aria-label="Share scholarship"
+                    >
+                      <Icon icon="solar:share-linear" className="size-4" />
+                    </Button>
+                  </div>
                 </motion.div>
               </motion.div>
             </div>
@@ -382,10 +596,8 @@ export function ScholarshipGrid() {
   );
 }
 
-/**
- * Build a compact page-number list with ellipses:
- * always show first, last, current ±1.
- */
+/* ── Utilities ────────────────────────────────────────────── */
+
 function getPageNumbers(
   current: number,
   total: number,
@@ -407,7 +619,8 @@ type SortedItem = { scholarship: Scholarship; matches: boolean }
 
 function chunkItems(items: SortedItem[], size: number): SortedItem[][] {
   const out: SortedItem[][] = []
-  for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size))
+  for (let i = 0; i < items.length; i += size)
+    out.push(items.slice(i, i + size));
   return out
 }
 
@@ -417,16 +630,8 @@ interface BentoBlockProps {
   onExpand: (id: string) => void
 }
 
-/**
- * Figma bento block: up to 10 cards in a 4-column row.
- * - Outer cols (1 & 4): fixed width, 2 cards each.
- * - Inner cols (2 & 3): flex-grow, 3 cards each (middle is fixed-height).
- *
- * Renders only one layout at a time based on viewport width to halve
- * the number of mounted card components.
- */
 function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
-  const isDesktop = useMediaQuery("(min-width: 1024px)")
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const renderCard = (item: SortedItem, disableLayout = false) => (
     <ScholarshipCard
@@ -436,58 +641,61 @@ function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
       disableLayoutAnimation={disableLayout}
       onExpand={onExpand}
     />
-  )
+  );
 
   const renderedCols = useMemo(() => {
     const distribute = (n: number): [number, number, number, number] => {
-      if (n >= 10) return [2, 3, 3, 2]
-      if (n === 9) return [2, 3, 2, 2]
-      if (n === 8) return [2, 2, 2, 2]
-      if (n === 7) return [2, 2, 2, 1]
-      if (n === 6) return [2, 2, 1, 1]
-      if (n === 5) return [2, 1, 1, 1]
-      if (n === 4) return [1, 1, 1, 1]
-      if (n === 3) return [1, 1, 1, 0]
-      if (n === 2) return [1, 1, 0, 0]
-      if (n === 1) return [1, 0, 0, 0]
-      return [0, 0, 0, 0]
-    }
-    const capacities = distribute(items.length)
+      if (n >= 10) return [2, 3, 3, 2];
+      if (n === 9) return [2, 3, 2, 2];
+      if (n === 8) return [2, 2, 2, 2];
+      if (n === 7) return [2, 2, 2, 1];
+      if (n === 6) return [2, 2, 1, 1];
+      if (n === 5) return [2, 1, 1, 1];
+      if (n === 4) return [1, 1, 1, 1];
+      if (n === 3) return [1, 1, 1, 0];
+      if (n === 2) return [1, 1, 0, 0];
+      if (n === 1) return [1, 0, 0, 0];
+      return [0, 0, 0, 0];
+    };
+    const capacities = distribute(items.length);
 
-    const fillOrder: number[] = []
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 1) fillOrder.push(c)
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 3) fillOrder.push(c)
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 2) fillOrder.push(c)
+    const fillOrder: number[] = [];
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 1) fillOrder.push(c);
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 3) fillOrder.push(c);
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 2) fillOrder.push(c);
 
-    const cols: SortedItem[][] = [[], [], [], []]
+    const cols: SortedItem[][] = [[], [], [], []];
     items.forEach((item, i) => {
-      cols[fillOrder[i]].push(item)
-    })
+      cols[fillOrder[i]].push(item);
+    });
     return cols
       .map((col, idx) => ({ col, idx }))
-      .filter(({ col }) => col.length > 0)
-  }, [items])
+      .filter(({ col }) => col.length > 0);
+  }, [items]);
 
-  // While the media query hasn't resolved yet (SSR / first paint),
-  // render an empty placeholder with min-height to prevent layout shift.
+  // SSR placeholder
   if (isDesktop === null) {
-    return <div className="min-h-205" />
+    return <div className="min-h-205" />;
   }
 
   if (!isDesktop) {
     return (
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2">
         {items.map((item) => (
-          <div key={item.scholarship.id} className="aspect-3/4">
+          <div key={item.scholarship.id} className="aspect-3/4 w-full">
             {renderCard(item, true)}
           </div>
         ))}
       </div>
-    )
+    );
   }
 
+  // Content-aware height: full chunk gets more height, partial gets less
+  const isFullChunk = items.length >= BENTO_CHUNK;
+  const heightClass = isFullChunk ? "min-h-[820px]" : "min-h-[400px]";
+
   return (
-    <div className="flex h-205 gap-4 items-stretch">
+    <div className={cn("flex gap-4 items-stretch", heightClass)}>
       {renderedCols.map(({ col, idx }) => {
         const isOuter = idx === 0 || idx === 3;
         const colClass = isOuter

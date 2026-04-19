@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useRef } from "react"
-import { motion, LayoutGroup } from "motion/react";
+import { useRef, type Dispatch, type SetStateAction } from "react"
+import { motion, LayoutGroup } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import {
+  scholarships as allScholarships,
   SCHOLARSHIP_CATEGORIES,
   type ScholarshipCategory,
 } from "@/data/scholarships"
@@ -17,7 +18,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuCheckboxItem,
-  DropdownMenuSeparator,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu/dropdown-menu"
@@ -27,29 +27,48 @@ import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile"
 
 export type GridLayout = "bento" | "uniform"
 
+type TagFilters = Record<"featured" | "popular" | "new" | "topPick", boolean>
+
 interface ScholarshipFiltersProps {
   activeFilter: ScholarshipCategory
   onFilterChange: (category: ScholarshipCategory) => void
   layout: GridLayout
   onLayoutChange: (layout: GridLayout) => void
+  searchQuery: string
+  onSearchChange: (query: string) => void
+  tagFilters: TagFilters
+  onTagFiltersChange: Dispatch<SetStateAction<TagFilters>> | ((updater: TagFilters | ((prev: TagFilters) => TagFilters)) => void)
+  sortBy: string
+  onSortByChange: (sort: string) => void
+  resultCount: number
 }
+
+/** Derive category counts from the full dataset */
+const categoryCounts = SCHOLARSHIP_CATEGORIES.reduce(
+  (acc, cat) => {
+    acc[cat] =
+      cat === "All"
+        ? allScholarships.length
+        : allScholarships.filter((s) => s.category === cat).length
+    return acc
+  },
+  {} as Record<ScholarshipCategory, number>,
+)
 
 export function ScholarshipFilters({
   activeFilter,
   onFilterChange,
   layout,
   onLayoutChange,
+  searchQuery,
+  onSearchChange,
+  tagFilters,
+  onTagFiltersChange,
+  sortBy,
+  onSortByChange,
+  resultCount,
 }: ScholarshipFiltersProps) {
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
-  const [tagFilters, setTagFilters] = useState({
-    featured: false,
-    popular: false,
-    new: false,
-    topPick: false,
-  })
-  const [sortBy, setSortBy] = useState("deadline")
 
   const isMobile = useMediaQuery("(max-width: 1023px)")
 
@@ -65,23 +84,25 @@ export function ScholarshipFilters({
         layout={layout}
         onLayoutChange={onLayoutChange}
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={onSearchChange}
         tagFilters={tagFilters}
-        onTagFiltersChange={setTagFilters}
+        onTagFiltersChange={onTagFiltersChange as Dispatch<SetStateAction<TagFilters>>}
         sortBy={sortBy}
-        onSortByChange={setSortBy}
+        onSortByChange={onSortByChange}
+        resultCount={resultCount}
       />
     )
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Row 1: Category tabs + search */}
-      <div className="flex items-center justify-between border-b border-outline-variant pb-2 dark:border-white/10">
+    <div className="flex items-center justify-between gap-4 border-b border-outline-variant pb-3 dark:border-white/10">
+      {/* Left: Category tabs + Search */}
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
         <LayoutGroup>
-          <div className="flex items-center gap-1 overflow-x-auto scrollbar-none py-2 w-full">
+          <div className="flex items-center gap-1 py-2">
             {SCHOLARSHIP_CATEGORIES.map((category) => {
-              const isActive = activeFilter === category;
+              const isActive = activeFilter === category
+              const count = categoryCounts[category]
               return (
                 <div key={category} className="relative">
                   {isActive && (
@@ -108,53 +129,49 @@ export function ScholarshipFilters({
                     )}
                   >
                     {category}
+                    <span
+                      className={cn(
+                        "ml-1 inline-flex size-5 items-center justify-center rounded-full text-[10px] font-medium",
+                        isActive
+                          ? "bg-white/30 text-on-primary dark:bg-white/20"
+                          : "bg-on-surface/8 text-on-surface/50",
+                      )}
+                    >
+                      {count}
+                    </span>
                   </Button>
                 </div>
-              );
+              )
             })}
           </div>
         </LayoutGroup>
 
-        {/* Search input — expands on focus, collapses on blur when empty */}
-        <motion.div
-          initial={false}
-          animate={{ width: searchOpen ? 240 : 36 }}
-          transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-          className="flex shrink-0 cursor-text items-center gap-2 overflow-hidden rounded-full px-2.5 py-1.5"
-          onClick={() => inputRef.current?.focus()}
-        >
+        {/* Inline search */}
+        <div className="flex shrink-0 items-center gap-2 rounded-full border border-outline-variant/30 bg-white/20 px-3 py-1.5 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20 dark:bg-white/5">
           <Icon
             icon="solar:magnifer-linear"
-            className={cn(
-              "size-4.5 shrink-0 transition-colors",
-              searchOpen
-                ? "text-on-surface/50 dark:text-white/50"
-                : "text-on-surface/60 dark:text-white/50",
-            )}
+            className="size-4 shrink-0 text-on-surface/50 dark:text-white/50"
           />
           <Input
             ref={inputRef}
             type="search"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => setSearchOpen(true)}
-            onBlur={() => {
-              if (!searchQuery) setSearchOpen(false);
-            }}
+            onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Escape") {
-                setSearchQuery("");
-                inputRef.current?.blur();
+                onSearchChange("")
+                inputRef.current?.blur()
               }
             }}
-            placeholder="Search scholarships"
+            placeholder="Search..."
             aria-label="Search scholarships"
+            className="w-36 border-0 bg-transparent p-0 text-sm shadow-none focus:ring-0 xl:w-48"
           />
-        </motion.div>
+        </div>
       </div>
 
-      {/* Row 2: Layout toggle + More Filters */}
-      <div className="flex w-full justify-between items-center pt-4">
+      {/* Right: Layout toggle + Sort + Filters dropdown */}
+      <div className="flex shrink-0 items-center gap-2">
         <div className="flex items-center gap-1 rounded-full bg-white/30 p-1 dark:bg-white/10">
           <Button
             variant="ghost"
@@ -187,6 +204,7 @@ export function ScholarshipFilters({
             <Icon icon="solar:widget-3-line-duotone" className="size-4" />
           </Button>
         </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
@@ -200,53 +218,20 @@ export function ScholarshipFilters({
               />
             }
           >
-            More Filters
+            Sort
             <Icon
               data-icon="inline-end"
-              icon="solar:alt-arrow-down-linear"
+              icon="solar:sort-vertical-linear"
               className="size-4"
             />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" sideOffset={6}>
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Tags</DropdownMenuLabel>
-              <DropdownMenuCheckboxItem
-                checked={tagFilters.featured}
-                onCheckedChange={(checked) =>
-                  setTagFilters((prev) => ({ ...prev, featured: checked }))
-                }
-              >
-                Featured
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={tagFilters.popular}
-                onCheckedChange={(checked) =>
-                  setTagFilters((prev) => ({ ...prev, popular: checked }))
-                }
-              >
-                Popular
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={tagFilters.new}
-                onCheckedChange={(checked) =>
-                  setTagFilters((prev) => ({ ...prev, new: checked }))
-                }
-              >
-                New
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem
-                checked={tagFilters.topPick}
-                onCheckedChange={(checked) =>
-                  setTagFilters((prev) => ({ ...prev, topPick: checked }))
-                }
-              >
-                Top Pick
-              </DropdownMenuCheckboxItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
               <DropdownMenuLabel>Sort By</DropdownMenuLabel>
-              <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
+              <DropdownMenuRadioGroup
+                value={sortBy}
+                onValueChange={onSortByChange}
+              >
                 <DropdownMenuRadioItem value="deadline">
                   Deadline
                 </DropdownMenuRadioItem>
@@ -260,7 +245,74 @@ export function ScholarshipFilters({
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  glassPill,
+                  "shrink-0 text-on-surface hover:bg-white/40 dark:hover:bg-white/20",
+                )}
+              />
+            }
+          >
+            Filters
+            <Icon
+              data-icon="inline-end"
+              icon="solar:filter-line-duotone"
+              className="size-4"
+            />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" sideOffset={6}>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Tags</DropdownMenuLabel>
+              <DropdownMenuCheckboxItem
+                checked={tagFilters.featured}
+                onCheckedChange={(checked) =>
+                  (onTagFiltersChange as (updater: (prev: TagFilters) => TagFilters) => void)(
+                    (prev) => ({ ...prev, featured: checked }),
+                  )
+                }
+              >
+                Featured
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={tagFilters.popular}
+                onCheckedChange={(checked) =>
+                  (onTagFiltersChange as (updater: (prev: TagFilters) => TagFilters) => void)(
+                    (prev) => ({ ...prev, popular: checked }),
+                  )
+                }
+              >
+                Popular
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={tagFilters.new}
+                onCheckedChange={(checked) =>
+                  (onTagFiltersChange as (updater: (prev: TagFilters) => TagFilters) => void)(
+                    (prev) => ({ ...prev, new: checked }),
+                  )
+                }
+              >
+                New
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={tagFilters.topPick}
+                onCheckedChange={(checked) =>
+                  (onTagFiltersChange as (updater: (prev: TagFilters) => TagFilters) => void)(
+                    (prev) => ({ ...prev, topPick: checked }),
+                  )
+                }
+              >
+                Top Pick
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
-  );
+  )
 }

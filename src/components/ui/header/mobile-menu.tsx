@@ -263,7 +263,7 @@ export function MobileMenuButton() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-md lg:hidden"
               onClick={() => setIsOpen(false)}
             />
             <MobileNav />

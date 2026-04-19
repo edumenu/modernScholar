@@ -23,7 +23,7 @@ function PaginationContent({
   return (
     <ul
       data-slot="pagination-content"
-      className={cn("flex items-center gap-4", className)}
+      className={cn("flex flex-wrap items-center justify-center gap-2 sm:gap-4", className)}
       {...props}
     />
   )

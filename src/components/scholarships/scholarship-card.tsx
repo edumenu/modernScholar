@@ -27,19 +27,21 @@ export function ScholarshipCard({
       {...(!disableLayoutAnimation && {
         layoutId: `card-${scholarship.id}`,
       })}
-      whileHover={{ scale: 1.009 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
+      whileHover={{ scale: 1.025, y: -4 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
       className={cn(
-        "group relative h-full cursor-pointer overflow-hidden rounded-2xl",
-        "shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.9)]",
+        "group relative h-full w-full cursor-pointer overflow-hidden rounded-2xl",
+        "shadow-md hover:shadow-lg",
         "dark:shadow-lg",
         "transition-[opacity,filter] duration-400 ease-in-out",
-        dimmed && "pointer-events-none grayscale opacity-30",
+        dimmed && "pointer-events-none opacity-40 saturate-50",
         isExpanded && "invisible",
       )}
       onClick={(e) => {
-        e.stopPropagation();
-        onExpand(scholarship.id);
+        e.stopPropagation()
+        if (!dimmed) {
+          onExpand(scholarship.id)
+        }
       }}
     >
       <Image
@@ -47,7 +49,7 @@ export function ScholarshipCard({
         alt={scholarship.title}
         fill
         className="object-cover"
-        sizes="(max-width: 768px) 100vw, 33vw"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 25vw, 325px"
       />
 
       {/* Gradient overlay */}
@@ -94,5 +96,5 @@ export function ScholarshipCard({
         </div>
       </div>
     </motion.div>
-  );
+  )
 }

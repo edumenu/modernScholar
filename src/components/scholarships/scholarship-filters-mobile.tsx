@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
+import { motion, AnimatePresence } from "motion/react"
 import { Icon } from "@iconify/react"
 import { useLenis } from "lenis/react"
 import { cn } from "@/lib/utils"
@@ -48,6 +49,7 @@ interface ScholarshipFiltersMobileProps {
   onTagFiltersChange: Dispatch<SetStateAction<TagFilters>>
   sortBy: string
   onSortByChange: (sort: string) => void
+  resultCount: number
 }
 
 export function ScholarshipFiltersMobile({
@@ -61,6 +63,7 @@ export function ScholarshipFiltersMobile({
   onTagFiltersChange,
   sortBy,
   onSortByChange,
+  resultCount,
 }: ScholarshipFiltersMobileProps) {
   const [sheetOpen, setSheetOpen] = useState(false)
   const lenis = useLenis()
@@ -86,14 +89,19 @@ export function ScholarshipFiltersMobile({
 
   const clearFilters = () => {
     onFilterChange("All")
-    onTagFiltersChange({ featured: false, popular: false, new: false, topPick: false })
+    onTagFiltersChange({
+      featured: false,
+      popular: false,
+      new: false,
+      topPick: false,
+    })
     onSortByChange("deadline")
   }
 
   return (
     <div className="flex flex-col gap-3">
       {/* Full-width search bar */}
-      <div className="flex items-center gap-2 rounded-full border border-outline-variant/30 bg-white/20 px-3 py-2 dark:bg-white/5">
+      <div className="flex items-center gap-2 rounded-full border border-outline-variant/30 bg-white/20 px-3 py-2 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20 dark:bg-white/5">
         <Icon
           icon="solar:magnifer-linear"
           className="size-4.5 shrink-0 text-on-surface/50 dark:text-white/50"
@@ -211,7 +219,11 @@ export function ScholarshipFiltersMobile({
                           key={category}
                           variant={isActive ? "default" : "ghost"}
                           size="sm"
-                          onClick={() => onFilterChange(category)}
+                          onClick={() => {
+                            onFilterChange(category)
+                            // Auto-close on category selection
+                            setSheetOpen(false)
+                          }}
                           className={cn(
                             "rounded-full",
                             isActive
@@ -226,31 +238,35 @@ export function ScholarshipFiltersMobile({
                   </div>
                 </div>
 
-                {/* Tag filters */}
+                {/* Tag filters — styled toggle pills */}
                 <div>
                   <h3 className="mb-3 text-sm font-medium text-on-surface/70">
                     Tags
                   </h3>
-                  <div className="flex flex-col gap-3">
-                    {TAG_OPTIONS.map(({ key, label }) => (
-                      <label
-                        key={key}
-                        className="flex items-center gap-3 text-sm text-on-surface"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={tagFilters[key]}
-                          onChange={(e) =>
+                  <div className="flex flex-wrap gap-2">
+                    {TAG_OPTIONS.map(({ key, label }) => {
+                      const isActive = tagFilters[key]
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() =>
                             onTagFiltersChange((prev) => ({
                               ...prev,
-                              [key]: e.target.checked,
+                              [key]: !prev[key],
                             }))
                           }
-                          className="size-4 rounded border-outline-variant accent-primary"
-                        />
-                        {label}
-                      </label>
-                    ))}
+                          className={cn(
+                            "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                            isActive
+                              ? "bg-primary text-on-primary"
+                              : "bg-white/20 text-on-surface/60 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/15",
+                          )}
+                        >
+                          {label}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
 
@@ -259,31 +275,31 @@ export function ScholarshipFiltersMobile({
                   <h3 className="mb-3 text-sm font-medium text-on-surface/70">
                     Sort By
                   </h3>
-                  <div className="flex flex-col gap-3">
-                    {SORT_OPTIONS.map(({ value, label }) => (
-                      <label
-                        key={value}
-                        className="flex items-center gap-3 text-sm text-on-surface"
-                      >
-                        <input
-                          type="radio"
-                          name="mobileSortBy"
-                          value={value}
-                          checked={sortBy === value}
-                          onChange={() => onSortByChange(value)}
-                          className="size-4 accent-primary"
-                        />
-                        {label}
-                      </label>
-                    ))}
+                  <div className="flex flex-wrap gap-2">
+                    {SORT_OPTIONS.map(({ value, label }) => {
+                      const isActive = sortBy === value
+                      return (
+                        <button
+                          key={value}
+                          type="button"
+                          onClick={() => onSortByChange(value)}
+                          className={cn(
+                            "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                            isActive
+                              ? "bg-primary text-on-primary"
+                              : "bg-white/20 text-on-surface/60 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/15",
+                          )}
+                        >
+                          {label}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
               </div>
 
               <SheetFooter>
-                <SheetClose
-                  render={<Button className="w-full" />}
-                >
+                <SheetClose render={<Button className="w-full" />}>
                   Apply Filters
                 </SheetClose>
               </SheetFooter>
@@ -291,6 +307,21 @@ export function ScholarshipFiltersMobile({
           </Sheet>
         </div>
       </div>
+
+      {/* Result count feedback */}
+      <AnimatePresence>
+        {(searchQuery || hasActiveFilters) && (
+          <motion.p
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="text-sm text-on-surface-variant"
+          >
+            {resultCount} {resultCount === 1 ? "scholarship" : "scholarships"}{" "}
+            found
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
