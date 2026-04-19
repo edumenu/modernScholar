@@ -3,10 +3,13 @@
 import { useState, useCallback, useEffect, useMemo } from "react"
 import { useLenis } from "lenis/react"
 import { useQueryState, parseAsInteger } from "nuqs"
+import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { blogPosts } from "@/data/blog-posts"
 import { BlogCard } from "./blog-card"
+import { BlogCardFeatured } from "./blog-card-featured"
 import { BlogFilters } from "./blog-filters"
+import { Button } from "@/components/ui/button/button"
 import {
   Pagination,
   PaginationContent,
@@ -57,6 +60,13 @@ export function BlogGrid() {
   const start = (safePage - 1) * PAGE_SIZE
   const visiblePosts = filteredPosts.slice(start, start + PAGE_SIZE)
 
+  // Show featured post only on page 1 when explicitly marked
+  const featuredPost =
+    safePage === 1 ? visiblePosts.find((p) => p.featured) ?? null : null
+  const gridPosts = featuredPost
+    ? visiblePosts.filter((p) => p.id !== featuredPost.id)
+    : visiblePosts
+
   // Normalize URL if requested page is out of range
   useEffect(() => {
     if (page !== safePage) {
@@ -87,6 +97,12 @@ export function BlogGrid() {
     [setPage],
   )
 
+  const handleClearFilters = useCallback(() => {
+    setActiveCategory("All")
+    setSearchQuery("")
+    setPage(null)
+  }, [setPage])
+
   const goToPage = useCallback(
     (n: number) => {
       const clamped = Math.min(Math.max(1, n), totalPages)
@@ -109,16 +125,44 @@ export function BlogGrid() {
         onSearchChange={handleSearchChange}
       />
 
-      <div className="grid grid-cols-1 gap-6 pt-2 pb-10 sm:grid-cols-2 lg:grid-cols-3">
-        {visiblePosts.map((post) => (
-          <BlogCard key={post.id} post={post} />
-        ))}
-      </div>
+      {/* Featured post — editorial hero */}
+      {featuredPost && (
+        <div className="pt-2">
+          <BlogCardFeatured post={featuredPost} />
+        </div>
+      )}
 
+      {/* Standard grid */}
+      {gridPosts.length > 0 && (
+        <div className="grid grid-cols-1 gap-6 pt-2 pb-10 sm:grid-cols-2 lg:grid-cols-3">
+          {gridPosts.map((post) => (
+            <BlogCard key={post.id} post={post} />
+          ))}
+        </div>
+      )}
+
+      {/* Styled empty state */}
       {filteredPosts.length === 0 && (
-        <p className="py-12 text-center text-on-surface-variant">
-          No articles found matching your criteria.
-        </p>
+        <div className="flex flex-col items-center gap-4 py-16">
+          <div className="flex size-16 items-center justify-center rounded-2xl bg-surface-container">
+            <Icon
+              icon="solar:document-text-linear"
+              className="size-8 text-on-surface-variant"
+            />
+          </div>
+          <div className="text-center">
+            <h3 className="font-heading text-lg font-medium text-on-surface">
+              No articles found
+            </h3>
+            <p className="mt-1 text-sm text-on-surface-variant">
+              Try adjusting your search or filters to find what you&apos;re
+              looking for.
+            </p>
+          </div>
+          <Button variant="outline" size="sm" onClick={handleClearFilters}>
+            Clear filters
+          </Button>
+        </div>
       )}
 
       {totalPages > 1 && (

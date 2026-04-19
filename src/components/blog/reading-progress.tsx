@@ -5,7 +5,10 @@ import {
   motion,
   useScroll,
   useMotionValueEvent,
+  useSpring,
+  useTransform,
 } from "motion/react"
+import { useLenis } from "lenis/react"
 
 interface Section {
   id: string
@@ -23,23 +26,32 @@ export function ReadingProgress({
 }: ReadingProgressProps) {
   const [percentage, setPercentage] = useState(0)
   const [activeIndex, setActiveIndex] = useState(-1)
+  const lenis = useLenis()
 
   const { scrollYProgress } = useScroll({
     target: articleRef,
     offset: ["start start", "end end"],
   })
 
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  })
+
+  const scaleX = useTransform(smoothProgress, [0, 1], [0, 1])
+
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     setPercentage(Math.round(latest * 100))
 
-    // Determine active section based on element positions
-    const viewportCenter = window.innerHeight / 2
+    // Active section detection using reading-zone offset (30% from top)
+    const readingZone = window.innerHeight * 0.3
     let currentIndex = -1
     for (let i = sections.length - 1; i >= 0; i--) {
       const el = document.getElementById(sections[i].id)
       if (el) {
         const rect = el.getBoundingClientRect()
-        if (rect.top <= viewportCenter) {
+        if (rect.top <= readingZone) {
           currentIndex = i
           break
         }
@@ -48,8 +60,15 @@ export function ReadingProgress({
     setActiveIndex(currentIndex)
   })
 
+  const handleSectionClick = (sectionId: string) => {
+    const el = document.getElementById(sectionId)
+    if (el && lenis) {
+      lenis.scrollTo(el, { offset: -100 })
+    }
+  }
+
   return (
-    <div className="overflow-hidden rounded-2xl flex flex-col gap-4 border border-white/40 bg-white/25 p-4 shadow-md backdrop-blur-2xl dark:border-white/10 dark:bg-white/10">
+    <div className="overflow-hidden rounded-2xl flex flex-col gap-4 border border-outline-variant/40 bg-surface-container-low p-4 shadow-md dark:bg-surface-container-low dark:border-outline-variant/20">
       {/* Section breadcrumb dots */}
       <div className="flex flex-col gap-2.5">
         {sections.map((section, i) => {
@@ -57,7 +76,8 @@ export function ReadingProgress({
           return (
             <button
               key={section.id}
-              className="flex items-center gap-2.5 text-left"
+              onClick={() => handleSectionClick(section.id)}
+              className="flex items-center gap-2.5 text-left cursor-pointer hover:opacity-80 transition-opacity"
             >
               <motion.div
                 className="shrink-0 rounded-full bg-primary"
@@ -82,17 +102,21 @@ export function ReadingProgress({
         })}
       </div>
 
+      {/* Visual progress bar */}
+      <div className="h-1 w-full overflow-hidden rounded-full bg-outline-variant/20">
+        <motion.div
+          className="h-full origin-left rounded-full bg-primary"
+          style={{ scaleX }}
+        />
+      </div>
+
       {/* Percentage */}
-      <div className="mt-4 flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <span className="font-heading text-xs tracking-wider text-on-surface-variant">
           Reading Progress
         </span>
         <motion.span
-          key={Math.floor(percentage / 10)}
-          initial={{ scale: 1.3 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 15 }}
-          className="font-heading text-sm font-medium text-on-surface"
+          className="font-heading text-sm font-medium tabular-nums text-on-surface"
         >
           {percentage}%
         </motion.span>

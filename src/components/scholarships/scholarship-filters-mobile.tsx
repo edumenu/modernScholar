@@ -115,6 +115,7 @@ export function ScholarshipFiltersMobile({
           }}
           placeholder="Search scholarships"
           aria-label="Search scholarships"
+          className="h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0"
         />
       </div>
 

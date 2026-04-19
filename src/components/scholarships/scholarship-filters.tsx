@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, type Dispatch, type SetStateAction } from "react"
+import { useRef, useState, type Dispatch, type SetStateAction } from "react"
 import { motion, LayoutGroup } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
@@ -69,6 +69,7 @@ export function ScholarshipFilters({
   resultCount,
 }: ScholarshipFiltersProps) {
   const inputRef = useRef<HTMLInputElement>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   const isMobile = useMediaQuery("(max-width: 1023px)")
 
@@ -96,7 +97,7 @@ export function ScholarshipFilters({
 
   return (
     <div className="flex items-center justify-between gap-4 border-b border-outline-variant pb-3 dark:border-white/10">
-      {/* Left: Category tabs + Search */}
+      {/* Left: Category tabs */}
       <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
         <LayoutGroup>
           <div className="flex items-center gap-1 py-2">
@@ -145,18 +146,41 @@ export function ScholarshipFilters({
             })}
           </div>
         </LayoutGroup>
+      </div>
 
-        {/* Inline search */}
-        <div className="flex shrink-0 items-center gap-2 rounded-full border border-outline-variant/30 bg-white/20 px-3 py-1.5 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/20 dark:bg-white/5">
+      {/* Right: Search + Layout toggle + Sort + Filters dropdown */}
+      <div className="flex shrink-0 items-center gap-2">
+        {/* Collapsible search */}
+        <motion.div
+          initial={false}
+          animate={{ width: searchOpen ? 240 : 36 }}
+          transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
+          className={cn(
+            "flex h-9 shrink-0 cursor-text items-center overflow-hidden rounded-full border border-outline-variant/30",
+            searchOpen
+              ? "gap-2 bg-white/20 px-2.5 dark:bg-white/5"
+              : "justify-center bg-surface-container-low/50",
+          )}
+          onClick={() => inputRef.current?.focus()}
+        >
           <Icon
             icon="solar:magnifer-linear"
-            className="size-4 shrink-0 text-on-surface/50 dark:text-white/50"
+            className={cn(
+              "size-4.5 shrink-0 transition-colors",
+              searchOpen
+                ? "text-on-surface/50 dark:text-white/50"
+                : "text-on-surface/60 dark:text-white/50",
+            )}
           />
           <Input
             ref={inputRef}
             type="search"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
+            onFocus={() => setSearchOpen(true)}
+            onBlur={() => {
+              if (!searchQuery) setSearchOpen(false)
+            }}
             onKeyDown={(e) => {
               if (e.key === "Escape") {
                 onSearchChange("")
@@ -165,13 +189,12 @@ export function ScholarshipFilters({
             }}
             placeholder="Search..."
             aria-label="Search scholarships"
-            className="w-36 border-0 bg-transparent p-0 text-sm shadow-none focus:ring-0 xl:w-48"
+            className={cn(
+              "h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0",
+              !searchOpen && "w-0",
+            )}
           />
-        </div>
-      </div>
-
-      {/* Right: Layout toggle + Sort + Filters dropdown */}
-      <div className="flex shrink-0 items-center gap-2">
+        </motion.div>
         <div className="flex items-center gap-1 rounded-full bg-white/30 p-1 dark:bg-white/10">
           <Button
             variant="ghost"

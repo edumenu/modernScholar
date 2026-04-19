@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useMemo } from "react"
 import { motion, LayoutGroup } from "motion/react"
 import { Icon } from "@iconify/react"
 import { useLenis } from "lenis/react"
@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { Button } from "@/components/ui/button/button"
 import { Input } from "@/components/ui/input/input"
-import { glassPill } from "@/components/ui/styles"
 import {
   Sheet,
   SheetTrigger,
@@ -51,6 +50,14 @@ export function BlogFilters({
 
   const hasActiveFilter = activeCategory !== "All"
 
+  // Dynamic filter count: category + search
+  const activeFilterCount = useMemo(() => {
+    let count = 0
+    if (activeCategory !== "All") count++
+    if (searchQuery.trim()) count++
+    return count
+  }, [activeCategory, searchQuery])
+
   if (isMobile === null) {
     return <div className="min-h-14" />
   }
@@ -73,6 +80,7 @@ export function BlogFilters({
             }}
             placeholder="Search articles"
             aria-label="Search articles"
+            className="h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0"
           />
         </div>
 
@@ -94,17 +102,14 @@ export function BlogFilters({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className={cn(
-                      glassPill,
-                      "shrink-0 text-on-surface hover:bg-white/40 dark:hover:bg-white/20",
-                    )}
+                    className="shrink-0 rounded-full border border-outline-variant/30 bg-surface-container-low/50 text-on-surface hover:bg-surface-container dark:bg-surface-container-low dark:hover:bg-surface-container"
                   />
                 }
               >
                 Filters
-                {hasActiveFilter && (
+                {activeFilterCount > 0 && (
                   <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-on-primary">
-                    1
+                    {activeFilterCount}
                   </span>
                 )}
                 <Icon
@@ -211,7 +216,12 @@ export function BlogFilters({
         initial={false}
         animate={{ width: searchOpen ? 240 : 36 }}
         transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-        className="flex shrink-0 cursor-text items-center gap-2 overflow-hidden rounded-full px-2.5 py-1.5"
+        className={cn(
+          "flex h-9 shrink-0 cursor-text items-center overflow-hidden rounded-full border border-outline-variant/30",
+          searchOpen
+            ? "gap-2 bg-white/20 px-2.5 dark:bg-white/5"
+            : "justify-center bg-surface-container-low/50",
+        )}
         onClick={() => inputRef.current?.focus()}
       >
         <Icon
@@ -240,6 +250,10 @@ export function BlogFilters({
           }}
           placeholder="Search articles"
           aria-label="Search articles"
+          className={cn(
+            "h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0",
+            !searchOpen && "w-0",
+          )}
         />
       </motion.div>
     </div>

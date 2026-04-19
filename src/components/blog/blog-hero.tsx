@@ -11,7 +11,7 @@ export function BlogHero() {
         lineHeight={56}
         as="h1"
         mode="chars"
-        className="font-heading text-4xl md:text-5xl lg:text-7xl font-normal leading-none tracking-tight"
+        className="font-heading text-[clamp(3rem,8vw+1rem,7rem)] font-normal leading-none tracking-tight"
         staggerDelay={0.05}
         variant="revealUp"
       />
@@ -22,5 +22,5 @@ export function BlogHero() {
         </p>
       </AnimatedSection>
     </div>
-  );
+  )
 }
