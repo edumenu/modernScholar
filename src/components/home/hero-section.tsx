@@ -8,15 +8,11 @@ import { AnimatedSection } from "../ui/animatedSection/animated-section";
 import { AnimatedLines } from "@/components/ui/animatedLines/animated-lines";
 import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts"
 import { ParallaxLayer } from "@/components/ui/parallax-layer"
+import { splineScenes } from "@/config/spline-scenes"
 
 const SplineScene = lazy(() =>
   import("./spline-scene").then((m) => ({ default: m.SplineScene })),
 );
-
-const HERO_SPLINE_URL_LIGHT =
-  "https://prod.spline.design/JY2cfwfllYa7FSve/scene.splinecode";
-const HERO_SPLINE_URL_DARK =
-  "https://prod.spline.design/X5b6ec1AfF1VBtXh/scene.splinecode";
 
 export function HeroSection() {
   const router = useRouter()
@@ -43,8 +39,8 @@ export function HeroSection() {
           );
           const splineUrl =
             mounted && resolvedTheme === "dark"
-              ? HERO_SPLINE_URL_DARK
-              : HERO_SPLINE_URL_LIGHT;
+              ? splineScenes.heroDark()
+              : splineScenes.heroLight();
           return (
             <Suspense fallback={fallback}>
               {mounted ? (

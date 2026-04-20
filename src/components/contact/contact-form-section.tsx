@@ -17,16 +17,13 @@ import { AnimatedSection } from "@/components/ui/animatedSection/animated-sectio
 import { CTAButton } from "@/components/ui/button/cta-button"
 import { Button } from "@/components/ui/button/button"
 
+import { splineScenes } from "@/config/spline-scenes"
+
 const SplineScene = lazy(() =>
   import("@/components/home/spline-scene").then((mod) => ({
     default: mod.SplineScene,
   })),
 );
-
-const CONTACT_SPLINE_URL_LIGHT =
-  "https://prod.spline.design/p0mZprPwlZ2CJwpI/scene.splinecode";
-const CONTACT_SPLINE_URL_DARK =
-  "https://prod.spline.design/TIEvLLUQbEXBkhx7/scene.splinecode";
 
 const CONTACT_EMAIL = "dearmodernscholar@gmail.com"
 
@@ -196,8 +193,8 @@ export function ContactFormSection() {
 
   const splineUrl =
     mounted && resolvedTheme === "dark"
-      ? CONTACT_SPLINE_URL_DARK
-      : CONTACT_SPLINE_URL_LIGHT;
+      ? splineScenes.contactDark()
+      : splineScenes.contactLight();
 
   const splineFallback = (
     <div className="flex size-full items-center justify-center">

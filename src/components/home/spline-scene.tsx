@@ -3,15 +3,12 @@
 import { useState } from "react";
 import Spline from "@splinetool/react-spline";
 
-const DEFAULT_SCENE_URL =
-  "https://prod.spline.design/JY2cfwfllYa7FSve/scene.splinecode";
-
 export function SplineScene({
   className,
-  scene = DEFAULT_SCENE_URL,
+  scene,
 }: {
   className?: string;
-  scene?: string;
+  scene: string;
 }) {
   const [loaded, setLoaded] = useState(false);
 
