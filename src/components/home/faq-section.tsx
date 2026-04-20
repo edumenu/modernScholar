@@ -50,10 +50,10 @@ function AccordionItem({
   onToggle: () => void
 }) {
   return (
-    <div className="border-b border-outline-variant/20">
+    <div className="rounded-2xl bg-surface-container-low">
       <button
         onClick={onToggle}
-        className="flex w-full cursor-pointer items-center justify-between gap-4 py-5 text-left focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+        className="flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left focus-visible:rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
         aria-expanded={isOpen}
       >
         <span className="text-base font-medium text-on-surface">
@@ -73,12 +73,12 @@ function AccordionItem({
       </button>
       <div
         className={cn(
-          "grid transition-[grid-template-rows] duration-300 ease-in-out",
+          "grid transition-[grid-template-rows] duration-250 ease-in-out",
           isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
         )}
       >
         <div className="overflow-hidden">
-          <p className="pb-5 text-sm leading-relaxed text-on-surface-variant">
+          <p className="px-6 pb-5 text-sm leading-relaxed text-on-surface-variant">
             {item.answer}
           </p>
         </div>
@@ -119,7 +119,7 @@ export function FAQSection() {
           </ParallaxLayer>
 
           {/* Right column — accordion */}
-          <ParallaxLayer yRange={[10, -10]} className="border-t border-outline-variant/20">
+          <ParallaxLayer yRange={[10, -10]} className="flex flex-col gap-3">
             {faqs.map((faq, i) => (
               <AccordionItem
                 key={i}

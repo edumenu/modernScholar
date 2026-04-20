@@ -104,7 +104,7 @@ export function SlideContent({
       >
         {/* Label with top border */}
         <div className="border-t border-white/30 pt-4">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-300">
+          <p className="text-xs font-bold uppercase tracking-widest text-white/70">
             {panel.label}
           </p>
         </div>

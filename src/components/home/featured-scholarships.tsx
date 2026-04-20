@@ -362,7 +362,7 @@ export function FeaturedScholarships() {
           <MarqueeRow
             items={row1Items}
             direction="left"
-            duration={200}
+            duration={50}
             height="h-100"
           />
         </AnimatedSection>
@@ -372,7 +372,7 @@ export function FeaturedScholarships() {
           <MarqueeRow
             items={row2Items}
             direction="right"
-            duration={190}
+            duration={55}
             height="h-100"
             className="hidden md:block"
           />

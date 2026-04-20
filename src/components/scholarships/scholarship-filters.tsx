@@ -24,6 +24,7 @@ import {
 import { glassPill } from "@/components/ui/styles"
 import { Input } from "@/components/ui/input/input"
 import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile"
+import { ProfileSetupTrigger } from "@/components/ui/profile-setup"
 
 export type GridLayout = "bento" | "uniform"
 
@@ -335,6 +336,8 @@ export function ScholarshipFilters({
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <ProfileSetupTrigger />
       </div>
     </div>
   )

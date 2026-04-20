@@ -158,7 +158,9 @@
       "WebFetch(domain:nyxui.com)",
       "WebFetch(domain:gooey-react.netlify.app)",
       "Bash(pkill -f \"Google Chrome.*mcp-chrome\")",
-      "mcp__playwright__browser_fill_form"
+      "mcp__playwright__browser_fill_form",
+      "WebFetch(domain:mcpmarket.com)",
+      "Bash(git log:*)"
     ]
   }
 }
