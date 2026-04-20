@@ -17,7 +17,7 @@ const SNAP_CONFIG = { stiffness: 10000, damping: 500, mass: 0.1 }
 
 const variantStyles = {
   default: { width: 10, height: 10, opacity: 1 },
-  fade: { width: 18, height: 18, opacity: 0.35 },
+  fade: { width: 10, height: 10, opacity: 0 },
   text: { width: 60, height: 30, opacity: 0.9 },
 }
 

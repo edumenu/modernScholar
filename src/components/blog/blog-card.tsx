@@ -50,10 +50,17 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
         </div>
 
         <div className="flex flex-1 flex-col p-6">
-          {/* Category badge */}
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-outline-variant/30 bg-surface-container px-3 py-0.5 text-xs tracking-wider dark:bg-surface-container dark:border-outline-variant/20">
-            <span className="size-1.5 rounded-full bg-on-surface" />
-            <span className="text-on-surface">{post.category}</span>
+          {/* Category badge + series indicator */}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="inline-flex items-center gap-2 rounded-full border border-outline-variant/30 bg-surface-container px-3 py-0.5 text-xs tracking-wider dark:bg-surface-container dark:border-outline-variant/20">
+              <span className="size-1.5 rounded-full bg-on-surface" />
+              <span className="text-on-surface">{post.category}</span>
+            </div>
+            {post.series && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-primary">
+                Part {post.series.part}/{post.series.totalParts}
+              </span>
+            )}
           </div>
 
           {/* Title */}
@@ -68,7 +75,7 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
 
           {!isCompact && (
             <>
-              {/* Metadata row */}
+              {/* Metadata row + reading time bars */}
               <div className="mt-auto flex items-center justify-between pt-4">
                 <div className="flex items-center gap-2 text-xs">
                   <span className="text-on-surface-variant">Published</span>
@@ -76,6 +83,7 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
                     {post.publishDate}
                   </span>
                 </div>
+                <ReadingTimeBars readTime={post.readTime} />
               </div>
 
               {/* Author byline */}
@@ -150,4 +158,24 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
       </div>
     </Link>
   );
+}
+
+function ReadingTimeBars({ readTime }: { readTime: string }) {
+  const minutes = parseInt(readTime) || 5
+  const filled = Math.min(5, Math.max(1, Math.ceil(minutes / 3)))
+
+  return (
+    <div className="flex items-end gap-0.5" title={readTime}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div
+          key={i}
+          className={cn(
+            "w-1 rounded-full transition-colors",
+            i < filled ? "bg-primary" : "bg-outline-variant/30",
+          )}
+          style={{ height: `${8 + i * 2}px` }}
+        />
+      ))}
+    </div>
+  )
 }

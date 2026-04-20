@@ -12,6 +12,12 @@ export interface ArticleSection {
   list?: string[]
 }
 
+export interface BlogSeries {
+  name: string
+  part: number
+  totalParts: number
+}
+
 export interface BlogPost {
   id: string
   slug: string
@@ -24,6 +30,7 @@ export interface BlogPost {
   author: BlogAuthor
   content: ArticleSection[]
   featured?: boolean
+  series?: BlogSeries
 }
 
 const authors: Record<string, BlogAuthor> = {
@@ -72,6 +79,7 @@ export const blogPosts: BlogPost[] = [
     readTime: "8 min read",
     author: authors.priya,
     featured: true,
+    series: { name: "Application Mastery", part: 1, totalParts: 3 },
     content: [
       {
         id: "section-power-of-story",
@@ -301,6 +309,7 @@ export const blogPosts: BlogPost[] = [
     publishDate: "February 10, 2026",
     readTime: "5 min read",
     author: authors.james,
+    series: { name: "Application Mastery", part: 3, totalParts: 3 },
     content: [
       {
         id: "section-why-letters-matter",
@@ -432,6 +441,7 @@ export const blogPosts: BlogPost[] = [
     publishDate: "January 25, 2026",
     readTime: "8 min read",
     author: authors.priya,
+    series: { name: "Application Mastery", part: 2, totalParts: 3 },
     content: [
       {
         id: "section-personal-vs-essay",

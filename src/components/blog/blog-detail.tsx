@@ -4,10 +4,12 @@ import { useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Icon } from "@iconify/react"
-import type { BlogPost } from "@/data/blog-posts"
+import { blogPosts, type BlogPost } from "@/data/blog-posts"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import { Button } from "@/components/ui/button/button"
 import { ReadingProgress } from "@/components/blog/reading-progress"
+import { ArticleProgressBar } from "@/components/blog/article-progress-bar"
+import { PullQuote } from "@/components/blog/pull-quote"
 
 interface BlogDetailProps {
   post: BlogPost
@@ -24,6 +26,7 @@ export function BlogDetail({ post }: BlogDetailProps) {
 
   return (
     <div>
+      <ArticleProgressBar articleRef={articleRef} />
       <AnimatedSection variant="fadeUp">
         <Link href="/blog">
           <Button variant="ghost" size="sm" data-icon="inline-start">
@@ -44,6 +47,13 @@ export function BlogDetail({ post }: BlogDetailProps) {
             <h1 className="font-heading text-3xl font-bold leading-tight text-on-surface md:text-4xl lg:text-5xl">
               {post.title}
             </h1>
+            {/* Series indicator */}
+            {post.series && (
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3.5 py-1.5 text-xs font-medium text-primary">
+                <Icon icon="solar:documents-linear" className="size-3.5" />
+                Part {post.series.part} of {post.series.totalParts} &mdash; {post.series.name}
+              </div>
+            )}
           </AnimatedSection>
 
           {/* Excerpt */}
@@ -97,19 +107,9 @@ export function BlogDetail({ post }: BlogDetailProps) {
                   </p>
                 ))}
 
-                {/* Blockquote — pull quote style */}
+                {/* Pull quote — breaks out of prose column */}
                 {section.blockquote && (
-                  <blockquote className="my-6 border-l-4 border-primary pl-6">
-                    <p className="font-heading text-xl leading-relaxed text-on-surface md:text-2xl">
-                      <span className="text-primary text-4xl leading-none">
-                        &ldquo;
-                      </span>
-                      {section.blockquote}
-                      <span className="text-primary text-4xl leading-none">
-                        &rdquo;
-                      </span>
-                    </p>
-                  </blockquote>
+                  <PullQuote quote={section.blockquote} />
                 )}
 
                 {/* List */}
@@ -218,6 +218,41 @@ export function BlogDetail({ post }: BlogDetailProps) {
                 sections={sections}
               />
             </AnimatedSection>
+
+            {/* Series navigation */}
+            {post.series && (
+              <AnimatedSection variant="fadeUp" delay={0.4}>
+                <div className="flex flex-col gap-3 rounded-2xl border border-outline-variant/40 bg-surface-container-low p-4 shadow-md dark:bg-surface-container-low dark:border-outline-variant/20">
+                  <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
+                    {post.series.name}
+                  </span>
+                  <div className="flex flex-col gap-1.5">
+                    {blogPosts
+                      .filter((p) => p.series?.name === post.series?.name)
+                      .sort((a, b) => (a.series?.part ?? 0) - (b.series?.part ?? 0))
+                      .map((seriesPost) => {
+                        const isCurrent = seriesPost.id === post.id
+                        return (
+                          <Link
+                            key={seriesPost.id}
+                            href={`/blog/${seriesPost.slug}`}
+                            className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs transition-colors ${
+                              isCurrent
+                                ? "bg-primary/10 font-medium text-primary"
+                                : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+                            }`}
+                          >
+                            <span className="shrink-0 font-medium">
+                              {seriesPost.series?.part}.
+                            </span>
+                            <span className="truncate">{seriesPost.title}</span>
+                          </Link>
+                        )
+                      })}
+                  </div>
+                </div>
+              </AnimatedSection>
+            )}
           </div>
         </aside>
       </article>

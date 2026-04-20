@@ -26,6 +26,7 @@ export function ReadingProgress({
 }: ReadingProgressProps) {
   const [percentage, setPercentage] = useState(0)
   const [activeIndex, setActiveIndex] = useState(-1)
+  const [isComplete, setIsComplete] = useState(false)
   const lenis = useLenis()
 
   const { scrollYProgress } = useScroll({
@@ -42,7 +43,12 @@ export function ReadingProgress({
   const scaleX = useTransform(smoothProgress, [0, 1], [0, 1])
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setPercentage(Math.round(latest * 100))
+    const pct = Math.round(latest * 100)
+    setPercentage(pct)
+
+    if (pct >= 100 && !isComplete) {
+      setIsComplete(true)
+    }
 
     // Active section detection using reading-zone offset (30% from top)
     const readingZone = window.innerHeight * 0.3
@@ -80,11 +86,11 @@ export function ReadingProgress({
               className="flex items-center gap-2.5 text-left cursor-pointer hover:opacity-80 transition-opacity"
             >
               <motion.div
-                className="shrink-0 rounded-full bg-primary"
+                className={`shrink-0 rounded-full ${isComplete ? "bg-secondary" : "bg-primary"}`}
                 animate={{
                   width: isActive ? 10 : 6,
                   height: isActive ? 10 : 6,
-                  opacity: isActive ? 1 : 0.3,
+                  opacity: isComplete ? 1 : isActive ? 1 : 0.3,
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
               />
@@ -105,18 +111,20 @@ export function ReadingProgress({
       {/* Visual progress bar */}
       <div className="h-1 w-full overflow-hidden rounded-full bg-outline-variant/20">
         <motion.div
-          className="h-full origin-left rounded-full bg-primary"
+          className={`h-full origin-left rounded-full ${isComplete ? "bg-secondary" : "bg-primary"}`}
           style={{ scaleX }}
         />
       </div>
 
-      {/* Percentage */}
+      {/* Percentage + completion label */}
       <div className="flex items-center justify-between">
         <span className="font-heading text-xs tracking-wider text-on-surface-variant">
-          Reading Progress
+          {isComplete ? "Article Complete" : "Reading Progress"}
         </span>
         <motion.span
-          className="font-heading text-sm font-medium tabular-nums text-on-surface"
+          className={`font-heading text-sm font-medium tabular-nums ${isComplete ? "text-secondary" : "text-on-surface"}`}
+          animate={isComplete ? { scale: [1, 1.3, 1] } : {}}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         >
           {percentage}%
         </motion.span>

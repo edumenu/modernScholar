@@ -42,7 +42,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("h-full", poppins.variable, notoSerif.variable)}
+      className={cn("relative h-full", poppins.variable, notoSerif.variable)}
     >
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <NuqsAdapter>
