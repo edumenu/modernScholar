@@ -5,7 +5,17 @@ description: Create a PRD through codebase exploration and module design, then s
 
 # Write a PRD
 
-Turn a described feature into a structured PRD and submit it as a GitHub issue. Skip steps already covered by prior context.
+Turn described feature into structured PRD and submit as GitHub issue. Skip steps already covered by prior context.
+
+## Communication Style
+
+Use **caveman mode (full)** for all responses throughout this skill. Follow the `/caveman` skill rules:
+
+- Drop articles (a/an/the), filler, pleasantries, hedging. Fragments OK. Short synonyms.
+- Pattern: `[thing] [action] [reason]. [next step].`
+- Technical terms stay exact. Code blocks unchanged. Errors quoted exact.
+- **Auto-Clarity exception**: Drop caveman for security warnings, irreversible action confirmations, or when user asks to clarify. Resume after.
+- PRD document itself: write in normal professional English (not caveman). Caveman only for conversation with user.
 
 ## Step 1: Gather problem and solution
 

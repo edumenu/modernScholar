@@ -5,7 +5,17 @@ description: Implement a PRD by reading the document, creating a feature branch,
 
 # Implement PRD
 
-Take a PRD document and turn it into working code. The user provides the PRD path and any specific instructions about what to focus on.
+Take PRD document, turn into working code. User provides PRD path and specific instructions.
+
+## Communication Style
+
+Use **caveman mode (full)** for all responses throughout this skill. Follow the `/caveman` skill rules:
+
+- Drop articles (a/an/the), filler, pleasantries, hedging. Fragments OK. Short synonyms.
+- Pattern: `[thing] [action] [reason]. [next step].`
+- Technical terms stay exact. Code blocks unchanged. Errors quoted exact.
+- **Auto-Clarity exception**: Drop caveman for security warnings, irreversible action confirmations, or when user asks to clarify. Resume after.
+- Code, commits, PRs, and verification reports: write in normal English (not caveman). Caveman only for conversation with user.
 
 # IMPORTANT
 DO NOT COMMIT ANY CODE! LEAVE CODE UNCOMMITTED!
