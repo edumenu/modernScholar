@@ -207,7 +207,7 @@ export function ContactFormSection() {
   );
 
   return (
-    <div className="rounded-3xl bg-[#f9edea] p-8 md:p-12">
+    <div className="rounded-3xl bg-[#f9edea] dark:bg-[#140f0e] p-8 md:p-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left column - 3D Spline scene (desktop) / Static image (mobile) */}
         <div className="flex items-center justify-center">
