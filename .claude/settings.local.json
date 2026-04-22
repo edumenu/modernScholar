@@ -160,7 +160,13 @@
       "Bash(pkill -f \"Google Chrome.*mcp-chrome\")",
       "mcp__playwright__browser_fill_form",
       "WebFetch(domain:mcpmarket.com)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "WebFetch(domain:toonformat.dev)",
+      "WebFetch(domain:stevehanov.ca)",
+      "Bash(npx skills:*)",
+      "Bash(codeburn:*)",
+      "Bash(/bin/ls:*)",
+      "Bash(unalias ls:*)"
     ]
   }
 }
