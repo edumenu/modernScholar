@@ -9,7 +9,7 @@ Critical gaps confirmed during full production readiness audit (2026-04-22):
 1. **No loading.tsx, error.tsx, or not-found.tsx** exist anywhere in src/app. All route segments are completely unprotected for loading and error states.
 2. **No robots.ts or sitemap.ts** — zero SEO crawl infrastructure.
 3. **No opengraph-image** file (static or generated) anywhere.
-4. **Exposed API key** — `.env` contains `FIRECRAWL_API_KEY=fc-28b5f451f5bb48409eefa8cbce2591ae`. `.env` (without `.local`) is gitignored via `.env*` glob, but this needs verification.
+4. **Exposed API key** — `.env` contains a Firecrawl API key. `.env` (without `.local`) is gitignored via `.env*` glob, but this needs verification.
 5. **Home page (`src/app/page.tsx`) has no metadata export** — falls back only to the root layout's generic title/description.
 6. **Blog page metadata uses a plain object** (`export const metadata = {...}`) instead of typed `Metadata` from next — same for scholarships and contact pages.
 7. **FAQ accordion is missing `aria-controls`/`id` pairing** — `aria-expanded` is present but the controlled region has no `id` for association.
