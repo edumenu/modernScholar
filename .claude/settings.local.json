@@ -165,7 +165,8 @@
       "WebFetch(domain:stevehanov.ca)",
       "Bash(npx skills:*)",
       "Bash(codeburn:*)",
-      "Bash(/bin/ls:*)"
+      "Bash(/bin/ls:*)",
+      "Bash(unalias ls:*)"
     ]
   }
 }

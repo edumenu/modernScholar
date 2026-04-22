@@ -45,3 +45,6 @@ storybook-static
 
 # playwright mcp artifacts
 .playwright-mcp/
+
+# scholarship enrichment pipeline working files
+scripts/output/
