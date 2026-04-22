@@ -3,6 +3,7 @@ import {
   correctMonthTypo,
   extractMonth,
   deriveSeason,
+  deriveDeadlineYear,
   normalizeClassification,
   generateSlug,
   extractDomain,
@@ -76,6 +77,40 @@ describe("deriveSeason", () => {
 
   it("falls back to fall for invalid deadlines", () => {
     expect(deriveSeason("Varies")).toBe("fall")
+  })
+})
+
+describe("deriveDeadlineYear", () => {
+  it("returns current year when deadline is in the future", () => {
+    const ref = new Date(2026, 3, 22) // April 22, 2026
+    expect(deriveDeadlineYear("June 1", ref)).toBe(2026)
+    expect(deriveDeadlineYear("December 31", ref)).toBe(2026)
+  })
+
+  it("returns next year when deadline has already passed", () => {
+    const ref = new Date(2026, 3, 22) // April 22, 2026
+    expect(deriveDeadlineYear("January 1", ref)).toBe(2027)
+    expect(deriveDeadlineYear("March 15", ref)).toBe(2027)
+  })
+
+  it("returns current year when deadline is today", () => {
+    const ref = new Date(2026, 3, 22) // April 22, 2026
+    expect(deriveDeadlineYear("April 22", ref)).toBe(2026)
+  })
+
+  it("returns next year when deadline was yesterday", () => {
+    const ref = new Date(2026, 3, 22) // April 22, 2026
+    expect(deriveDeadlineYear("April 21", ref)).toBe(2027)
+  })
+
+  it("handles month typos", () => {
+    const ref = new Date(2026, 0, 10) // January 10, 2026
+    expect(deriveDeadlineYear("Feburary 13", ref)).toBe(2026)
+  })
+
+  it("falls back to current year for invalid deadlines", () => {
+    const ref = new Date(2026, 5, 1)
+    expect(deriveDeadlineYear("Varies", ref)).toBe(2026)
   })
 })
 

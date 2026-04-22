@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 import { BlogHero } from "@/components/blog/blog-hero"
 import { BlogGrid } from "@/components/blog/blog-grid"
+import { BlogGridSkeleton } from "@/components/blog/blog-grid-skeleton";
 
 export const metadata = {
   title: "Blog | Modern Scholar",
@@ -12,9 +13,9 @@ export default function BlogPage() {
   return (
     <div className="page-padding-y flex flex-col gap-16 h-auto">
       <BlogHero />
-      <Suspense>
+      <Suspense fallback={<BlogGridSkeleton />}>
         <BlogGrid />
       </Suspense>
     </div>
-  )
+  );
 }

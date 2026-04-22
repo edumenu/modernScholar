@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
 
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 
@@ -25,7 +26,22 @@ export default defineConfig({
         test: {
           name: 'unit',
           include: ['src/**/__tests__/**/*.test.{ts,tsx}', 'src/**/*.test.{ts,tsx}', 'scripts/**/*.test.ts'],
+          exclude: ['src/**/*.component.test.{ts,tsx}'],
           environment: 'node',
+        },
+      },
+      // Component tests (jsdom environment)
+      {
+        extends: true,
+        plugins: [react()],
+        resolve: {
+          conditions: ['browser', 'import'],
+        },
+        test: {
+          name: 'component',
+          include: ['src/**/*.component.test.{ts,tsx}'],
+          environment: 'jsdom',
+          setupFiles: ['./vitest.setup.ts'],
         },
       },
       {

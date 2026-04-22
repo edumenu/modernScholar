@@ -93,13 +93,14 @@ export function Header() {
   }, [measureActive]);
 
   return (
-    <ScrollAnimatedHeader>
+    <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none"
       >
         Skip to content
       </a>
+      <ScrollAnimatedHeader>
       <header className="fixed inset-x-0 top-0 z-50 flex justify-end lg:justify-center px-4 pt-4">
         <nav className="flex items-center gap-4" aria-label="Main navigation">
           {/* Logo pill */}
@@ -201,5 +202,6 @@ export function Header() {
         </nav>
       </header>
     </ScrollAnimatedHeader>
+    </>
   );
 }

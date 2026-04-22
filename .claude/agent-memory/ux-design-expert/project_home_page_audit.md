@@ -1,6 +1,6 @@
 ---
-name: Home Page Audit Findings
-description: Critical and major issues found during full home page UX/UI audit (April 2026) — heading hierarchy breaks, mobile gaps, animation conflicts, design system violations
+name: Full Platform Audit Findings
+description: Critical and major issues from full UX/UI audit of all pages (April 2026) — heading hierarchy, design system violations, a11y gaps, animation issues, content strategy
 type: project
 ---
 
