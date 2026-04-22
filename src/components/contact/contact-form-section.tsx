@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useMemo,
   lazy,
   Suspense,
   startTransition,
@@ -191,10 +192,13 @@ export function ContactFormSection() {
     startTransition(() => setMounted(true));
   }, []);
 
-  const splineUrl =
-    mounted && resolvedTheme === "dark"
-      ? splineScenes.contactDark()
-      : splineScenes.contactLight();
+  const splineUrl = useMemo(
+    () =>
+      mounted && resolvedTheme === "dark"
+        ? splineScenes.contactDark()
+        : splineScenes.contactLight(),
+    [mounted, resolvedTheme],
+  );
 
   const splineFallback = (
     <div className="flex size-full items-center justify-center">
@@ -203,12 +207,12 @@ export function ContactFormSection() {
   );
 
   return (
-    <div className="rounded-3xl bg-surface-container-low p-8 md:p-12">
+    <div className="rounded-3xl bg-[#f9edea] p-8 md:p-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left column - 3D Spline scene (desktop) / Static image (mobile) */}
         <div className="flex items-center justify-center">
           {/* Desktop: 3D scene in a styled container */}
-          <div className="hidden lg:block w-full rounded-3xl overflow-hidden bg-surface-container shadow-md">
+          <div className="hidden lg:block w-full rounded-3xl overflow-hidden">
             <Suspense fallback={splineFallback}>
               {mounted ? (
                 <SplineScene
@@ -251,13 +255,14 @@ export function ContactFormSection() {
                 onMouseEnter={() => setIsButtonHovered(true)}
                 onMouseLeave={() => setIsButtonHovered(false)}
               >
-                <a href={`mailto:${CONTACT_EMAIL}`}>
-                  <CTAButton
-                    label="SEND EMAIL"
-                    variant="primary"
-                    type="button"
-                  />
-                </a>
+                <CTAButton
+                  label="SEND EMAIL"
+                  variant="primary"
+                  type="button"
+                  onClick={() => {
+                    window.location.href = `mailto:${CONTACT_EMAIL}`;
+                  }}
+                />
 
                 {/* Floating nudge arrow — hides on hover, returns after */}
                 <div className="hidden sm:block">

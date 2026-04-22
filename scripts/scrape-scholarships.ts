@@ -5,6 +5,7 @@ import path from "path"
 import {
   generateSlug,
   deriveSeason,
+  deriveDeadlineYear,
   normalizeClassification,
   extractDomain,
   formatProviderFromDomain,
@@ -154,6 +155,7 @@ async function processScholarship(
     id: slug,
     name: csvRow["Scholarship Name"].trim(),
     deadline: csvRow.Deadline.trim(),
+    deadlineYear: deriveDeadlineYear(csvRow.Deadline),
     awardAmount: csvRow["Award amount"]?.trim() ?? "",
     classification: normalizeClassification(csvRow.Classification),
     link: cleanUrl(csvRow.Link),
@@ -317,6 +319,7 @@ async function main() {
         id: slug,
         name: row["Scholarship Name"].trim(),
         deadline: row.Deadline.trim(),
+        deadlineYear: deriveDeadlineYear(row.Deadline),
         awardAmount: row["Award amount"]?.trim() ?? "",
         classification: normalizeClassification(row.Classification),
         link: cleanUrl(row.Link || ""),

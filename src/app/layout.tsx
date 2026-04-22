@@ -10,6 +10,7 @@ import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { PageTransition } from "@/components/ui/page-transition";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Toaster } from "@/components/ui/sonner/sonner";
 
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({
                 <PageTransition>{children}</PageTransition>
               </PageShell>
               <Footer />
+              <Toaster />
             </SmoothScrollProvider>
           </ThemeProvider>
         </NuqsAdapter>

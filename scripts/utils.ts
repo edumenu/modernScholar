@@ -27,6 +27,7 @@ export interface EnrichedScholarship {
   id: string
   name: string
   deadline: string
+  deadlineYear: number
   awardAmount: string
   classification: EducationLevel[]
   link: string
@@ -83,6 +84,23 @@ const MONTH_TO_SEASON: Record<string, Season> = {
   november: "fall",
 }
 
+// --- Month index (0-based) for date parsing ---
+
+const MONTH_INDEX: Record<string, number> = {
+  january: 0,
+  february: 1,
+  march: 2,
+  april: 3,
+  may: 4,
+  june: 5,
+  july: 6,
+  august: 7,
+  september: 8,
+  october: 9,
+  november: 10,
+  december: 11,
+}
+
 // --- Valid education levels ---
 
 const VALID_LEVELS: Record<string, EducationLevel> = {
@@ -113,6 +131,39 @@ export function deriveSeason(deadline: string): Season {
   const month = extractMonth(deadline)
   if (!month) return "fall" // fallback
   return MONTH_TO_SEASON[month.toLowerCase()] ?? "fall"
+}
+
+/**
+ * Derive the deadline year from a "Month Day" string.
+ * If the deadline hasn't passed yet this year, returns this year.
+ * If it has already passed, returns next year.
+ * Accepts an optional `referenceDate` for testability (defaults to now).
+ */
+export function deriveDeadlineYear(
+  deadline: string,
+  referenceDate: Date = new Date()
+): number {
+  const month = extractMonth(deadline)
+  if (!month) return referenceDate.getFullYear()
+
+  const monthIdx = MONTH_INDEX[month.toLowerCase()]
+  if (monthIdx === undefined) return referenceDate.getFullYear()
+
+  const parts = deadline.trim().split(/\s+/)
+  const day = parts.length > 1 ? parseInt(parts[1], 10) : 1
+  const dayNum = isNaN(day) ? 1 : day
+
+  const currentYear = referenceDate.getFullYear()
+  const deadlineThisYear = new Date(currentYear, monthIdx, dayNum)
+
+  // Compare date only (ignore time)
+  const today = new Date(
+    referenceDate.getFullYear(),
+    referenceDate.getMonth(),
+    referenceDate.getDate()
+  )
+
+  return deadlineThisYear >= today ? currentYear : currentYear + 1
 }
 
 export function normalizeClassification(raw: string): EducationLevel[] {

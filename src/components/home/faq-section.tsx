@@ -42,19 +42,23 @@ const faqs: FAQItem[] = [
 
 function AccordionItem({
   item,
+  index,
   isOpen,
   onToggle,
 }: {
   item: FAQItem
+  index: number
   isOpen: boolean
   onToggle: () => void
 }) {
   return (
     <div className="rounded-2xl bg-surface-container-low">
       <button
+        id={`faq-btn-${index}`}
         onClick={onToggle}
         className="flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left focus-visible:rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
         aria-expanded={isOpen}
+        aria-controls={`faq-panel-${index}`}
       >
         <span className="text-base font-medium text-on-surface">
           {item.question}
@@ -72,6 +76,9 @@ function AccordionItem({
         </motion.span>
       </button>
       <div
+        id={`faq-panel-${index}`}
+        role="region"
+        aria-labelledby={`faq-btn-${index}`}
         className={cn(
           "grid transition-[grid-template-rows] duration-250 ease-in-out",
           isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
@@ -124,6 +131,7 @@ export function FAQSection() {
               <AccordionItem
                 key={i}
                 item={faq}
+                index={i}
                 isOpen={openIndex === i}
                 onToggle={() => handleToggle(i)}
               />
