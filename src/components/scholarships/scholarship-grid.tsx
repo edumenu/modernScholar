@@ -36,10 +36,6 @@ import {
 import { Button } from "@/components/ui/button/button";
 import { ComparisonSheet } from "./comparison-sheet";
 import { ComparisonFab } from "./comparison-fab";
-import {
-  CategorySectionNav,
-  CategoryDivider,
-} from "./category-section-nav";
 
 /* ── Helpers ─────────────────────────────────────────────── */
 
@@ -353,44 +349,6 @@ export function ScholarshipGrid() {
                     />
                   ),
                 )}
-              </motion.div>
-            ) : activeFilter === "All" && !searchQuery ? (
-              <motion.div
-                key="grid-grouped"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="flex w-full flex-col pb-10 pt-2"
-              >
-                <CategorySectionNav
-                  categories={
-                    SCHOLARSHIP_CATEGORIES.filter((c) => c !== "All") as ScholarshipCategory[]
-                  }
-                />
-                {SCHOLARSHIP_CATEGORIES.filter((c) => c !== "All").map((cat) => {
-                  const catItems = visibleItems.filter(
-                    ({ scholarship }) => scholarship.category === cat,
-                  )
-                  if (catItems.length === 0) return null
-                  return (
-                    <div key={cat}>
-                      <CategoryDivider category={cat} count={catItems.length} />
-                      <div className="grid w-full gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                        {catItems.map(({ scholarship, matches }) => (
-                          <div key={scholarship.id} className="aspect-3/4 w-full">
-                            <ScholarshipCard
-                              scholarship={scholarship}
-                              dimmed={!matches}
-                              isExpanded={expandedId === scholarship.id}
-                              onExpand={handleExpand}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )
-                })}
               </motion.div>
             ) : (
               <motion.div
