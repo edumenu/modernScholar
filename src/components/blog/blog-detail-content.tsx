@@ -41,7 +41,7 @@ export function BlogDetailContent({ post }: BlogDetailContentProps) {
       </AnimatedSection>
 
       {/* Dynamic Prose Content */}
-      <div className="mt-10 max-w-prose space-y-8">
+      <div className="mt-10 space-y-8">
         {post.content.map((section, i) => (
           <AnimatedSection
             key={section.id}

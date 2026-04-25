@@ -359,7 +359,7 @@ export function ScholarshipGrid() {
                       items={chunk}
                       expandedId={expandedId}
                       onExpand={handleExpand}
-                      onCategoryClick={(cat) => handleFilterChange(cat as ScholarshipCategory)}
+
                     />
                   ),
                 )}
@@ -380,7 +380,7 @@ export function ScholarshipGrid() {
                       dimmed={!matches}
                       isExpanded={expandedId === scholarship.id}
                       onExpand={handleExpand}
-                      onCategoryClick={(cat) => handleFilterChange(cat as ScholarshipCategory)}
+
                     />
                   </div>
                 ))}
@@ -664,10 +664,9 @@ interface BentoBlockProps {
   items: SortedItem[]
   expandedId: string | null
   onExpand: (id: string) => void
-  onCategoryClick: (category: string) => void
 }
 
-function BentoBlock({ items, expandedId, onExpand, onCategoryClick }: BentoBlockProps) {
+function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const renderCard = (item: SortedItem, disableLayout = false) => (
@@ -677,7 +676,7 @@ function BentoBlock({ items, expandedId, onExpand, onCategoryClick }: BentoBlock
       isExpanded={expandedId === item.scholarship.id}
       disableLayoutAnimation={disableLayout}
       onExpand={onExpand}
-      onCategoryClick={onCategoryClick}
+
     />
   );
 

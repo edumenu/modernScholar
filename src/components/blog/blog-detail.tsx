@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import { Button } from "@/components/ui/button/button"
 import { ReadingProgress } from "@/components/blog/reading-progress"
-import { ArticleProgressBar } from "@/components/blog/article-progress-bar"
+
 
 interface BlogDetailProps {
   post: BlogPost
@@ -25,7 +25,6 @@ export function BlogDetail({ post, children }: BlogDetailProps) {
 
   return (
     <div>
-      <ArticleProgressBar articleRef={articleRef} />
       <AnimatedSection variant="fadeUp">
         <Link href="/blog">
           <Button variant="ghost" size="sm" data-icon="inline-start">
