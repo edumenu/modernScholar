@@ -19,7 +19,6 @@ import {
   SheetFooter,
   SheetClose,
 } from "@/components/ui/sheet/sheet"
-import { glassPill } from "@/components/ui/styles"
 import { Input } from "@/components/ui/input/input"
 import type { GridLayout } from "./scholarship-filters"
 
@@ -170,10 +169,7 @@ export function ScholarshipFiltersMobile({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className={cn(
-                    glassPill,
-                    "shrink-0 text-on-surface hover:bg-white/40 dark:hover:bg-white/20",
-                  )}
+                  className="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
                 />
               }
             >

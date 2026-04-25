@@ -21,7 +21,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu/dropdown-menu"
-import { glassPill } from "@/components/ui/styles"
+
 import { Input } from "@/components/ui/input/input"
 import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile"
 import { ProfileSetupTrigger } from "@/components/ui/profile-setup"
@@ -97,7 +97,7 @@ export function ScholarshipFilters({
   }
 
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-outline-variant pb-3 dark:border-white/10">
+    <div className="flex items-center justify-between gap-4 pb-3 shadow-[0_1px_0_0_rgba(32,26,25,0.05)]">
       {/* Left: Category tabs */}
       <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
         <LayoutGroup>
@@ -257,10 +257,7 @@ export function ScholarshipFilters({
               <Button
                 variant="ghost"
                 size="sm"
-                className={cn(
-                  glassPill,
-                  "shrink-0 text-on-surface hover:bg-white/40 dark:hover:bg-white/20",
-                )}
+                className="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
               />
             }
           >
@@ -298,10 +295,7 @@ export function ScholarshipFilters({
               <Button
                 variant="ghost"
                 size="sm"
-                className={cn(
-                  glassPill,
-                  "shrink-0 text-on-surface hover:bg-white/40 dark:hover:bg-white/20",
-                )}
+                className="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
               />
             }
           >

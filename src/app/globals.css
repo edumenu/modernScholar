@@ -536,6 +536,13 @@ html.custom-cursor-active * {
   cursor: none !important;
 }
 
+/* Section spacing token — single source of truth for vertical rhythm between page sections */
+@property --section-gap {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 5rem;
+}
+
 @utility page-padding-y {
   padding-top: 10rem;
   padding-bottom: 10rem;

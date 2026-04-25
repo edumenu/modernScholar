@@ -126,7 +126,7 @@ export function BlogDetail({ post }: BlogDetailProps) {
 
           {/* Author bio card */}
           <AnimatedSection variant="fadeUp" delay={0.1}>
-            <div className="mt-12 flex items-center gap-4 rounded-2xl border border-outline-variant/40 bg-surface-container-low p-6 dark:bg-surface-container-low dark:border-outline-variant/20">
+            <div className="mt-12 flex items-center gap-4 rounded-2xl bg-surface-container-low p-6 shadow-xs dark:bg-surface-container-low">
               <div className="relative size-14 shrink-0 overflow-hidden rounded-full bg-surface-container-high">
                 <Image
                   src={post.author.avatar}
@@ -155,7 +155,7 @@ export function BlogDetail({ post }: BlogDetailProps) {
         {/* Sidebar — horizontal strip on md, vertical sidebar on lg */}
         <aside className="order-last lg:order-first">
           {/* On md (tablet): horizontal metadata strip above article */}
-          <div className="hidden md:flex lg:hidden flex-wrap items-center gap-4 rounded-2xl border border-outline-variant/40 bg-surface-container-low p-4 dark:bg-surface-container-low dark:border-outline-variant/20">
+          <div className="hidden md:flex lg:hidden flex-wrap items-center gap-4 rounded-2xl bg-surface-container-low p-4 shadow-xs dark:bg-surface-container-low">
             <div className="flex items-center gap-2 text-sm">
               <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
                 Category
@@ -176,7 +176,7 @@ export function BlogDetail({ post }: BlogDetailProps) {
           {/* On lg: sticky vertical sidebar */}
           <div className="sticky top-32 hidden lg:flex flex-col gap-6">
             <AnimatedSection variant="fadeUp" delay={0.2}>
-              <div className="flex flex-col gap-4 rounded-2xl border border-outline-variant/40 bg-surface-container-low p-6 shadow-md dark:bg-surface-container-low dark:border-outline-variant/20">
+              <div className="flex flex-col gap-4 rounded-2xl bg-surface-container-low p-6 shadow-md dark:bg-surface-container-low">
                 {/* Category */}
                 <div>
                   <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
@@ -222,7 +222,7 @@ export function BlogDetail({ post }: BlogDetailProps) {
             {/* Series navigation */}
             {post.series && (
               <AnimatedSection variant="fadeUp" delay={0.4}>
-                <div className="flex flex-col gap-3 rounded-2xl border border-outline-variant/40 bg-surface-container-low p-4 shadow-md dark:bg-surface-container-low dark:border-outline-variant/20">
+                <div className="flex flex-col gap-3 rounded-2xl bg-surface-container-low p-4 shadow-md dark:bg-surface-container-low">
                   <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
                     {post.series.name}
                   </span>

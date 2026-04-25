@@ -10,14 +10,14 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button/button";
 
 const blogCardVariants = cva(
-  "group relative flex h-full overflow-hidden cursor-pointer rounded-2xl border shadow-md transition-shadow duration-300",
+  "group relative flex h-full overflow-hidden cursor-pointer rounded-2xl shadow-md transition-shadow duration-300",
   {
     variants: {
       variant: {
         default:
-          "flex-col bg-surface-container-low border-outline-variant/40 hover:shadow-xl dark:bg-surface-container-low dark:border-outline-variant/20",
+          "flex-col bg-surface-container-low hover:shadow-xl dark:bg-surface-container-low",
         compact:
-          "flex-col bg-surface-container-low border-outline-variant/40 hover:shadow-lg dark:bg-surface-container-low dark:border-outline-variant/20",
+          "flex-col bg-surface-container-low hover:shadow-lg dark:bg-surface-container-low",
       },
     },
     defaultVariants: {
