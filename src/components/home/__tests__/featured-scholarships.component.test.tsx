@@ -1,125 +1,216 @@
-import { describe, it, expect, vi } from "vitest"
-import { render, screen } from "@testing-library/react"
-import { userEvent } from "@testing-library/user-event"
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+
+const mockPush = vi.fn();
 
 vi.mock("next/image", () => ({
   __esModule: true,
   default: ({ alt }: { alt: string }) => <span data-alt={alt} />,
-}))
+}));
 
-vi.mock("next/link", () => ({
-  __esModule: true,
-  default: ({
-    children,
-    href,
-    ...rest
-  }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) => (
-    <a href={href} {...rest}>
-      {children}
-    </a>
-  ),
-}))
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: mockPush }),
+}));
 
 vi.mock("@iconify/react", () => ({
-  Icon: () => <span data-testid="icon" />,
-}))
+  Icon: ({ icon }: { icon: string }) => <span data-testid="icon" data-icon={icon} />,
+}));
+
+let mockReducedMotion = false;
 
 vi.mock("motion/react", () => ({
-  useReducedMotion: () => false,
+  useReducedMotion: () => mockReducedMotion,
   motion: {
-    div: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
+    div: ({
+      children,
+      animate,
+      style,
+      className,
+      drag: _drag,
+      onDragStart: _onDragStart,
+      onDragEnd: _onDragEnd,
+      dragConstraints: _dragConstraints,
+      dragElastic: _dragElastic,
+      transition: _transition,
+      ...rest
+    }: Record<string, unknown> & { children?: React.ReactNode }) => (
+      <div
+        className={className as string}
+        style={style as React.CSSProperties}
+        data-animate={animate ? JSON.stringify(animate) : undefined}
+        {...(rest as React.HTMLAttributes<HTMLDivElement>)}
+      >
+        {children}
+      </div>
+    ),
   },
-}))
+}));
 
 vi.mock("@/components/ui/animatedSection/animated-section", () => ({
   AnimatedSection: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
-}))
+}));
 
 vi.mock("@/components/ui/parallax-layer", () => ({
   ParallaxLayer: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
-}))
+}));
+
+vi.mock("@/components/ui/button/button", () => ({
+  Button: ({
+    children,
+    ...props
+  }: React.ButtonHTMLAttributes<HTMLButtonElement> & { children?: React.ReactNode }) => (
+    <button {...props}>{children}</button>
+  ),
+}));
 
 vi.mock("@/components/ui/button/button-link", () => ({
   ButtonLink: ({
     children,
     href,
   }: {
-    children?: React.ReactNode
-    href: string
+    children?: React.ReactNode;
+    href: string;
   }) => <a href={href}>{children}</a>,
-}))
+}));
 
 vi.mock("@/lib/pretext/use-text-layout", () => ({
   useTextLayout: () => ({ lineCount: 1 }),
-}))
+}));
 
 vi.mock("@/lib/pretext/fonts", () => ({
   PRETEXT_FONTS: {
     cardTitle: {},
     bodySmall: {},
   },
-}))
+}));
 
-describe("FeaturedScholarships marquee keyboard accessibility", () => {
-  it("renders each row as a list with listitem children", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships")
-    render(<FeaturedScholarships />)
+describe("FeaturedScholarships with CoverflowCarousel", () => {
+  beforeEach(() => {
+    mockReducedMotion = false;
+    mockPush.mockClear();
+  });
 
-    const lists = screen.getAllByRole("list")
-    expect(lists.length).toBeGreaterThan(0)
+  function getCarousel(container: HTMLElement) {
+    return container.querySelector('[aria-roledescription="carousel"]') as HTMLElement;
+  }
 
-    const items = screen.getAllByRole("listitem")
-    expect(items.length).toBeGreaterThan(0)
-  })
+  it("renders carousel with aria-roledescription", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    const { container } = render(<FeaturedScholarships />);
 
-  it("wraps real cards in an anchor pointing to /scholarships", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships")
-    const { container } = render(<FeaturedScholarships />)
+    const carousel = getCarousel(container);
+    expect(carousel).not.toBeNull();
+    expect(carousel.getAttribute("aria-roledescription")).toBe("carousel");
+  });
 
-    const cardLinks = container.querySelectorAll<HTMLAnchorElement>(
-      'a[href="/scholarships"]',
-    )
-    // First row = 5 items * 2 duplicates = 10; row 2 another 10; also the "View All" header link = at least 21
-    expect(cardLinks.length).toBeGreaterThanOrEqual(21)
-  })
+  it("renders 10 slides with aria-roledescription='slide'", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    const { container } = render(<FeaturedScholarships />);
 
-  it("marks duplicated (clone) cards with aria-hidden and tabIndex=-1", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships")
-    const { container } = render(<FeaturedScholarships />)
+    const slides = container.querySelectorAll('[aria-roledescription="slide"]');
+    expect(slides.length).toBe(10);
+  });
 
-    const hiddenItems = container.querySelectorAll<HTMLElement>(
-      'li[aria-hidden="true"]',
-    )
-    expect(hiddenItems.length).toBeGreaterThan(0)
+  it("has a live region announcing the active scholarship", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    const { container } = render(<FeaturedScholarships />);
 
-    hiddenItems.forEach((li) => {
-      const anchor = li.querySelector<HTMLAnchorElement>("a")
-      expect(anchor).not.toBeNull()
-      expect(anchor?.tabIndex).toBe(-1)
-    })
-  })
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion).not.toBeNull();
+    expect(liveRegion!.textContent).toContain("Tech Excellence Scholarship");
+  });
 
-  it("non-clone card anchors are keyboard-focusable (Tab reaches them)", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships")
-    const { container } = render(<FeaturedScholarships />)
+  it("advances to next card on ArrowRight key", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    const { container } = render(<FeaturedScholarships />);
 
-    const focusableItems = container.querySelectorAll<HTMLElement>(
-      'li:not([aria-hidden="true"])',
-    )
-    expect(focusableItems.length).toBeGreaterThan(0)
-    const firstCardLink = focusableItems[0].querySelector<HTMLAnchorElement>(
-      'a[href="/scholarships"]',
-    )
-    expect(firstCardLink).not.toBeNull()
-    firstCardLink!.focus()
-    expect(document.activeElement).toBe(firstCardLink)
+    const carousel = getCarousel(container);
+    carousel.focus();
+    fireEvent.keyDown(carousel, { key: "ArrowRight" });
 
-    await userEvent.tab()
-    // Focus should move to something focusable (not stuck). Just assert it moved.
-    expect(document.activeElement).not.toBe(firstCardLink)
-  })
-})
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion!.textContent).toContain("Women in STEM Award");
+  });
+
+  it("goes to previous card on ArrowLeft key", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    const { container } = render(<FeaturedScholarships />);
+
+    const carousel = getCarousel(container);
+    carousel.focus();
+    // ArrowLeft from index 0 wraps to last (index 9)
+    fireEvent.keyDown(carousel, { key: "ArrowLeft" });
+
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion!.textContent).toContain("STEM Innovation Grant");
+  });
+
+  it("navigates to /scholarships?q={id} when clicking center card", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    render(<FeaturedScholarships />);
+
+    // The first card (index 0) is the center card by default
+    const buttons = screen.getAllByRole("button", { name: /Tech Excellence Scholarship/i });
+    // Find the one that is the center card (data-cursor-text="View")
+    const centerButton = buttons.find(
+      (btn) => btn.getAttribute("data-cursor-text") === "View",
+    );
+    expect(centerButton).toBeDefined();
+    fireEvent.click(centerButton!);
+
+    expect(mockPush).toHaveBeenCalledWith("/scholarships?q=tech-excellence");
+  });
+
+  it("rotates side card to center on click instead of navigating", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    const { container } = render(<FeaturedScholarships />);
+
+    // Find a side card (data-cursor-text="Focus")
+    const sideButtons = container.querySelectorAll<HTMLButtonElement>(
+      '[data-cursor-text="Focus"]',
+    );
+    expect(sideButtons.length).toBeGreaterThan(0);
+    fireEvent.click(sideButtons[0]);
+
+    // Should NOT navigate
+    expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it("renders arrow buttons with correct aria-labels", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    render(<FeaturedScholarships />);
+
+    expect(screen.getByLabelText("Previous scholarship")).toBeDefined();
+    expect(screen.getByLabelText("Next scholarship")).toBeDefined();
+  });
+
+  it("advances on next arrow click", async () => {
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    const { container } = render(<FeaturedScholarships />);
+
+    const nextBtn = screen.getByLabelText("Next scholarship");
+    fireEvent.click(nextBtn);
+
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion!.textContent).toContain("Women in STEM Award");
+  });
+
+  it("renders reduced motion fallback as scrollable list without 3D", async () => {
+    mockReducedMotion = true;
+    const { FeaturedScholarships } = await import("../featured-scholarships");
+    const { container } = render(<FeaturedScholarships />);
+
+    const carousel = getCarousel(container);
+    expect(carousel).not.toBeNull();
+    expect(carousel.getAttribute("aria-roledescription")).toBe("carousel");
+    // Should have snap-x class for scroll snapping
+    expect(carousel.className).toContain("snap-x");
+    // Should NOT have arrow buttons
+    expect(screen.queryByLabelText("Previous scholarship")).toBeNull();
+    expect(screen.queryByLabelText("Next scholarship")).toBeNull();
+  });
+});

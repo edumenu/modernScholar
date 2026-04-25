@@ -76,12 +76,14 @@ After the implementation is complete, write tests based on the PRD's Testing Dec
 
 Before telling the user you're done:
 
-1. Run the project's linter/formatter if one exists
-2. Run the test suite (both new and existing tests) to make sure nothing is broken
-3. Do a final `git diff` against the base branch to review everything you've changed
-4. Run teh build if applicable (`npm run build`) to catch compiled errors
-5. Run existing tests: if the PRD mentions them. 
-6. Walk through each item in the PRD's implementation decisions and confirm it was done. 
+1. Walk through each item in the PRD's implementation decisions and confirm it was done accurately as specified in the prd with the best coding practices. If any item was missed or deviated from, fix it before proceeding. 
+3. If the changes involve UI, open chrome and navigate to the relevant pages to smoke test the new feature. Click around, try edge cases, and make sure it behaves as expected. If anything looks off, fix it before proceeding.
+2. Run the project's linter/formatter if one exists
+3. Run the test suite (both new and existing tests) to make sure nothing is broken
+4. Do a final `git diff` against the base branch to review everything you've changed
+5. Run the build if applicable (`npm run build`) to catch compiled errors
+6. Run existing tests: if the PRD mentions them. 
+7. Walk through each item in the PRD's implementation decisions and confirm it was done accurately as specified in the prd. If any item was missed or deviated from, fix it before proceeding. 
 
 ## Step 7: Verify
 - Create a verification file at `Brain/PRDs/<date>/<prd-file-name>-verification.md` with what was completed

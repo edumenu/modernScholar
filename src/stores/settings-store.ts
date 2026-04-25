@@ -9,7 +9,7 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      cursorEnabled: true,
+      cursorEnabled: false,
       setCursorEnabled: (enabled) => set({ cursorEnabled: enabled }),
     }),
     { name: "ms-settings" },

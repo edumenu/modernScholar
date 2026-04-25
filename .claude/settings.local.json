@@ -170,7 +170,9 @@
       "Skill(update-config)",
       "Bash(npx tsx:*)",
       "WebFetch(domain:ui.shadcn.com)",
-      "mcp__playwright__browser_network_requests"
+      "mcp__playwright__browser_network_requests",
+      "Bash(open:*)",
+      "Bash(npx @anthropic-ai/mcp-playwright --help)"
     ]
   },
   "outputStyle": "Communicate in caveman compressed style (full intensity). Ultra-compressed output: ~75% fewer tokens. Drop articles, filler, transitions. Use sentence fragments. Keep ALL technical accuracy, code quality, file paths, and specifics intact. Never sacrifice correctness for brevity."

@@ -9,6 +9,7 @@ import {
 } from "motion/react"
 import { panels } from "./types"
 import { SlideContent } from "./slide-content"
+import { ScrollIndicator } from "./scroll-indicator"
 
 interface WhatsNextProps {
   enableColorTransition?: boolean
@@ -71,14 +72,23 @@ export function WhatsNext({ enableColorTransition = true }: WhatsNextProps) {
         aria-label="What's Next"
         className="relative left-1/2 w-dvw -translate-x-1/2"
       >
-        {panels.map((panel) => (
+        {panels.map((panel, index) => (
           <div
             key={panel.id}
-            className="px-6 py-20 md:px-8"
+            className="relative px-6 py-20 md:px-8"
             style={{ backgroundColor: panel.bgColor }}
           >
             <div className="mx-auto w-full max-w-7xl">
               <SlideContent panel={panel} />
+            </div>
+            <div className="absolute bottom-6 right-6 flex items-end gap-3 font-heading text-white md:bottom-8 md:right-8">
+              <span className="text-lg leading-none">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="h-px w-4 bg-white/40" />
+              <span className="text-xs leading-none text-white/50">
+                {String(panels.length).padStart(2, "0")}
+              </span>
             </div>
           </div>
         ))}
@@ -126,6 +136,7 @@ export function WhatsNext({ enableColorTransition = true }: WhatsNextProps) {
             </div>
           ))}
         </motion.div>
+        <ScrollIndicator scrollYProgress={scrollYProgress} />
       </motion.div>
     </section>
   )
