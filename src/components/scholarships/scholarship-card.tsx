@@ -11,11 +11,12 @@ import { useProfileStore, computeMatchScore } from "@/stores/profile";
 import { MatchBadge } from "./match-badge";
 
 interface ScholarshipCardProps {
-  scholarship: Scholarship
-  dimmed?: boolean
-  isExpanded?: boolean
-  disableLayoutAnimation?: boolean
-  onExpand: (id: string) => void
+  scholarship: Scholarship;
+  dimmed?: boolean;
+  isExpanded?: boolean;
+  disableLayoutAnimation?: boolean;
+  onExpand: (id: string) => void;
+  onCategoryClick?: (category: string) => void;
 }
 
 export function ScholarshipCard({
@@ -24,6 +25,7 @@ export function ScholarshipCard({
   isExpanded = false,
   disableLayoutAnimation = false,
   onExpand,
+  onCategoryClick,
 }: ScholarshipCardProps) {
   const { toggle, isSelected } = useComparisonStore();
   const { profile, isSetup } = useProfileStore();
@@ -38,21 +40,24 @@ export function ScholarshipCard({
         layoutId: `card-${scholarship.id}`,
       })}
       whileHover={{ scale: 1.025, y: -4 }}
-      transition={{ type: "tween", stiffness: 400, damping: 28 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
       className={cn(
         "group relative h-full w-full cursor-pointer overflow-hidden rounded-2xl",
         "shadow-md hover:shadow-lg",
         "dark:shadow-lg",
         "transition-[opacity,filter] duration-400 ease-in-out",
-        dimmed && "pointer-events-none opacity-40 saturate-50",
+        dimmed && "opacity-40 saturate-50",
         isExpanded && "invisible",
       )}
       onClick={(e) => {
         e.stopPropagation();
-        if (!dimmed) {
+        if (dimmed && onCategoryClick) {
+          onCategoryClick(scholarship.category);
+        } else if (!dimmed) {
           onExpand(scholarship.id);
         }
       }}
+      title={dimmed ? `Click to filter by ${scholarship.category}` : undefined}
     >
       <Image
         src={scholarship.image}

@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Icon } from "@iconify/react"
+
 
 const quickLinks = [
   { title: "Scholarships", href: "/scholarships" },
@@ -17,23 +17,6 @@ const legalLinks = [
   { title: "Cookie Policy", href: "/cookies" },
 ]
 
-const socialLinks = [
-  {
-    label: "Twitter",
-    href: "https://twitter.com",
-    icon: "mdi:twitter",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com",
-    icon: "mdi:linkedin",
-  },
-  {
-    label: "Instagram",
-    href: "https://instagram.com",
-    icon: "mdi:instagram",
-  },
-]
 
 function FooterContent() {
   return (
@@ -59,23 +42,8 @@ function FooterContent() {
             />
           </Link>
           <p className="max-w-sm text-xs lg:text-sm leading-relaxed text-on-surface-variant">
-            Empowering students to discover and secure scholarships.
-            End-to-end scholarship management with intelligent matching.
+            Curated scholarship discovery for ambitious students.
           </p>
-          <div className="flex gap-3">
-            {socialLinks.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.label}
-                className="flex size-10 items-center justify-center rounded-md bg-surface-container text-on-surface-variant transition-colors hover:text-on-surface"
-              >
-                <Icon icon={social.icon} className="size-5" aria-hidden="true" />
-              </a>
-            ))}
-          </div>
         </div>
 
         {/* Quick Links column */}

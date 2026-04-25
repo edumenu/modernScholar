@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  compiler: {
+    removeConsole: {
+      exclude: ["error"],
+    },
+  },
 };
 
 export default nextConfig;

@@ -11,175 +11,11 @@ import { ButtonLink } from "@/components/ui/button/button-link";
 import { Icon } from "@iconify/react";
 import { useTextLayout } from "@/lib/pretext/use-text-layout";
 import { PRETEXT_FONTS } from "@/lib/pretext/fonts";
+import { scholarships as allScholarships, type Scholarship } from "@/data/scholarships";
 
-interface Scholarship {
-  id: string;
-  name: string;
-  provider: string;
-  amount: string;
-  image: string;
-  category: string;
-  rating: number;
-  deadline: string;
-}
-
-const scholarships: Scholarship[] = [
-  {
-    id: "1",
-    name: "Student Success Stories",
-    provider: "National Education Fund",
-    amount: "$10,000",
-    image: "/scholarships/scholarship-1.jpg",
-    category: "INSPIRATION",
-    rating: 4.8,
-    deadline: "May 15, 2026",
-  },
-  {
-    id: "2",
-    name: "Digital Learning Platform",
-    provider: "TechForward Foundation",
-    amount: "$7,500",
-    image: "/scholarships/scholarship-2.jpg",
-    category: "TECHNOLOGY",
-    rating: 4.5,
-    deadline: "Jun 1, 2026",
-  },
-  {
-    id: "3",
-    name: "Campus Life",
-    provider: "University Alliance",
-    amount: "$5,000",
-    image: "/scholarships/scholarship-3.jpg",
-    category: "EXPERIENCE",
-    rating: 4.3,
-    deadline: "Apr 30, 2026",
-  },
-  {
-    id: "4",
-    name: "Collaborative Learning",
-    provider: "Community Scholars Network",
-    amount: "$8,000",
-    image: "/scholarships/scholarship-4.jpg",
-    category: "COMMUNITY",
-    rating: 4.7,
-    deadline: "Jul 15, 2026",
-  },
-  {
-    id: "5",
-    name: "Achievement & Growth",
-    provider: "Global Achievement Fund",
-    amount: "$12,000",
-    image: "/scholarships/scholarship-5.jpg",
-    category: "SUCCESS",
-    rating: 4.9,
-    deadline: "Aug 1, 2026",
-  },
-  {
-    id: "6",
-    name: "Knowledge Resources",
-    provider: "Library Sciences Trust",
-    amount: "$6,000",
-    image: "/scholarships/scholarship-6.jpg",
-    category: "LIBRARY",
-    rating: 4.2,
-    deadline: "May 30, 2026",
-  },
-  {
-    id: "7",
-    name: "Future Leaders Award",
-    provider: "Leadership Institute",
-    amount: "$15,000",
-    image: "/scholarships/scholarship-1.jpg",
-    category: "LEADERSHIP",
-    rating: 4.9,
-    deadline: "Sep 1, 2026",
-  },
-  {
-    id: "8",
-    name: "STEM Innovation Grant",
-    provider: "Science & Tech Council",
-    amount: "$9,500",
-    image: "/scholarships/scholarship-2.jpg",
-    category: "STEM",
-    rating: 4.6,
-    deadline: "Jun 15, 2026",
-  },
-  {
-    id: "9",
-    name: "Arts & Humanities Fund",
-    provider: "Cultural Heritage Foundation",
-    amount: "$6,500",
-    image: "/scholarships/scholarship-3.jpg",
-    category: "ARTS",
-    rating: 4.4,
-    deadline: "Jul 1, 2026",
-  },
-  {
-    id: "10",
-    name: "Global Perspectives",
-    provider: "International Education Trust",
-    amount: "$11,000",
-    image: "/scholarships/scholarship-4.jpg",
-    category: "GLOBAL",
-    rating: 4.7,
-    deadline: "Aug 15, 2026",
-  },
-  {
-    id: "11",
-    name: "First Generation Scholar",
-    provider: "Access Education Network",
-    amount: "$8,500",
-    image: "/scholarships/scholarship-5.jpg",
-    category: "ACCESS",
-    rating: 4.8,
-    deadline: "May 1, 2026",
-  },
-  {
-    id: "12",
-    name: "Environmental Stewardship",
-    provider: "Green Future Initiative",
-    amount: "$7,000",
-    image: "/scholarships/scholarship-6.jpg",
-    category: "ENVIRONMENT",
-    rating: 4.5,
-    deadline: "Jun 30, 2026",
-  },
-  {
-    id: "13",
-    name: "Creative Writing Prize",
-    provider: "National Writers Circle",
-    amount: "$5,500",
-    image: "/scholarships/scholarship-1.jpg",
-    category: "WRITING",
-    rating: 4.3,
-    deadline: "Jul 30, 2026",
-  },
-  {
-    id: "14",
-    name: "Health Sciences Award",
-    provider: "Medical Education Fund",
-    amount: "$13,000",
-    image: "/scholarships/scholarship-2.jpg",
-    category: "HEALTH",
-    rating: 4.8,
-    deadline: "Sep 15, 2026",
-  },
-  {
-    id: "15",
-    name: "Social Impact Fellowship",
-    provider: "Change Makers Foundation",
-    amount: "$10,500",
-    image: "/scholarships/scholarship-3.jpg",
-    category: "IMPACT",
-    rating: 4.6,
-    deadline: "Oct 1, 2026",
-  },
-];
-
-/** Split scholarships into 3 rows of ~5 each */
-const row1Items = scholarships.slice(0, 5);
-const row2Items = scholarships.slice(5, 10);
-// const row3Items = scholarships.slice(10, 15);
+/** Split first 10 canonical scholarships into 2 marquee rows */
+const row1Items = allScholarships.slice(0, 5);
+const row2Items = allScholarships.slice(5, 10);
 
 /** Card text area width: w-80 (320px) - p-5 (20px) * 2 = 280px */
 const CARD_TEXT_WIDTH = 280;
@@ -196,7 +32,7 @@ function ScholarshipCard({
   isClone?: boolean;
 }) {
   const { lineCount: titleLines } = useTextLayout({
-    text: scholarship.name,
+    text: scholarship.title,
     font: PRETEXT_FONTS.cardTitle,
     maxWidth: CARD_TEXT_WIDTH,
     lineHeight: TITLE_LINE_HEIGHT,
@@ -221,14 +57,14 @@ function ScholarshipCard({
       <Link
         href="/scholarships"
         tabIndex={isClone ? -1 : 0}
-        aria-label={`${scholarship.name} — ${scholarship.provider}, ${scholarship.amount}. View all scholarships.`}
+        aria-label={`${scholarship.title} — ${scholarship.provider}, ${scholarship.amount}. View all scholarships.`}
         data-cursor="text"
         data-cursor-text="View"
         className="group relative block h-full w-full cursor-pointer overflow-hidden rounded-2xl shadow-lg outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
       >
         <Image
           src={scholarship.image}
-          alt={scholarship.name}
+          alt={scholarship.title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="320px"
@@ -242,7 +78,7 @@ function ScholarshipCard({
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/40 px-3 py-1 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
               <span className="size-1.5 rounded-full bg-white" />
-              <span className="text-xs tracking-widest text-white">
+              <span className="text-xs uppercase tracking-widest text-white">
                 {scholarship.category}
               </span>
             </span>
@@ -253,9 +89,9 @@ function ScholarshipCard({
             <div className="flex min-w-0 flex-col gap-1">
               <h3
                 className="truncate text-lg font-medium leading-snug text-white"
-                title={titleOverflows ? scholarship.name : undefined}
+                title={titleOverflows ? scholarship.title : undefined}
               >
-                {scholarship.name}
+                {scholarship.title}
               </h3>
               <p
                 className="truncate text-sm text-white/80"

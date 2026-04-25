@@ -206,7 +206,7 @@
   --popover-foreground: oklch(0.225 0.0097 29.0);
 
   /* Muted: surface-container */
-  --muted: oklch(0.949 0.0136 34.0);
+  --muted: oklch(0.910 0.0136 34.0);
   --muted-foreground: oklch(0.398 0.027 28.6);
 
   /* Accent: surface-container-high */

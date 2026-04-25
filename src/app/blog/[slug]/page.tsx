@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { blogPosts } from "@/data/blog-posts"
 import { BlogDetail } from "@/components/blog/blog-detail"
+import { BlogDetailContent } from "@/components/blog/blog-detail-content"
 import { RelatedPosts } from "@/components/blog/related-posts"
 
 interface BlogPostPageProps {
@@ -42,7 +43,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <div className="page-padding-y flex gap-20 flex-col">
-      <BlogDetail post={post} />
+      <BlogDetail post={post}>
+        <BlogDetailContent post={post} />
+      </BlogDetail>
       <RelatedPosts post={post} />
     </div>
   )

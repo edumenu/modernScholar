@@ -57,19 +57,8 @@ export function HeroSection() {
         })()}
       </ParallaxLayer>
 
-      {/* Mobile hero content — brand identity above the fold */}
-      <div className="relative z-10 flex flex-col gap-4 md:hidden">
-        <AnimatedSection delay={0.2} className="flex flex-col gap-2">
-          <p className="font-heading text-lg font-medium tracking-tight text-primary dark:text-primary-100">
-            Modern Scholar
-          </p>
-          <p className="max-w-xs text-sm text-on-surface-variant">
-            Discover and secure scholarships through a curated, design-forward experience.
-          </p>
-        </AnimatedSection>
-      </div>
-      {/* Spacer for desktop — keeps bottom row pushed down */}
-      <div className="hidden md:block" />
+      {/* Spacer — keeps bottom row pushed down */}
+      <div />
 
       {/* Bottom row — headline left, CTA right */}
       <ParallaxLayer
@@ -101,14 +90,14 @@ export function HeroSection() {
             delay={0.4}
             className="w-full min-w-0 flex-col text-left md:flex-1"
           >
-            <h1 className="max-w-3xl font-heading text-3xl font-bold leading-tight tracking-tight text-primary dark:text-primary-100 sm:text-4xl md:text-5xl md:leading-none">
+            <h1 className="max-w-3xl font-heading text-[clamp(2.5rem,6vw+1rem,5.5rem)] font-bold leading-[1.05] tracking-tighter text-primary dark:text-primary-100">
               Your scholarship journey starts here
             </h1>
           </AnimatedSection>
         </div>
 
         {/* CTA — bottom right */}
-        <AnimatedSection delay={0.7} className="shrink-0">
+        <AnimatedSection delay={0.45} className="shrink-0">
           <CTAButton
             label="Explore"
             onClick={() => router.push("/scholarships")}

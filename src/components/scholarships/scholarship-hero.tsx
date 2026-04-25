@@ -33,7 +33,7 @@ export function ScholarshipHero() {
     <>
       <div className="flex flex-col gap-4 pt-2 pb-2">
         <AnimatedLines
-          text="Explore Scholarships"
+          text="Scholarships"
           font={PRETEXT_FONTS.heroHeadline}
           lineHeight={56}
           as="h1"

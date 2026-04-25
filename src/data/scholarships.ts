@@ -24,6 +24,7 @@ export interface Scholarship {
   tag?: ScholarshipTag
   category: ScholarshipCategory
   description?: string
+  applyUrl?: string
 }
 
 export const scholarships: Scholarship[] = [

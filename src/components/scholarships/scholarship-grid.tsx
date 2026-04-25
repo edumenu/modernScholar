@@ -359,6 +359,7 @@ export function ScholarshipGrid() {
                       items={chunk}
                       expandedId={expandedId}
                       onExpand={handleExpand}
+                      onCategoryClick={(cat) => handleFilterChange(cat as ScholarshipCategory)}
                     />
                   ),
                 )}
@@ -379,6 +380,7 @@ export function ScholarshipGrid() {
                       dimmed={!matches}
                       isExpanded={expandedId === scholarship.id}
                       onExpand={handleExpand}
+                      onCategoryClick={(cat) => handleFilterChange(cat as ScholarshipCategory)}
                     />
                   </div>
                 ))}
@@ -584,10 +586,24 @@ export function ScholarshipGrid() {
 
                   {/* CTA row */}
                   <div className="flex items-center gap-3 border-t border-outline-variant/30 pt-4 dark:border-white/10">
-                    <Button size="default" className="flex-1 sm:flex-none">
-                      Apply Now
+                    <Button
+                      size="default"
+                      className="flex-1 sm:flex-none"
+                      nativeButton={false}
+                      render={
+                        <a
+                          href={
+                            expandedScholarship.applyUrl ||
+                            `https://www.google.com/search?q=${encodeURIComponent(expandedScholarship.title + " " + expandedScholarship.provider + " scholarship")}`
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        />
+                      }
+                    >
+                      {expandedScholarship.applyUrl ? "Apply Now" : "Learn More"}
                       <Icon
-                        icon="solar:arrow-right-linear"
+                        icon="solar:arrow-right-up-linear"
                         data-icon="inline-end"
                       />
                     </Button>
@@ -648,9 +664,10 @@ interface BentoBlockProps {
   items: SortedItem[]
   expandedId: string | null
   onExpand: (id: string) => void
+  onCategoryClick: (category: string) => void
 }
 
-function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
+function BentoBlock({ items, expandedId, onExpand, onCategoryClick }: BentoBlockProps) {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
 
   const renderCard = (item: SortedItem, disableLayout = false) => (
@@ -660,6 +677,7 @@ function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
       isExpanded={expandedId === item.scholarship.id}
       disableLayoutAnimation={disableLayout}
       onExpand={onExpand}
+      onCategoryClick={onCategoryClick}
     />
   );
 

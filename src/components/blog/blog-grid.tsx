@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import { useLenis } from "lenis/react"
-import { useQueryState, parseAsInteger } from "nuqs"
+import { useQueryState, parseAsInteger, parseAsString } from "nuqs"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { blogPosts } from "@/data/blog-posts"
@@ -25,8 +25,14 @@ import {
 const PAGE_SIZE = 9
 
 export function BlogGrid() {
-  const [activeCategory, setActiveCategory] = useState("All")
-  const [searchQuery, setSearchQuery] = useState("")
+  const [activeCategory, setActiveCategory] = useQueryState(
+    "category",
+    parseAsString.withDefault("All"),
+  )
+  const [searchQuery, setSearchQuery] = useQueryState(
+    "q",
+    parseAsString.withDefault(""),
+  )
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1))
 
   const lenis = useLenis()
@@ -83,25 +89,25 @@ export function BlogGrid() {
 
   const handleCategoryChange = useCallback(
     (category: string) => {
-      setActiveCategory(category)
+      setActiveCategory(category === "All" ? null : category)
       setPage(null)
     },
-    [setPage],
+    [setActiveCategory, setPage],
   )
 
   const handleSearchChange = useCallback(
     (query: string) => {
-      setSearchQuery(query)
+      setSearchQuery(query || null)
       setPage(null)
     },
-    [setPage],
+    [setSearchQuery, setPage],
   )
 
   const handleClearFilters = useCallback(() => {
-    setActiveCategory("All")
-    setSearchQuery("")
+    setActiveCategory(null)
+    setSearchQuery(null)
     setPage(null)
-  }, [setPage])
+  }, [setActiveCategory, setSearchQuery, setPage])
 
   const goToPage = useCallback(
     (n: number) => {

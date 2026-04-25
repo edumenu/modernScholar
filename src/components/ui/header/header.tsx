@@ -101,8 +101,8 @@ export function Header() {
         Skip to content
       </a>
       <ScrollAnimatedHeader>
-      <header className="fixed inset-x-0 top-0 z-50 flex justify-end lg:justify-center px-4 pt-4">
-        <nav className="flex items-center gap-4" aria-label="Main navigation">
+      <header className="fixed inset-x-0 top-0 z-50 flex justify-between px-4 pt-4 lg:justify-center">
+        <nav className="flex w-full items-center justify-between gap-4 lg:w-auto lg:justify-start" aria-label="Main navigation">
           {/* Logo pill */}
           <Link
             href="/"
