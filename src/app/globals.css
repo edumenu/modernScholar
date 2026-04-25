@@ -517,6 +517,14 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  [style*="marquee-left"],
+  [style*="marquee-right"] {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
 /* ============================================
    Base Layer
    ============================================ */
