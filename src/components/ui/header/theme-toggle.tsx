@@ -51,8 +51,8 @@ function ThemeToggleInner({ className }: { className?: string }) {
       onClick={handleToggle}
       className={cn(
         "relative flex h-8 w-16 cursor-pointer items-center rounded-full p-0.5",
-        "shadow-[inset_3px_3px_6px_rgba(0,0,0,0.1),inset_-3px_-3px_6px_rgba(255,255,255,0.9)]",
-        "dark:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.3),inset_-3px_-3px_6px_rgba(255,255,255,0.05)]",
+        "shadow-[inset_3px_3px_6px_rgba(0,0,0,0.1),inset_-1px_-1px_2px_rgba(255,255,255,0.9)]",
+        "dark:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.3),inset_-1px_-1px_2px_rgba(255,255,255,0.05)]",
         className,
       )}
     >

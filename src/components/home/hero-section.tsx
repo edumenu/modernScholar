@@ -67,33 +67,29 @@ export function HeroSection() {
         className="relative z-10 flex w-full flex-col items-start gap-6 md:flex-row md:items-end md:justify-between"
       >
         <div className="flex flex-col">
-          {/* Headline — bottom left */}
-          {/* <AnimatedSection
+          {/* Headline — top */}
+          <AnimatedSection
             delay={0.4}
             className="w-full min-w-0 flex-col text-left md:flex-1"
-          > */}
+          >
+            <h2 className="max-w-3xl text-xl leading-[1.05] tracking-tighter text-primary dark:text-primary-100">
+              Your scholarship Journey starts Here
+            </h2>
+          </AnimatedSection>
+          {/* Headline — bottom */}
           <AnimatedLines
             text="Modern Scholar"
             font={PRETEXT_FONTS.heroHeadline}
             fallbackFont={PRETEXT_FALLBACK_FONTS.heroHeadline}
-            lineHeight={32}
+            lineHeight={62}
             as="span"
             mode="chars"
-            className="font-heading text-xl font-medium leading-[1.15] tracking-tight text-primary dark:text-primary-100 md:text-[1.5rem]"
+            className="font-heading max-w-4xl text-[clamp(2.5rem,6vw+1rem,5.5rem)] font-bold leading-[1.05] tracking-tighter text-primary dark:text-primary-100"
             staggerDelay={0.05}
             variant="revealUp"
             aria-hidden="true"
           />
           {/* </AnimatedSection> */}
-          {/* Headline — bottom left */}
-          <AnimatedSection
-            delay={0.4}
-            className="w-full min-w-0 flex-col text-left md:flex-1"
-          >
-            <h1 className="max-w-3xl font-heading text-[clamp(2.5rem,6vw+1rem,5.5rem)] font-bold leading-[1.05] tracking-tighter text-primary dark:text-primary-100">
-              Your scholarship journey starts here
-            </h1>
-          </AnimatedSection>
         </div>
 
         {/* CTA — bottom right */}
