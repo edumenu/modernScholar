@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect, useMemo } from "react"
+import { useState, useCallback, useEffect, useMemo, useRef } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { useLenis } from "lenis/react"
 import { Icon } from "@iconify/react"
@@ -124,6 +124,7 @@ export function ScholarshipGrid() {
   const [activeFilter, setActiveFilter] = useState<ScholarshipCategory>("All")
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [layout, setLayout] = useState<GridLayout>("bento");
+  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   // URL-persisted state
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -245,11 +246,23 @@ export function ScholarshipGrid() {
   const pageNumbers = getPageNumbers(safePage, totalPages)
 
   const handleExpand = useCallback((id: string) => {
+    if (typeof document !== "undefined") {
+      const active = document.activeElement as HTMLElement | null
+      previousFocusRef.current = active
+    }
     setExpandedId(id)
   }, [])
 
   const handleClose = useCallback(() => {
     setExpandedId(null)
+  }, [])
+
+  const restorePreviousFocus = useCallback(() => {
+    const target = previousFocusRef.current
+    if (target && typeof target.focus === "function") {
+      target.focus()
+    }
+    previousFocusRef.current = null
   }, [])
 
   // Lock scroll when expanded
@@ -439,7 +452,7 @@ export function ScholarshipGrid() {
       <ComparisonFab />
 
       {/* Expanded Card Overlay */}
-      <AnimatePresence>
+      <AnimatePresence onExitComplete={restorePreviousFocus}>
         {expandedScholarship && (
           <>
             <motion.div
@@ -455,9 +468,6 @@ export function ScholarshipGrid() {
 
             <div
               className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
-              role="dialog"
-              aria-modal="true"
-              aria-label={expandedScholarship.title}
               onClick={handleClose}
               onKeyDown={(e) => {
                 if (e.key === "Tab") {
@@ -484,6 +494,9 @@ export function ScholarshipGrid() {
             >
               <motion.div
                 data-modal-content
+                role="dialog"
+                aria-modal="true"
+                aria-label={expandedScholarship.title}
                 onClick={(e) => e.stopPropagation()}
                 layoutId={`card-${expandedScholarship.id}`}
                 className={cn(

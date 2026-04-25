@@ -153,28 +153,48 @@ export function ScholarshipFilters({
       <div className="flex shrink-0 items-center gap-2">
         {/* Collapsible search */}
         <motion.div
+          role="search"
+          aria-label="Search scholarships"
           initial={false}
           animate={{ width: searchOpen ? 240 : 36 }}
           transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
           className={cn(
-            "flex h-9 shrink-0 cursor-text items-center overflow-hidden rounded-full border border-outline-variant/30",
+            "flex h-9 shrink-0 items-center overflow-hidden rounded-full border border-outline-variant/30",
             searchOpen
               ? "gap-2 bg-white/20 px-2.5 dark:bg-white/5"
               : "justify-center bg-surface-container-low/50",
           )}
-          onClick={() => inputRef.current?.focus()}
         >
-          <Icon
-            icon="solar:magnifer-linear"
-            className={cn(
-              "size-4.5 shrink-0 transition-colors",
-              searchOpen
-                ? "text-on-surface/50 dark:text-white/50"
-                : "text-on-surface/60 dark:text-white/50",
-            )}
-          />
+          <button
+            type="button"
+            aria-label={searchOpen ? "Collapse search" : "Expand search"}
+            aria-expanded={searchOpen}
+            aria-controls="scholarship-search-input"
+            onClick={() => {
+              if (searchOpen) {
+                onSearchChange("")
+                setSearchOpen(false)
+                inputRef.current?.blur()
+              } else {
+                setSearchOpen(true)
+                requestAnimationFrame(() => inputRef.current?.focus())
+              }
+            }}
+            className="flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-full outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+          >
+            <Icon
+              icon="solar:magnifer-linear"
+              className={cn(
+                "size-4.5 transition-colors",
+                searchOpen
+                  ? "text-on-surface/50 dark:text-white/50"
+                  : "text-on-surface/60 dark:text-white/50",
+              )}
+            />
+          </button>
           <Input
             ref={inputRef}
+            id="scholarship-search-input"
             type="search"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
@@ -190,9 +210,11 @@ export function ScholarshipFilters({
             }}
             placeholder="Search..."
             aria-label="Search scholarships"
+            aria-hidden={!searchOpen}
+            tabIndex={searchOpen ? 0 : -1}
             className={cn(
               "h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0",
-              !searchOpen && "w-0",
+              !searchOpen && "invisible w-0",
             )}
           />
         </motion.div>

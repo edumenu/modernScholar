@@ -12,7 +12,7 @@ import {
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react"
-import { motion, AnimatePresence } from "motion/react"
+import { motion, AnimatePresence, useReducedMotion } from "motion/react"
 import { toast } from "sonner"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import { CTAButton } from "@/components/ui/button/cta-button"
@@ -187,6 +187,7 @@ export function ContactFormSection() {
   const [isButtonHovered, setIsButtonHovered] = useState(false)
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     startTransition(() => setMounted(true));
@@ -269,46 +270,66 @@ export function ContactFormSection() {
                   <AnimatePresence>
                     {!isButtonHovered && (
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.5, x: 20 }}
-                        animate={{
-                          opacity: 1,
-                          scale: 1,
-                          x: 0,
-                          y: [0, -6, 0],
-                          rotate: [0, -2, 0],
-                        }}
-                        exit={{
-                          opacity: 0,
-                          scale: 0.6,
-                          x: 30,
-                          y: -10,
-                          transition: { duration: 0.3, ease: "backIn" },
-                        }}
-                        transition={{
-                          opacity: {
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 20,
-                          },
-                          scale: {
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 20,
-                          },
-                          x: { type: "spring", stiffness: 300, damping: 20 },
-                          y: {
-                            repeat: Infinity,
-                            duration: 2,
-                            ease: "easeInOut",
-                            delay: 0.5,
-                          },
-                          rotate: {
-                            repeat: Infinity,
-                            duration: 2,
-                            ease: "easeInOut",
-                            delay: 0.5,
-                          },
-                        }}
+                        initial={
+                          shouldReduceMotion
+                            ? { opacity: 0 }
+                            : { opacity: 0, scale: 0.5, x: 20 }
+                        }
+                        animate={
+                          shouldReduceMotion
+                            ? { opacity: 1 }
+                            : {
+                                opacity: 1,
+                                scale: 1,
+                                x: 0,
+                                y: [0, -6, 0],
+                                rotate: [0, -2, 0],
+                              }
+                        }
+                        exit={
+                          shouldReduceMotion
+                            ? { opacity: 0, transition: { duration: 0.2 } }
+                            : {
+                                opacity: 0,
+                                scale: 0.6,
+                                x: 30,
+                                y: -10,
+                                transition: { duration: 0.3, ease: "backIn" },
+                              }
+                        }
+                        transition={
+                          shouldReduceMotion
+                            ? { duration: 0.2 }
+                            : {
+                                opacity: {
+                                  type: "spring",
+                                  stiffness: 300,
+                                  damping: 20,
+                                },
+                                scale: {
+                                  type: "spring",
+                                  stiffness: 300,
+                                  damping: 20,
+                                },
+                                x: {
+                                  type: "spring",
+                                  stiffness: 300,
+                                  damping: 20,
+                                },
+                                y: {
+                                  repeat: Infinity,
+                                  duration: 2,
+                                  ease: "easeInOut",
+                                  delay: 0.5,
+                                },
+                                rotate: {
+                                  repeat: Infinity,
+                                  duration: 2,
+                                  ease: "easeInOut",
+                                  delay: 0.5,
+                                },
+                              }
+                        }
                       >
                         <NudgeArrow />
                       </motion.div>

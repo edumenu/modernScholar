@@ -165,10 +165,15 @@ function ReadingTimeBars({ readTime }: { readTime: string }) {
   const filled = Math.min(5, Math.max(1, Math.ceil(minutes / 3)))
 
   return (
-    <div className="flex items-end gap-0.5" title={readTime}>
+    <div
+      role="img"
+      aria-label={readTime}
+      className="flex items-end gap-0.5"
+    >
       {Array.from({ length: 5 }).map((_, i) => (
         <div
           key={i}
+          aria-hidden="true"
           className={cn(
             "w-1 rounded-full transition-colors",
             i < filled ? "bg-primary" : "bg-outline-variant/30",

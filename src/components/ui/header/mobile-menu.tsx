@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils"
 import Image from "next/image";
 import { ThemeToggle } from "./theme-toggle";
 import { glassPill } from "../styles";
+import { useFocusTrap } from "@/hooks/use-focus-trap";
+
+const MOBILE_DRAWER_ID = "mobile-nav-drawer"
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -134,9 +137,17 @@ function NavLink({
 function MobileNav() {
   const pathname = usePathname()
   const [selectedIndicator, setSelectedIndicator] = useState(pathname)
+  const drawerRef = useRef<HTMLDivElement>(null)
+
+  useFocusTrap(drawerRef, true)
 
   return (
     <motion.div
+      ref={drawerRef}
+      id={MOBILE_DRAWER_ID}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation"
       variants={menuSlide}
       initial="initial"
       animate="enter"
@@ -217,19 +228,32 @@ export function MobileMenuButton() {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const [prevPathname, setPrevPathname] = useState(pathname)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   if (prevPathname !== pathname) {
     setPrevPathname(pathname)
     if (isOpen) setIsOpen(false)
   }
 
+  const handleToggle = () => {
+    setIsOpen((prev) => {
+      if (prev) {
+        // Will transition to closed — return focus to the trigger button
+        requestAnimationFrame(() => buttonRef.current?.focus())
+      }
+      return !prev
+    })
+  }
+
   return (
     <>
       <button
+        ref={buttonRef}
         type="button"
         aria-label={isOpen ? "Close menu" : "Open menu"}
         aria-expanded={isOpen}
-        onClick={() => setIsOpen(!isOpen)}
+        aria-controls={MOBILE_DRAWER_ID}
+        onClick={handleToggle}
         className={cn(
           "relative z-60 flex size-11.5 cursor-pointer items-center justify-center rounded-full",
           "border border-white/40 bg-white/25 shadow-[0_8px_32px_rgba(31,38,135,0.15)]",
@@ -264,7 +288,11 @@ export function MobileMenuButton() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
               className="fixed inset-0 z-40 bg-black/40 backdrop-blur-md lg:hidden"
-              onClick={() => setIsOpen(false)}
+              aria-hidden="true"
+              onClick={() => {
+                setIsOpen(false)
+                requestAnimationFrame(() => buttonRef.current?.focus())
+              }}
             />
             <MobileNav />
           </>

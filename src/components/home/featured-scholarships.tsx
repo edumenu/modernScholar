@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { AnimatedSection } from "../ui/animatedSection/animated-section";
 import { ParallaxLayer } from "@/components/ui/parallax-layer";
@@ -186,7 +188,13 @@ const TITLE_LINE_HEIGHT = 25;
 /** text-sm line height (default ~20px) */
 const PROVIDER_LINE_HEIGHT = 20;
 
-function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
+function ScholarshipCard({
+  scholarship,
+  isClone = false,
+}: {
+  scholarship: Scholarship;
+  isClone?: boolean;
+}) {
   const { lineCount: titleLines } = useTextLayout({
     text: scholarship.name,
     font: PRETEXT_FONTS.cardTitle,
@@ -205,58 +213,67 @@ function ScholarshipCard({ scholarship }: { scholarship: Scholarship }) {
   const providerOverflows = providerLines > 1;
 
   return (
-    <div
-      data-cursor="text"
-      data-cursor-text="View"
-      className="group relative w-80 cursor-pointer shrink-0 overflow-hidden rounded-2xl shadow-lg"
+    <li
+      role="listitem"
+      aria-hidden={isClone ? "true" : undefined}
+      className="w-80 shrink-0 list-none"
     >
-      <Image
-        src={scholarship.image}
-        alt={scholarship.name}
-        fill
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
-        sizes="320px"
-      />
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
+      <Link
+        href="/scholarships"
+        tabIndex={isClone ? -1 : 0}
+        aria-label={`${scholarship.name} — ${scholarship.provider}, ${scholarship.amount}. View all scholarships.`}
+        data-cursor="text"
+        data-cursor-text="View"
+        className="group relative block h-full w-full cursor-pointer overflow-hidden rounded-2xl shadow-lg outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+      >
+        <Image
+          src={scholarship.image}
+          alt={scholarship.name}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="320px"
+        />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
 
-      {/* Content overlay */}
-      <div className="absolute inset-0 flex flex-col justify-between p-5">
-        {/* Top: Pill badges */}
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/40 px-3 py-1 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
-            <span className="size-1.5 rounded-full bg-white" />
-            <span className="text-xs tracking-widest text-white">
-              {scholarship.category}
+        {/* Content overlay */}
+        <div className="absolute inset-0 flex flex-col justify-between p-5">
+          {/* Top: Pill badges */}
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/40 px-3 py-1 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
+              <span className="size-1.5 rounded-full bg-white" />
+              <span className="text-xs tracking-widest text-white">
+                {scholarship.category}
+              </span>
             </span>
-          </span>
-        </div>
+          </div>
 
-        {/* Bottom: Info */}
-        <div className="flex items-end justify-start gap-3">
-          <div className="flex min-w-0 flex-col gap-1">
-            <h3
-              className="truncate text-lg font-medium leading-snug text-white"
-              title={titleOverflows ? scholarship.name : undefined}
-            >
-              {scholarship.name}
-            </h3>
-            <p
-              className="truncate text-sm text-white/80"
-              title={providerOverflows ? scholarship.provider : undefined}
-            >
-              {scholarship.provider}
-            </p>
-            <p className="text-sm text-white/70">
-              <span className="font-medium text-white">
-                {scholarship.amount}
-              </span>{" "}
-              &middot; {scholarship.deadline}
-            </p>
+          {/* Bottom: Info */}
+          <div className="flex items-end justify-start gap-3">
+            <div className="flex min-w-0 flex-col gap-1">
+              <h3
+                className="truncate text-lg font-medium leading-snug text-white"
+                title={titleOverflows ? scholarship.name : undefined}
+              >
+                {scholarship.name}
+              </h3>
+              <p
+                className="truncate text-sm text-white/80"
+                title={providerOverflows ? scholarship.provider : undefined}
+              >
+                {scholarship.provider}
+              </p>
+              <p className="text-sm text-white/70">
+                <span className="font-medium text-white">
+                  {scholarship.amount}
+                </span>{" "}
+                &middot; {scholarship.deadline}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Link>
+    </li>
   );
 }
 
@@ -275,37 +292,44 @@ function MarqueeRow({
   height,
   className,
 }: MarqueeRowProps) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const duplicated = [...items, ...items];
+  const trackRef = useRef<HTMLUListElement>(null);
+  const shouldReduceMotion = useReducedMotion();
   const animationName = direction === "left" ? "marquee-left" : "marquee-right";
+  const cards = shouldReduceMotion ? items : [...items, ...items];
 
   return (
     <div
       className={cn("overflow-hidden", height, className)}
       onMouseEnter={() => {
-        if (trackRef.current)
+        if (trackRef.current && !shouldReduceMotion)
           trackRef.current.style.animationPlayState = "paused";
       }}
       onMouseLeave={() => {
-        if (trackRef.current)
+        if (trackRef.current && !shouldReduceMotion)
           trackRef.current.style.animationPlayState = "running";
       }}
     >
-      <div
+      <ul
         ref={trackRef}
-        className="flex h-full gap-6"
-        style={{
-          animation: `${animationName} ${duration}s linear infinite`,
-          width: "max-content",
-        }}
+        role="list"
+        className="flex h-full list-none gap-6 p-0"
+        style={
+          shouldReduceMotion
+            ? { width: "max-content" }
+            : {
+                animation: `${animationName} ${duration}s linear infinite`,
+                width: "max-content",
+              }
+        }
       >
-        {duplicated.map((scholarship, i) => (
+        {cards.map((scholarship, i) => (
           <ScholarshipCard
             key={`${scholarship.id}-${i}`}
             scholarship={scholarship}
+            isClone={!shouldReduceMotion && i >= items.length}
           />
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
