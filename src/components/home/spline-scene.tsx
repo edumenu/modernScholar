@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Spline from "@splinetool/react-spline";
+import { useLenis } from "lenis/react";
 
 export function SplineScene({
   className,
@@ -11,6 +12,7 @@ export function SplineScene({
   scene: string;
 }) {
   const [loaded, setLoaded] = useState(false);
+  const lenis = useLenis();
 
   return (
     <div className={className} style={{ position: "relative" }}>
@@ -21,7 +23,10 @@ export function SplineScene({
       )}
       <Spline
         scene={scene}
-        onLoad={() => setLoaded(true)}
+        onLoad={() => {
+          setLoaded(true);
+          lenis?.resize();
+        }}
         style={{
           width: "100%",
           height: "100%",

@@ -10,7 +10,13 @@ function LenisRouteResizer() {
 
   useEffect(() => {
     if (!lenis) return
+
     lenis.resize()
+
+    // Secondary resize after a short delay for lazy/async content (e.g. Spline 3D scenes)
+    const timer = setTimeout(() => lenis.resize(), 500)
+
+    return () => clearTimeout(timer)
   }, [lenis, pathname])
 
   return null
