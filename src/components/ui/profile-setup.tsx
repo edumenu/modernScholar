@@ -148,7 +148,7 @@ export function ProfileSetup({ onClose }: ProfileSetupProps) {
     </div>
   )
 }
-
+// TODO: Deprecate this in favor of a more comprehensive profile page in the future
 export function ProfileSetupTrigger() {
   const { isSetup, clearProfile } = useProfileStore()
   const [showSetup, setShowSetup] = useState(false)

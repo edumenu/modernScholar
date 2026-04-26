@@ -38,8 +38,12 @@ export function ScholarshipCard({
         layoutId: `card-${scholarship.id}`,
       })}
       whileHover={dimmed ? undefined : { scale: 1.025, y: -4 }}
-      animate={{ opacity: dimmed ? 0.4 : 1 }}
-      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+      animate={{ opacity: isExpanded ? 0 : dimmed ? 0.4 : 1 }}
+      transition={
+        isExpanded
+          ? { opacity: { duration: 0 } }
+          : { type: "spring", stiffness: 400, damping: 28 }
+      }
       className={cn(
         "group relative h-full w-full overflow-hidden rounded-2xl",
         "shadow-md dark:shadow-lg",
@@ -72,16 +76,16 @@ export function ScholarshipCard({
         {/* Top: Badges + Compare toggle */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {scholarship.tag && (
+            {/* {scholarship.tag && (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
                 <Icon icon="solar:star-bold" className="size-3.5" />
                 {scholarship.tag}
               </span>
-            )}
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
+            )} */}
+            {/* <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
               {scholarship.rating}
               <Icon icon="solar:star-bold" className="size-3 text-amber-300" />
-            </span>
+            </span> */}
           </div>
           <button
             onClick={(e) => {

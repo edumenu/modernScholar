@@ -121,8 +121,10 @@ const BENTO_CHUNK = 10
 /* ── Main Component ──────────────────────────────────────── */
 
 export function ScholarshipGrid() {
-  const [activeFilter, setActiveFilter] = useState<ScholarshipCategory>("All")
+  const [activeFilter, setActiveFilter] = useState<ScholarshipCategory>("All");
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  // When true, layoutId is removed from the modal before exit triggers
+  const [isClosing, setIsClosing] = useState(false);
   const [layout, setLayout] = useState<GridLayout>("bento");
   const previousFocusRef = useRef<HTMLElement | null>(null);
 
@@ -164,7 +166,7 @@ export function ScholarshipGrid() {
     [tagFilters, setTagsParam],
   );
 
-  const lenis = useLenis()
+  const lenis = useLenis();
 
   const sortedItems = useMemo(
     () =>
@@ -220,73 +222,80 @@ export function ScholarshipGrid() {
   const handleFilterChange = useCallback(
     (category: ScholarshipCategory) => {
       if (expandedId) {
-        setExpandedId(null)
+        setExpandedId(null);
         requestAnimationFrame(() => {
-          setActiveFilter(category)
-          setPage(null)
-        })
+          setActiveFilter(category);
+          setPage(null);
+        });
       } else {
-        setActiveFilter(category)
-        setPage(null)
+        setActiveFilter(category);
+        setPage(null);
       }
     },
     [expandedId, setPage],
-  )
+  );
 
   const goToPage = useCallback(
     (n: number) => {
-      const clamped = Math.min(Math.max(1, n), totalPages)
-      setPage(clamped === 1 ? null : clamped)
-      const el = document.getElementById("scholarship-grid-top")
-      if (el && lenis) lenis.scrollTo(el, { offset: -80 })
+      const clamped = Math.min(Math.max(1, n), totalPages);
+      setPage(clamped === 1 ? null : clamped);
+      const el = document.getElementById("scholarship-grid-top");
+      if (el && lenis) lenis.scrollTo(el, { offset: -80 });
     },
     [totalPages, setPage, lenis],
-  )
+  );
 
-  const pageNumbers = getPageNumbers(safePage, totalPages)
+  const pageNumbers = getPageNumbers(safePage, totalPages);
 
   const handleExpand = useCallback((id: string) => {
     if (typeof document !== "undefined") {
-      const active = document.activeElement as HTMLElement | null
-      previousFocusRef.current = active
+      const active = document.activeElement as HTMLElement | null;
+      previousFocusRef.current = active;
     }
-    setExpandedId(id)
-  }, [])
+    setIsClosing(false);
+    setExpandedId(id);
+  }, []);
 
   const handleClose = useCallback(() => {
-    setExpandedId(null)
-  }, [])
+    // Phase 1: remove layoutId from modal (prevents reverse morph)
+    setIsClosing(true);
+    // Phase 2: on next frame, trigger the exit animation
+    requestAnimationFrame(() => {
+      setExpandedId(null);
+    });
+  }, []);
 
   const restorePreviousFocus = useCallback(() => {
-    const target = previousFocusRef.current
+    setIsClosing(false);
+    const target = previousFocusRef.current;
     if (target && typeof target.focus === "function") {
-      target.focus()
+      target.focus();
     }
-    previousFocusRef.current = null
-  }, [])
+    previousFocusRef.current = null;
+  }, []);
 
   // Lock scroll when expanded
   useEffect(() => {
-    if (!lenis) return
+    if (!lenis) return;
     if (expandedId) {
-      lenis.stop()
+      lenis.stop();
     } else {
-      lenis.start()
+      lenis.start();
     }
     return () => {
-      lenis.start()
-    }
-  }, [expandedId, lenis])
+      lenis.start();
+    };
+  }, [expandedId, lenis]);
 
   // Close modal on Escape key
   useEffect(() => {
-    if (!expandedId) return
+    if (!expandedId) return;
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose()
-    }
-    window.addEventListener("keydown", handler)
-    return () => window.removeEventListener("keydown", handler)
-  }, [expandedId, handleClose])
+      if (e.key === "Escape") handleClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [expandedId, handleClose]);
 
   const clearAllFilters = useCallback(() => {
     setActiveFilter("All");
@@ -359,7 +368,6 @@ export function ScholarshipGrid() {
                       items={chunk}
                       expandedId={expandedId}
                       onExpand={handleExpand}
-
                     />
                   ),
                 )}
@@ -380,7 +388,6 @@ export function ScholarshipGrid() {
                       dimmed={!matches}
                       isExpanded={expandedId === scholarship.id}
                       onExpand={handleExpand}
-
                     />
                   </div>
                 ))}
@@ -463,12 +470,16 @@ export function ScholarshipGrid() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm"
               onClick={handleClose}
               aria-hidden="true"
             />
 
-            <div
+            <motion.div
+              key="modal-wrapper"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
               onClick={handleClose}
               onKeyDown={(e) => {
@@ -500,7 +511,9 @@ export function ScholarshipGrid() {
                 aria-modal="true"
                 aria-label={expandedScholarship.title}
                 onClick={(e) => e.stopPropagation()}
-                layoutId={`card-${expandedScholarship.id}`}
+                {...(!isClosing && {
+                  layoutId: `card-${expandedScholarship.id}`,
+                })}
                 className={cn(
                   "relative flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl",
                   "bg-background shadow-xl dark:shadow-2xl",
@@ -534,19 +547,19 @@ export function ScholarshipGrid() {
 
                   <div className="absolute inset-0 flex flex-col justify-between p-8 md:p-12">
                     <div className="flex items-center gap-2">
-                      {expandedScholarship.tag && (
+                      {/* {expandedScholarship.tag && (
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
                           <Icon icon="solar:star-bold" className="size-3.5" />
                           {expandedScholarship.tag}
                         </span>
-                      )}
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
+                      )} */}
+                      {/* <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
                         {expandedScholarship.rating}
                         <Icon
                           icon="solar:star-bold"
                           className="size-3 text-amber-300"
                         />
-                      </span>
+                      </span> */}
                     </div>
 
                     <h2 className="font-heading text-3xl font-medium leading-tight text-white md:text-4xl lg:text-5xl">
@@ -601,19 +614,21 @@ export function ScholarshipGrid() {
                         />
                       }
                     >
-                      {expandedScholarship.applyUrl ? "Apply Now" : "Learn More"}
+                      {expandedScholarship.applyUrl
+                        ? "Apply Now"
+                        : "Learn More"}
                       <Icon
                         icon="solar:arrow-right-up-linear"
                         data-icon="inline-end"
                       />
                     </Button>
-                    <Button
+                    {/* <Button
                       variant="outline"
                       size="icon-sm"
                       aria-label="Save scholarship"
                     >
                       <Icon icon="solar:bookmark-linear" className="size-4" />
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="outline"
                       size="icon-sm"
@@ -624,7 +639,7 @@ export function ScholarshipGrid() {
                   </div>
                 </motion.div>
               </motion.div>
-            </div>
+            </motion.div>
           </>
         )}
       </AnimatePresence>
@@ -676,7 +691,6 @@ function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
       isExpanded={expandedId === item.scholarship.id}
       disableLayoutAnimation={disableLayout}
       onExpand={onExpand}
-
     />
   );
 

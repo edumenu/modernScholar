@@ -105,8 +105,8 @@ export function ScholarshipFilters({
           <LayoutGroup>
             <div className="flex items-center gap-1 py-2">
               {SCHOLARSHIP_CATEGORIES.map((category) => {
-                const isActive = activeFilter === category
-                const count = categoryCounts[category]
+                const isActive = activeFilter === category;
+                const count = categoryCounts[category];
                 return (
                   <div key={category} className="relative">
                     {isActive && (
@@ -145,7 +145,7 @@ export function ScholarshipFilters({
                       </span>
                     </Button>
                   </div>
-                )
+                );
               })}
             </div>
           </LayoutGroup>
@@ -173,12 +173,12 @@ export function ScholarshipFilters({
               aria-controls="scholarship-search-input"
               onClick={() => {
                 if (searchOpen) {
-                  onSearchChange("")
-                  setSearchOpen(false)
-                  inputRef.current?.blur()
+                  onSearchChange("");
+                  setSearchOpen(false);
+                  inputRef.current?.blur();
                 } else {
-                  setSearchOpen(true)
-                  requestAnimationFrame(() => inputRef.current?.focus())
+                  setSearchOpen(true);
+                  requestAnimationFrame(() => inputRef.current?.focus());
                 }
               }}
               className="flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-full outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
@@ -201,12 +201,12 @@ export function ScholarshipFilters({
               onChange={(e) => onSearchChange(e.target.value)}
               onFocus={() => setSearchOpen(true)}
               onBlur={() => {
-                if (!searchQuery) setSearchOpen(false)
+                if (!searchQuery) setSearchOpen(false);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Escape") {
-                  onSearchChange("")
-                  inputRef.current?.blur()
+                  onSearchChange("");
+                  inputRef.current?.blur();
                 }
               }}
               placeholder="Search..."
@@ -225,7 +225,7 @@ export function ScholarshipFilters({
       {/* Row 2: Layout toggle (left) + Sort + Filters + Profile (right) */}
       <div className="flex items-center justify-between pt-3">
         {/* Left: Layout toggle */}
-        <div className="flex items-center gap-1 rounded-full bg-white/30 p-1 dark:bg-white/10">
+        <div className="flex items-center gap-1 rounded-full bg-muted/80 p-1 dark:bg-white/10">
           <Button
             variant="ghost"
             size="icon-sm"
@@ -264,9 +264,9 @@ export function ScholarshipFilters({
             <DropdownMenuTrigger
               render={
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
-                  className="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
+                  className="shrink-0 rounded-full"
                 />
               }
             >
@@ -302,9 +302,9 @@ export function ScholarshipFilters({
             <DropdownMenuTrigger
               render={
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
-                  className="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
+                  className="shrink-0 rounded-full"
                 />
               }
             >
@@ -321,9 +321,11 @@ export function ScholarshipFilters({
                 <DropdownMenuCheckboxItem
                   checked={tagFilters.featured}
                   onCheckedChange={(checked) =>
-                    (onTagFiltersChange as (updater: (prev: TagFilters) => TagFilters) => void)(
-                      (prev) => ({ ...prev, featured: checked }),
-                    )
+                    (
+                      onTagFiltersChange as (
+                        updater: (prev: TagFilters) => TagFilters,
+                      ) => void
+                    )((prev) => ({ ...prev, featured: checked }))
                   }
                 >
                   Featured
@@ -331,9 +333,11 @@ export function ScholarshipFilters({
                 <DropdownMenuCheckboxItem
                   checked={tagFilters.popular}
                   onCheckedChange={(checked) =>
-                    (onTagFiltersChange as (updater: (prev: TagFilters) => TagFilters) => void)(
-                      (prev) => ({ ...prev, popular: checked }),
-                    )
+                    (
+                      onTagFiltersChange as (
+                        updater: (prev: TagFilters) => TagFilters,
+                      ) => void
+                    )((prev) => ({ ...prev, popular: checked }))
                   }
                 >
                   Popular
@@ -341,9 +345,11 @@ export function ScholarshipFilters({
                 <DropdownMenuCheckboxItem
                   checked={tagFilters.new}
                   onCheckedChange={(checked) =>
-                    (onTagFiltersChange as (updater: (prev: TagFilters) => TagFilters) => void)(
-                      (prev) => ({ ...prev, new: checked }),
-                    )
+                    (
+                      onTagFiltersChange as (
+                        updater: (prev: TagFilters) => TagFilters,
+                      ) => void
+                    )((prev) => ({ ...prev, new: checked }))
                   }
                 >
                   New
@@ -351,9 +357,11 @@ export function ScholarshipFilters({
                 <DropdownMenuCheckboxItem
                   checked={tagFilters.topPick}
                   onCheckedChange={(checked) =>
-                    (onTagFiltersChange as (updater: (prev: TagFilters) => TagFilters) => void)(
-                      (prev) => ({ ...prev, topPick: checked }),
-                    )
+                    (
+                      onTagFiltersChange as (
+                        updater: (prev: TagFilters) => TagFilters,
+                      ) => void
+                    )((prev) => ({ ...prev, topPick: checked }))
                   }
                 >
                   Top Pick
@@ -361,10 +369,10 @@ export function ScholarshipFilters({
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <ProfileSetupTrigger />
+          {/* TODO: Deprecate this in favor of a more comprehensive profile page in the future */}
+          {/* <ProfileSetupTrigger /> */}
         </div>
       </div>
     </div>
-  )
+  );
 }
