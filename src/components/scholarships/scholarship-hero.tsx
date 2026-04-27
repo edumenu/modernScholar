@@ -1,32 +1,50 @@
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import { AnimatedLines } from "@/components/ui/animatedLines/animated-lines"
 import { PRETEXT_FONTS } from "@/lib/pretext/fonts"
-import { scholarships, SCHOLARSHIP_CATEGORIES } from "@/data/scholarships";
+import {
+  scholarships,
+  getCurrentSeason,
+  getNextSeason,
+  isScholarshipVisible,
+  parseAwardAmount,
+} from "@/data/scholarships"
 
-/** Count scholarships with deadlines in the current month */
-function getDeadlinesThisMonth(): number {
-  const now = new Date();
-  const currentMonth = now.getMonth();
-  const currentYear = now.getFullYear();
-  return scholarships.filter((s) => {
-    const d = new Date(s.deadline);
-    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-  }).length;
-}
+const now = new Date()
+const currentSeason = getCurrentSeason(now)
+const nextSeason = getNextSeason(currentSeason)
 
-const totalScholarships = scholarships.length;
-const categoryCount = SCHOLARSHIP_CATEGORIES.length - 1; // exclude "All"
-const deadlinesThisMonth = getDeadlinesThisMonth();
+const seasonalScholarships = scholarships.filter((s) =>
+  isScholarshipVisible(s, currentSeason, now),
+)
 
-// Find max amount
+const totalScholarships = seasonalScholarships.length
+
+const educationLevelsCount = new Set(
+  seasonalScholarships.flatMap((s) => s.classification),
+).size
+
 const maxAmount = (() => {
-  let max = 0;
-  for (const s of scholarships) {
-    const val = Number(s.amount.replace(/[^0-9.]/g, "")) || 0;
-    if (val > max) max = val;
+  let max = 0
+  for (const s of seasonalScholarships) {
+    const val = parseAwardAmount(s.awardAmount)
+    if (val > max) max = val
   }
-  return `$${max.toLocaleString()}`;
-})();
+  return max > 0 ? `$${max.toLocaleString()}` : null
+})()
+
+const deadlinesThisMonth = (() => {
+  const currentMonth = now.getMonth()
+  const monthNames = [
+    "january", "february", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december",
+  ]
+  return seasonalScholarships.filter((s) => {
+    const deadlineMonth = s.deadline.toLowerCase().split(" ")[0]
+    return deadlineMonth === monthNames[currentMonth]
+  }).length
+})()
+
+const seasonLabel = currentSeason.charAt(0).toUpperCase() + currentSeason.slice(1)
 
 export function ScholarshipHero() {
   return (
@@ -44,25 +62,27 @@ export function ScholarshipHero() {
         />
         <AnimatedSection delay={0.4}>
           <p className="max-w-2xl text-base text-on-surface-variant md:text-lg lg:text-xl">
-            Discover opportunities tailored to your goals. Filter by category
-            and find the perfect scholarship for your academic journey.
+            {totalScholarships > 0
+              ? `Explore ${seasonLabel} scholarships you can apply to right now. Filter by education level to find opportunities that match your stage.`
+              : `No scholarships available this ${seasonLabel.toLowerCase()}. New scholarships are coming in ${nextSeason}!`}
           </p>
         </AnimatedSection>
-        {/* Stat strip */}
-        <AnimatedSection delay={0.1}>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-on-surface-variant md:text-sm">
-            <span>{totalScholarships} scholarships</span>
-            <span>{categoryCount} categories</span>
-            <span>Up to {maxAmount}</span>
-            {deadlinesThisMonth > 0 && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/15 px-3 py-0.5 text-xs font-medium text-tertiary md:text-sm">
-                {deadlinesThisMonth} deadline
-                {deadlinesThisMonth !== 1 ? "s" : ""} this month
-              </span>
-            )}
-          </div>
-        </AnimatedSection>
+        {totalScholarships > 0 && (
+          <AnimatedSection delay={0.1}>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-on-surface-variant md:text-sm">
+              <span>{totalScholarships} scholarships</span>
+              <span>{educationLevelsCount} education levels</span>
+              {maxAmount && <span>Up to {maxAmount}</span>}
+              {deadlinesThisMonth > 0 && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/15 px-3 py-0.5 text-xs font-medium text-tertiary md:text-sm">
+                  {deadlinesThisMonth} deadline
+                  {deadlinesThisMonth !== 1 ? "s" : ""} this month
+                </span>
+              )}
+            </div>
+          </AnimatedSection>
+        )}
       </div>
     </>
-  );
+  )
 }

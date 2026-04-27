@@ -1,7 +1,7 @@
-import Firecrawl from "@mendable/firecrawl-js"
-import sharp from "sharp"
+import { chromium, type Browser } from "playwright"
 import fs from "fs"
 import path from "path"
+
 import {
   generateSlug,
   deriveSeason,
@@ -11,16 +11,17 @@ import {
   formatProviderFromDomain,
   parseCsv,
   cleanUrl,
+  getCurrentSeason,
+  generateDescription,
   type LinkReport,
   type EnrichedScholarship,
   type CsvRow,
+  type Season,
 } from "./utils"
 
-const CSV_PATH = path.resolve(__dirname, "../Master Scholarship List.csv")
+const CSV_PATH = path.resolve(__dirname, "../MasterScholarshipList.csv")
 const OUTPUT_DIR = path.resolve(__dirname, "output")
 const SCRAPED_DIR = path.join(OUTPUT_DIR, "scraped")
-const IMAGES_RAW_DIR = path.join(OUTPUT_DIR, "images-raw")
-const IMAGES_OUT_DIR = path.resolve(__dirname, "../public/scholarships")
 const LINK_REPORT_PATH = path.join(OUTPUT_DIR, "link-report.json")
 const ENRICHED_PATH = path.resolve(
   __dirname,
@@ -29,10 +30,36 @@ const ENRICHED_PATH = path.resolve(
 
 const BATCH_SIZE = 5
 const BATCH_DELAY_MS = 1_000
-const RATE_LIMIT_BACKOFF_MS = 5_000
-const IMAGE_MAX_WIDTH = 800
-const IMAGE_MAX_HEIGHT = 400
-const WEBP_QUALITY = 80
+const SCRAPE_TIMEOUT_MS = 30_000
+
+// --- Types ---
+
+interface ScrapeResult {
+  title: string | null
+  ogDescription: string | null
+  ogSiteName: string | null
+  bodyText: string
+}
+
+// --- Browser management (lazy launch, same pattern as check-links.ts) ---
+
+let browser: Browser | null = null
+
+async function getBrowser(): Promise<Browser> {
+  if (!browser) {
+    browser = await chromium.launch({ headless: true })
+  }
+  return browser
+}
+
+async function closeBrowser(): Promise<void> {
+  if (browser) {
+    await browser.close()
+    browser = null
+  }
+}
+
+// --- Helpers ---
 
 function loadLinkReport(): LinkReport[] {
   if (!fs.existsSync(LINK_REPORT_PATH)) {
@@ -54,102 +81,52 @@ function buildCsvLookup(rows: CsvRow[]): Map<string, CsvRow> {
   return map
 }
 
-async function downloadImage(
-  url: string,
-  destPath: string
-): Promise<boolean> {
+async function scrapeUrl(url: string): Promise<ScrapeResult | null> {
+  const b = await getBrowser()
+  const page = await b.newPage()
   try {
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(10_000),
-    })
-    if (!response.ok) return false
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: SCRAPE_TIMEOUT_MS })
 
-    const buffer = Buffer.from(await response.arrayBuffer())
-    fs.writeFileSync(destPath, buffer)
-    return true
-  } catch {
-    return false
+    const [title, ogDescription, ogSiteName, bodyText] = await Promise.all([
+      page.title(),
+      page.evaluate(() =>
+        document.querySelector('meta[property="og:description"]')?.getAttribute("content")
+        ?? document.querySelector('meta[name="description"]')?.getAttribute("content")
+        ?? null
+      ),
+      page.evaluate(() =>
+        document.querySelector('meta[property="og:site_name"]')?.getAttribute("content") ?? null
+      ),
+      page.evaluate(() => document.body?.innerText?.slice(0, 10_000) ?? ""),
+    ])
+
+    return { title, ogDescription, ogSiteName, bodyText }
+  } catch (err) {
+    console.error(`  ERROR scraping ${url}: ${err instanceof Error ? err.message : String(err)}`)
+    return null
+  } finally {
+    await page.close()
   }
-}
-
-async function compressImage(
-  inputPath: string,
-  outputPath: string
-): Promise<boolean> {
-  try {
-    await sharp(inputPath)
-      .resize(IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT, {
-        fit: "cover",
-        withoutEnlargement: true,
-      })
-      .webp({ quality: WEBP_QUALITY })
-      .toFile(outputPath)
-    return true
-  } catch {
-    return false
-  }
-}
-
-async function scrapeUrl(
-  firecrawl: Firecrawl,
-  url: string,
-  retries = 1
-): Promise<{
-  markdown: string
-  ogImage: string | null
-  ogDescription: string | null
-  ogSiteName: string | null
-} | null> {
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      const result = await firecrawl.scrape(url, {
-        formats: ["markdown"],
-      })
-
-      return {
-        markdown: result.markdown ?? "",
-        ogImage: result.metadata?.ogImage ?? null,
-        ogDescription: result.metadata?.description ?? null,
-        ogSiteName: result.metadata?.ogSiteName ?? null,
-      }
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err)
-      if (message.includes("429") && attempt < retries) {
-        console.log(`    Rate limited, backing off ${RATE_LIMIT_BACKOFF_MS}ms...`)
-        await new Promise((r) => setTimeout(r, RATE_LIMIT_BACKOFF_MS))
-        continue
-      }
-      if (attempt < retries) continue
-      return null
-    }
-  }
-  return null
 }
 
 async function processScholarship(
-  firecrawl: Firecrawl,
   entry: LinkReport,
-  csvRow: CsvRow
+  csvRow: CsvRow,
+  force: boolean
 ): Promise<{
   scholarship: Partial<EnrichedScholarship>
-  hasImage: boolean
   scraped: boolean
 }> {
   const slug = entry.slug
 
-  // Check if already scraped
+  // Check cache (skip if --force)
   const scrapedPath = path.join(SCRAPED_DIR, `${slug}.json`)
-  if (fs.existsSync(scrapedPath)) {
+  if (!force && fs.existsSync(scrapedPath)) {
     const existing = JSON.parse(fs.readFileSync(scrapedPath, "utf-8"))
-    const imagePath = path.join(IMAGES_OUT_DIR, `${slug}.webp`)
-    return {
-      scholarship: existing,
-      hasImage: fs.existsSync(imagePath),
-      scraped: false,
-    }
+    return { scholarship: existing, scraped: false }
   }
 
-  const result = await scrapeUrl(firecrawl, entry.url)
+  const result = await scrapeUrl(entry.url)
 
   const scholarship: Partial<EnrichedScholarship> = {
     id: slug,
@@ -167,46 +144,32 @@ async function processScholarship(
     provider: "",
   }
 
-  let hasImage = false
-
   if (result) {
-    // Save scraped content
-    fs.writeFileSync(
-      scrapedPath,
-      JSON.stringify({ ...scholarship, _scraped: result }, null, 2)
-    )
-
-    // Extract provider
     scholarship.provider =
       result.ogSiteName ?? formatProviderFromDomain(extractDomain(entry.url))
 
-    // Use og:description as placeholder until Claude Code enrichment
-    scholarship.description = result.ogDescription ?? ""
+    scholarship.description = generateDescription(
+      result.bodyText,
+      csvRow["Scholarship Name"],
+      result.ogDescription
+    )
 
-    // Download and compress image
-    if (result.ogImage) {
-      const imageUrl = result.ogImage.startsWith("http")
-        ? result.ogImage
-        : new URL(result.ogImage, entry.url).href
-
-      const ext = path.extname(new URL(imageUrl).pathname) || ".jpg"
-      const rawPath = path.join(IMAGES_RAW_DIR, `${slug}${ext}`)
-      const webpPath = path.join(IMAGES_OUT_DIR, `${slug}.webp`)
-
-      const downloaded = await downloadImage(imageUrl, rawPath)
-      if (downloaded) {
-        const compressed = await compressImage(rawPath, webpPath)
-        if (compressed) {
-          scholarship.image = `/scholarships/${slug}.webp`
-          hasImage = true
-        }
-      }
-    }
-
-    // Update scraped file with final state
+    // Cache scraped data
     fs.writeFileSync(
       scrapedPath,
-      JSON.stringify({ ...scholarship, _scraped: result }, null, 2)
+      JSON.stringify(
+        {
+          ...scholarship,
+          _scraped: {
+            title: result.title,
+            ogDescription: result.ogDescription,
+            ogSiteName: result.ogSiteName,
+            bodyText: result.bodyText.slice(0, 2000),
+          },
+        },
+        null,
+        2
+      )
     )
   } else {
     scholarship.provider = formatProviderFromDomain(
@@ -215,8 +178,10 @@ async function processScholarship(
     fs.writeFileSync(scrapedPath, JSON.stringify(scholarship, null, 2))
   }
 
-  return { scholarship, hasImage, scraped: true }
+  return { scholarship, scraped: true }
 }
+
+// --- CLI flag parsers ---
 
 function parseLimit(): number | null {
   const idx = process.argv.indexOf("--limit")
@@ -229,47 +194,67 @@ function parseLimit(): number | null {
   return val
 }
 
+function parseSeason(): Season | "all" {
+  if (process.argv.includes("--all")) return "all"
+
+  const idx = process.argv.indexOf("--season")
+  if (idx === -1) return getCurrentSeason()
+
+  const val = process.argv[idx + 1]
+  const validSeasons: Season[] = ["winter", "spring", "summer", "fall"]
+  if (val && validSeasons.includes(val as Season)) {
+    return val as Season
+  }
+
+  console.error(`--season requires one of: ${validSeasons.join(", ")}`)
+  process.exit(1)
+}
+
+function parseForce(): boolean {
+  return process.argv.includes("--force")
+}
+
 async function main() {
-  const apiKey = process.env.FIRECRAWL_API_KEY
-  if (!apiKey) {
-    console.error("FIRECRAWL_API_KEY not set. Add it to .env.local")
-    process.exit(1)
-  }
-
   const limit = parseLimit()
-  const firecrawl = new Firecrawl({ apiKey })
+  const season = parseSeason()
+  const force = parseForce()
 
-  console.log("--- Scholarship Scraper (Firecrawl) ---")
-  if (limit) console.log(`  TEST MODE: limiting to ${limit} URL(s)`)
+  console.log("--- Scholarship Scraper (Playwright) ---")
+  if (limit) console.log(`  Test mode:   --limit ${limit}`)
+  if (season !== "all") console.log(`  Season:      ${season}`)
+  else console.log(`  Season:      all (no filter)`)
+  if (force) console.log(`  Force:       re-scraping all entries`)
   console.log()
 
-  // Ensure directories
-  for (const dir of [SCRAPED_DIR, IMAGES_RAW_DIR, IMAGES_OUT_DIR]) {
-    fs.mkdirSync(dir, { recursive: true })
-  }
+  fs.mkdirSync(SCRAPED_DIR, { recursive: true })
 
-  // Load link report and CSV
   const linkReport = loadLinkReport()
-  let aliveEntries = linkReport.filter(
-    (r) => r.status === "alive" || r.status === "redirect"
-  )
-  console.log(
-    `Found ${aliveEntries.length} alive/redirect URLs from link report`
-  )
-
-  if (limit) {
-    aliveEntries = aliveEntries.slice(0, limit)
-    console.log(`  Processing ${aliveEntries.length} of them (--limit ${limit})`)
-  }
-  console.log()
-
   const csvRows = parseCsv(CSV_PATH)
   const csvLookup = buildCsvLookup(csvRows)
 
+  let aliveEntries = linkReport.filter(
+    (r) => r.status === "alive" || r.status === "redirect"
+  )
+  console.log(`Found ${aliveEntries.length} alive/redirect URLs from link report`)
+
+  // Filter by season
+  if (season !== "all") {
+    aliveEntries = aliveEntries.filter((entry) => {
+      const csvRow = csvLookup.get(entry.slug)
+      if (!csvRow) return false
+      return deriveSeason(csvRow.Deadline) === season
+    })
+    console.log(`Filtered to ${season}: ${aliveEntries.length} URLs`)
+  }
+
+  if (limit) {
+    aliveEntries = aliveEntries.slice(0, limit)
+    console.log(`Processing ${aliveEntries.length} of them (--limit ${limit})`)
+  }
+  console.log()
+
   let scraped = 0
   let skipped = 0
-  let images = 0
-  let gradients = 0
   let failed = 0
 
   const allScholarships: Partial<EnrichedScholarship>[] = []
@@ -284,7 +269,7 @@ async function main() {
           console.log(`  SKIP: No CSV match for slug "${entry.slug}"`)
           return null
         }
-        return processScholarship(firecrawl, entry, csvRow)
+        return processScholarship(entry, csvRow, force)
       })
     )
 
@@ -296,8 +281,6 @@ async function main() {
       allScholarships.push(result.scholarship)
       if (result.scraped) scraped++
       else skipped++
-      if (result.hasImage) images++
-      else gradients++
     }
 
     const progress = Math.min(i + BATCH_SIZE, aliveEntries.length)
@@ -308,12 +291,14 @@ async function main() {
     }
   }
 
-  // In full mode, also include dead/unknown URLs from CSV with minimal data
+  // In full mode (no limit), include remaining CSV entries with minimal data
   if (!limit) {
     for (const row of csvRows) {
       const slug = generateSlug(row["Scholarship Name"], row.Deadline)
       const alreadyProcessed = allScholarships.some((s) => s.id === slug)
       if (alreadyProcessed) continue
+
+      if (season !== "all" && deriveSeason(row.Deadline) !== season) continue
 
       allScholarships.push({
         id: slug,
@@ -333,28 +318,37 @@ async function main() {
           : "",
       })
     }
-  }
 
-  // Write enriched output (Phase 3 will update descriptions via Claude Code)
-  if (!limit) {
     fs.writeFileSync(ENRICHED_PATH, JSON.stringify(allScholarships, null, 2))
   }
 
   console.log("\n\n--- Summary ---")
-  if (limit) console.log(`  Mode:          TEST (--limit ${limit})`)
-  console.log(`  Scraped:       ${scraped}`)
+  if (limit) console.log(`  Mode:             TEST (--limit ${limit})`)
+  if (season !== "all") console.log(`  Season:           ${season}`)
+  console.log(`  Scraped:          ${scraped}`)
   console.log(`  Skipped (cached): ${skipped}`)
-  console.log(`  Images saved:  ${images}`)
-  console.log(`  Gradient fallback: ${gradients}`)
-  console.log(`  Failed:        ${failed}`)
-  console.log(`  Total output:  ${allScholarships.length}`)
+  console.log(`  Failed:           ${failed}`)
+  console.log(`  Total output:     ${allScholarships.length}`)
   if (!limit) {
     console.log(`\nEnriched data: ${ENRICHED_PATH}`)
   }
   console.log(`Scraped data:  ${SCRAPED_DIR}`)
+
+  await closeBrowser()
 }
 
-main().catch((err) => {
+main().catch(async (err) => {
+  await closeBrowser()
   console.error("Fatal error:", err)
   process.exit(1)
 })
+
+
+/**
+ *   Usage:
+  npm run scrape-scholarships                    # Spring only (default), cached
+  npm run scrape-scholarships -- --limit 3       # Test with 3 URLs
+  npm run scrape-scholarships -- --force         # Re-scrape everything
+  npm run scrape-scholarships -- --all           # All seasons
+  npm run scrape-scholarships -- --season winter # Specific season
+ */

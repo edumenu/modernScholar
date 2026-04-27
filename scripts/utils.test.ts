@@ -9,6 +9,7 @@ import {
   extractDomain,
   formatProviderFromDomain,
   cleanUrl,
+  generateDescription,
 } from "./utils"
 
 describe("correctMonthTypo", () => {
@@ -214,5 +215,58 @@ describe("cleanUrl", () => {
     expect(cleanUrl("https://example .com/path")).toBe(
       "https://example.com/path"
     )
+  })
+})
+
+describe("generateDescription", () => {
+  it("returns ogDescription when text is too short", () => {
+    expect(generateDescription("short", "Test Scholarship", "A great scholarship for students."))
+      .toBe("A great scholarship for students.")
+  })
+
+  it("returns empty string when both text and ogDescription are empty", () => {
+    expect(generateDescription("short", "Test Scholarship", null)).toBe("")
+  })
+
+  it("filters out boilerplate lines", () => {
+    const text = [
+      "The ABC Scholarship awards $5,000 to eligible undergraduate students pursuing STEM degrees.",
+      "Cookie Policy - We use cookies to improve your experience.",
+      "Follow us on Facebook and Instagram for updates.",
+      "Subscribe to our newsletter for the latest news.",
+      "Students must maintain a 3.0 GPA to remain eligible for the award.",
+    ].join("\n")
+    const result = generateDescription(text, "ABC Scholarship", null)
+    expect(result).not.toContain("Cookie")
+    expect(result).not.toContain("Facebook")
+    expect(result).not.toContain("newsletter")
+    expect(result.toLowerCase()).toContain("scholarship")
+  })
+
+  it("prefers lines with scholarship keywords", () => {
+    const text = [
+      "Welcome to our organization founded in 1995 with a mission to support communities.",
+      "The scholarship provides $10,000 annually to eligible students pursuing higher education.",
+      "Our campus is located in downtown Portland with beautiful architecture.",
+      "Apply now to receive financial aid for your college education program.",
+    ].join("\n")
+    const result = generateDescription(text, "Test Grant", null)
+    expect(result).toContain("scholarship")
+    expect(result).not.toContain("Portland")
+  })
+
+  it("caps output at ~500 characters on a sentence boundary", () => {
+    const longSentence = "This scholarship program offers funding to students who demonstrate academic excellence and community involvement. "
+    const text = longSentence.repeat(10)
+    const result = generateDescription(text, "Test Scholarship", null)
+    expect(result.length).toBeLessThanOrEqual(510)
+    expect(result.endsWith(".")).toBe(true)
+  })
+
+  it("falls back to ogDescription when extracted content is too short", () => {
+    const text = "Some text that is long enough to pass the initial check but has no relevant scholarship content at all, just random words about weather and cooking recipes."
+    const ogDesc = "A prestigious scholarship providing $25,000 to outstanding students in engineering fields."
+    const result = generateDescription(text, "Engineering Award", ogDesc)
+    expect(result.length).toBeGreaterThan(30)
   })
 })

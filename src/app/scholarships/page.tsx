@@ -4,7 +4,7 @@ import { ScholarshipGrid } from "@/components/scholarships/scholarship-grid";
 export const metadata = {
   title: "Explore Scholarships | Modern Scholar",
   description:
-    "Discover scholarships tailored to your goals. Filter by category and find the perfect scholarship for your academic journey.",
+    "Discover scholarships tailored to your goals. Filter by education level and find the perfect scholarship for your academic journey.",
 };
 
 export default function ScholarshipsPage() {

@@ -121,7 +121,7 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
     expect(liveRegion).not.toBeNull();
-    expect(liveRegion!.textContent).toContain("Tech Excellence Scholarship");
+    expect(liveRegion!.textContent).toContain("Engebretson Foundation Scholarship");
   });
 
   it("advances to next card on ArrowRight key", async () => {
@@ -133,7 +133,7 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     fireEvent.keyDown(carousel, { key: "ArrowRight" });
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
-    expect(liveRegion!.textContent).toContain("Women in STEM Award");
+    expect(liveRegion!.textContent).toContain("Horatio Alger: National Scholarship");
   });
 
   it("goes to previous card on ArrowLeft key", async () => {
@@ -146,7 +146,10 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     fireEvent.keyDown(carousel, { key: "ArrowLeft" });
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
-    expect(liveRegion!.textContent).toContain("STEM Innovation Grant");
+    // 10th scholarship in enriched data
+    const allScholarships = (await import("@/data/scholarships")).scholarships;
+    const tenthName = allScholarships[9]?.name;
+    expect(liveRegion!.textContent).toContain(tenthName);
   });
 
   it("navigates to /scholarships?q={id} when clicking center card", async () => {
@@ -154,7 +157,7 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     render(<FeaturedScholarships />);
 
     // The first card (index 0) is the center card by default
-    const buttons = screen.getAllByRole("button", { name: /Tech Excellence Scholarship/i });
+    const buttons = screen.getAllByRole("button", { name: /Engebretson Foundation/i });
     // Find the one that is the center card (data-cursor-text="View")
     const centerButton = buttons.find(
       (btn) => btn.getAttribute("data-cursor-text") === "View",
@@ -162,7 +165,7 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     expect(centerButton).toBeDefined();
     fireEvent.click(centerButton!);
 
-    expect(mockPush).toHaveBeenCalledWith("/scholarships?q=tech-excellence");
+    expect(mockPush).toHaveBeenCalledWith("/scholarships?q=engebretson-foundation-scholarship-march-1");
   });
 
   it("rotates side card to center on click instead of navigating", async () => {
@@ -196,7 +199,7 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     fireEvent.click(nextBtn);
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
-    expect(liveRegion!.textContent).toContain("Women in STEM Award");
+    expect(liveRegion!.textContent).toContain("Horatio Alger: National Scholarship");
   });
 
   it("renders reduced motion fallback as scrollable list without 3D", async () => {

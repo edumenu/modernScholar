@@ -3,15 +3,19 @@ import { ScholarshipCard } from "./scholarship-card"
 import type { Scholarship } from "@/data/scholarships"
 
 const baseScholarship: Scholarship = {
-  id: "demo",
-  title: "Tech Excellence Scholarship",
+  id: "demo-scholarship-march-1",
+  name: "Tech Excellence Scholarship",
   provider: "Tech Foundation",
-  amount: "$10,000",
-  deadline: "April 30, 2026",
-  rating: 4.8,
+  awardAmount: "$10,000",
+  deadline: "March 1",
+  deadlineYear: 2027,
+  classification: ["Undergraduate"],
+  link: "https://example.com/apply",
+  openDate: null,
+  eligibility: "Must be enrolled in an accredited university.",
+  season: "spring",
   image: "/scholarships/scholarship-1.jpg",
-  tag: "Featured",
-  category: "Technology",
+  description: "Awarded to students demonstrating exceptional skill in technology.",
 }
 
 const meta: Meta<typeof ScholarshipCard> = {
@@ -39,12 +43,12 @@ export const Default: Story = {
   },
 }
 
-export const WithoutTag: Story = {
+export const GradientFallback: Story = {
   args: {
     scholarship: {
       ...baseScholarship,
-      id: "no-tag",
-      tag: undefined,
+      id: "gradient-demo",
+      image: "gradient",
     },
   },
 }
@@ -56,14 +60,13 @@ export const Dimmed: Story = {
   },
 }
 
-export const PopularTag: Story = {
+export const MultipleClassifications: Story = {
   args: {
     scholarship: {
       ...baseScholarship,
-      id: "popular",
-      title: "First Generation Scholar",
-      tag: "Popular",
-      category: "General",
+      id: "multi-level",
+      name: "General Access Scholarship",
+      classification: ["High School", "Undergraduate", "Graduate"],
     },
   },
 }

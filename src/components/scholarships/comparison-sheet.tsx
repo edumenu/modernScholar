@@ -5,7 +5,12 @@ import Image from "next/image"
 import { Icon } from "@iconify/react"
 import { useLenis } from "lenis/react"
 import { useComparisonStore } from "@/stores/comparison"
-import { scholarships, type Scholarship } from "@/data/scholarships"
+import {
+  scholarships,
+  type Scholarship,
+  parseAwardAmount,
+  generateGradient,
+} from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 import {
   Table,
@@ -25,8 +30,8 @@ import {
   SheetClose,
 } from "@/components/ui/sheet/sheet"
 
-function parseDeadlineDays(deadline: string): number {
-  const target = new Date(deadline).getTime()
+function parseDeadlineDays(deadline: string, deadlineYear: number): number {
+  const target = new Date(`${deadline}, ${deadlineYear}`).getTime()
   const now = Date.now()
   return Math.max(0, Math.ceil((target - now) / (1000 * 60 * 60 * 24)))
 }
@@ -35,33 +40,24 @@ const COMPARISON_ROWS: { label: string; icon: string; key: string }[] = [
   { label: "Amount", icon: "solar:wallet-money-linear", key: "amount" },
   { label: "Deadline", icon: "solar:calendar-linear", key: "deadline" },
   { label: "Days Left", icon: "solar:clock-circle-linear", key: "daysLeft" },
-  { label: "Rating", icon: "solar:star-linear", key: "rating" },
-  { label: "Category", icon: "solar:tag-linear", key: "category" },
-  { label: "Tag", icon: "solar:bookmark-linear", key: "tag" },
+  { label: "Education Level", icon: "solar:square-academic-cap-linear", key: "classification" },
   { label: "Description", icon: "solar:document-text-linear", key: "description" },
 ]
 
-function getCellValue(
-  s: Scholarship,
-  key: string,
-): { value: string; highlight?: boolean; highestAmount?: number; highestRating?: number } {
+function getCellValue(s: Scholarship, key: string): { value: string; highlight?: boolean } {
   switch (key) {
     case "amount":
-      return { value: s.amount }
+      return { value: s.awardAmount }
     case "deadline":
-      return { value: s.deadline }
+      return { value: `${s.deadline}, ${s.deadlineYear}` }
     case "daysLeft": {
-      const days = parseDeadlineDays(s.deadline)
+      const days = parseDeadlineDays(s.deadline, s.deadlineYear)
       return { value: days === 0 ? "Expired" : `${days} days`, highlight: days <= 30 }
     }
-    case "rating":
-      return { value: `${s.rating} / 5.0` }
-    case "category":
-      return { value: s.category }
-    case "tag":
-      return { value: s.tag ?? "—" }
+    case "classification":
+      return { value: s.classification.join(", ") }
     case "description":
-      return { value: s.description ?? "No description available." }
+      return { value: s.description || "No description available." }
     default:
       return { value: "—" }
   }
@@ -69,18 +65,18 @@ function getCellValue(
 
 function ComparisonTable({ items }: { items: Scholarship[] }) {
   const highestAmount = Math.max(
-    ...items.map((s) => Number(s.amount.replace(/[^0-9.]/g, "")) || 0),
+    ...items.map((s) => parseAwardAmount(s.awardAmount)),
   )
-  const highestRating = Math.max(...items.map((s) => s.rating))
 
   function isHighlighted(s: Scholarship, key: string): boolean {
     if (key === "amount") {
-      return (Number(s.amount.replace(/[^0-9.]/g, "")) || 0) === highestAmount
+      return parseAwardAmount(s.awardAmount) === highestAmount
     }
-    if (key === "rating") return s.rating === highestRating
-    if (key === "daysLeft") return parseDeadlineDays(s.deadline) <= 30
+    if (key === "daysLeft") return parseDeadlineDays(s.deadline, s.deadlineYear) <= 30
     return false
   }
+
+  const isGradient = (image: string) => image === "gradient"
 
   return (
     <Table className="table-fixed border-separate border-spacing-0">
@@ -91,10 +87,17 @@ function ComparisonTable({ items }: { items: Scholarship[] }) {
             <TableHead key={s.id} className="text-center align-bottom">
               <div className="flex flex-col items-center gap-2 pb-1">
                 <div className="relative size-18 overflow-hidden rounded-xl shadow-sm">
-                  <Image src={s.image} alt={s.title} fill className="object-cover" sizes="76px" />
+                  {isGradient(s.image) ? (
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: generateGradient(s.id) }}
+                    />
+                  ) : (
+                    <Image src={s.image} alt={s.name} fill className="object-cover" sizes="76px" />
+                  )}
                 </div>
                 <h4 className="font-heading text-xs font-medium leading-snug text-on-surface line-clamp-2 max-w-35">
-                  {s.title}
+                  {s.name}
                 </h4>
                 <span className="text-[11px] text-on-surface-variant">{s.provider}</span>
               </div>
@@ -155,6 +158,8 @@ export function ComparisonSheet() {
     }
   }, [isSheetOpen, lenis])
 
+  const isGradient = (image: string) => image === "gradient"
+
   return (
     <Sheet
       open={isSheetOpen}
@@ -186,17 +191,24 @@ export function ComparisonSheet() {
                 key={s.id}
                 className="group relative size-10 shrink-0 overflow-hidden rounded-xl border border-outline-variant/30 shadow-sm"
               >
-                <Image
-                  src={s.image}
-                  alt={s.title}
-                  fill
-                  className="object-cover"
-                  sizes="36px"
-                />
+                {isGradient(s.image) ? (
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: generateGradient(s.id) }}
+                  />
+                ) : (
+                  <Image
+                    src={s.image}
+                    alt={s.name}
+                    fill
+                    className="object-cover"
+                    sizes="36px"
+                  />
+                )}
                 <button
                   onClick={() => remove(s.id)}
                   className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
-                  aria-label={`Remove ${s.title} from comparison`}
+                  aria-label={`Remove ${s.name} from comparison`}
                 >
                   <Icon
                     icon="solar:close-circle-bold"

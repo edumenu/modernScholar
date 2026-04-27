@@ -9,17 +9,19 @@ import {
   useQueryState,
   parseAsInteger,
   parseAsString,
-  parseAsArrayOf,
-} from "nuqs";
+} from "nuqs"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   scholarships as allScholarships,
-  SCHOLARSHIP_CATEGORIES,
   type Scholarship,
-  type ScholarshipCategory,
-  type ScholarshipTag,
-} from "@/data/scholarships";
+  type EducationLevelFilter,
+  getCurrentSeason,
+  getNextSeason,
+  isScholarshipVisible,
+  parseAwardAmount,
+  generateGradient,
+} from "@/data/scholarships"
 import { ScholarshipFilters, type GridLayout } from "./scholarship-filters"
 import { ScholarshipCard } from "./scholarship-card"
 import {
@@ -33,279 +35,243 @@ import {
   PaginationNextInkSpread,
   PaginationEllipsisInkSpread,
 } from "@/components/ui/pagination/pagination-ink-spread"
-import { Button } from "@/components/ui/button/button";
-import { ComparisonSheet } from "./comparison-sheet";
-import { ComparisonFab } from "./comparison-fab";
+import { Button } from "@/components/ui/button/button"
+import { ComparisonSheet } from "./comparison-sheet"
+import { ComparisonFab } from "./comparison-fab"
 
-/* ── Helpers ─────────────────────────────────────────────── */
+/* -- Helpers -- */
 
-type TagFilters = Record<"featured" | "popular" | "new" | "topPick", boolean>
-
-const TAG_KEY_TO_LABEL: Record<string, ScholarshipTag> = {
-  featured: "Featured",
-  popular: "Popular",
-  new: "New",
-  topPick: "Top Pick",
+/** Parse deadline string + year into a Date for sorting */
+function parseDeadlineDate(deadline: string, deadlineYear: number): number {
+  return new Date(`${deadline}, ${deadlineYear}`).getTime() || 0
 }
 
-/** Parse "$10,000" → 10000 */
-function parseAmount(amount: string): number {
-  return Number(amount.replace(/[^0-9.]/g, "")) || 0
-}
-
-/** Parse "April 30, 2026" → Date */
-function parseDeadline(deadline: string): number {
-  return new Date(deadline).getTime() || 0
-}
-
-/** Full filtering pipeline: search → tags → category, then sort */
+/** Full filtering pipeline: search + education level, then sort */
 export function filterAndSort(
   items: Scholarship[],
-  category: ScholarshipCategory,
+  level: EducationLevelFilter,
   searchQuery: string,
-  tagFilters: TagFilters,
   sortBy: string,
 ): { scholarship: Scholarship; matches: boolean }[] {
-  const query = searchQuery.toLowerCase().trim();
+  const query = searchQuery.toLowerCase().trim()
 
-  // Determine active tag keys
-  const activeTags = Object.entries(tagFilters)
-    .filter(([, v]) => v)
-    .map(([k]) => TAG_KEY_TO_LABEL[k]);
-
-  // Apply search + tag filters to get the filtered set
+  // Text search across name, eligibility, description, provider
   const filtered = items.filter((s) => {
-    // Text search across title, provider, description, category
     if (query) {
       const haystack =
-        `${s.title} ${s.provider} ${s.description ?? ""} ${s.category}`.toLowerCase();
-      if (!haystack.includes(query)) return false;
+        `${s.name} ${s.eligibility} ${s.description} ${s.provider}`.toLowerCase()
+      if (!haystack.includes(query)) return false
     }
-    // Tag filter (any active tag must match)
-    if (activeTags.length > 0 && (!s.tag || !activeTags.includes(s.tag))) {
-      return false;
-    }
-    return true;
-  });
+    return true
+  })
 
   // Sort
   if (sortBy === "amount") {
-    filtered.sort((a, b) => parseAmount(b.amount) - parseAmount(a.amount));
-  } else if (sortBy === "rating") {
-    filtered.sort((a, b) => b.rating - a.rating);
+    filtered.sort((a, b) => parseAwardAmount(b.awardAmount) - parseAwardAmount(a.awardAmount))
   } else {
     // deadline (default): soonest first
     filtered.sort(
-      (a, b) => parseDeadline(a.deadline) - parseDeadline(b.deadline),
-    );
+      (a, b) =>
+        parseDeadlineDate(a.deadline, a.deadlineYear) -
+        parseDeadlineDate(b.deadline, b.deadlineYear),
+    )
   }
 
-  // Category: matching first, non-matching dimmed
-  if (category === "All") {
-    return filtered.map((s) => ({ scholarship: s, matches: true }));
+  // Education level: matching first, non-matching dimmed
+  if (level === "All") {
+    return filtered.map((s) => ({ scholarship: s, matches: true }))
   }
 
-  const matching = filtered.filter((s) => s.category === category);
-  const nonMatching = filtered.filter((s) => s.category !== category);
+  const matching = filtered.filter((s) => s.classification.includes(level as Exclude<EducationLevelFilter, "All">))
+  const nonMatching = filtered.filter((s) => !s.classification.includes(level as Exclude<EducationLevelFilter, "All">))
   return [
     ...matching.map((s) => ({ scholarship: s, matches: true })),
     ...nonMatching.map((s) => ({ scholarship: s, matches: false })),
-  ];
+  ]
 }
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 12
 
-/** Bento blocks render 10 cards in the Figma 4-column pattern. */
+/** Bento blocks render 10 cards in the 4-column pattern. */
 const BENTO_CHUNK = 10
 
-/* ── Main Component ──────────────────────────────────────── */
+/* -- Main Component -- */
 
 export function ScholarshipGrid() {
-  const [activeFilter, setActiveFilter] = useState<ScholarshipCategory>("All");
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  // When true, layoutId is removed from the modal before exit triggers
-  const [isClosing, setIsClosing] = useState(false);
-  const [layout, setLayout] = useState<GridLayout>("bento");
-  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const [activeFilter, setActiveFilter] = useState<EducationLevelFilter>("All")
+  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [isClosing, setIsClosing] = useState(false)
+  const [layout, setLayout] = useState<GridLayout>("bento")
+  const previousFocusRef = useRef<HTMLElement | null>(null)
 
   // URL-persisted state
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1))
   const [searchQuery, setSearchQuery] = useQueryState(
     "q",
     parseAsString.withDefault(""),
-  );
+  )
   const [sortBy, setSortBy] = useQueryState(
     "sort",
     parseAsString.withDefault("deadline"),
-  );
-  const [tagsParam, setTagsParam] = useQueryState(
-    "tags",
-    parseAsArrayOf(parseAsString).withDefault([]),
-  );
+  )
 
-  // Derive tagFilters object from URL array
-  const tagFilters: TagFilters = useMemo(
-    () => ({
-      featured: tagsParam.includes("featured"),
-      popular: tagsParam.includes("popular"),
-      new: tagsParam.includes("new"),
-      topPick: tagsParam.includes("topPick"),
-    }),
-    [tagsParam],
-  );
+  const lenis = useLenis()
 
-  const setTagFilters = useCallback(
-    (updater: TagFilters | ((prev: TagFilters) => TagFilters)) => {
-      const next =
-        typeof updater === "function" ? updater(tagFilters) : updater;
-      const arr = Object.entries(next)
-        .filter(([, v]) => v)
-        .map(([k]) => k);
-      setTagsParam(arr.length > 0 ? arr : null);
-    },
-    [tagFilters, setTagsParam],
-  );
+  // Get current season and filter scholarships
+  const now = useMemo(() => new Date(), [])
+  const currentSeason = useMemo(() => getCurrentSeason(now), [now])
+  const nextSeason = useMemo(() => getNextSeason(currentSeason), [currentSeason])
 
-  const lenis = useLenis();
+  const seasonalScholarships = useMemo(
+    () => allScholarships.filter((s) => isScholarshipVisible(s, currentSeason, now)),
+    [currentSeason, now],
+  )
 
   const sortedItems = useMemo(
     () =>
       filterAndSort(
-        allScholarships,
+        seasonalScholarships,
         activeFilter,
         searchQuery,
-        tagFilters,
         sortBy,
       ),
-    [activeFilter, searchQuery, tagFilters, sortBy],
-  );
+    [seasonalScholarships, activeFilter, searchQuery, sortBy],
+  )
 
-  const totalPages = Math.max(1, Math.ceil(sortedItems.length / PAGE_SIZE));
-  const safePage = Math.min(Math.max(1, page), totalPages);
-  const start = (safePage - 1) * PAGE_SIZE;
-  const visibleItems = sortedItems.slice(start, start + PAGE_SIZE);
+  const totalPages = Math.max(1, Math.ceil(sortedItems.length / PAGE_SIZE))
+  const safePage = Math.min(Math.max(1, page), totalPages)
+  const start = (safePage - 1) * PAGE_SIZE
+  const visibleItems = sortedItems.slice(start, start + PAGE_SIZE)
   const expandedScholarship = expandedId
-    ? (allScholarships.find((s) => s.id === expandedId) ?? null)
-    : null;
+    ? (seasonalScholarships.find((s) => s.id === expandedId) ?? null)
+    : null
 
   // Normalize URL if requested page is out of range
   useEffect(() => {
     if (page !== safePage) {
-      setPage(safePage === 1 ? null : safePage);
+      setPage(safePage === 1 ? null : safePage)
     }
-  }, [page, safePage, setPage]);
+  }, [page, safePage, setPage])
 
   // Reset page when filters change
   const handleSearchChange = useCallback(
     (q: string) => {
-      setSearchQuery(q || null);
-      setPage(null);
+      setSearchQuery(q || null)
+      setPage(null)
     },
     [setSearchQuery, setPage],
-  );
+  )
 
   const handleSortChange = useCallback(
     (sort: string) => {
-      setSortBy(sort === "deadline" ? null : sort);
-      setPage(null);
+      setSortBy(sort === "deadline" ? null : sort)
+      setPage(null)
     },
     [setSortBy, setPage],
-  );
+  )
 
   // Recalculate Lenis scroll height whenever visible content changes
   useEffect(() => {
-    if (!lenis) return;
-    const timer = setTimeout(() => lenis.resize(), 100);
-    return () => clearTimeout(timer);
-  }, [safePage, activeFilter, layout, lenis, searchQuery, sortBy, tagsParam]);
+    if (!lenis) return
+    const timer = setTimeout(() => lenis.resize(), 100)
+    return () => clearTimeout(timer)
+  }, [safePage, activeFilter, layout, lenis, searchQuery, sortBy])
 
   const handleFilterChange = useCallback(
-    (category: ScholarshipCategory) => {
+    (level: EducationLevelFilter) => {
       if (expandedId) {
-        setExpandedId(null);
+        setExpandedId(null)
         requestAnimationFrame(() => {
-          setActiveFilter(category);
-          setPage(null);
-        });
+          setActiveFilter(level)
+          setPage(null)
+        })
       } else {
-        setActiveFilter(category);
-        setPage(null);
+        setActiveFilter(level)
+        setPage(null)
       }
     },
     [expandedId, setPage],
-  );
+  )
 
   const goToPage = useCallback(
     (n: number) => {
-      const clamped = Math.min(Math.max(1, n), totalPages);
-      setPage(clamped === 1 ? null : clamped);
-      const el = document.getElementById("scholarship-grid-top");
-      if (el && lenis) lenis.scrollTo(el, { offset: -80 });
+      const clamped = Math.min(Math.max(1, n), totalPages)
+      setPage(clamped === 1 ? null : clamped)
+      const el = document.getElementById("scholarship-grid-top")
+      if (el && lenis) lenis.scrollTo(el, { offset: -80 })
     },
     [totalPages, setPage, lenis],
-  );
+  )
 
-  const pageNumbers = getPageNumbers(safePage, totalPages);
+  const pageNumbers = getPageNumbers(safePage, totalPages)
 
   const handleExpand = useCallback((id: string) => {
     if (typeof document !== "undefined") {
-      const active = document.activeElement as HTMLElement | null;
-      previousFocusRef.current = active;
+      const active = document.activeElement as HTMLElement | null
+      previousFocusRef.current = active
     }
-    setIsClosing(false);
-    setExpandedId(id);
-  }, []);
+    setIsClosing(false)
+    setExpandedId(id)
+  }, [])
 
   const handleClose = useCallback(() => {
-    // Phase 1: remove layoutId from modal (prevents reverse morph)
-    setIsClosing(true);
-    // Phase 2: on next frame, trigger the exit animation
+    setIsClosing(true)
     requestAnimationFrame(() => {
-      setExpandedId(null);
-    });
-  }, []);
+      setExpandedId(null)
+    })
+  }, [])
 
   const restorePreviousFocus = useCallback(() => {
-    setIsClosing(false);
-    const target = previousFocusRef.current;
+    setIsClosing(false)
+    const target = previousFocusRef.current
     if (target && typeof target.focus === "function") {
-      target.focus();
+      target.focus()
     }
-    previousFocusRef.current = null;
-  }, []);
+    previousFocusRef.current = null
+  }, [])
 
   // Lock scroll when expanded
   useEffect(() => {
-    if (!lenis) return;
+    if (!lenis) return
     if (expandedId) {
-      lenis.stop();
+      lenis.stop()
     } else {
-      lenis.start();
+      lenis.start()
     }
     return () => {
-      lenis.start();
-    };
-  }, [expandedId, lenis]);
+      lenis.start()
+    }
+  }, [expandedId, lenis])
 
   // Close modal on Escape key
   useEffect(() => {
-    if (!expandedId) return;
+    if (!expandedId) return
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [expandedId, handleClose]);
+      if (e.key === "Escape") handleClose()
+    }
+    window.addEventListener("keydown", handler)
+    return () => window.removeEventListener("keydown", handler)
+  }, [expandedId, handleClose])
 
   const clearAllFilters = useCallback(() => {
-    setActiveFilter("All");
-    setSearchQuery(null);
-    setSortBy(null);
-    setTagsParam(null);
-    setPage(null);
-  }, [setSearchQuery, setSortBy, setTagsParam, setPage]);
+    setActiveFilter("All")
+    setSearchQuery(null)
+    setSortBy(null)
+    setPage(null)
+  }, [setSearchQuery, setSortBy, setPage])
 
-  const resultCount = sortedItems.filter((i) => i.matches).length;
+  const resultCount = sortedItems.filter((i) => i.matches).length
+
+  // Season-aware empty state
+  const seasonLabel = currentSeason.charAt(0).toUpperCase() + currentSeason.slice(1)
+  const nextSeasonLabel = nextSeason.charAt(0).toUpperCase() + nextSeason.slice(1)
+
+  // Education level empty state
+  const isLevelEmpty =
+    activeFilter !== "All" &&
+    sortedItems.filter((i) => i.matches).length === 0
+
+  const isGradientImage = (image: string) => image === "gradient"
 
   return (
     <div
@@ -319,15 +285,32 @@ export function ScholarshipGrid() {
         onLayoutChange={setLayout}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
-        tagFilters={tagFilters}
-        onTagFiltersChange={setTagFilters}
         sortBy={sortBy}
         onSortByChange={handleSortChange}
         resultCount={resultCount}
+        seasonalScholarships={seasonalScholarships}
       />
 
-      {/* Empty state */}
-      {sortedItems.length === 0 ? (
+      {/* Empty state: no scholarships this season */}
+      {seasonalScholarships.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center justify-center gap-4 py-24"
+        >
+          <Icon
+            icon="solar:calendar-mark-linear"
+            className="size-16 text-on-surface/20"
+          />
+          <p className="text-lg font-medium text-on-surface/60">
+            No scholarships available this {seasonLabel.toLowerCase()}
+          </p>
+          <p className="max-w-sm text-center text-sm text-on-surface-variant">
+            New scholarships are coming in {nextSeasonLabel}! Check back soon for
+            fresh opportunities.
+          </p>
+        </motion.div>
+      ) : sortedItems.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -341,7 +324,7 @@ export function ScholarshipGrid() {
             No scholarships found
           </p>
           <p className="max-w-sm text-center text-sm text-on-surface-variant">
-            Try adjusting your search, filters, or category to discover more
+            Try adjusting your search or education level filter to discover more
             opportunities.
           </p>
           <Button variant="outline" size="sm" onClick={clearAllFilters}>
@@ -350,6 +333,20 @@ export function ScholarshipGrid() {
         </motion.div>
       ) : (
         <>
+          {/* Education level empty state hint */}
+          {isLevelEmpty && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-xl bg-surface-container-low/60 px-6 py-4 text-center text-sm text-on-surface-variant"
+              role="status"
+            >
+              No {activeFilter} scholarships this {seasonLabel.toLowerCase()}.
+              New scholarships are added each season — check back in{" "}
+              {nextSeasonLabel}!
+            </motion.div>
+          )}
+
           {/* Grid renders in one of two layouts */}
           <AnimatePresence mode="wait">
             {layout === "bento" ? (
@@ -408,8 +405,8 @@ export function ScholarshipGrid() {
                         safePage === 1 && "pointer-events-none opacity-50",
                       )}
                       onClick={(e) => {
-                        e.preventDefault();
-                        if (safePage > 1) goToPage(safePage - 1);
+                        e.preventDefault()
+                        if (safePage > 1) goToPage(safePage - 1)
                       }}
                     />
                   </PaginationItem>
@@ -425,8 +422,8 @@ export function ScholarshipGrid() {
                           href="#"
                           isActive={p === safePage}
                           onClick={(e) => {
-                            e.preventDefault();
-                            goToPage(p);
+                            e.preventDefault()
+                            goToPage(p)
                           }}
                         >
                           {p}
@@ -444,8 +441,8 @@ export function ScholarshipGrid() {
                           "pointer-events-none opacity-50",
                       )}
                       onClick={(e) => {
-                        e.preventDefault();
-                        if (safePage < totalPages) goToPage(safePage + 1);
+                        e.preventDefault()
+                        if (safePage < totalPages) goToPage(safePage + 1)
                       }}
                     />
                   </PaginationItem>
@@ -484,23 +481,22 @@ export function ScholarshipGrid() {
               onClick={handleClose}
               onKeyDown={(e) => {
                 if (e.key === "Tab") {
-                  // Basic focus trap: keep focus within modal
                   const modal = e.currentTarget.querySelector<HTMLElement>(
                     "[data-modal-content]",
-                  );
-                  if (!modal) return;
+                  )
+                  if (!modal) return
                   const focusable = modal.querySelectorAll<HTMLElement>(
                     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-                  );
-                  if (focusable.length === 0) return;
-                  const first = focusable[0];
-                  const last = focusable[focusable.length - 1];
+                  )
+                  if (focusable.length === 0) return
+                  const first = focusable[0]
+                  const last = focusable[focusable.length - 1]
                   if (e.shiftKey && document.activeElement === first) {
-                    e.preventDefault();
-                    last.focus();
+                    e.preventDefault()
+                    last.focus()
                   } else if (!e.shiftKey && document.activeElement === last) {
-                    e.preventDefault();
-                    first.focus();
+                    e.preventDefault()
+                    first.focus()
                   }
                 }
               }}
@@ -509,7 +505,7 @@ export function ScholarshipGrid() {
                 data-modal-content
                 role="dialog"
                 aria-modal="true"
-                aria-label={expandedScholarship.title}
+                aria-label={expandedScholarship.name}
                 onClick={(e) => e.stopPropagation()}
                 {...(!isClosing && {
                   layoutId: `card-${expandedScholarship.id}`,
@@ -522,14 +518,23 @@ export function ScholarshipGrid() {
               >
                 {/* Image section */}
                 <div className="relative min-h-48 w-full shrink-0 sm:min-h-100">
-                  <Image
-                    src={expandedScholarship.image}
-                    alt={expandedScholarship.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 800px"
-                    priority
-                  />
+                  {isGradientImage(expandedScholarship.image) ? (
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background: generateGradient(expandedScholarship.id),
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      src={expandedScholarship.image}
+                      alt={expandedScholarship.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 800px"
+                      priority
+                    />
+                  )}
 
                   <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/70" />
 
@@ -546,24 +551,20 @@ export function ScholarshipGrid() {
                   </button>
 
                   <div className="absolute inset-0 flex flex-col justify-between p-8 md:p-12">
-                    <div className="flex items-center gap-2">
-                      {/* {expandedScholarship.tag && (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
-                          <Icon icon="solar:star-bold" className="size-3.5" />
-                          {expandedScholarship.tag}
+                    {/* Education level badges */}
+                    <div className="flex flex-wrap items-center gap-2">
+                      {expandedScholarship.classification.map((level) => (
+                        <span
+                          key={level}
+                          className="inline-flex items-center rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]"
+                        >
+                          {level}
                         </span>
-                      )} */}
-                      {/* <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1.5 text-sm font-medium text-white shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
-                        {expandedScholarship.rating}
-                        <Icon
-                          icon="solar:star-bold"
-                          className="size-3 text-amber-300"
-                        />
-                      </span> */}
+                      ))}
                     </div>
 
                     <h2 className="font-heading text-3xl font-medium leading-tight text-white md:text-4xl lg:text-5xl">
-                      {expandedScholarship.title}
+                      {expandedScholarship.name}
                     </h2>
                   </div>
                 </div>
@@ -587,15 +588,32 @@ export function ScholarshipGrid() {
 
                   <div className="flex flex-wrap items-center gap-4 text-sm text-on-surface/80 md:text-base">
                     <span className="font-medium text-on-surface">
-                      {expandedScholarship.amount}
+                      {expandedScholarship.awardAmount}
                     </span>
                     <span>&middot;</span>
-                    <span>Deadline: {expandedScholarship.deadline}</span>
+                    <span>
+                      Deadline: {expandedScholarship.deadline},{" "}
+                      {expandedScholarship.deadlineYear}
+                    </span>
+                    {expandedScholarship.openDate && (
+                      <>
+                        <span>&middot;</span>
+                        <span>Opens: {expandedScholarship.openDate}</span>
+                      </>
+                    )}
                   </div>
 
-                  <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-secondary/15 px-4 py-1.5 text-sm font-medium text-secondary">
-                    {expandedScholarship.category}
-                  </span>
+                  {/* Eligibility */}
+                  {expandedScholarship.eligibility && (
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-sm font-medium text-on-surface/90">
+                        Eligibility
+                      </h3>
+                      <p className="max-h-40 overflow-y-auto text-sm leading-relaxed text-on-surface/70 whitespace-pre-line">
+                        {expandedScholarship.eligibility}
+                      </p>
+                    </div>
+                  )}
 
                   {/* CTA row */}
                   <div className="flex items-center gap-3 border-t border-outline-variant/30 pt-4 dark:border-white/10">
@@ -605,30 +623,18 @@ export function ScholarshipGrid() {
                       nativeButton={false}
                       render={
                         <a
-                          href={
-                            expandedScholarship.applyUrl ||
-                            `https://www.google.com/search?q=${encodeURIComponent(expandedScholarship.title + " " + expandedScholarship.provider + " scholarship")}`
-                          }
+                          href={expandedScholarship.link}
                           target="_blank"
                           rel="noopener noreferrer"
                         />
                       }
                     >
-                      {expandedScholarship.applyUrl
-                        ? "Apply Now"
-                        : "Learn More"}
+                      Apply Now
                       <Icon
                         icon="solar:arrow-right-up-linear"
                         data-icon="inline-end"
                       />
                     </Button>
-                    {/* <Button
-                      variant="outline"
-                      size="icon-sm"
-                      aria-label="Save scholarship"
-                    >
-                      <Icon icon="solar:bookmark-linear" className="size-4" />
-                    </Button> */}
                     <Button
                       variant="outline"
                       size="icon-sm"
@@ -644,10 +650,10 @@ export function ScholarshipGrid() {
         )}
       </AnimatePresence>
     </div>
-  );
+  )
 }
 
-/* ── Utilities ────────────────────────────────────────────── */
+/* -- Utilities -- */
 
 function getPageNumbers(
   current: number,
@@ -671,7 +677,7 @@ type SortedItem = { scholarship: Scholarship; matches: boolean }
 function chunkItems(items: SortedItem[], size: number): SortedItem[][] {
   const out: SortedItem[][] = []
   for (let i = 0; i < items.length; i += size)
-    out.push(items.slice(i, i + size));
+    out.push(items.slice(i, i + size))
   return out
 }
 
@@ -682,7 +688,7 @@ interface BentoBlockProps {
 }
 
 function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = useMediaQuery("(min-width: 1024px)")
 
   const renderCard = (item: SortedItem, disableLayout = false) => (
     <ScholarshipCard
@@ -692,41 +698,40 @@ function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
       disableLayoutAnimation={disableLayout}
       onExpand={onExpand}
     />
-  );
+  )
 
   const renderedCols = useMemo(() => {
     const distribute = (n: number): [number, number, number, number] => {
-      if (n >= 10) return [2, 3, 3, 2];
-      if (n === 9) return [2, 3, 2, 2];
-      if (n === 8) return [2, 2, 2, 2];
-      if (n === 7) return [2, 2, 2, 1];
-      if (n === 6) return [2, 2, 1, 1];
-      if (n === 5) return [2, 1, 1, 1];
-      if (n === 4) return [1, 1, 1, 1];
-      if (n === 3) return [1, 1, 1, 0];
-      if (n === 2) return [1, 1, 0, 0];
-      if (n === 1) return [1, 0, 0, 0];
-      return [0, 0, 0, 0];
-    };
-    const capacities = distribute(items.length);
+      if (n >= 10) return [2, 3, 3, 2]
+      if (n === 9) return [2, 3, 2, 2]
+      if (n === 8) return [2, 2, 2, 2]
+      if (n === 7) return [2, 2, 2, 1]
+      if (n === 6) return [2, 2, 1, 1]
+      if (n === 5) return [2, 1, 1, 1]
+      if (n === 4) return [1, 1, 1, 1]
+      if (n === 3) return [1, 1, 1, 0]
+      if (n === 2) return [1, 1, 0, 0]
+      if (n === 1) return [1, 0, 0, 0]
+      return [0, 0, 0, 0]
+    }
+    const capacities = distribute(items.length)
 
-    const fillOrder: number[] = [];
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 1) fillOrder.push(c);
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 3) fillOrder.push(c);
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 2) fillOrder.push(c);
+    const fillOrder: number[] = []
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 1) fillOrder.push(c)
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 3) fillOrder.push(c)
+    for (let c = 0; c < 4; c++) if (capacities[c] >= 2) fillOrder.push(c)
 
-    const cols: SortedItem[][] = [[], [], [], []];
+    const cols: SortedItem[][] = [[], [], [], []]
     items.forEach((item, i) => {
-      cols[fillOrder[i]].push(item);
-    });
+      cols[fillOrder[i]].push(item)
+    })
     return cols
       .map((col, idx) => ({ col, idx }))
-      .filter(({ col }) => col.length > 0);
-  }, [items]);
+      .filter(({ col }) => col.length > 0)
+  }, [items])
 
-  // SSR placeholder
   if (isDesktop === null) {
-    return <div className="min-h-205" />;
+    return <div className="min-h-205" />
   }
 
   if (!isDesktop) {
@@ -738,20 +743,19 @@ function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
           </div>
         ))}
       </div>
-    );
+    )
   }
 
-  // Content-aware height: full chunk gets more height, partial gets less
-  const isFullChunk = items.length >= BENTO_CHUNK;
-  const heightClass = isFullChunk ? "min-h-[820px]" : "min-h-[400px]";
+  const isFullChunk = items.length >= BENTO_CHUNK
+  const heightClass = isFullChunk ? "min-h-[820px]" : "min-h-[400px]"
 
   return (
     <div className={cn("flex gap-4 items-stretch", heightClass)}>
       {renderedCols.map(({ col, idx }) => {
-        const isOuter = idx === 0 || idx === 3;
+        const isOuter = idx === 0 || idx === 3
         const colClass = isOuter
           ? "flex w-[230px] shrink-0 flex-col gap-4 xl:w-[325px]"
-          : "flex flex-1 min-w-0 flex-col gap-4";
+          : "flex flex-1 min-w-0 flex-col gap-4"
         return (
           <div key={idx} className={colClass}>
             {col.map((item) => (
@@ -760,8 +764,8 @@ function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
               </div>
             ))}
           </div>
-        );
+        )
       })}
     </div>
-  );
+  )
 }

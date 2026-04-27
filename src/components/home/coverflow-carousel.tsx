@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button/button";
 import { useTextLayout } from "@/lib/pretext/use-text-layout";
 import { PRETEXT_FONTS } from "@/lib/pretext/fonts";
 import type { Scholarship } from "@/data/scholarships";
+import { generateGradient } from "@/data/scholarships";
 
 /* ------------------------------------------------------------------ */
 /*  Transform config                                                   */
@@ -104,8 +105,10 @@ function CoverflowCard({
   isCenter: boolean;
   onClick: () => void;
 }) {
+  const isGradient = scholarship.image === "gradient";
+
   const { lineCount: titleLines } = useTextLayout({
-    text: scholarship.title,
+    text: scholarship.name,
     font: PRETEXT_FONTS.cardTitle,
     maxWidth: CARD_TEXT_WIDTH,
     lineHeight: TITLE_LINE_HEIGHT,
@@ -132,26 +135,38 @@ function CoverflowCard({
         "group",
       )}
     >
-      <Image
-        src={scholarship.image}
-        alt={scholarship.title}
-        fill
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
-        sizes="320px"
-      />
+      {isGradient ? (
+        <div
+          className="absolute inset-0 transition-transform duration-500 group-hover:scale-105"
+          style={{ background: generateGradient(scholarship.id) }}
+        />
+      ) : (
+        <Image
+          src={scholarship.image}
+          alt={scholarship.name}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="320px"
+        />
+      )}
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
 
       {/* Content overlay */}
       <div className="absolute inset-0 flex flex-col justify-between p-5">
-        {/* Top: Pill badges */}
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/40 px-3 py-1 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
-            <span className="size-1.5 rounded-full bg-white" />
-            <span className="text-xs uppercase tracking-widest text-white">
-              {scholarship.category}
+        {/* Top: Education level pills */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {scholarship.classification.slice(0, 2).map((level) => (
+            <span
+              key={level}
+              className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/40 px-3 py-1 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]"
+            >
+              <span className="size-1.5 rounded-full bg-white" />
+              <span className="text-xs uppercase tracking-widest text-white">
+                {level}
+              </span>
             </span>
-          </span>
+          ))}
         </div>
 
         {/* Bottom: Info */}
@@ -159,9 +174,9 @@ function CoverflowCard({
           <div className="flex min-w-0 flex-col gap-1">
             <h3
               className="truncate text-left text-lg font-medium leading-snug text-white"
-              title={titleOverflows ? scholarship.title : undefined}
+              title={titleOverflows ? scholarship.name : undefined}
             >
-              {scholarship.title}
+              {scholarship.name}
             </h3>
             <p
               className="truncate text-left text-sm text-white/80"
@@ -171,7 +186,7 @@ function CoverflowCard({
             </p>
             <p className="text-left text-sm text-white/70">
               <span className="font-medium text-white">
-                {scholarship.amount}
+                {scholarship.awardAmount}
               </span>{" "}
               &middot; {scholarship.deadline}
             </p>
@@ -319,7 +334,7 @@ export function CoverflowCarousel({
     >
       {/* Live region for screen readers */}
       <div aria-live="polite" className="sr-only">
-        {scholarships[activeIndex].title} — {scholarships[activeIndex].provider}
+        {scholarships[activeIndex].name} — {scholarships[activeIndex].provider}
       </div>
 
       {/* 3D Stage */}
@@ -341,7 +356,7 @@ export function CoverflowCarousel({
             <motion.div
               key={scholarship.id}
               aria-roledescription="slide"
-              aria-label={`${i + 1} of ${total}: ${scholarship.title}`}
+              aria-label={`${i + 1} of ${total}: ${scholarship.name}`}
               className="pointer-events-auto absolute h-120"
               animate={{
                 x: t.x,
