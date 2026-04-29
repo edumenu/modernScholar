@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { Icon } from "@iconify/react"
-import { useLenis } from "lenis/react"
 import { cn } from "@/lib/utils"
+import { useScrollLock } from "@/hooks/use-scroll-lock"
 import {
   EDUCATION_LEVELS,
   type EducationLevelFilter,
@@ -51,15 +51,8 @@ export function ScholarshipFiltersMobile({
   resultCount,
 }: ScholarshipFiltersMobileProps) {
   const [sheetOpen, setSheetOpen] = useState(false)
-  const lenis = useLenis()
 
-  useEffect(() => {
-    if (!lenis || !sheetOpen) return
-    lenis.stop()
-    return () => {
-      lenis.start()
-    }
-  }, [sheetOpen, lenis])
+  useScrollLock(sheetOpen)
 
   const hasActiveFilters =
     activeFilter !== "All" || sortBy !== "deadline"
@@ -100,32 +93,32 @@ export function ScholarshipFiltersMobile({
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Bento layout"
-            aria-pressed={layout === "bento"}
-            onClick={() => onLayoutChange("bento")}
-            className={cn(
-              "rounded-full",
-              layout === "bento"
-                ? "bg-white/60 text-on-surface dark:bg-white/20"
-                : "text-on-surface/60 hover:text-on-surface",
-            )}
-          >
-            <Icon icon="solar:widget-4-line-duotone" className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon-sm"
             aria-label="Grid layout"
-            aria-pressed={layout === "uniform"}
-            onClick={() => onLayoutChange("uniform")}
+            aria-pressed={layout === "grid"}
+            onClick={() => onLayoutChange("grid")}
             className={cn(
               "rounded-full",
-              layout === "uniform"
+              layout === "grid"
                 ? "bg-white/60 text-on-surface dark:bg-white/20"
                 : "text-on-surface/60 hover:text-on-surface",
             )}
           >
             <Icon icon="solar:widget-3-line-duotone" className="size-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label="List layout"
+            aria-pressed={layout === "list"}
+            onClick={() => onLayoutChange("list")}
+            className={cn(
+              "rounded-full",
+              layout === "list"
+                ? "bg-white/60 text-on-surface dark:bg-white/20"
+                : "text-on-surface/60 hover:text-on-surface",
+            )}
+          >
+            <Icon icon="solar:hamburger-menu-line-duotone" className="size-4" />
           </Button>
         </div>
 
@@ -184,7 +177,7 @@ export function ScholarshipFiltersMobile({
                   <h3 className="mb-3 text-sm font-medium text-on-surface/70">
                     Education Level
                   </h3>
-                  <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter by education level">
+                  <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by education level">
                     {EDUCATION_LEVELS.map((level) => {
                       const isActive = activeFilter === level
                       return (
@@ -192,8 +185,7 @@ export function ScholarshipFiltersMobile({
                           key={level}
                           variant={isActive ? "default" : "ghost"}
                           size="sm"
-                          role="tab"
-                          aria-selected={isActive}
+                          aria-pressed={isActive}
                           onClick={() => {
                             onFilterChange(level)
                             setSheetOpen(false)

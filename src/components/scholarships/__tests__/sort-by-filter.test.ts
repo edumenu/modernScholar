@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import { filterAndSort } from "../scholarship-grid"
+import { filterAndSort } from "@/lib/scholarship-utils"
 import type { Scholarship } from "@/data/scholarships"
 
 const mockScholarships: Scholarship[] = [

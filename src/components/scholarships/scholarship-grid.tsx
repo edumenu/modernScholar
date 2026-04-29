@@ -4,26 +4,26 @@ import { useState, useCallback, useEffect, useMemo, useRef } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { useLenis } from "lenis/react"
 import { Icon } from "@iconify/react"
+import { useScrollLock } from "@/hooks/use-scroll-lock"
 import {
   useQueryState,
   parseAsInteger,
   parseAsString,
 } from "nuqs"
 import { cn } from "@/lib/utils"
-import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   scholarships as allScholarships,
-  type Scholarship,
   type EducationLevelFilter,
   getCurrentSeason,
   getNextSeason,
   isScholarshipVisible,
-  parseAwardAmount,
   CLASSIFICATION_COLORS,
   getClassificationTint,
 } from "@/data/scholarships"
+import { filterAndSort } from "@/lib/scholarship-utils"
 import { ScholarshipFilters, type GridLayout } from "./scholarship-filters"
 import { ScholarshipCard } from "./scholarship-card"
+import { ScholarshipListCardSpread } from "./scholarship-list-card"
 import {
   Pagination,
   PaginationContent,
@@ -39,68 +39,17 @@ import { Button } from "@/components/ui/button/button"
 import { ComparisonSheet } from "./comparison-sheet"
 import { ComparisonFab } from "./comparison-fab"
 
-/* -- Helpers -- */
-
-/** Parse deadline string + year into a Date for sorting */
-function parseDeadlineDate(deadline: string, deadlineYear: number): number {
-  return new Date(`${deadline}, ${deadlineYear}`).getTime() || 0
-}
-
-/** Full filtering pipeline: search + education level, then sort */
-export function filterAndSort(
-  items: Scholarship[],
-  level: EducationLevelFilter,
-  searchQuery: string,
-  sortBy: string,
-): { scholarship: Scholarship; matches: boolean }[] {
-  const query = searchQuery.toLowerCase().trim()
-
-  // Text search across name, eligibility, description, provider
-  const filtered = items.filter((s) => {
-    if (query) {
-      const haystack =
-        `${s.name} ${s.eligibility} ${s.description} ${s.provider}`.toLowerCase()
-      if (!haystack.includes(query)) return false
-    }
-    return true
-  })
-
-  // Sort
-  if (sortBy === "amount") {
-    filtered.sort((a, b) => parseAwardAmount(b.awardAmount) - parseAwardAmount(a.awardAmount))
-  } else {
-    // deadline (default): soonest first
-    filtered.sort(
-      (a, b) =>
-        parseDeadlineDate(a.deadline, a.deadlineYear) -
-        parseDeadlineDate(b.deadline, b.deadlineYear),
-    )
-  }
-
-  // Education level: matching first, non-matching dimmed
-  if (level === "All") {
-    return filtered.map((s) => ({ scholarship: s, matches: true }))
-  }
-
-  const matching = filtered.filter((s) => s.classification.includes(level as Exclude<EducationLevelFilter, "All">))
-  const nonMatching = filtered.filter((s) => !s.classification.includes(level as Exclude<EducationLevelFilter, "All">))
-  return [
-    ...matching.map((s) => ({ scholarship: s, matches: true })),
-    ...nonMatching.map((s) => ({ scholarship: s, matches: false })),
-  ]
-}
-
 const PAGE_SIZE = 12
 
-/** Bento blocks render 10 cards in the 4-column pattern. */
-const BENTO_CHUNK = 10
+// Snapshot taken at module load; a full page reload is needed to cross season boundaries.
+const SESSION_DATE = new Date()
 
 /* -- Main Component -- */
 
 export function ScholarshipGrid() {
   const [activeFilter, setActiveFilter] = useState<EducationLevelFilter>("All")
   const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [layout, setLayout] = useState<GridLayout>("bento")
+  const [layout, setLayout] = useState<GridLayout>("grid")
   const previousFocusRef = useRef<HTMLElement | null>(null)
 
   // URL-persisted state
@@ -117,13 +66,12 @@ export function ScholarshipGrid() {
   const lenis = useLenis()
 
   // Get current season and filter scholarships
-  const now = useMemo(() => new Date(), [])
-  const currentSeason = useMemo(() => getCurrentSeason(now), [now])
+  const currentSeason = useMemo(() => getCurrentSeason(SESSION_DATE), [])
   const nextSeason = useMemo(() => getNextSeason(currentSeason), [currentSeason])
 
   const seasonalScholarships = useMemo(
-    () => allScholarships.filter((s) => isScholarshipVisible(s, currentSeason, now)),
-    [currentSeason, now],
+    () => allScholarships.filter((s) => isScholarshipVisible(s, currentSeason, SESSION_DATE)),
+    [currentSeason],
   )
 
   const sortedItems = useMemo(
@@ -227,17 +175,7 @@ export function ScholarshipGrid() {
   }, [])
 
   // Lock scroll when expanded
-  useEffect(() => {
-    if (!lenis) return
-    if (expandedId) {
-      lenis.stop()
-    } else {
-      lenis.start()
-    }
-    return () => {
-      lenis.start()
-    }
-  }, [expandedId, lenis])
+  useScrollLock(!!expandedId)
 
   // Close modal on Escape key
   useEffect(() => {
@@ -343,27 +281,7 @@ export function ScholarshipGrid() {
 
           {/* Grid renders in one of two layouts */}
           <AnimatePresence mode="wait">
-            {layout === "bento" ? (
-              <motion.div
-                key="bento"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                className="flex w-full flex-col gap-4 pb-10 pt-2"
-              >
-                {chunkItems(visibleItems, BENTO_CHUNK).map(
-                  (chunk) => (
-                    <BentoBlock
-                      key={chunk[0].scholarship.id}
-                      items={chunk}
-                      expandedId={expandedId}
-                      onExpand={handleExpand}
-                    />
-                  ),
-                )}
-              </motion.div>
-            ) : (
+            {layout === "grid" ? (
               <motion.div
                 key="grid"
                 initial={{ opacity: 0 }}
@@ -381,6 +299,24 @@ export function ScholarshipGrid() {
                       onExpand={handleExpand}
                     />
                   </div>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="list"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                className="flex w-full flex-col gap-1 pb-10 pt-2"
+              >
+                {visibleItems.map(({ scholarship, matches }) => (
+                  <ScholarshipListCardSpread
+                    key={scholarship.id}
+                    scholarship={scholarship}
+                    dimmed={!matches}
+                    onExpand={handleExpand}
+                  />
                 ))}
               </motion.div>
             )}
@@ -498,7 +434,7 @@ export function ScholarshipGrid() {
                 layoutId={`card-${expandedScholarship.id}`}
                 className={cn(
                   "relative flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl",
-                  "bg-background shadow-xl dark:shadow-2xl",
+                  "bg-white shadow-xl dark:bg-surface-container-low dark:shadow-2xl",
                   "max-h-[85vh]",
                 )}
               >
@@ -630,7 +566,7 @@ export function ScholarshipGrid() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2, duration: 0.3 }}
-                        className="flex shrink flex-col gap-4 overflow-y-auto bg-background p-8 md:px-12 md:py-10"
+                        className="flex shrink flex-col gap-4 overflow-y-auto bg-white p-8 dark:bg-surface-container-low md:px-12 md:py-10"
                       >
                         {expandedScholarship.description && (
                           <p className="text-sm leading-relaxed text-on-surface/70 md:text-base">
@@ -713,100 +649,3 @@ function getPageNumbers(
   return pages
 }
 
-type SortedItem = { scholarship: Scholarship; matches: boolean }
-
-function chunkItems(items: SortedItem[], size: number): SortedItem[][] {
-  const out: SortedItem[][] = []
-  for (let i = 0; i < items.length; i += size)
-    out.push(items.slice(i, i + size))
-  return out
-}
-
-interface BentoBlockProps {
-  items: SortedItem[]
-  expandedId: string | null
-  onExpand: (id: string) => void
-}
-
-function BentoBlock({ items, expandedId, onExpand }: BentoBlockProps) {
-  const isDesktop = useMediaQuery("(min-width: 1024px)")
-
-  const renderCard = (item: SortedItem, disableLayout = false) => (
-    <ScholarshipCard
-      scholarship={item.scholarship}
-      dimmed={!item.matches}
-      isExpanded={expandedId === item.scholarship.id}
-      disableLayoutAnimation={disableLayout}
-      onExpand={onExpand}
-    />
-  )
-
-  const renderedCols = useMemo(() => {
-    const distribute = (n: number): [number, number, number, number] => {
-      if (n >= 10) return [2, 3, 3, 2]
-      if (n === 9) return [2, 3, 2, 2]
-      if (n === 8) return [2, 2, 2, 2]
-      if (n === 7) return [2, 2, 2, 1]
-      if (n === 6) return [2, 2, 1, 1]
-      if (n === 5) return [2, 1, 1, 1]
-      if (n === 4) return [1, 1, 1, 1]
-      if (n === 3) return [1, 1, 1, 0]
-      if (n === 2) return [1, 1, 0, 0]
-      if (n === 1) return [1, 0, 0, 0]
-      return [0, 0, 0, 0]
-    }
-    const capacities = distribute(items.length)
-
-    const fillOrder: number[] = []
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 1) fillOrder.push(c)
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 3) fillOrder.push(c)
-    for (let c = 0; c < 4; c++) if (capacities[c] >= 2) fillOrder.push(c)
-
-    const cols: SortedItem[][] = [[], [], [], []]
-    items.forEach((item, i) => {
-      cols[fillOrder[i]].push(item)
-    })
-    return cols
-      .map((col, idx) => ({ col, idx }))
-      .filter(({ col }) => col.length > 0)
-  }, [items])
-
-  if (isDesktop === null) {
-    return <div className="min-h-205" />
-  }
-
-  if (!isDesktop) {
-    return (
-      <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2">
-        {items.map((item) => (
-          <div key={item.scholarship.id} className="aspect-3/4 w-full">
-            {renderCard(item, true)}
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  const isFullChunk = items.length >= BENTO_CHUNK
-  const heightClass = isFullChunk ? "min-h-[820px]" : "min-h-[400px]"
-
-  return (
-    <div className={cn("flex gap-4 items-stretch", heightClass)}>
-      {renderedCols.map(({ col, idx }) => {
-        const isOuter = idx === 0 || idx === 3
-        const colClass = isOuter
-          ? "flex w-[230px] shrink-0 flex-col gap-4 xl:w-[325px]"
-          : "flex flex-1 min-w-0 flex-col gap-4"
-        return (
-          <div key={idx} className={colClass}>
-            {col.map((item) => (
-              <div key={item.scholarship.id} className="flex-1 min-h-0">
-                {renderCard(item)}
-              </div>
-            ))}
-          </div>
-        )
-      })}
-    </div>
-  )
-}

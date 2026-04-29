@@ -96,6 +96,14 @@
   --color-secondary-container: var(--secondary-container);
   --color-on-secondary-container: var(--on-secondary-container);
 
+  /* Urgency / status semantic tokens */
+  --color-urgency-danger-bg: var(--urgency-danger-bg);
+  --color-urgency-danger-text: var(--urgency-danger-text);
+  --color-urgency-warning-bg: var(--urgency-warning-bg);
+  --color-urgency-warning-text: var(--urgency-warning-text);
+  --color-urgency-safe-bg: var(--urgency-safe-bg);
+  --color-urgency-safe-text: var(--urgency-safe-text);
+
   /* Radius tokens */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -196,6 +204,14 @@
 
   /* Outline */
   --outline-variant: oklch(0.832 0.0305 30.6);
+
+  /* Urgency / status semantic colors */
+  --urgency-danger-bg: oklch(0.936 0.032 25);
+  --urgency-danger-text: oklch(0.45 0.12 25);
+  --urgency-warning-bg: oklch(0.940 0.04 85);
+  --urgency-warning-text: oklch(0.50 0.10 70);
+  --urgency-safe-bg: oklch(0.940 0.04 155);
+  --urgency-safe-text: oklch(0.40 0.10 155);
 
   /* Card: surface-container-low for tonal layering */
   --card: oklch(0.967 0.0136 34.0);
@@ -306,6 +322,14 @@
 
   /* Outline (lighter for dark mode) */
   --outline-variant: oklch(1.0 0 0 / 12%);
+
+  /* Urgency / status semantic colors */
+  --urgency-danger-bg: oklch(0.30 0.06 25);
+  --urgency-danger-text: oklch(0.75 0.10 25);
+  --urgency-warning-bg: oklch(0.30 0.05 70);
+  --urgency-warning-text: oklch(0.78 0.08 70);
+  --urgency-safe-bg: oklch(0.30 0.05 155);
+  --urgency-safe-text: oklch(0.78 0.08 155);
 
   /* Card */
   --card: oklch(0.240 0.010 28.0);

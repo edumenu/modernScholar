@@ -3,6 +3,11 @@
 import { motion } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip/tooltip";
 import type { Scholarship } from "@/data/scholarships"
 import {
   CLASSIFICATION_COLORS,
@@ -76,27 +81,42 @@ export function ScholarshipCard({
           })}
         </div>
 
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toggle(scholarship.id);
-          }}
-          className={cn(
-            "flex size-8 shrink-0 items-center justify-center rounded-full",
-            "transition-all duration-200",
-            compared
-              ? "bg-on-surface text-surface shadow-sm"
-              : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
-          )}
-          aria-label={compared ? "Remove from comparison" : "Add to comparison"}
-        >
-          <Icon
-            icon={
-              compared ? "solar:check-circle-bold" : "solar:add-circle-linear"
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggle(scholarship.id);
+                }}
+                className={cn(
+                  "flex size-8 shrink-0 items-center justify-center rounded-full",
+                  "transition-all duration-200",
+                  compared
+                    ? "bg-on-surface text-surface shadow-sm"
+                    : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
+                )}
+                aria-label={
+                  compared ? "Remove from comparison" : "Add to comparison"
+                }
+              />
             }
-            className="size-4.5"
-          />
-        </button>
+          >
+            <Icon
+              icon={
+                compared ? "solar:check-circle-bold" : "solar:add-circle-linear"
+              }
+              className="size-4.5"
+            />
+          </TooltipTrigger>
+          <TooltipContent
+            side="bottom"
+            sideOffset={8}
+            className="*:last:hidden"
+          >
+            {compared ? "Remove from compare" : "Add to compare"}
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {/* Title + gradient-fade underline */}

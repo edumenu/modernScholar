@@ -1,24 +1,15 @@
 "use client"
 
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import { Icon } from "@iconify/react"
-import { useLenis } from "lenis/react"
 import { useComparisonStore } from "@/stores/comparison"
+import { useScrollLock } from "@/hooks/use-scroll-lock"
 import {
   scholarships,
   type Scholarship,
-  parseAwardAmount,
   CLASSIFICATION_COLORS,
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import {
   Sheet,
   SheetContent,
@@ -28,121 +19,12 @@ import {
   SheetFooter,
   SheetClose,
 } from "@/components/ui/sheet/sheet"
-
-function parseDeadlineDays(deadline: string, deadlineYear: number): number {
-  const target = new Date(`${deadline}, ${deadlineYear}`).getTime()
-  const now = Date.now()
-  return Math.max(0, Math.ceil((target - now) / (1000 * 60 * 60 * 24)))
-}
-
-const COMPARISON_ROWS: { label: string; icon: string; key: string }[] = [
-  { label: "Amount", icon: "solar:money-bag-linear", key: "amount" },
-  { label: "Deadline", icon: "solar:calendar-linear", key: "deadline" },
-  { label: "Days Left", icon: "solar:clock-circle-linear", key: "daysLeft" },
-  {
-    label: "Education Level",
-    icon: "solar:square-academic-cap-linear",
-    key: "classification",
-  },
-  {
-    label: "Description",
-    icon: "solar:document-text-linear",
-    key: "description",
-  },
-];
-
-function getCellValue(s: Scholarship, key: string): { value: string; highlight?: boolean } {
-  switch (key) {
-    case "amount":
-      return { value: s.awardAmount }
-    case "deadline":
-      return { value: `${s.deadline}, ${s.deadlineYear}` }
-    case "daysLeft": {
-      const days = parseDeadlineDays(s.deadline, s.deadlineYear)
-      return { value: days === 0 ? "Expired" : `${days} days`, highlight: days <= 30 }
-    }
-    case "classification":
-      return { value: s.classification.join(", ") }
-    case "description":
-      return { value: s.description || "No description available." }
-    default:
-      return { value: "—" }
-  }
-}
-
-function ComparisonTable({ items }: { items: Scholarship[] }) {
-  const highestAmount = Math.max(
-    ...items.map((s) => parseAwardAmount(s.awardAmount)),
-  )
-
-  function isHighlighted(s: Scholarship, key: string): boolean {
-    if (key === "amount") {
-      return parseAwardAmount(s.awardAmount) === highestAmount
-    }
-    if (key === "daysLeft") return parseDeadlineDays(s.deadline, s.deadlineYear) <= 30
-    return false
-  }
-
-  return (
-    <Table className="table-fixed border-separate border-spacing-0">
-      <TableHeader>
-        <TableRow className="border-b border-outline-variant/20 hover:bg-transparent">
-          <TableHead className="w-30 text-xs text-on-surface-variant" />
-          {items.map((s) => {
-            return (
-              <TableHead key={s.id} className="text-center align-bottom">
-                <div className="flex flex-col items-center gap-2 pb-1">
-                  <div className={`relative size-18 overflow-hidden rounded-xl shadow-sm ${CLASSIFICATION_COLORS[s.classification[0]]?.bg ?? "bg-surface-container"}`} />
-                  <h4 className="font-heading text-xs font-medium leading-snug text-on-surface line-clamp-2 max-w-35">
-                    {s.name}
-                  </h4>
-                  <span className="text-[11px] text-on-surface-variant">{s.provider}</span>
-                </div>
-              </TableHead>
-            )
-          })}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {COMPARISON_ROWS.map((row) => (
-          <TableRow
-            key={row.key}
-            className="border-b border-outline-variant/15 hover:bg-surface-container-lowest/50"
-          >
-            <TableCell className="py-3 pr-4">
-              <div className="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
-                <Icon icon={row.icon} className="size-3.5 shrink-0" />
-                <span>{row.label}</span>
-              </div>
-            </TableCell>
-            {items.map((s) => {
-              const cell = getCellValue(s, row.key)
-              const highlighted = isHighlighted(s, row.key) || cell.highlight
-              const isDescription = row.key === "description"
-              return (
-                <TableCell
-                  key={s.id}
-                  className={`py-3 text-center ${
-                    highlighted ? "font-medium text-secondary" : "text-on-surface"
-                  }`}
-                >
-                  <span className={`text-sm ${isDescription ? "text-xs leading-relaxed line-clamp-4" : ""}`}>
-                    {cell.value}
-                  </span>
-                </TableCell>
-              )
-            })}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
-}
+import { ComparisonSheetAuditLedger } from "./comparison-sheet-audit-ledger"
+import { cn } from "@/lib/utils"
 
 export function ComparisonSheet() {
   const { selectedIds, remove, clear, isSheetOpen, closeSheet } =
     useComparisonStore()
-  const lenis = useLenis()
 
   const selected = useMemo(
     () =>
@@ -152,13 +34,7 @@ export function ComparisonSheet() {
     [selectedIds],
   )
 
-  useEffect(() => {
-    if (!lenis || !isSheetOpen) return
-    lenis.stop()
-    return () => {
-      lenis.start()
-    }
-  }, [isSheetOpen, lenis])
+  useScrollLock(isSheetOpen)
 
   return (
     <Sheet
@@ -187,20 +63,22 @@ export function ComparisonSheet() {
           {/* Selected scholarships row */}
           <div className="flex items-center gap-3 pb-6">
             {selected.map((s) => {
+              const color = CLASSIFICATION_COLORS[s.classification[0]]
               return (
                 <div
                   key={s.id}
-                  className={`group relative size-10 shrink-0 overflow-hidden rounded-xl border border-outline-variant/30 shadow-sm ${CLASSIFICATION_COLORS[s.classification[0]]?.bg ?? "bg-surface-container"}`}
+                  className="group relative flex items-center gap-2 rounded-full border border-outline-variant/30 py-1 pl-1 pr-3"
                 >
+                  <div className={cn("size-6 shrink-0 rounded-full", color?.bg ?? "bg-surface-container")} />
+                  <span className="text-xs font-medium text-on-surface line-clamp-1 max-w-24">
+                    {s.name}
+                  </span>
                   <button
                     onClick={() => remove(s.id)}
-                    className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
+                    className="ml-1 flex size-4 shrink-0 items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100 hover:bg-on-surface/10"
                     aria-label={`Remove ${s.name} from comparison`}
                   >
-                    <Icon
-                      icon="solar:close-circle-bold"
-                      className="size-5 text-white"
-                    />
+                    <Icon icon="solar:close-circle-bold" className="size-3.5 text-on-surface-variant" />
                   </button>
                 </div>
               )
@@ -208,14 +86,14 @@ export function ComparisonSheet() {
             {Array.from({ length: 3 - selected.length }).map((_, i) => (
               <div
                 key={`empty-${i}`}
-                className="size-14 shrink-0 rounded-xl border-2 border-dashed border-outline-variant/30"
+                className="size-8 shrink-0 rounded-full border-2 border-dashed border-outline-variant/30"
               />
             ))}
           </div>
 
-          {/* Comparison table or empty state */}
+          {/* Comparison content */}
           {selected.length >= 2 ? (
-            <ComparisonTable items={selected} />
+            <ComparisonSheetAuditLedger items={selected} onRemove={remove} />
           ) : (
             <div className="flex flex-col items-center gap-4 py-12 text-center">
               <div className="flex size-16 items-center justify-center rounded-2xl bg-surface-container">

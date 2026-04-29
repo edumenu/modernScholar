@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input/input"
 import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile";
 
-export type GridLayout = "bento" | "uniform"
+export type GridLayout = "grid" | "list"
 
 interface ScholarshipFiltersProps {
   activeFilter: EducationLevelFilter;
@@ -104,7 +104,7 @@ export function ScholarshipFilters({
           <LayoutGroup>
             <div
               className="flex items-center gap-1 py-2"
-              role="tablist"
+              role="group"
               aria-label="Filter by education level"
             >
               {EDUCATION_LEVELS.map((level) => {
@@ -127,9 +127,7 @@ export function ScholarshipFilters({
                       variant={isActive ? "default" : "ghost"}
                       size="sm"
                       onClick={() => onFilterChange(level)}
-                      role="tab"
-                      aria-selected={isActive}
-                      aria-controls="scholarship-grid-panel"
+                      aria-pressed={isActive}
                       className={cn(
                         "relative z-1 text-sm md:text-base",
                         isActive
@@ -234,32 +232,32 @@ export function ScholarshipFilters({
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Bento layout"
-            aria-pressed={layout === "bento"}
-            onClick={() => onLayoutChange("bento")}
-            className={cn(
-              "rounded-full",
-              layout === "bento"
-                ? "bg-white/60 text-on-surface dark:bg-white/20"
-                : "text-on-surface/60 hover:text-on-surface",
-            )}
-          >
-            <Icon icon="solar:widget-4-line-duotone" className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon-sm"
             aria-label="Grid layout"
-            aria-pressed={layout === "uniform"}
-            onClick={() => onLayoutChange("uniform")}
+            aria-pressed={layout === "grid"}
+            onClick={() => onLayoutChange("grid")}
             className={cn(
               "rounded-full",
-              layout === "uniform"
+              layout === "grid"
                 ? "bg-white/60 text-on-surface dark:bg-white/20"
                 : "text-on-surface/60 hover:text-on-surface",
             )}
           >
             <Icon icon="solar:widget-3-line-duotone" className="size-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label="List layout"
+            aria-pressed={layout === "list"}
+            onClick={() => onLayoutChange("list")}
+            className={cn(
+              "rounded-full",
+              layout === "list"
+                ? "bg-white/60 text-on-surface dark:bg-white/20"
+                : "text-on-surface/60 hover:text-on-surface",
+            )}
+          >
+            <Icon icon="solar:hamburger-menu-line-duotone" className="size-4" />
           </Button>
         </div>
 
