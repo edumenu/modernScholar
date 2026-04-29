@@ -161,7 +161,7 @@ function CoverflowCard({
       {/* Display amount */}
       <div className="flex items-end gap-1.5 px-6 pt-4">
         <Icon
-          icon="solar:wallet-money-linear"
+          icon="solar:money-bag-linear"
           className={cn("mb-0.5 size-4 shrink-0", tint.muted)}
         />
         <span
@@ -175,7 +175,12 @@ function CoverflowCard({
       </div>
 
       {/* Deadline */}
-      <div className={cn("flex items-center gap-1.5 px-6 pb-6 pt-2 text-xs", tint.muted)}>
+      <div
+        className={cn(
+          "flex items-center gap-1.5 px-6 pb-6 pt-2 text-xs",
+          tint.muted,
+        )}
+      >
         <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
         <span>Deadline {scholarship.deadline}</span>
       </div>

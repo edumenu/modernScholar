@@ -128,7 +128,7 @@ export function ScholarshipCard({
       {/* Display amount */}
       <div className="flex items-end gap-1.5 px-6 pt-4">
         <Icon
-          icon="solar:wallet-money-linear"
+          icon="solar:money-bag-linear"
           className={cn("mb-0.5 size-4 shrink-0", tint.muted)}
         />
         <span

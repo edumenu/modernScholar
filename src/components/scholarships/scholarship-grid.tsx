@@ -507,7 +507,13 @@ export function ScholarshipGrid() {
                   return (
                     <>
                       {/* Tinted header zone */}
-                      <div className={cn("relative w-full shrink-0 px-8 pb-8 pt-6 md:px-12 md:pt-8 md:pb-10", overlayTint.bg, overlayTint.border)}>
+                      <div
+                        className={cn(
+                          "relative w-full shrink-0 px-8 pb-8 pt-6 md:px-12 md:pt-8 md:pb-10",
+                          overlayTint.bg,
+                          overlayTint.border,
+                        )}
+                      >
                         <button
                           onClick={handleClose}
                           className={cn(
@@ -528,7 +534,7 @@ export function ScholarshipGrid() {
                           {/* Education level badges */}
                           <div className="flex flex-wrap items-center gap-2">
                             {expandedScholarship.classification.map((level) => {
-                              const colors = CLASSIFICATION_COLORS[level]
+                              const colors = CLASSIFICATION_COLORS[level];
                               return (
                                 <span
                                   key={level}
@@ -540,39 +546,78 @@ export function ScholarshipGrid() {
                                 >
                                   {level}
                                 </span>
-                              )
+                              );
                             })}
                           </div>
 
-                          <h2 id="expanded-dialog-title" className={cn("font-heading text-3xl font-bold leading-tight md:text-4xl lg:text-5xl", overlayTint.text)}>
+                          <h2
+                            id="expanded-dialog-title"
+                            className={cn(
+                              "font-heading text-3xl font-bold leading-tight md:text-4xl lg:text-5xl",
+                              overlayTint.text,
+                            )}
+                          >
                             {expandedScholarship.name}
                           </h2>
 
                           {/* Gradient-fade underline */}
                           <div
-                            className={cn("h-px w-2/3 bg-linear-to-r to-transparent", overlayTint.accent)}
+                            className={cn(
+                              "h-px w-2/3 bg-linear-to-r to-transparent",
+                              overlayTint.accent,
+                            )}
                             aria-hidden="true"
                           />
 
-                          <p className={cn("text-base font-medium md:text-lg", overlayTint.muted)}>
+                          <p
+                            className={cn(
+                              "text-base font-medium md:text-lg",
+                              overlayTint.muted,
+                            )}
+                          >
                             {expandedScholarship.provider}
                           </p>
 
                           {/* Amount + deadline */}
                           <div className="flex flex-wrap items-center gap-4">
                             <span className="flex items-center gap-1.5">
-                              <Icon icon="solar:wallet-money-linear" className={cn("size-5", overlayTint.muted)} />
-                              <span className={cn("font-heading text-2xl font-bold", overlayTint.text)}>
+                              <Icon
+                                icon="solar:money-bag-linear"
+                                className={cn("size-5", overlayTint.muted)}
+                              />
+                              <span
+                                className={cn(
+                                  "font-heading text-2xl font-bold",
+                                  overlayTint.text,
+                                )}
+                              >
                                 {expandedScholarship.awardAmount}
                               </span>
                             </span>
-                            <span className={cn("flex items-center gap-1.5 text-sm", overlayTint.muted)}>
-                              <Icon icon="solar:calendar-linear" className="size-4" />
-                              Deadline: {expandedScholarship.deadline}, {expandedScholarship.deadlineYear}
+                            <span
+                              className={cn(
+                                "flex items-center gap-1.5 text-sm",
+                                overlayTint.muted,
+                              )}
+                            >
+                              <Icon
+                                icon="solar:calendar-linear"
+                                className="size-4"
+                              />
+                              Deadline: {expandedScholarship.deadline},{" "}
+                              {expandedScholarship.deadlineYear}
                             </span>
                             {expandedScholarship.openDate && (
-                              <span className={cn("flex items-center gap-1.5 text-sm", overlayTint.muted)}>
-                                <Icon icon="solar:calendar-mark-linear" className="size-4" />
+                              <span
+                                className={cn(
+                                  "flex items-center gap-1.5 text-sm",
+                                  overlayTint.muted,
+                                )}
+                              >
+                                <Icon
+                                  icon="solar:calendar-mark-linear"
+                                  className="size-4"
+                                />
                                 Opens: {expandedScholarship.openDate}
                               </span>
                             )}
@@ -630,12 +675,15 @@ export function ScholarshipGrid() {
                             size="icon-sm"
                             aria-label="Share scholarship"
                           >
-                            <Icon icon="solar:share-linear" className="size-4" />
+                            <Icon
+                              icon="solar:share-linear"
+                              className="size-4"
+                            />
                           </Button>
                         </div>
                       </motion.div>
                     </>
-                  )
+                  );
                 })()}
               </motion.div>
             </motion.div>

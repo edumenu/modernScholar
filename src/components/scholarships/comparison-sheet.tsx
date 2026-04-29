@@ -36,12 +36,20 @@ function parseDeadlineDays(deadline: string, deadlineYear: number): number {
 }
 
 const COMPARISON_ROWS: { label: string; icon: string; key: string }[] = [
-  { label: "Amount", icon: "solar:wallet-money-linear", key: "amount" },
+  { label: "Amount", icon: "solar:money-bag-linear", key: "amount" },
   { label: "Deadline", icon: "solar:calendar-linear", key: "deadline" },
   { label: "Days Left", icon: "solar:clock-circle-linear", key: "daysLeft" },
-  { label: "Education Level", icon: "solar:square-academic-cap-linear", key: "classification" },
-  { label: "Description", icon: "solar:document-text-linear", key: "description" },
-]
+  {
+    label: "Education Level",
+    icon: "solar:square-academic-cap-linear",
+    key: "classification",
+  },
+  {
+    label: "Description",
+    icon: "solar:document-text-linear",
+    key: "description",
+  },
+];
 
 function getCellValue(s: Scholarship, key: string): { value: string; highlight?: boolean } {
   switch (key) {
