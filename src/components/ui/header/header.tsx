@@ -96,112 +96,119 @@ export function Header() {
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-60 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none"
       >
         Skip to content
       </a>
       <ScrollAnimatedHeader>
-      <header className="fixed inset-x-0 top-0 z-50 flex justify-between px-4 pt-4 lg:justify-center">
-        <nav className="flex w-full items-center justify-between gap-4 lg:w-auto lg:justify-start" aria-label="Main navigation">
-          {/* Logo pill */}
-          <Link
-            href="/"
-            className={cn(
-              glassPill,
-              "lg:flex hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",
-              isHome && "bg-primary-100/80 dark:bg-primary/20",
-            )}
-            aria-label="Home"
+        <header className="fixed inset-x-0 top-0 z-50 flex justify-between px-4 pt-4 lg:justify-center">
+          <nav
+            className="flex w-full items-center justify-between gap-4 lg:w-auto lg:justify-start"
+            aria-label="Main navigation"
           >
-            <Image
-              src="/iconBurgundy.png"
-              alt="Modern Scholar"
-              width={28}
-              height={28}
-              className="size-7 object-contain block dark:hidden"
-            />
-            <Image
-              src="/iconWhite.png"
-              alt="Modern Scholar"
-              width={28}
-              height={28}
-              className="size-7 object-contain hidden dark:block"
-            />
-          </Link>
-
-          {/* Desktop nav links pill */}
-          <div
-            className={cn(
-              glassPill,
-              "relative hidden h-11.5 items-stretch gap-8 p-1 lg:flex",
-            )}
-          >
-            {indicator && (
-              <motion.span
-                className="absolute inset-y-1 rounded-full bg-primary-100/80 dark:bg-primary/20"
-                initial={false}
-                animate={{ left: indicator.left, width: indicator.width }}
-                transition={{ type: "spring", stiffness: 350, damping: 30 }}
+            {/* Logo pill */}
+            <Link
+              href="/"
+              className={cn(
+                glassPill,
+                "lg:flex hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",
+                isHome && "bg-primary-100/80 dark:bg-primary/20",
+              )}
+              aria-label="Home"
+            >
+              <Image
+                src="/iconBurgundy.png"
+                alt="Modern Scholar"
+                width={28}
+                height={28}
+                className="size-7 object-contain block dark:hidden"
               />
-            )}
-            {navItems.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  ref={(el) => { linkRefs.current[item.href] = el; }}
-                  className={cn(
-                    "relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface",
-                    isActive && "text-primary font-medium",
-                  )}
-                >
-                  <span className="relative z-10">{item.title}</span>
-                </Link>
-              );
-            })}
-            <SettingsDropdown />
-          </div>
+              <Image
+                src="/iconWhite.png"
+                alt="Modern Scholar"
+                width={28}
+                height={28}
+                className="size-7 object-contain hidden dark:block"
+              />
+            </Link>
 
-          {/* Theme toggle pill */}
-          <div
-            className={cn(
-              glassPill,
-              "hidden h-11.5 items-center justify-center px-2.5 lg:flex",
-            )}
-          >
-            <ThemeToggle />
-          </div>
+            {/* Desktop nav links pill */}
+            <div
+              className={cn(
+                glassPill,
+                "relative hidden h-11.5 items-stretch gap-8 p-1 lg:flex",
+              )}
+            >
+              {indicator && (
+                <motion.span
+                  className="absolute inset-y-1 rounded-full bg-primary-100/80 dark:bg-primary/20"
+                  initial={false}
+                  animate={{ left: indicator.left, width: indicator.width }}
+                  transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                />
+              )}
+              {navItems.map((item) => {
+                const isActive =
+                  pathname === item.href ||
+                  pathname.startsWith(item.href + "/");
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    ref={(el) => {
+                      linkRefs.current[item.href] = el;
+                    }}
+                    className={cn(
+                      "relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface",
+                      isActive && "text-primary font-medium",
+                    )}
+                  >
+                    <span className="relative z-10">{item.title}</span>
+                  </Link>
+                );
+              })}
+              <SettingsDropdown />
+            </div>
 
-          {/* Mobile logo + menu button */}
-          <Link
-            href="/"
-            className={cn(
-              glassPill,
-              "flex lg:hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",
-              isHome && "bg-primary-100/80 dark:bg-primary/20",
-            )}
-            aria-label="Home"
-          >
-            <Image
-              src="/iconBurgundy.png"
-              alt="Modern Scholar"
-              width={24}
-              height={24}
-              className="size-6 object-contain block dark:hidden"
-            />
-            <Image
-              src="/iconWhite.png"
-              alt="Modern Scholar"
-              width={24}
-              height={24}
-              className="size-6 object-contain hidden dark:block"
-            />
-          </Link>
-          <MobileMenuButton />
-        </nav>
-      </header>
-    </ScrollAnimatedHeader>
+            {/* Theme toggle pill */}
+            <div
+              className={cn(
+                glassPill,
+                "hidden h-11.5 items-center justify-center px-2.5 lg:flex",
+              )}
+            >
+              <ThemeToggle />
+            </div>
+
+            {/* Mobile logo + menu button */}
+            <Link
+              href="/"
+              className={cn(
+                glassPill,
+                "flex lg:hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",
+                isHome && "bg-primary-100/80 dark:bg-primary/20",
+              )}
+              aria-label="Home"
+            >
+              <Image
+                src="/iconBurgundy.png"
+                alt="Modern Scholar"
+                width={24}
+                height={24}
+                className="size-6 object-contain block dark:hidden"
+              />
+              <Image
+                src="/iconWhite.png"
+                alt="Modern Scholar"
+                width={24}
+                height={24}
+                className="size-6 object-contain hidden dark:block"
+              />
+            </Link>
+            <MobileMenuButton />
+          </nav>
+        </header>
+      </ScrollAnimatedHeader>
     </>
   );
 }

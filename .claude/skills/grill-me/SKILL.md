@@ -72,7 +72,7 @@ When all branches are exhausted and internally consistent, generate a decision s
 The summary should follow this structure:
 
 ### Phase 6: Follow-up
-After the interview, ask the user if they want to move on to the "write-prd" skill to turn the decisions into a formal plan for implementation.
+After the interview, ALWAYS ask the user if they want to move on to the "write-prd" skill to turn the decisions into a formal plan for implementation.
 
 ```markdown
 # Project Decisions — [Project Name]

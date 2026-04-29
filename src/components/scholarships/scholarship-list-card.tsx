@@ -51,8 +51,8 @@ export function ScholarshipListCardSpread({
         dimmed ? "opacity-40 saturate-50" : "cursor-pointer",
       )}
       onClick={(e) => {
-        e.stopPropagation()
-        if (!dimmed) onExpand(scholarship.id)
+        e.stopPropagation();
+        if (!dimmed) onExpand(scholarship.id);
       }}
       aria-labelledby={`list-card-title-${scholarship.id}`}
       {...(dimmed ? { inert: "" as unknown as boolean } : {})}
@@ -67,7 +67,7 @@ export function ScholarshipListCardSpread({
       >
         <div className="flex flex-wrap gap-1">
           {scholarship.classification.map((level) => {
-            const colors = CLASSIFICATION_COLORS[level]
+            const colors = CLASSIFICATION_COLORS[level];
             return (
               <span
                 key={level}
@@ -80,7 +80,7 @@ export function ScholarshipListCardSpread({
               >
                 {level}
               </span>
-            )
+            );
           })}
         </div>
 
@@ -100,11 +100,17 @@ export function ScholarshipListCardSpread({
       </div>
 
       {/* Vertical divider */}
-      <div className="w-px self-stretch bg-outline-variant/15" aria-hidden="true" />
+      <div
+        className="w-px self-stretch bg-outline-variant/15"
+        aria-hidden="true"
+      />
 
       {/* Right zone — name, provider + deadline, description */}
       <div className="flex min-w-0 flex-1 flex-col justify-center gap-1 px-4 py-3 sm:px-6">
-        <h3 id={`list-card-title-${scholarship.id}`} className="font-heading text-base font-bold leading-snug text-on-surface line-clamp-1 sm:text-lg">
+        <h3
+          id={`list-card-title-${scholarship.id}`}
+          className="font-heading text-base font-bold leading-snug text-on-surface line-clamp-1 sm:text-lg"
+        >
           {scholarship.name}
         </h3>
 
@@ -112,7 +118,9 @@ export function ScholarshipListCardSpread({
           <span className="font-medium uppercase tracking-wider">
             {scholarship.provider}
           </span>
-          <span className="text-outline-variant/40" aria-hidden="true">·</span>
+          <span className="text-outline-variant/40" aria-hidden="true">
+            ·
+          </span>
           <span className="flex items-center gap-1">
             <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
             {formatDeadlineShort(scholarship.deadline)}
@@ -133,8 +141,8 @@ export function ScholarshipListCardSpread({
             render={
               <button
                 onClick={(e) => {
-                  e.stopPropagation()
-                  toggle(scholarship.id)
+                  e.stopPropagation();
+                  toggle(scholarship.id);
                 }}
                 className={cn(
                   "flex size-8 items-center justify-center rounded-full transition-all duration-200",
@@ -142,16 +150,20 @@ export function ScholarshipListCardSpread({
                     ? "bg-on-surface text-surface shadow-sm"
                     : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
                 )}
-                aria-label={compared ? "Remove from comparison" : "Add to comparison"}
+                aria-label={
+                  compared ? "Remove from comparison" : "Add to comparison"
+                }
               />
             }
           >
             <Icon
-              icon={compared ? "solar:check-circle-bold" : "solar:add-circle-linear"}
+              icon={
+                compared ? "solar:check-circle-bold" : "solar:add-circle-linear"
+              }
               className="size-4.5"
             />
           </TooltipTrigger>
-          <TooltipContent side="top" sideOffset={8} className="[&>:last-child]:hidden">
+          <TooltipContent side="top" sideOffset={8} className="*:last:hidden">
             {compared ? "Remove from compare" : "Add to compare"}
           </TooltipContent>
         </Tooltip>
@@ -160,8 +172,8 @@ export function ScholarshipListCardSpread({
           variant="ghost"
           size="icon-sm"
           onClick={(e) => {
-            e.stopPropagation()
-            onExpand(scholarship.id)
+            e.stopPropagation();
+            onExpand(scholarship.id);
           }}
           aria-label={`View details for ${scholarship.name}`}
         >
@@ -175,5 +187,5 @@ export function ScholarshipListCardSpread({
         </Button>
       </div>
     </motion.article>
-  )
+  );
 }

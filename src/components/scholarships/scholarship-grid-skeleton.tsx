@@ -37,28 +37,48 @@ function BentoGridSkeleton() {
     <div className="hidden gap-4 items-stretch min-h-205 pt-2 lg:flex">
       {/* Column 1 — outer (2 cards) */}
       <div className="flex w-57.5 shrink-0 flex-col gap-4 xl:w-81.25">
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
       </div>
       {/* Column 2 — inner (3 cards) */}
       <div className="flex flex-1 min-w-0 flex-col gap-4">
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
       </div>
       {/* Column 3 — inner (3 cards) */}
       <div className="flex flex-1 min-w-0 flex-col gap-4">
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
       </div>
       {/* Column 4 — outer (2 cards) */}
-      <div className="flex w-[230px] shrink-0 flex-col gap-4 xl:w-[325px]">
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
-        <div className="flex-1 min-h-0"><BentoCardSkeleton /></div>
+      <div className="flex w-57.5 shrink-0 flex-col gap-4 xl:w-81.25">
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
+        <div className="flex-1 min-h-0">
+          <BentoCardSkeleton />
+        </div>
       </div>
     </div>
-  )
+  );
 }
 
 function MobileGridSkeleton() {
