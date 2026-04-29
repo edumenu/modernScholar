@@ -100,7 +100,6 @@ const BENTO_CHUNK = 10
 export function ScholarshipGrid() {
   const [activeFilter, setActiveFilter] = useState<EducationLevelFilter>("All")
   const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [isClosing, setIsClosing] = useState(false)
   const [layout, setLayout] = useState<GridLayout>("bento")
   const previousFocusRef = useRef<HTMLElement | null>(null)
 
@@ -212,19 +211,14 @@ export function ScholarshipGrid() {
       const active = document.activeElement as HTMLElement | null
       previousFocusRef.current = active
     }
-    setIsClosing(false)
     setExpandedId(id)
   }, [])
 
   const handleClose = useCallback(() => {
-    setIsClosing(true)
-    requestAnimationFrame(() => {
-      setExpandedId(null)
-    })
+    setExpandedId(null)
   }, [])
 
   const restorePreviousFocus = useCallback(() => {
-    setIsClosing(false)
     const target = previousFocusRef.current
     if (target && typeof target.focus === "function") {
       target.focus()
@@ -474,9 +468,6 @@ export function ScholarshipGrid() {
 
             <motion.div
               key="modal-wrapper"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
               className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
               onClick={handleClose}
             >
@@ -504,9 +495,7 @@ export function ScholarshipGrid() {
                     }
                   }
                 }}
-                {...(!isClosing && {
-                  layoutId: `card-${expandedScholarship.id}`,
-                })}
+                layoutId={`card-${expandedScholarship.id}`}
                 className={cn(
                   "relative flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl",
                   "bg-background shadow-xl dark:shadow-2xl",

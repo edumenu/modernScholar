@@ -37,11 +37,10 @@ export function ScholarshipCard({
       })}
       whileHover={dimmed ? undefined : { scale: 1.015, y: -3 }}
       animate={{ opacity: isExpanded ? 0 : dimmed ? 0.4 : 1 }}
-      transition={
-        isExpanded
-          ? { opacity: { duration: 0 } }
-          : { type: "spring", stiffness: 340, damping: 24 }
-      }
+      transition={{
+        opacity: { duration: isExpanded ? 0 : 0.15 },
+        layout: { type: "tween", stiffness: 340, damping: 28 },
+      }}
       className={cn(
         "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl",
         tint.bg,
@@ -49,7 +48,6 @@ export function ScholarshipCard({
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)] hover:shadow-[0_12px_48px_rgba(32,26,25,0.12)]",
         "transition-shadow duration-300",
         dimmed ? "pointer-events-none saturate-50" : "cursor-pointer",
-        isExpanded && "invisible",
       )}
       onClick={(e) => {
         e.stopPropagation();
