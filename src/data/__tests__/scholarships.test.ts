@@ -4,9 +4,12 @@ import {
   getNextSeason,
   isScholarshipVisible,
   parseAwardAmount,
-  generateGradient,
+  getClassificationTint,
+  CLASSIFICATION_TINTS,
+  CLASSIFICATION_COLORS,
   type Scholarship,
   type Season,
+  type EducationLevel,
 } from "../scholarships"
 
 describe("getCurrentSeason", () => {
@@ -52,7 +55,6 @@ describe("isScholarshipVisible", () => {
     openDate: null,
     eligibility: "",
     season: "spring",
-    image: "gradient",
     description: "",
     provider: "Test",
   }
@@ -96,22 +98,41 @@ describe("parseAwardAmount", () => {
   })
 })
 
-describe("generateGradient", () => {
-  it("returns a linear-gradient string", () => {
-    const result = generateGradient("test-id")
-    expect(result).toContain("linear-gradient")
-    expect(result).toMatch(/#[0-9a-f]{6}/)
-  })
+describe("CLASSIFICATION_COLORS", () => {
+  const levels: EducationLevel[] = ["High School", "Undergraduate", "Graduate", "K-8", "K-12"]
 
-  it("produces deterministic output for same ID", () => {
-    const a = generateGradient("my-scholarship")
-    const b = generateGradient("my-scholarship")
-    expect(a).toBe(b)
-  })
-
-  it("produces different output for different IDs", () => {
-    const a = generateGradient("scholarship-a")
-    const b = generateGradient("scholarship-b")
-    expect(a).not.toBe(b)
+  it.each(levels)("returns bg and text for %s", (level) => {
+    const colors = CLASSIFICATION_COLORS[level]
+    expect(colors.bg).toBeTruthy()
+    expect(colors.text).toBeTruthy()
   })
 })
+
+describe("CLASSIFICATION_TINTS", () => {
+  const levels: EducationLevel[] = ["High School", "Undergraduate", "Graduate", "K-8", "K-12"]
+
+  it.each(levels)("returns bg, border, accent, text, and muted for %s", (level) => {
+    const tint = CLASSIFICATION_TINTS[level]
+    expect(tint.bg).toBeTruthy()
+    expect(tint.border).toBeTruthy()
+    expect(tint.accent).toBeTruthy()
+    expect(tint.text).toBeTruthy()
+    expect(tint.muted).toBeTruthy()
+  })
+})
+
+describe("getClassificationTint", () => {
+  it("returns tint based on first classification", () => {
+    const tint = getClassificationTint(["Graduate", "Undergraduate"])
+    expect(tint.bg).toBe("bg-surface-container-low")
+    expect(tint.border).toBe("border-t-4 border-tertiary-600")
+    expect(tint.text).toBe("text-on-surface")
+  })
+
+  it("returns fallback for unknown classification", () => {
+    const tint = getClassificationTint([] as unknown as EducationLevel[])
+    expect(tint.bg).toBe("bg-surface-container")
+    expect(tint.border).toBe("border-t-4 border-outline-variant")
+  })
+})
+

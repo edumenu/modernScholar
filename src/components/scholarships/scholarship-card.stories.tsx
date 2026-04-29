@@ -14,7 +14,6 @@ const baseScholarship: Scholarship = {
   openDate: null,
   eligibility: "Must be enrolled in an accredited university.",
   season: "spring",
-  image: "/scholarships/scholarship-1.jpg",
   description: "Awarded to students demonstrating exceptional skill in technology.",
 }
 
@@ -27,7 +26,7 @@ const meta: Meta<typeof ScholarshipCard> = {
   },
   decorators: [
     (Story) => (
-      <div className="flex h-100 w-81.25 bg-background p-4">
+      <div className="flex h-120 w-80 bg-background p-4">
         <Story />
       </div>
     ),
@@ -37,18 +36,65 @@ export default meta
 
 type Story = StoryObj<typeof ScholarshipCard>
 
-export const Default: Story = {
+export const Undergraduate: Story = {
   args: {
     scholarship: baseScholarship,
   },
 }
 
-export const GradientFallback: Story = {
+export const HighSchool: Story = {
   args: {
     scholarship: {
       ...baseScholarship,
-      id: "gradient-demo",
-      image: "gradient",
+      id: "highschool-demo",
+      name: "National Merit Scholarship",
+      classification: ["High School"],
+    },
+  },
+}
+
+export const Graduate: Story = {
+  args: {
+    scholarship: {
+      ...baseScholarship,
+      id: "graduate-demo",
+      name: "Fulbright Research Fellowship",
+      classification: ["Graduate"],
+    },
+  },
+}
+
+export const K8: Story = {
+  name: "K-8",
+  args: {
+    scholarship: {
+      ...baseScholarship,
+      id: "k8-demo",
+      name: "Young Scholars Program",
+      classification: ["K-8"],
+    },
+  },
+}
+
+export const K12: Story = {
+  name: "K-12",
+  args: {
+    scholarship: {
+      ...baseScholarship,
+      id: "k12-demo",
+      name: "All Ages Learning Award",
+      classification: ["K-12"],
+    },
+  },
+}
+
+export const MultipleClassifications: Story = {
+  args: {
+    scholarship: {
+      ...baseScholarship,
+      id: "multi-level",
+      name: "General Access Scholarship",
+      classification: ["High School", "Undergraduate", "Graduate"],
     },
   },
 }
@@ -60,13 +106,23 @@ export const Dimmed: Story = {
   },
 }
 
-export const MultipleClassifications: Story = {
+export const LongTitle: Story = {
   args: {
     scholarship: {
       ...baseScholarship,
-      id: "multi-level",
-      name: "General Access Scholarship",
-      classification: ["High School", "Undergraduate", "Graduate"],
+      id: "long-title",
+      name: "The Extraordinary Educational Achievement Award for Underrepresented Students in STEM and the Humanities",
+    },
+  },
+}
+
+export const NoDescription: Story = {
+  args: {
+    scholarship: {
+      ...baseScholarship,
+      id: "no-desc",
+      name: "Simple Award",
+      description: "",
     },
   },
 }

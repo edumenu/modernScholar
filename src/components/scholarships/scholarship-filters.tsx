@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { motion, LayoutGroup } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
@@ -55,20 +55,24 @@ export function ScholarshipFilters({
 
   const isMobile = useMediaQuery("(max-width: 1023px)");
 
-  // Compute counts per education level from seasonal scholarships
-  const levelCounts = EDUCATION_LEVELS.reduce(
-    (acc, level) => {
-      acc[level] =
-        level === "All"
-          ? seasonalScholarships.length
-          : seasonalScholarships.filter((s) =>
-              s.classification.includes(
-                level as Exclude<EducationLevelFilter, "All">,
-              ),
-            ).length;
-      return acc;
-    },
-    {} as Record<EducationLevelFilter, number>,
+  // Memoized: only recomputes when the seasonal scholarship list changes
+  const levelCounts = useMemo(
+    () =>
+      EDUCATION_LEVELS.reduce(
+        (acc, level) => {
+          acc[level] =
+            level === "All"
+              ? seasonalScholarships.length
+              : seasonalScholarships.filter((s) =>
+                  s.classification.includes(
+                    level as Exclude<EducationLevelFilter, "All">,
+                  ),
+                ).length;
+          return acc;
+        },
+        {} as Record<EducationLevelFilter, number>,
+      ),
+    [seasonalScholarships],
   );
 
   if (isMobile === null) {

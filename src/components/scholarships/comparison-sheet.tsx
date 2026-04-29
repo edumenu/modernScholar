@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
-import Image from "next/image"
+import { useEffect, useMemo } from "react"
 import { Icon } from "@iconify/react"
 import { useLenis } from "lenis/react"
 import { useComparisonStore } from "@/stores/comparison"
@@ -9,7 +8,7 @@ import {
   scholarships,
   type Scholarship,
   parseAwardAmount,
-  generateGradient,
+  CLASSIFICATION_COLORS,
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 import {
@@ -76,33 +75,24 @@ function ComparisonTable({ items }: { items: Scholarship[] }) {
     return false
   }
 
-  const isGradient = (image: string) => image === "gradient"
-
   return (
     <Table className="table-fixed border-separate border-spacing-0">
       <TableHeader>
         <TableRow className="border-b border-outline-variant/20 hover:bg-transparent">
           <TableHead className="w-30 text-xs text-on-surface-variant" />
-          {items.map((s) => (
-            <TableHead key={s.id} className="text-center align-bottom">
-              <div className="flex flex-col items-center gap-2 pb-1">
-                <div className="relative size-18 overflow-hidden rounded-xl shadow-sm">
-                  {isGradient(s.image) ? (
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: generateGradient(s.id) }}
-                    />
-                  ) : (
-                    <Image src={s.image} alt={s.name} fill className="object-cover" sizes="76px" />
-                  )}
+          {items.map((s) => {
+            return (
+              <TableHead key={s.id} className="text-center align-bottom">
+                <div className="flex flex-col items-center gap-2 pb-1">
+                  <div className={`relative size-18 overflow-hidden rounded-xl shadow-sm ${CLASSIFICATION_COLORS[s.classification[0]]?.bg ?? "bg-surface-container"}`} />
+                  <h4 className="font-heading text-xs font-medium leading-snug text-on-surface line-clamp-2 max-w-35">
+                    {s.name}
+                  </h4>
+                  <span className="text-[11px] text-on-surface-variant">{s.provider}</span>
                 </div>
-                <h4 className="font-heading text-xs font-medium leading-snug text-on-surface line-clamp-2 max-w-35">
-                  {s.name}
-                </h4>
-                <span className="text-[11px] text-on-surface-variant">{s.provider}</span>
-              </div>
-            </TableHead>
-          ))}
+              </TableHead>
+            )
+          })}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -146,9 +136,13 @@ export function ComparisonSheet() {
     useComparisonStore()
   const lenis = useLenis()
 
-  const selected = selectedIds
-    .map((id) => scholarships.find((s) => s.id === id))
-    .filter(Boolean) as Scholarship[]
+  const selected = useMemo(
+    () =>
+      selectedIds
+        .map((id) => scholarships.find((s) => s.id === id))
+        .filter(Boolean) as Scholarship[],
+    [selectedIds],
+  )
 
   useEffect(() => {
     if (!lenis || !isSheetOpen) return
@@ -157,8 +151,6 @@ export function ComparisonSheet() {
       lenis.start()
     }
   }, [isSheetOpen, lenis])
-
-  const isGradient = (image: string) => image === "gradient"
 
   return (
     <Sheet
@@ -186,37 +178,25 @@ export function ComparisonSheet() {
         <div className="flex-1 overflow-y-auto px-6 pb-6">
           {/* Selected scholarships row */}
           <div className="flex items-center gap-3 pb-6">
-            {selected.map((s) => (
-              <div
-                key={s.id}
-                className="group relative size-10 shrink-0 overflow-hidden rounded-xl border border-outline-variant/30 shadow-sm"
-              >
-                {isGradient(s.image) ? (
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: generateGradient(s.id) }}
-                  />
-                ) : (
-                  <Image
-                    src={s.image}
-                    alt={s.name}
-                    fill
-                    className="object-cover"
-                    sizes="36px"
-                  />
-                )}
-                <button
-                  onClick={() => remove(s.id)}
-                  className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
-                  aria-label={`Remove ${s.name} from comparison`}
+            {selected.map((s) => {
+              return (
+                <div
+                  key={s.id}
+                  className={`group relative size-10 shrink-0 overflow-hidden rounded-xl border border-outline-variant/30 shadow-sm ${CLASSIFICATION_COLORS[s.classification[0]]?.bg ?? "bg-surface-container"}`}
                 >
-                  <Icon
-                    icon="solar:close-circle-bold"
-                    className="size-5 text-white"
-                  />
-                </button>
-              </div>
-            ))}
+                  <button
+                    onClick={() => remove(s.id)}
+                    className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100"
+                    aria-label={`Remove ${s.name} from comparison`}
+                  >
+                    <Icon
+                      icon="solar:close-circle-bold"
+                      className="size-5 text-white"
+                    />
+                  </button>
+                </div>
+              )
+            })}
             {Array.from({ length: 3 - selected.length }).map((_, i) => (
               <div
                 key={`empty-${i}`}

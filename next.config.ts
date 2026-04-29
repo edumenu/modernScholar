@@ -6,9 +6,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   compiler: {
-    removeConsole: {
-      exclude: ["error"],
-    },
+    removeConsole:
+      process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
 };
 

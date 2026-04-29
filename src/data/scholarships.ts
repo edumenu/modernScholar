@@ -24,6 +24,15 @@ export type EducationLevelFilter = (typeof EDUCATION_LEVELS)[number]
 
 export const SEASONS = ["winter", "spring", "summer", "fall"] as const
 
+/** Category-specific pill color classes (bg + text) using design-system shades */
+export const CLASSIFICATION_COLORS: Record<EducationLevel, { bg: string; text: string }> = {
+  "High School": { bg: "bg-primary-200", text: "text-primary-700" },
+  Undergraduate: { bg: "bg-secondary-200", text: "text-secondary-700" },
+  Graduate: { bg: "bg-tertiary-200", text: "text-tertiary-700" },
+  "K-8": { bg: "bg-primary-100", text: "text-primary-950" },
+  "K-12": { bg: "bg-secondary-300", text: "text-secondary-950" },
+}
+
 export interface Scholarship {
   id: string
   name: string
@@ -35,7 +44,6 @@ export interface Scholarship {
   openDate: string | null
   eligibility: string
   season: Season
-  image: string
   description: string
   provider: string
 }
@@ -100,30 +108,58 @@ export function parseAwardAmount(awardAmount: string): number {
   return Number(match[0].replace(/[$,]/g, "")) || 0
 }
 
-/** Warm cream palette for card gradients */
-const GRADIENT_PALETTE = [
-  "#f4e8e5", "#f5eae7", "#f6ecea", "#f7eeec", "#f8f1ef",
-  "#f9f3f2", "#faf5f4", "#fbf8f7", "#fcfaf9", "#fdfcfc", "#ffffff",
-] as const
-
-/** Generate a deterministic gradient from a scholarship ID */
-export function generateGradient(id: string): string {
-  let hash = 0
-  for (let i = 0; i < id.length; i++) {
-    hash = id.charCodeAt(i) + ((hash << 5) - hash)
-  }
-  const abs = Math.abs(hash)
-  const idx1 = abs % GRADIENT_PALETTE.length
-  let idx2 = (abs >>> 8) % GRADIENT_PALETTE.length
-  if (idx2 === idx1) idx2 = (idx2 + 1) % GRADIENT_PALETTE.length
-  const angle = 120 + (abs % 80) // 120–199deg
-  return `linear-gradient(${angle}deg, ${GRADIENT_PALETTE[idx1]}, ${GRADIENT_PALETTE[idx2]})`
+/** Classification-driven accent stripe + neutral card surface for WCAG-AA contrast */
+export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: string; accent: string; text: string; muted: string }> = {
+  "High School": {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-primary-400",
+    accent: "from-primary/40",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+  Undergraduate: {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-secondary-600",
+    accent: "from-secondary/40",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+  Graduate: {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-tertiary-600",
+    accent: "from-tertiary/40",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+  "K-8": {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-primary-300",
+    accent: "from-primary/30",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+  "K-12": {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-secondary-400",
+    accent: "from-secondary/30",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
 }
 
-// --- Commented-out legacy types (preserved for reference) ---
-
-// export const SCHOLARSHIP_CATEGORIES = [
-//   "All", "Technology", "STEM", "General", "Arts", "Business", "Science", "Medical",
-// ] as const
-// export type ScholarshipCategory = (typeof SCHOLARSHIP_CATEGORIES)[number]
-// export type ScholarshipTag = "Featured" | "Popular" | "New" | "Top Pick"
+/** Get the tint config for a scholarship based on its primary classification */
+export function getClassificationTint(classification: EducationLevel[]) {
+  const primary = classification[0]
+  return CLASSIFICATION_TINTS[primary] ?? {
+    bg: "bg-surface-container",
+    border: "border-t-4 border-outline-variant",
+    accent: "from-on-surface/20",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  }
+}

@@ -15,7 +15,6 @@ const mockScholarships: Scholarship[] = [
     openDate: null,
     eligibility: "Must be enrolled",
     season: "spring",
-    image: "/test.jpg",
     description: "",
   },
   {
@@ -30,7 +29,6 @@ const mockScholarships: Scholarship[] = [
     openDate: null,
     eligibility: "Must be in high school",
     season: "summer",
-    image: "/test.jpg",
     description: "",
   },
   {
@@ -45,7 +43,6 @@ const mockScholarships: Scholarship[] = [
     openDate: null,
     eligibility: "Open to all",
     season: "summer",
-    image: "/test.jpg",
     description: "",
   },
   {
@@ -60,7 +57,6 @@ const mockScholarships: Scholarship[] = [
     openDate: null,
     eligibility: "Graduate students only",
     season: "summer",
-    image: "/test.jpg",
     description: "",
   },
 ]
@@ -120,8 +116,7 @@ describe("filterAndSort", () => {
         openDate: null,
         eligibility: "This is for engineering students",
         season: "spring",
-        image: "/test.jpg",
-        description: "",
+            description: "",
       },
     ]
     const result = filterAndSort(items, "All", "engineering", "deadline")
