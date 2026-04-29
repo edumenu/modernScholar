@@ -1,970 +1,165 @@
-export const SCHOLARSHIP_CATEGORIES = [
+import enrichedData from "./scholarships-enriched.json"
+
+// --- Active types ---
+
+export type EducationLevel =
+  | "High School"
+  | "Undergraduate"
+  | "Graduate"
+  | "K-8"
+  | "K-12"
+
+export type Season = "winter" | "spring" | "summer" | "fall"
+
+export const EDUCATION_LEVELS = [
   "All",
-  "Technology",
-  "STEM",
-  "General",
-  "Arts",
-  "Business",
-  "Science",
-  "Medical",
+  "High School",
+  "Undergraduate",
+  "Graduate",
+  "K-8",
+  "K-12",
 ] as const
 
-export type ScholarshipCategory = (typeof SCHOLARSHIP_CATEGORIES)[number]
+export type EducationLevelFilter = (typeof EDUCATION_LEVELS)[number]
 
-export type ScholarshipTag = "Featured" | "Popular" | "New" | "Top Pick"
+export const SEASONS = ["winter", "spring", "summer", "fall"] as const
+
+/** Category-specific pill color classes (bg + text) using design-system shades */
+export const CLASSIFICATION_COLORS: Record<EducationLevel, { bg: string; text: string }> = {
+  "High School": { bg: "bg-primary-200", text: "text-primary-700" },
+  Undergraduate: { bg: "bg-secondary-200", text: "text-secondary-700" },
+  Graduate: { bg: "bg-tertiary-200", text: "text-tertiary-700" },
+  "K-8": { bg: "bg-primary-100", text: "text-primary-950" },
+  "K-12": { bg: "bg-secondary-300", text: "text-secondary-950" },
+}
 
 export interface Scholarship {
   id: string
-  title: string
-  provider: string
-  amount: string
+  name: string
   deadline: string
-  rating: number
-  image: string
-  tag?: ScholarshipTag
-  category: ScholarshipCategory
-  description?: string
-  applyUrl?: string
+  deadlineYear: number
+  awardAmount: string
+  classification: EducationLevel[]
+  link: string
+  openDate: string | null
+  eligibility: string
+  season: Season
+  description: string
+  provider: string
 }
 
-export const scholarships: Scholarship[] = [
-  {
-    id: "tech-excellence",
-    title: "Tech Excellence Scholarship",
-    provider: "Tech Foundation",
-    amount: "$10,000",
-    deadline: "April 30, 2026",
-    rating: 4.8,
-    image: "/scholarships/scholarship-1.jpg",
-    tag: "Featured",
-    category: "Technology",
-    description:
-      "Awarded to students demonstrating exceptional skill in software development, systems architecture, or emerging technologies. Candidates should show a track record of building innovative digital solutions that address real-world challenges.",
-  },
-  {
-    id: "women-in-stem",
-    title: "Women in STEM Award",
-    provider: "STEM Alliance",
-    amount: "$5,000",
-    deadline: "May 15, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-2.jpg",
-    category: "STEM",
-    description:
-      "This award celebrates women pursuing degrees in science, technology, engineering, or mathematics. Recipients are selected based on academic merit, research involvement, and their commitment to advancing gender equity in STEM fields.",
-  },
-  {
-    id: "first-generation",
-    title: "First Generation Scholar",
-    provider: "Education Forward",
-    amount: "$7,500",
-    deadline: "June 1, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-3.jpg",
-    tag: "Popular",
-    category: "General",
-    description:
-      "Designed for first-generation college students who are breaking new ground in their families. Applicants should demonstrate strong academic achievement, resilience, and a dedication to making the most of their educational opportunity.",
-  },
-  {
-    id: "arts-design",
-    title: "Arts & Design Grant",
-    provider: "Creative Minds",
-    amount: "$4,000",
-    deadline: "April 20, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-4.jpg",
-    category: "Arts",
-    description:
-      "Supporting emerging artists and designers who push creative boundaries. Applicants should submit a portfolio showcasing original work that reflects a unique artistic voice and a commitment to cultural enrichment.",
-  },
-  {
-    id: "business-leadership",
-    title: "Business Leadership Fund",
-    provider: "Global Business Council",
-    amount: "$8,000",
-    deadline: "May 30, 2026",
-    rating: 4.4,
-    image: "/scholarships/scholarship-5.jpg",
-    category: "Business",
-    description:
-      "Recognizes students with outstanding leadership potential and a strategic mindset for the business world. Ideal candidates have demonstrated initiative through student organizations, startup ventures, or community business projects.",
-  },
-  {
-    id: "environmental-science",
-    title: "Environmental Science Award",
-    provider: "Green Future",
-    amount: "$6,000",
-    deadline: "June 10, 2026",
-    rating: 4.8,
-    image: "/scholarships/scholarship-6.jpg",
-    tag: "New",
-    category: "Science",
-    description:
-      "For students conducting research or coursework in environmental science, ecology, or conservation biology. Recipients should show passion for understanding natural systems and developing solutions to pressing environmental issues.",
-  },
-  {
-    id: "community-service",
-    title: "Community Service Excellence",
-    provider: "Civic Leaders",
-    amount: "$3,500",
-    deadline: "May 5, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-1.jpg",
-    category: "General",
-    description:
-      "Honors students who have made meaningful contributions to their communities through volunteer work and civic engagement. Applicants should provide evidence of sustained service and its tangible impact on the people around them.",
-  },
-  {
-    id: "medical-studies",
-    title: "Medical Studies Scholarship",
-    provider: "Healthcare Foundation",
-    amount: "$12,000",
-    deadline: "April 25, 2026",
-    rating: 4.9,
-    image: "/scholarships/scholarship-2.jpg",
-    tag: "Top Pick",
-    category: "Medical",
-    description:
-      "A prestigious award for aspiring physicians and healthcare professionals committed to improving patient outcomes. Candidates should demonstrate academic excellence in the sciences and a clear vision for their career in medicine.",
-  },
-  {
-    id: "future-leaders",
-    title: "Future Leaders Award",
-    provider: "Leadership Institute",
-    amount: "$15,000",
-    deadline: "September 1, 2026",
-    rating: 4.9,
-    image: "/scholarships/scholarship-3.jpg",
-    tag: "Featured",
-    category: "General",
-    description:
-      "One of the most competitive general scholarships available, this award targets students who combine academic distinction with proven leadership. Past recipients have gone on to lead initiatives in policy, education, and social change.",
-  },
-  {
-    id: "stem-innovation",
-    title: "STEM Innovation Grant",
-    provider: "Science & Tech Council",
-    amount: "$9,500",
-    deadline: "June 15, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-4.jpg",
-    category: "STEM",
-    description:
-      "Supports students working on innovative projects at the intersection of science and technology. Ideal applicants have participated in research labs, engineering competitions, or developed prototypes that solve practical problems.",
-  },
-  {
-    id: "digital-arts",
-    title: "Digital Arts Fellowship",
-    provider: "Modern Arts Collective",
-    amount: "$6,500",
-    deadline: "July 1, 2026",
-    rating: 4.4,
-    image: "/scholarships/scholarship-5.jpg",
-    category: "Arts",
-    description:
-      "A fellowship for students exploring the intersection of art and technology through digital media, animation, or interactive design. Recipients gain access to mentorship and resources to develop their creative practice.",
-  },
-  {
-    id: "global-perspectives",
-    title: "Global Perspectives",
-    provider: "International Education Trust",
-    amount: "$11,000",
-    deadline: "August 15, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "General",
-    description:
-      "Open to students who bring international experience or a global outlook to their academic work. This scholarship values cross-cultural understanding, multilingual ability, and a commitment to addressing global challenges.",
-  },
-  {
-    id: "biomedical-research",
-    title: "Biomedical Research Award",
-    provider: "National Health Institute",
-    amount: "$14,000",
-    deadline: "July 20, 2026",
-    rating: 4.8,
-    image: "/scholarships/scholarship-1.jpg",
-    tag: "New",
-    category: "Medical",
-    description:
-      "Funds students engaged in biomedical research aimed at understanding disease mechanisms and developing new therapies. Applicants should have laboratory experience and a published or in-progress research project.",
-  },
-  {
-    id: "startup-founders",
-    title: "Startup Founders Scholarship",
-    provider: "Venture Education Fund",
-    amount: "$10,000",
-    deadline: "August 1, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-3.jpg",
-    category: "Business",
-    description:
-      "Tailored for student entrepreneurs who have launched or are actively building a startup. Applicants should demonstrate entrepreneurial drive, a viable business concept, and the ability to execute under resource constraints.",
-  },
-  {
-    id: "cybersecurity-excellence",
-    title: "Cybersecurity Excellence",
-    provider: "Digital Defense Alliance",
-    amount: "$8,500",
-    deadline: "September 15, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-4.jpg",
-    category: "Technology",
-    description:
-      "For students specializing in cybersecurity, network defense, or information assurance. Candidates should show hands-on experience with security tools, capture-the-flag competitions, or contributions to open-source security projects.",
-  },
-  {
-    id: "marine-biology",
-    title: "Marine Biology Grant",
-    provider: "Ocean Conservation Trust",
-    amount: "$7,000",
-    deadline: "October 1, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-5.jpg",
-    category: "Science",
-    description:
-      "Supports students studying marine ecosystems, oceanography, or aquatic conservation. Ideal candidates have fieldwork experience and a dedication to preserving ocean biodiversity for future generations.",
-  },
-  {
-    id: "creative-writing",
-    title: "Creative Writing Prize",
-    provider: "National Writers Circle",
-    amount: "$5,500",
-    deadline: "July 30, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "Arts",
-    description:
-      "Celebrates student writers who demonstrate exceptional storytelling ability across fiction, poetry, or creative nonfiction. Submissions are judged on originality, voice, and the power to move readers.",
-  },
-  {
-    id: "ai-machine-learning",
-    title: "AI & Machine Learning Award",
-    provider: "DeepTech Foundation",
-    amount: "$12,500",
-    deadline: "May 20, 2026",
-    rating: 4.9,
-    image: "/scholarships/scholarship-1.jpg",
-    tag: "Featured",
-    category: "Technology",
-    description:
-      "Recognizes students pushing the frontiers of artificial intelligence and machine learning research. Applicants should have experience with model development, data science pipelines, or published work in AI-related conferences.",
-  },
-  {
-    id: "nursing-excellence",
-    title: "Nursing Excellence Scholarship",
-    provider: "American Nursing Council",
-    amount: "$8,000",
-    deadline: "June 30, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-2.jpg",
-    category: "Medical",
-    description:
-      "For nursing students who demonstrate compassion, clinical skill, and a commitment to patient-centered care. Recipients are chosen based on academic performance, clinical evaluations, and community health involvement.",
-  },
-  {
-    id: "renewable-energy",
-    title: "Renewable Energy Research Grant",
-    provider: "Clean Energy Institute",
-    amount: "$9,000",
-    deadline: "August 10, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-3.jpg",
-    tag: "New",
-    category: "Science",
-    description:
-      "Funds research into solar, wind, hydrogen, or other renewable energy technologies. Students should present a research proposal that addresses scalability, efficiency, or accessibility of clean energy solutions.",
-  },
-  {
-    id: "social-entrepreneurship",
-    title: "Social Entrepreneurship Fund",
-    provider: "Impact Ventures",
-    amount: "$7,500",
-    deadline: "September 20, 2026",
-    rating: 4.4,
-    image: "/scholarships/scholarship-4.jpg",
-    category: "Business",
-    description:
-      "Supports students building ventures that blend profit with purpose. Applicants should demonstrate how their business model creates measurable social or environmental impact alongside financial sustainability.",
-  },
-  {
-    id: "performing-arts",
-    title: "Performing Arts Fellowship",
-    provider: "National Theater Foundation",
-    amount: "$6,000",
-    deadline: "May 25, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-5.jpg",
-    tag: "Popular",
-    category: "Arts",
-    description:
-      "Awarded to talented performers in theater, dance, or music who show exceptional stage presence and artistic growth. Fellows receive funding and mentorship from established professionals in the performing arts.",
-  },
-  {
-    id: "data-science",
-    title: "Data Science Scholarship",
-    provider: "Analytics Academy",
-    amount: "$11,000",
-    deadline: "July 15, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "STEM",
-    description:
-      "For students harnessing the power of data to solve complex problems across industries. Applicants should have experience with statistical modeling, programming in Python or R, and deriving actionable insights from large datasets.",
-  },
-  {
-    id: "minority-engineers",
-    title: "Minority Engineers Award",
-    provider: "Diversity in Tech Coalition",
-    amount: "$10,000",
-    deadline: "June 20, 2026",
-    rating: 4.8,
-    image: "/scholarships/scholarship-1.jpg",
-    tag: "Top Pick",
-    category: "Technology",
-    description:
-      "Empowers underrepresented minority students pursuing careers in software engineering, hardware design, or technical leadership. This award aims to close the diversity gap in tech by supporting the next generation of engineers.",
-  },
-  {
-    id: "public-health",
-    title: "Public Health Leaders Grant",
-    provider: "Global Health Initiative",
-    amount: "$9,500",
-    deadline: "August 30, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-2.jpg",
-    category: "Medical",
-    description:
-      "Designed for students pursuing public health, epidemiology, or health policy. Ideal candidates have experience in community health programs and a vision for improving health outcomes at the population level.",
-  },
-  {
-    id: "undergraduate-research",
-    title: "Undergraduate Research Award",
-    provider: "National Research Foundation",
-    amount: "$5,000",
-    deadline: "October 15, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-3.jpg",
-    category: "General",
-    description:
-      "Encourages undergraduate students to engage in meaningful research across any discipline. Recipients are selected based on the quality of their research proposal, faculty recommendations, and academic standing.",
-  },
-  {
-    id: "supply-chain-management",
-    title: "Supply Chain Management Fund",
-    provider: "Logistics Education Trust",
-    amount: "$6,500",
-    deadline: "November 1, 2026",
-    rating: 4.2,
-    image: "/scholarships/scholarship-4.jpg",
-    category: "Business",
-    description:
-      "For students studying logistics, operations management, or supply chain optimization. Applicants should show an understanding of global supply networks and an interest in making them more efficient and resilient.",
-  },
-  {
-    id: "quantum-computing",
-    title: "Quantum Computing Fellowship",
-    provider: "Quantum Research Alliance",
-    amount: "$15,000",
-    deadline: "July 10, 2026",
-    rating: 4.9,
-    image: "/scholarships/scholarship-5.jpg",
-    tag: "Featured",
-    category: "STEM",
-    description:
-      "A highly selective fellowship for students exploring quantum algorithms, quantum hardware, or quantum information theory. Recipients join a cohort of peers and mentors at the cutting edge of computational science.",
-  },
-  {
-    id: "film-documentary",
-    title: "Film & Documentary Grant",
-    provider: "Independent Filmmakers Guild",
-    amount: "$8,500",
-    deadline: "September 5, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "Arts",
-    description:
-      "Provides funding for student filmmakers producing short films or documentaries that tell compelling stories. Applicants should submit a project proposal along with samples of previous visual storytelling work.",
-  },
-  {
-    id: "veterinary-medicine",
-    title: "Veterinary Medicine Scholarship",
-    provider: "Animal Health Foundation",
-    amount: "$10,500",
-    deadline: "June 15, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-1.jpg",
-    category: "Medical",
-    description:
-      "Supports students pursuing veterinary medicine with a focus on animal welfare, clinical practice, or veterinary research. Candidates should demonstrate hands-on experience with animal care and strong academic credentials.",
-  },
-  {
-    id: "aerospace-engineering",
-    title: "Aerospace Engineering Award",
-    provider: "Space Exploration Fund",
-    amount: "$13,000",
-    deadline: "August 20, 2026",
-    rating: 4.8,
-    image: "/scholarships/scholarship-2.jpg",
-    tag: "New",
-    category: "STEM",
-    description:
-      "For students designing the next generation of aircraft, spacecraft, or propulsion systems. Applicants should have coursework or project experience in aerodynamics, orbital mechanics, or aerospace materials.",
-  },
-  {
-    id: "graphic-design",
-    title: "Graphic Design Excellence",
-    provider: "Design Professionals Network",
-    amount: "$4,500",
-    deadline: "May 10, 2026",
-    rating: 4.4,
-    image: "/scholarships/scholarship-3.jpg",
-    category: "Arts",
-    description:
-      "Recognizes students with outstanding graphic design skills across branding, typography, and visual communication. A strong portfolio demonstrating versatility and attention to detail is required for consideration.",
-  },
-  {
-    id: "fintech-innovation",
-    title: "FinTech Innovation Prize",
-    provider: "Financial Technology Council",
-    amount: "$11,500",
-    deadline: "October 30, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-4.jpg",
-    tag: "Popular",
-    category: "Technology",
-    description:
-      "Rewards students developing innovative solutions at the intersection of finance and technology. Ideal candidates have built or prototyped fintech applications addressing payments, lending, insurance, or personal finance.",
-  },
-  {
-    id: "climate-science",
-    title: "Climate Science Research Grant",
-    provider: "Earth Sciences Foundation",
-    amount: "$8,000",
-    deadline: "September 10, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-5.jpg",
-    category: "Science",
-    description:
-      "Funds student research into climate systems, atmospheric science, or the impacts of global warming. Applicants should present a clear research methodology and explain how their work contributes to climate understanding.",
-  },
-  {
-    id: "rural-healthcare",
-    title: "Rural Healthcare Scholarship",
-    provider: "Community Health Network",
-    amount: "$9,000",
-    deadline: "July 25, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "Medical",
-    description:
-      "For students committed to bringing quality healthcare to underserved rural communities. Applicants should articulate their plan to practice in rural settings and address the unique health challenges these populations face.",
-  },
-  {
-    id: "international-business",
-    title: "International Business Award",
-    provider: "World Commerce Foundation",
-    amount: "$7,000",
-    deadline: "November 15, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-1.jpg",
-    category: "Business",
-    description:
-      "For students with a keen interest in global commerce, trade policy, or cross-border management. Candidates should demonstrate international experience, cultural fluency, and strategic thinking about global markets.",
-  },
-  {
-    id: "robotics-automation",
-    title: "Robotics & Automation Grant",
-    provider: "Advanced Manufacturing Institute",
-    amount: "$10,000",
-    deadline: "August 5, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-2.jpg",
-    tag: "Top Pick",
-    category: "STEM",
-    description:
-      "Supports students building intelligent robotic systems or advancing automation technologies. Applicants should have hands-on experience with robot design, control systems, or programming autonomous machines.",
-  },
-  {
-    id: "blockchain-development",
-    title: "Blockchain Development Scholarship",
-    provider: "Distributed Ledger Foundation",
-    amount: "$9,500",
-    deadline: "May 1, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-3.jpg",
-    category: "Technology",
-    description:
-      "For students working with distributed ledger technologies, smart contracts, or decentralized applications. Applicants should demonstrate technical proficiency in blockchain platforms and an understanding of their real-world applications.",
-  },
-  {
-    id: "mental-health-advocacy",
-    title: "Mental Health Advocacy Award",
-    provider: "Wellness in Medicine Fund",
-    amount: "$7,000",
-    deadline: "June 5, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-4.jpg",
-    tag: "New",
-    category: "Medical",
-    description:
-      "Recognizes students who champion mental health awareness on campus or in their communities. Recipients combine academic study in psychology or psychiatry with active advocacy for destigmatizing mental illness.",
-  },
-  {
-    id: "mathematics-excellence",
-    title: "Mathematics Excellence Prize",
-    provider: "National Math Society",
-    amount: "$8,500",
-    deadline: "July 20, 2026",
-    rating: 4.8,
-    image: "/scholarships/scholarship-5.jpg",
-    tag: "Featured",
-    category: "STEM",
-    description:
-      "Honors students who excel in pure or applied mathematics, from abstract algebra to computational modeling. Applicants should have participated in math competitions, research, or advanced coursework beyond their grade level.",
-  },
-  {
-    id: "music-composition",
-    title: "Music Composition Fellowship",
-    provider: "Harmony Arts Council",
-    amount: "$5,500",
-    deadline: "August 15, 2026",
-    rating: 4.4,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "Arts",
-    description:
-      "For student composers creating original works across classical, contemporary, or experimental genres. Fellows receive funding to develop a new composition and the opportunity to have it performed publicly.",
-  },
-  {
-    id: "sustainable-agriculture",
-    title: "Sustainable Agriculture Grant",
-    provider: "Farm Innovation Alliance",
-    amount: "$6,500",
-    deadline: "September 30, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-1.jpg",
-    category: "Science",
-    description:
-      "Supports students researching sustainable farming practices, soil science, or food systems. Applicants should demonstrate a commitment to developing agricultural methods that balance productivity with environmental stewardship.",
-  },
-  {
-    id: "accounting-finance",
-    title: "Accounting & Finance Scholarship",
-    provider: "CPA Education Trust",
-    amount: "$7,500",
-    deadline: "October 10, 2026",
-    rating: 4.2,
-    image: "/scholarships/scholarship-2.jpg",
-    category: "Business",
-    description:
-      "For students pursuing degrees in accounting, finance, or financial planning. Candidates should demonstrate analytical rigor, an understanding of financial regulations, and a clear career path in the financial sector.",
-  },
-  {
-    id: "cloud-computing",
-    title: "Cloud Computing Award",
-    provider: "CloudTech Alliance",
-    amount: "$11,000",
-    deadline: "May 15, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-3.jpg",
-    tag: "Popular",
-    category: "Technology",
-    description:
-      "Awarded to students with demonstrated expertise in cloud infrastructure, distributed systems, or platform engineering. Candidates should have hands-on experience with major cloud providers and a passion for scalable architecture.",
-  },
-  {
-    id: "disability-advocacy",
-    title: "Disability Advocacy Scholarship",
-    provider: "Inclusive Futures Foundation",
-    amount: "$6,000",
-    deadline: "June 25, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-4.jpg",
-    category: "General",
-    description:
-      "Supports students who advocate for disability rights and inclusion in education and the workplace. Applicants should demonstrate leadership in accessibility initiatives and a commitment to creating more equitable environments.",
-  },
-  {
-    id: "pharmacology-research",
-    title: "Pharmacology Research Fund",
-    provider: "Pharmaceutical Sciences Institute",
-    amount: "$13,500",
-    deadline: "July 5, 2026",
-    rating: 4.8,
-    image: "/scholarships/scholarship-5.jpg",
-    tag: "Top Pick",
-    category: "Medical",
-    description:
-      "Funds advanced research in pharmacology, drug discovery, or pharmaceutical sciences. Applicants should be engaged in laboratory research with the potential to contribute to new treatments or therapeutic approaches.",
-  },
-  {
-    id: "architecture-design",
-    title: "Architecture & Design Grant",
-    provider: "Built Environment Council",
-    amount: "$8,000",
-    deadline: "August 25, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "Arts",
-    description:
-      "For architecture and interior design students whose work balances aesthetic vision with functional innovation. Applicants should submit a portfolio showcasing projects that respond thoughtfully to space, materials, and human needs.",
-  },
-  {
-    id: "bioinformatics",
-    title: "Bioinformatics Scholarship",
-    provider: "Computational Biology Network",
-    amount: "$10,500",
-    deadline: "September 15, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-1.jpg",
-    category: "STEM",
-    description:
-      "For students applying computational methods to biological data, from genome sequencing to protein structure prediction. Candidates should have programming skills and experience working with large-scale biological datasets.",
-  },
-  {
-    id: "sports-management",
-    title: "Sports Management Award",
-    provider: "Athletic Business Institute",
-    amount: "$5,000",
-    deadline: "October 20, 2026",
-    rating: 4.1,
-    image: "/scholarships/scholarship-2.jpg",
-    category: "Business",
-    description:
-      "Recognizes students pursuing careers in sports management, athletic administration, or sports marketing. Applicants should show leadership experience in athletics and a strategic vision for the business of sports.",
-  },
-  {
-    id: "ux-design",
-    title: "UX Design Excellence Scholarship",
-    provider: "Human-Centered Design Lab",
-    amount: "$7,500",
-    deadline: "May 30, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-3.jpg",
-    tag: "New",
-    category: "Technology",
-    description:
-      "For students passionate about creating intuitive, accessible digital experiences. Applicants should demonstrate proficiency in user research, interaction design, and prototyping tools, with a portfolio of user-centered projects.",
-  },
-  {
-    id: "astrophysics-research",
-    title: "Astrophysics Research Grant",
-    provider: "Stellar Sciences Foundation",
-    amount: "$14,000",
-    deadline: "June 10, 2026",
-    rating: 4.9,
-    image: "/scholarships/scholarship-4.jpg",
-    tag: "Featured",
-    category: "Science",
-    description:
-      "A premier grant for students investigating the fundamental workings of the universe, from stellar evolution to cosmology. Candidates should have research experience in observational or theoretical astrophysics.",
-  },
-  {
-    id: "photography-visual-arts",
-    title: "Photography & Visual Arts Prize",
-    provider: "Lens & Light Collective",
-    amount: "$4,000",
-    deadline: "July 30, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-5.jpg",
-    category: "Arts",
-    description:
-      "Celebrates student photographers and visual artists whose work captures compelling narratives through imagery. Submissions should include a curated portfolio that demonstrates technical skill and a distinct creative perspective.",
-  },
-  {
-    id: "emergency-medicine",
-    title: "Emergency Medicine Fellowship",
-    provider: "Trauma Care Foundation",
-    amount: "$11,500",
-    deadline: "August 10, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "Medical",
-    description:
-      "For medical students interested in emergency and trauma care. Fellows gain clinical exposure and mentorship in fast-paced medical settings, preparing them for careers saving lives in critical situations.",
-  },
-  {
-    id: "indigenous-scholars",
-    title: "Indigenous Scholars Award",
-    provider: "First Nations Education Fund",
-    amount: "$8,000",
-    deadline: "September 1, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-1.jpg",
-    tag: "Popular",
-    category: "General",
-    description:
-      "Supports Indigenous students in pursuing higher education while honoring their cultural heritage. Recipients are selected based on academic promise, community involvement, and their dedication to uplifting Indigenous communities.",
-  },
-  {
-    id: "marketing-analytics",
-    title: "Marketing Analytics Scholarship",
-    provider: "Digital Marketing Institute",
-    amount: "$6,500",
-    deadline: "October 5, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-2.jpg",
-    category: "Business",
-    description:
-      "For students at the intersection of marketing and data analytics. Ideal candidates understand consumer behavior modeling, digital campaign optimization, and how to translate marketing data into strategic business decisions.",
-  },
-  {
-    id: "embedded-systems",
-    title: "Embedded Systems Engineering Grant",
-    provider: "IoT Innovation Lab",
-    amount: "$9,000",
-    deadline: "November 10, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-3.jpg",
-    category: "Technology",
-    description:
-      "Supports students working with embedded hardware, firmware development, or Internet of Things applications. Candidates should have experience programming microcontrollers and designing systems that bridge the physical and digital worlds.",
-  },
-  {
-    id: "genetics-genomics",
-    title: "Genetics & Genomics Award",
-    provider: "Genome Research Alliance",
-    amount: "$12,000",
-    deadline: "May 25, 2026",
-    rating: 4.8,
-    image: "/scholarships/scholarship-4.jpg",
-    tag: "Top Pick",
-    category: "Science",
-    description:
-      "For students advancing our understanding of genetics, gene expression, or genomic medicine. Applicants should have research experience in a genetics lab and a commitment to translating discoveries into real-world health benefits.",
-  },
-  {
-    id: "sculpture-ceramics",
-    title: "Sculpture & Ceramics Fellowship",
-    provider: "Studio Arts Foundation",
-    amount: "$5,000",
-    deadline: "June 20, 2026",
-    rating: 4.2,
-    image: "/scholarships/scholarship-5.jpg",
-    category: "Arts",
-    description:
-      "A hands-on fellowship for students working in sculpture, ceramics, or three-dimensional art forms. Fellows receive studio access and materials funding to develop a body of work for exhibition.",
-  },
-  {
-    id: "chemical-engineering",
-    title: "Chemical Engineering Scholarship",
-    provider: "Process Engineering Society",
-    amount: "$10,000",
-    deadline: "July 15, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "STEM",
-    description:
-      "For students studying chemical processes, reaction engineering, or materials synthesis. Candidates should demonstrate strong analytical skills and an interest in applying chemical engineering principles to industry challenges.",
-  },
-  {
-    id: "dental-medicine",
-    title: "Dental Medicine Grant",
-    provider: "Oral Health Foundation",
-    amount: "$9,500",
-    deadline: "August 20, 2026",
-    rating: 4.4,
-    image: "/scholarships/scholarship-1.jpg",
-    category: "Medical",
-    description:
-      "Supports dental students focused on oral health, restorative dentistry, or community dental care. Applicants should demonstrate clinical aptitude and a desire to improve access to dental services for underserved populations.",
-  },
-  {
-    id: "nonprofit-leadership",
-    title: "Nonprofit Leadership Fund",
-    provider: "Social Impact Network",
-    amount: "$7,000",
-    deadline: "September 25, 2026",
-    rating: 4.4,
-    image: "/scholarships/scholarship-2.jpg",
-    category: "Business",
-    description:
-      "For students aspiring to lead nonprofit organizations or social enterprises. Applicants should show experience in nonprofit management, fundraising, or program development, along with a clear vision for social impact.",
-  },
-  {
-    id: "transfer-students",
-    title: "Transfer Students Excellence Award",
-    provider: "Community College Success Fund",
-    amount: "$5,500",
-    deadline: "October 30, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-3.jpg",
-    category: "General",
-    description:
-      "Designed specifically for students transferring from community colleges to four-year institutions. Recipients demonstrate academic excellence, adaptability, and a determination to succeed in their new academic environment.",
-  },
-  {
-    id: "game-development",
-    title: "Game Development Scholarship",
-    provider: "Interactive Media Foundation",
-    amount: "$8,500",
-    deadline: "May 10, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-4.jpg",
-    tag: "New",
-    category: "Technology",
-    description:
-      "For students building interactive experiences through game design, engine development, or gameplay programming. Applicants should submit a playable demo or detailed design document showcasing their technical and creative abilities.",
-  },
-  {
-    id: "neuroscience-research",
-    title: "Neuroscience Research Prize",
-    provider: "Brain Sciences Institute",
-    amount: "$15,000",
-    deadline: "June 30, 2026",
-    rating: 4.9,
-    image: "/scholarships/scholarship-5.jpg",
-    tag: "Featured",
-    category: "Science",
-    description:
-      "One of the top prizes in student neuroscience research, this award supports investigations into brain function, neural circuits, or cognitive processes. Candidates should have active research involvement and strong faculty endorsement.",
-  },
-  {
-    id: "fashion-design",
-    title: "Fashion Design Innovation Grant",
-    provider: "Textile Arts Foundation",
-    amount: "$6,000",
-    deadline: "July 10, 2026",
-    rating: 4.4,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "Arts",
-    description:
-      "Supports emerging fashion designers exploring sustainable materials, avant-garde silhouettes, or culturally inspired collections. Applicants should present a lookbook or collection concept that demonstrates innovation and craftsmanship.",
-  },
-  {
-    id: "physical-therapy",
-    title: "Physical Therapy Scholarship",
-    provider: "Rehabilitation Sciences Fund",
-    amount: "$8,000",
-    deadline: "August 30, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-1.jpg",
-    category: "Medical",
-    description:
-      "For students pursuing physical therapy or rehabilitation science degrees. Candidates should demonstrate clinical experience, empathy for patients recovering from injury, and a commitment to evidence-based rehabilitation practices.",
-  },
-  {
-    id: "environmental-engineering",
-    title: "Environmental Engineering Award",
-    provider: "Sustainable Infrastructure Fund",
-    amount: "$11,000",
-    deadline: "September 10, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-2.jpg",
-    tag: "Popular",
-    category: "STEM",
-    description:
-      "Recognizes students engineering solutions for water treatment, waste management, or sustainable infrastructure. Applicants should show how their work contributes to building more resilient and environmentally responsible communities.",
-  },
-  {
-    id: "real-estate-development",
-    title: "Real Estate Development Fund",
-    provider: "Urban Planning Institute",
-    amount: "$7,500",
-    deadline: "October 15, 2026",
-    rating: 4.2,
-    image: "/scholarships/scholarship-3.jpg",
-    category: "Business",
-    description:
-      "For students interested in real estate development, urban planning, or property management. Candidates should understand market analysis, zoning regulations, and the economic forces shaping the built environment.",
-  },
-  {
-    id: "veterans-education",
-    title: "Veterans Education Scholarship",
-    provider: "Military Families Foundation",
-    amount: "$10,000",
-    deadline: "November 1, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-4.jpg",
-    tag: "Top Pick",
-    category: "General",
-    description:
-      "Honors veterans and military family members pursuing higher education after service. This scholarship recognizes the discipline, sacrifice, and unique perspective that military-connected students bring to the classroom.",
-  },
-  {
-    id: "devops-engineering",
-    title: "DevOps Engineering Grant",
-    provider: "Infrastructure Automation Alliance",
-    amount: "$9,500",
-    deadline: "May 20, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-5.jpg",
-    category: "Technology",
-    description:
-      "For students skilled in continuous integration, deployment automation, and infrastructure as code. Applicants should demonstrate experience with CI/CD pipelines, containerization, and modern site reliability practices.",
-  },
-  {
-    id: "materials-science",
-    title: "Materials Science Fellowship",
-    provider: "Advanced Materials Research Lab",
-    amount: "$12,500",
-    deadline: "June 15, 2026",
-    rating: 4.7,
-    image: "/scholarships/scholarship-6.jpg",
-    category: "Science",
-    description:
-      "Supports students researching advanced materials such as nanomaterials, polymers, or composites. Fellows should demonstrate laboratory skills and an interest in discovering materials with transformative industrial or medical applications.",
-  },
-  {
-    id: "dance-choreography",
-    title: "Dance & Choreography Award",
-    provider: "Movement Arts Foundation",
-    amount: "$4,500",
-    deadline: "July 25, 2026",
-    rating: 4.3,
-    image: "/scholarships/scholarship-1.jpg",
-    category: "Arts",
-    description:
-      "Celebrates student dancers and choreographers who bring innovation and emotional depth to movement-based art. Applicants should submit a video performance and a statement about their artistic philosophy and goals.",
-  },
-  {
-    id: "sports-medicine",
-    title: "Sports Medicine Scholarship",
-    provider: "Athletic Health Sciences Fund",
-    amount: "$10,000",
-    deadline: "August 5, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-2.jpg",
-    category: "Medical",
-    description:
-      "For students specializing in sports medicine, athletic training, or exercise physiology. Candidates should have clinical or fieldwork experience with athletes and a passion for optimizing human performance and recovery.",
-  },
-  {
-    id: "civil-engineering",
-    title: "Civil Engineering Excellence Award",
-    provider: "Infrastructure Development Council",
-    amount: "$9,000",
-    deadline: "September 20, 2026",
-    rating: 4.5,
-    image: "/scholarships/scholarship-3.jpg",
-    category: "STEM",
-    description:
-      "For students excelling in structural design, transportation engineering, or geotechnical analysis. Applicants should demonstrate technical problem-solving skills and a commitment to building safe, lasting infrastructure.",
-  },
-  {
-    id: "hospitality-management",
-    title: "Hospitality Management Fund",
-    provider: "Global Tourism Education Trust",
-    amount: "$5,500",
-    deadline: "October 25, 2026",
-    rating: 4.1,
-    image: "/scholarships/scholarship-4.jpg",
-    category: "Business",
-    description:
-      "Supports students studying hospitality, hotel management, or tourism. Ideal candidates have industry internship experience and a service-oriented mindset that will help them excel in the global hospitality sector.",
-  },
-  {
-    id: "lgbtq-scholars",
-    title: "LGBTQ+ Scholars Award",
-    provider: "Pride Education Foundation",
-    amount: "$7,500",
-    deadline: "November 20, 2026",
-    rating: 4.6,
-    image: "/scholarships/scholarship-5.jpg",
-    tag: "Popular",
-    category: "General",
-    description:
-      "Supports LGBTQ+ students who demonstrate academic excellence and active engagement in building inclusive communities. Recipients are recognized for their courage, leadership, and contributions to equity and social justice.",
-  },
-]
+/** All enriched scholarships from the scraping pipeline */
+export const scholarships: Scholarship[] = enrichedData as Scholarship[]
+
+// --- Season utilities ---
+
+const MONTH_TO_SEASON: Record<number, Season> = {
+  0: "winter",   // January
+  1: "winter",   // February
+  2: "spring",   // March
+  3: "spring",   // April
+  4: "spring",   // May
+  5: "summer",   // June
+  6: "summer",   // July
+  7: "summer",   // August
+  8: "fall",     // September
+  9: "fall",     // October
+  10: "fall",    // November
+  11: "winter",  // December
+}
+
+export function getCurrentSeason(referenceDate: Date = new Date()): Season {
+  return MONTH_TO_SEASON[referenceDate.getMonth()]
+}
+
+export function getNextSeason(season: Season): Season {
+  const order: Season[] = ["winter", "spring", "summer", "fall"]
+  const idx = order.indexOf(season)
+  return order[(idx + 1) % order.length]
+}
+
+/** Check if a scholarship is visible: in the given season and deadline not yet passed */
+export function isScholarshipVisible(
+  scholarship: Scholarship,
+  season: Season,
+  today: Date = new Date(),
+): boolean {
+  if (scholarship.season !== season) return false
+
+  const deadlineDate = new Date(
+    `${scholarship.deadline}, ${scholarship.deadlineYear}`,
+  )
+  return deadlineDate.getTime() >= today.getTime()
+}
+
+/** Get all visible scholarships for the current season */
+export function getSeasonalScholarships(
+  allScholarships: Scholarship[] = scholarships,
+  referenceDate: Date = new Date(),
+): Scholarship[] {
+  const season = getCurrentSeason(referenceDate)
+  return allScholarships.filter((s) => isScholarshipVisible(s, season, referenceDate))
+}
+
+/** Parse first dollar amount from a free-text award string: "$10,000" → 10000 */
+export function parseAwardAmount(awardAmount: string): number {
+  const match = awardAmount.match(/\$[\d,]+/)
+  if (!match) return 0
+  return Number(match[0].replace(/[$,]/g, "")) || 0
+}
+
+/** Classification-driven accent stripe + neutral card surface for WCAG-AA contrast */
+export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: string; accent: string; text: string; muted: string }> = {
+  "High School": {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-primary-400",
+    accent: "from-primary/40",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+  Undergraduate: {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-secondary-600",
+    accent: "from-secondary/40",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+  Graduate: {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-tertiary-600",
+    accent: "from-tertiary/40",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+  "K-8": {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-primary-300",
+    accent: "from-primary/30",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+  "K-12": {
+    // bg: "bg-surface-container-highest",
+    bg: "bg-white dark:bg-surface-container-low",
+    border: "border-t-4 border-secondary-400",
+    accent: "from-secondary/30",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  },
+}
+
+/** Get the tint config for a scholarship based on its primary classification */
+export function getClassificationTint(classification: EducationLevel[]) {
+  const primary = classification[0]
+  return CLASSIFICATION_TINTS[primary] ?? {
+    bg: "bg-surface-container",
+    border: "border-t-4 border-outline-variant",
+    accent: "from-on-surface/20",
+    text: "text-on-surface",
+    muted: "text-on-surface-variant",
+  }
+}

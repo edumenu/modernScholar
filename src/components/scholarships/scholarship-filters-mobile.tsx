@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect, type Dispatch, type SetStateAction } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { Icon } from "@iconify/react"
 import { useLenis } from "lenis/react"
 import { cn } from "@/lib/utils"
 import {
-  SCHOLARSHIP_CATEGORIES,
-  type ScholarshipCategory,
+  EDUCATION_LEVELS,
+  type EducationLevelFilter,
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 import {
@@ -22,30 +22,18 @@ import {
 import { Input } from "@/components/ui/input/input"
 import type { GridLayout } from "./scholarship-filters"
 
-const TAG_OPTIONS = [
-  { key: "featured", label: "Featured" },
-  { key: "popular", label: "Popular" },
-  { key: "new", label: "New" },
-  { key: "topPick", label: "Top Pick" },
-] as const
-
 const SORT_OPTIONS = [
   { value: "deadline", label: "Deadline" },
   { value: "amount", label: "Amount" },
-  { value: "rating", label: "Rating" },
 ] as const
 
-type TagFilters = Record<"featured" | "popular" | "new" | "topPick", boolean>
-
 interface ScholarshipFiltersMobileProps {
-  activeFilter: ScholarshipCategory
-  onFilterChange: (category: ScholarshipCategory) => void
+  activeFilter: EducationLevelFilter
+  onFilterChange: (level: EducationLevelFilter) => void
   layout: GridLayout
   onLayoutChange: (layout: GridLayout) => void
   searchQuery: string
   onSearchChange: (query: string) => void
-  tagFilters: TagFilters
-  onTagFiltersChange: Dispatch<SetStateAction<TagFilters>>
   sortBy: string
   onSortByChange: (sort: string) => void
   resultCount: number
@@ -58,8 +46,6 @@ export function ScholarshipFiltersMobile({
   onLayoutChange,
   searchQuery,
   onSearchChange,
-  tagFilters,
-  onTagFiltersChange,
   sortBy,
   onSortByChange,
   resultCount,
@@ -67,7 +53,6 @@ export function ScholarshipFiltersMobile({
   const [sheetOpen, setSheetOpen] = useState(false)
   const lenis = useLenis()
 
-  // Lock page scroll when the filter sheet is open
   useEffect(() => {
     if (!lenis || !sheetOpen) return
     lenis.stop()
@@ -77,23 +62,14 @@ export function ScholarshipFiltersMobile({
   }, [sheetOpen, lenis])
 
   const hasActiveFilters =
-    activeFilter !== "All" ||
-    Object.values(tagFilters).some(Boolean) ||
-    sortBy !== "deadline"
+    activeFilter !== "All" || sortBy !== "deadline"
 
   const filterBadgeCount =
     (activeFilter !== "All" ? 1 : 0) +
-    Object.values(tagFilters).filter(Boolean).length +
     (sortBy !== "deadline" ? 1 : 0)
 
   const clearFilters = () => {
     onFilterChange("All")
-    onTagFiltersChange({
-      featured: false,
-      popular: false,
-      new: false,
-      topPick: false,
-    })
     onSortByChange("deadline")
   }
 
@@ -203,22 +179,23 @@ export function ScholarshipFiltersMobile({
               </SheetHeader>
 
               <div className="flex flex-col gap-6 px-6 pb-6">
-                {/* Category chips */}
+                {/* Education level chips */}
                 <div>
                   <h3 className="mb-3 text-sm font-medium text-on-surface/70">
-                    Category
+                    Education Level
                   </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {SCHOLARSHIP_CATEGORIES.map((category) => {
-                      const isActive = activeFilter === category
+                  <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter by education level">
+                    {EDUCATION_LEVELS.map((level) => {
+                      const isActive = activeFilter === level
                       return (
                         <Button
-                          key={category}
+                          key={level}
                           variant={isActive ? "default" : "ghost"}
                           size="sm"
+                          role="tab"
+                          aria-selected={isActive}
                           onClick={() => {
-                            onFilterChange(category)
-                            // Auto-close on category selection
+                            onFilterChange(level)
                             setSheetOpen(false)
                           }}
                           className={cn(
@@ -228,40 +205,8 @@ export function ScholarshipFiltersMobile({
                               : "bg-white/20 text-on-surface/60 dark:bg-white/10",
                           )}
                         >
-                          {category}
+                          {level}
                         </Button>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* Tag filters — styled toggle pills */}
-                <div>
-                  <h3 className="mb-3 text-sm font-medium text-on-surface/70">
-                    Tags
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {TAG_OPTIONS.map(({ key, label }) => {
-                      const isActive = tagFilters[key]
-                      return (
-                        <button
-                          key={key}
-                          type="button"
-                          onClick={() =>
-                            onTagFiltersChange((prev) => ({
-                              ...prev,
-                              [key]: !prev[key],
-                            }))
-                          }
-                          className={cn(
-                            "rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                            isActive
-                              ? "bg-primary text-on-primary"
-                              : "bg-white/20 text-on-surface/60 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/15",
-                          )}
-                        >
-                          {label}
-                        </button>
                       )
                     })}
                   </div>

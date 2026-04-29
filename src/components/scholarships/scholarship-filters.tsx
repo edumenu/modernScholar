@@ -1,15 +1,15 @@
 "use client"
 
-import { useRef, useState, type Dispatch, type SetStateAction } from "react"
+import { useRef, useState, useMemo } from "react";
 import { motion, LayoutGroup } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import {
-  scholarships as allScholarships,
-  SCHOLARSHIP_CATEGORIES,
-  type ScholarshipCategory,
-} from "@/data/scholarships"
+  EDUCATION_LEVELS,
+  type EducationLevelFilter,
+  type Scholarship,
+} from "@/data/scholarships";
 import { Button } from "@/components/ui/button/button"
 import {
   DropdownMenu,
@@ -17,44 +17,26 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuLabel,
-  DropdownMenuCheckboxItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-} from "@/components/ui/dropdown-menu/dropdown-menu"
-
+} from "@/components/ui/dropdown-menu/dropdown-menu";
 import { Input } from "@/components/ui/input/input"
-import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile"
-import { ProfileSetupTrigger } from "@/components/ui/profile-setup"
+import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile";
 
 export type GridLayout = "bento" | "uniform"
 
-type TagFilters = Record<"featured" | "popular" | "new" | "topPick", boolean>
-
 interface ScholarshipFiltersProps {
-  activeFilter: ScholarshipCategory
-  onFilterChange: (category: ScholarshipCategory) => void
-  layout: GridLayout
-  onLayoutChange: (layout: GridLayout) => void
-  searchQuery: string
-  onSearchChange: (query: string) => void
-  tagFilters: TagFilters
-  onTagFiltersChange: Dispatch<SetStateAction<TagFilters>> | ((updater: TagFilters | ((prev: TagFilters) => TagFilters)) => void)
-  sortBy: string
-  onSortByChange: (sort: string) => void
-  resultCount: number
+  activeFilter: EducationLevelFilter;
+  onFilterChange: (level: EducationLevelFilter) => void;
+  layout: GridLayout;
+  onLayoutChange: (layout: GridLayout) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+  sortBy: string;
+  onSortByChange: (sort: string) => void;
+  resultCount: number;
+  seasonalScholarships: Scholarship[];
 }
-
-/** Derive category counts from the full dataset */
-const categoryCounts = SCHOLARSHIP_CATEGORIES.reduce(
-  (acc, cat) => {
-    acc[cat] =
-      cat === "All"
-        ? allScholarships.length
-        : allScholarships.filter((s) => s.category === cat).length
-    return acc
-  },
-  {} as Record<ScholarshipCategory, number>,
-)
 
 export function ScholarshipFilters({
   activeFilter,
@@ -63,19 +45,38 @@ export function ScholarshipFilters({
   onLayoutChange,
   searchQuery,
   onSearchChange,
-  tagFilters,
-  onTagFiltersChange,
   sortBy,
   onSortByChange,
   resultCount,
+  seasonalScholarships,
 }: ScholarshipFiltersProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [searchOpen, setSearchOpen] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
 
-  const isMobile = useMediaQuery("(max-width: 1023px)")
+  const isMobile = useMediaQuery("(max-width: 1023px)");
+
+  // Memoized: only recomputes when the seasonal scholarship list changes
+  const levelCounts = useMemo(
+    () =>
+      EDUCATION_LEVELS.reduce(
+        (acc, level) => {
+          acc[level] =
+            level === "All"
+              ? seasonalScholarships.length
+              : seasonalScholarships.filter((s) =>
+                  s.classification.includes(
+                    level as Exclude<EducationLevelFilter, "All">,
+                  ),
+                ).length;
+          return acc;
+        },
+        {} as Record<EducationLevelFilter, number>,
+      ),
+    [seasonalScholarships],
+  );
 
   if (isMobile === null) {
-    return <div className="min-h-24" />
+    return <div className="min-h-24" />;
   }
 
   if (isMobile) {
@@ -87,28 +88,30 @@ export function ScholarshipFilters({
         onLayoutChange={onLayoutChange}
         searchQuery={searchQuery}
         onSearchChange={onSearchChange}
-        tagFilters={tagFilters}
-        onTagFiltersChange={onTagFiltersChange as Dispatch<SetStateAction<TagFilters>>}
         sortBy={sortBy}
         onSortByChange={onSortByChange}
         resultCount={resultCount}
       />
-    )
+    );
   }
 
   return (
     <div className="flex flex-col">
-      {/* Row 1: Category tabs + Search */}
+      {/* Row 1: Education level tabs + Search */}
       <div className="flex items-center justify-between gap-4 pb-3 shadow-[0_1px_0_0_rgba(32,26,25,0.05)]">
-        {/* Left: Category tabs */}
+        {/* Left: Education level tabs */}
         <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
           <LayoutGroup>
-            <div className="flex items-center gap-1 py-2">
-              {SCHOLARSHIP_CATEGORIES.map((category) => {
-                const isActive = activeFilter === category;
-                const count = categoryCounts[category];
+            <div
+              className="flex items-center gap-1 py-2"
+              role="tablist"
+              aria-label="Filter by education level"
+            >
+              {EDUCATION_LEVELS.map((level) => {
+                const isActive = activeFilter === level;
+                const count = levelCounts[level];
                 return (
-                  <div key={category} className="relative">
+                  <div key={level} className="relative">
                     {isActive && (
                       <motion.span
                         layoutId="scholarship-filter-highlight"
@@ -123,8 +126,10 @@ export function ScholarshipFilters({
                     <Button
                       variant={isActive ? "default" : "ghost"}
                       size="sm"
-                      onClick={() => onFilterChange(category)}
-                      aria-current={isActive ? "page" : undefined}
+                      onClick={() => onFilterChange(level)}
+                      role="tab"
+                      aria-selected={isActive}
+                      aria-controls="scholarship-grid-panel"
                       className={cn(
                         "relative z-1 text-sm md:text-base",
                         isActive
@@ -132,7 +137,7 @@ export function ScholarshipFilters({
                           : "text-on-surface/60 hover:text-primary-400",
                       )}
                     >
-                      {category}
+                      {level}
                       <span
                         className={cn(
                           "ml-1 inline-flex size-5 items-center justify-center rounded-full text-[10px] font-medium",
@@ -222,7 +227,7 @@ export function ScholarshipFilters({
         </div>
       </div>
 
-      {/* Row 2: Layout toggle (left) + Sort + Filters + Profile (right) */}
+      {/* Row 2: Layout toggle (left) + Sort (right) */}
       <div className="flex items-center justify-between pt-3">
         {/* Left: Layout toggle */}
         <div className="flex items-center gap-1 rounded-full bg-muted/80 p-1 dark:bg-white/10">
@@ -258,7 +263,7 @@ export function ScholarshipFilters({
           </Button>
         </div>
 
-        {/* Right: Sort + Filters + Profile */}
+        {/* Right: Sort */}
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger
@@ -290,15 +295,12 @@ export function ScholarshipFilters({
                   <DropdownMenuRadioItem value="amount">
                     Amount
                   </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="rating">
-                    Rating
-                  </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <DropdownMenu>
+          {/* TODO: implement this later for eligibility filterS */}
+          {/* <DropdownMenu>
             <DropdownMenuTrigger
               render={
                 <Button
@@ -368,7 +370,7 @@ export function ScholarshipFilters({
                 </DropdownMenuCheckboxItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
           {/* TODO: Deprecate this in favor of a more comprehensive profile page in the future */}
           {/* <ProfileSetupTrigger /> */}
         </div>

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import {
   motion,
   useReducedMotion,
@@ -11,9 +10,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button/button";
-import { useTextLayout } from "@/lib/pretext/use-text-layout";
-import { PRETEXT_FONTS } from "@/lib/pretext/fonts";
 import type { Scholarship } from "@/data/scholarships";
+import { CLASSIFICATION_COLORS, getClassificationTint } from "@/data/scholarships";
 
 /* ------------------------------------------------------------------ */
 /*  Transform config                                                   */
@@ -84,15 +82,7 @@ function getTransformValues(
 }
 
 /* ------------------------------------------------------------------ */
-/*  Card text width constants (matches card w-80 minus p-5 * 2)        */
-/* ------------------------------------------------------------------ */
-
-const CARD_TEXT_WIDTH = 280;
-const TITLE_LINE_HEIGHT = 25;
-const PROVIDER_LINE_HEIGHT = 20;
-
-/* ------------------------------------------------------------------ */
-/*  CoverflowCard                                                      */
+/*  CoverflowCard — Immersive Tonal (tall variant)                     */
 /* ------------------------------------------------------------------ */
 
 function CoverflowCard({
@@ -104,22 +94,7 @@ function CoverflowCard({
   isCenter: boolean;
   onClick: () => void;
 }) {
-  const { lineCount: titleLines } = useTextLayout({
-    text: scholarship.title,
-    font: PRETEXT_FONTS.cardTitle,
-    maxWidth: CARD_TEXT_WIDTH,
-    lineHeight: TITLE_LINE_HEIGHT,
-  });
-
-  const { lineCount: providerLines } = useTextLayout({
-    text: scholarship.provider,
-    font: PRETEXT_FONTS.bodySmall,
-    maxWidth: CARD_TEXT_WIDTH,
-    lineHeight: PROVIDER_LINE_HEIGHT,
-  });
-
-  const titleOverflows = titleLines > 1;
-  const providerOverflows = providerLines > 1;
+  const tint = getClassificationTint(scholarship.classification);
 
   return (
     <button
@@ -128,55 +103,81 @@ function CoverflowCard({
       data-cursor="text"
       data-cursor-text={isCenter ? "View" : "Focus"}
       className={cn(
-        "relative block h-full w-80 shrink-0 cursor-pointer overflow-hidden rounded-2xl shadow-lg outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "relative flex h-full w-80 shrink-0 flex-col cursor-pointer overflow-hidden rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "shadow-[0_6px_32px_rgba(32,26,25,0.07)]",
         "group",
+        tint.bg,
+        tint.border,
       )}
     >
-      <Image
-        src={scholarship.image}
-        alt={scholarship.title}
-        fill
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
-        sizes="320px"
-      />
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
-
-      {/* Content overlay */}
-      <div className="absolute inset-0 flex flex-col justify-between p-5">
-        {/* Top: Pill badges */}
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/40 px-3 py-1 shadow-[2px_2px_4px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(255,255,255,0.1)]">
-            <span className="size-1.5 rounded-full bg-white" />
-            <span className="text-xs uppercase tracking-widest text-white">
-              {scholarship.category}
+      {/* Top: Education level pills */}
+      <div className="flex flex-wrap items-center gap-1.5 px-6 pt-6">
+        {scholarship.classification.slice(0, 2).map((level) => {
+          const colors = CLASSIFICATION_COLORS[level];
+          return (
+            <span
+              key={level}
+              className={cn(
+                "inline-flex items-center rounded-full px-2.5 py-0.5",
+                "text-[10px] font-semibold tracking-wider uppercase",
+                colors.bg,
+                colors.text,
+              )}
+            >
+              {level}
             </span>
-          </span>
-        </div>
+          );
+        })}
+      </div>
 
-        {/* Bottom: Info */}
-        <div className="flex items-end justify-start gap-3">
-          <div className="flex min-w-0 flex-col gap-1">
-            <h3
-              className="truncate text-left text-lg font-medium leading-snug text-white"
-              title={titleOverflows ? scholarship.title : undefined}
-            >
-              {scholarship.title}
-            </h3>
-            <p
-              className="truncate text-left text-sm text-white/80"
-              title={providerOverflows ? scholarship.provider : undefined}
-            >
-              {scholarship.provider}
-            </p>
-            <p className="text-left text-sm text-white/70">
-              <span className="font-medium text-white">
-                {scholarship.amount}
-              </span>{" "}
-              &middot; {scholarship.deadline}
-            </p>
-          </div>
-        </div>
+      {/* Spacer for generous whitespace */}
+      <div className="flex-1" />
+
+      {/* Title + gradient-fade underline */}
+      <div className="flex flex-col gap-3 px-6">
+        <h3
+          className={cn(
+            "text-left font-heading text-xl font-bold leading-tight",
+            tint.text,
+            "line-clamp-2",
+          )}
+        >
+          {scholarship.name}
+        </h3>
+        <div
+          className={cn(
+            "h-px w-2/3 bg-linear-to-r to-transparent transition-all duration-300 group-hover:w-full",
+            tint.accent,
+          )}
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* Provider */}
+      <p className={cn("px-6 pt-3 text-left text-xs font-medium", tint.muted)}>
+        {scholarship.provider}
+      </p>
+
+      {/* Display amount */}
+      <div className="flex items-end gap-1.5 px-6 pt-4">
+        <Icon
+          icon="solar:wallet-money-linear"
+          className={cn("mb-0.5 size-4 shrink-0", tint.muted)}
+        />
+        <span
+          className={cn(
+            "font-heading text-2xl font-bold leading-none tracking-tight",
+            tint.text,
+          )}
+        >
+          {scholarship.awardAmount}
+        </span>
+      </div>
+
+      {/* Deadline */}
+      <div className={cn("flex items-center gap-1.5 px-6 pb-6 pt-2 text-xs", tint.muted)}>
+        <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
+        <span>Deadline {scholarship.deadline}</span>
       </div>
     </button>
   );
@@ -205,7 +206,7 @@ function ReducedMotionFallback({
           <CoverflowCard
             scholarship={s}
             isCenter={false}
-            onClick={() => router.push(`/scholarships?q=${s.id}`)}
+            onClick={() => router.push(`/scholarships?q=${encodeURIComponent(s.name)}`)}
           />
         </div>
       ))}
@@ -232,16 +233,15 @@ export function CoverflowCarousel({
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1024);
 
-  // Measure container
+  // Measure container via ResizeObserver — more accurate than window resize events
+  // because it fires on element-level size changes (e.g. sidebar open/close)
   useEffect(() => {
-    function measure() {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
-      }
-    }
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver(([entry]) => {
+      setContainerWidth(entry.contentRect.width);
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   const goTo = useCallback(
@@ -257,7 +257,7 @@ export function CoverflowCarousel({
   // Autoplay
   useEffect(() => {
     if (shouldReduceMotion || isPaused || isDragging) return;
-    const timer = setInterval(next, 4000);
+    const timer = setInterval(next, 8000);
     return () => clearInterval(timer);
   }, [shouldReduceMotion, isPaused, isDragging, next]);
 
@@ -293,7 +293,7 @@ export function CoverflowCarousel({
   const handleCardClick = useCallback(
     (index: number) => {
       if (index === activeIndex) {
-        router.push(`/scholarships?q=${scholarships[index].id}`);
+        router.push(`/scholarships?q=${encodeURIComponent(scholarships[index].name)}`);
       } else {
         goTo(index);
       }
@@ -319,7 +319,7 @@ export function CoverflowCarousel({
     >
       {/* Live region for screen readers */}
       <div aria-live="polite" className="sr-only">
-        {scholarships[activeIndex].title} — {scholarships[activeIndex].provider}
+        {scholarships[activeIndex].name} — {scholarships[activeIndex].provider}
       </div>
 
       {/* 3D Stage */}
@@ -341,7 +341,7 @@ export function CoverflowCarousel({
             <motion.div
               key={scholarship.id}
               aria-roledescription="slide"
-              aria-label={`${i + 1} of ${total}: ${scholarship.title}`}
+              aria-label={`${i + 1} of ${total}: ${scholarship.name}`}
               className="pointer-events-auto absolute h-120"
               animate={{
                 x: t.x,

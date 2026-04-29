@@ -220,3 +220,110 @@ export function formatProviderFromDomain(domain: string): string {
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ")
 }
+
+export function getCurrentSeason(referenceDate: Date = new Date()): Season {
+  const monthNames = [
+    "january", "february", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december",
+  ]
+  const monthName = monthNames[referenceDate.getMonth()]
+  return MONTH_TO_SEASON[monthName]
+}
+
+export function generateDescription(
+  text: string,
+  scholarshipName: string,
+  ogDescription: string | null
+): string {
+  if (!text || text.trim().length < 50) {
+    return ogDescription?.trim() || ""
+  }
+
+  // Strip markdown/HTML formatting (harmless on plain text)
+  const plain = text
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/[*_~`]+/g, "")
+    .replace(/\|[^\n]*\|/g, "")
+    .replace(/-{3,}/g, "")
+    .replace(/^\s*[-*+]\s+/gm, "")
+
+  const lines = plain.split("\n").map((l) => l.trim()).filter((l) => l.length > 25)
+
+  const boilerplatePatterns = [
+    "cookie", "privacy policy", "sign in", "log in", "log out", "menu",
+    "navigation", "skip to content", "accept all", "terms of", "copyright",
+    "all rights reserved", "subscribe", "newsletter", "follow us", "share this",
+    "facebook", "twitter", "instagram", "linkedin", "pinterest", "youtube",
+    "contact us", "become a dealer", "mailto:", "powered by", "built with",
+    "loading", "search for", "just a moment", "enable javascript", "verify you are human",
+  ]
+
+  const contentLines = lines.filter((line) => {
+    const lower = line.toLowerCase()
+    if (boilerplatePatterns.some((p) => lower.includes(p))) return false
+    if (line.length < 40 && !line.includes(".")) return false
+    if (/^\d{1,2}\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i.test(line)) return false
+    return true
+  })
+
+  const keywords = [
+    "scholarship", "award", "grant", "eligible", "apply", "student", "fund",
+    "receive", "offer", "financial", "education", "program", "college", "university",
+  ]
+  const nameWords = scholarshipName.toLowerCase().split(/\s+/).filter((w) => w.length > 3)
+
+  const relevantLines = contentLines.filter((line) => {
+    const lower = line.toLowerCase()
+    return keywords.some((k) => lower.includes(k)) || nameWords.some((w) => lower.includes(w))
+  })
+
+  const sourceLines = relevantLines.length > 0 ? relevantLines : contentLines
+
+  const sentences: string[] = []
+  let totalLength = 0
+  const TARGET_LENGTH = 500
+
+  for (const line of sourceLines) {
+    if (totalLength >= TARGET_LENGTH) break
+
+    const lineSentences = line.match(/[^.!?]+[.!?]+/g) || [line]
+    for (const s of lineSentences) {
+      if (totalLength >= TARGET_LENGTH) break
+      const trimmed = s.trim()
+      if (trimmed.length < 25) continue
+      if (sentences.some((existing) => existing.includes(trimmed) || trimmed.includes(existing))) continue
+      sentences.push(trimmed)
+      totalLength += trimmed.length
+    }
+  }
+
+  let description = sentences.join(" ").trim()
+
+  if (description.length < 80 && ogDescription && ogDescription.trim().length > 50) {
+    const ogClean = ogDescription.trim()
+    if (ogClean.length > description.length) {
+      description = ogClean
+    }
+  }
+
+  if (description.length < 30) {
+    return ogDescription?.trim() || ""
+  }
+
+  if (description.length > 500) {
+    const truncated = description.slice(0, 500)
+    const lastEnd = Math.max(
+      truncated.lastIndexOf("."),
+      truncated.lastIndexOf("!"),
+      truncated.lastIndexOf("?")
+    )
+    if (lastEnd > 250) {
+      return truncated.slice(0, lastEnd + 1)
+    }
+    return truncated.replace(/\s+\S*$/, "") + "..."
+  }
+
+  return description
+}
