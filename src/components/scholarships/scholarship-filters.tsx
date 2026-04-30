@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu/dropdown-menu";
 import { Input } from "@/components/ui/input/input"
 import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile";
+import { FilterSheet } from "./filter-sheet";
 
 export type GridLayout = "grid" | "list"
 
@@ -36,6 +37,11 @@ interface ScholarshipFiltersProps {
   onSortByChange: (sort: string) => void;
   resultCount: number;
   seasonalScholarships: Scholarship[];
+  eligibilityTags: string[];
+  onEligibilityTagsChange: (tags: string[]) => void;
+  awardRange: [number, number];
+  onAwardRangeChange: (range: [number, number]) => void;
+  filteredCount: number;
 }
 
 export function ScholarshipFilters({
@@ -49,6 +55,11 @@ export function ScholarshipFilters({
   onSortByChange,
   resultCount,
   seasonalScholarships,
+  eligibilityTags,
+  onEligibilityTagsChange,
+  awardRange,
+  onAwardRangeChange,
+  filteredCount,
 }: ScholarshipFiltersProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -91,6 +102,10 @@ export function ScholarshipFilters({
         sortBy={sortBy}
         onSortByChange={onSortByChange}
         resultCount={resultCount}
+        eligibilityTags={eligibilityTags}
+        onEligibilityTagsChange={onEligibilityTagsChange}
+        awardRange={awardRange}
+        onAwardRangeChange={onAwardRangeChange}
       />
     );
   }
@@ -270,16 +285,16 @@ export function ScholarshipFilters({
                   variant="outline"
                   size="sm"
                   className="shrink-0 rounded-full"
-                />
+                >
+                  Sort
+                  <Icon
+                    data-icon="inline-end"
+                    icon="solar:sort-vertical-linear"
+                    className="size-4"
+                  />
+                </Button>
               }
-            >
-              Sort
-              <Icon
-                data-icon="inline-end"
-                icon="solar:sort-vertical-linear"
-                className="size-4"
-              />
-            </DropdownMenuTrigger>
+            />
             <DropdownMenuContent align="end" sideOffset={6}>
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Sort By</DropdownMenuLabel>
@@ -297,80 +312,14 @@ export function ScholarshipFilters({
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* TODO: implement this later for eligibility filterS */}
-          {/* <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="shrink-0 rounded-full"
-                />
-              }
-            >
-              Filters
-              <Icon
-                data-icon="inline-end"
-                icon="solar:filter-line-duotone"
-                className="size-4"
-              />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" sideOffset={6}>
-              <DropdownMenuGroup>
-                <DropdownMenuLabel>Tags</DropdownMenuLabel>
-                <DropdownMenuCheckboxItem
-                  checked={tagFilters.featured}
-                  onCheckedChange={(checked) =>
-                    (
-                      onTagFiltersChange as (
-                        updater: (prev: TagFilters) => TagFilters,
-                      ) => void
-                    )((prev) => ({ ...prev, featured: checked }))
-                  }
-                >
-                  Featured
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={tagFilters.popular}
-                  onCheckedChange={(checked) =>
-                    (
-                      onTagFiltersChange as (
-                        updater: (prev: TagFilters) => TagFilters,
-                      ) => void
-                    )((prev) => ({ ...prev, popular: checked }))
-                  }
-                >
-                  Popular
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={tagFilters.new}
-                  onCheckedChange={(checked) =>
-                    (
-                      onTagFiltersChange as (
-                        updater: (prev: TagFilters) => TagFilters,
-                      ) => void
-                    )((prev) => ({ ...prev, new: checked }))
-                  }
-                >
-                  New
-                </DropdownMenuCheckboxItem>
-                <DropdownMenuCheckboxItem
-                  checked={tagFilters.topPick}
-                  onCheckedChange={(checked) =>
-                    (
-                      onTagFiltersChange as (
-                        updater: (prev: TagFilters) => TagFilters,
-                      ) => void
-                    )((prev) => ({ ...prev, topPick: checked }))
-                  }
-                >
-                  Top Pick
-                </DropdownMenuCheckboxItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
-          {/* TODO: Deprecate this in favor of a more comprehensive profile page in the future */}
-          {/* <ProfileSetupTrigger /> */}
+          <FilterSheet
+            selectedTags={eligibilityTags}
+            onTagsChange={onEligibilityTagsChange}
+            awardRange={awardRange}
+            onAwardRangeChange={onAwardRangeChange}
+            seasonalScholarships={seasonalScholarships}
+            filteredCount={filteredCount}
+          />
         </div>
       </div>
     </div>

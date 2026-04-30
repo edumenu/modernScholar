@@ -15,13 +15,22 @@ interface ScholarshipListCardSpreadProps {
   onExpand: (id: string) => void
 }
 
-const CLASSIFICATION_TINT_MAP: Record<EducationLevel, { idle: string; hover: string }> = {
-  "High School": { idle: "bg-primary/8", hover: "group-hover/row:bg-primary/12" },
-  Undergraduate: { idle: "bg-secondary/8", hover: "group-hover/row:bg-secondary/12" },
-  Graduate: { idle: "bg-tertiary/8", hover: "group-hover/row:bg-tertiary/12" },
-  "K-8": { idle: "bg-primary/6", hover: "group-hover/row:bg-primary/10" },
-  "K-12": { idle: "bg-secondary/6", hover: "group-hover/row:bg-secondary/10" },
-}
+const CLASSIFICATION_TINT_MAP: Record<
+  EducationLevel,
+  { idle: string; hover: string }
+> = {
+  "High School": {
+    idle: "bg-primary-50",
+    hover: "group-hover/row:bg-primary/12",
+  },
+  Undergraduate: {
+    idle: "bg-secondary-50",
+    hover: "group-hover/row:bg-secondary/12",
+  },
+  Graduate: { idle: "bg-tertiary-50", hover: "group-hover/row:bg-tertiary/12" },
+  "K-8": { idle: "bg-primary/8", hover: "group-hover/row:bg-primary/10" },
+  "K-12": { idle: "bg-secondary/8", hover: "group-hover/row:bg-secondary/10" },
+};
 
 function formatDeadlineShort(deadline: string): string {
   const parts = deadline.split(" ")
