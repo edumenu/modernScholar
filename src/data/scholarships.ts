@@ -43,9 +43,54 @@ export interface Scholarship {
   link: string
   openDate: string | null
   eligibility: string
+  eligibilityTags?: string[]
   season: Season
   description: string
   provider: string
+}
+
+// --- Eligibility tag constants ---
+
+export const AWARD_MIN = 0
+export const AWARD_MAX = 100_000
+
+export const ELIGIBILITY_FLAT_TAGS = [
+  "Need-Based", "Merit-Based", "First-Generation",
+  "State-Specific", "Athletic", "Creative/Arts",
+] as const
+
+export type EligibilityFlatTag = (typeof ELIGIBILITY_FLAT_TAGS)[number]
+
+export const ELIGIBILITY_CATEGORIES = {
+  "Gender-Specific": ["Women", "Men"],
+  "Race/Ethnicity": ["African American/Black", "Hispanic/Latino", "Jewish"],
+  "Disability/Health": ["Vision", "Hearing", "Learning Disability", "Cancer/Chronic Illness", "Mental Health"],
+  "Major-Specific": ["STEM/Engineering", "Business/Accounting", "Healthcare/Nursing", "Arts/Theater", "Agriculture", "Law", "Architecture"],
+  "Military/Veterans": ["Active Duty", "Veteran", "Military Dependent"],
+} as const
+
+export type EligibilityCategory = keyof typeof ELIGIBILITY_CATEGORIES
+
+/** Check if a tag string is a flat (non-category) eligibility tag */
+export function isEligibilityFlatTag(tag: string): boolean {
+  return (ELIGIBILITY_FLAT_TAGS as readonly string[]).includes(tag)
+}
+
+/** Extract the category name from a colon-delimited tag, or null for flat tags */
+export function getEligibilityCategory(tag: string): string | null {
+  const idx = tag.indexOf(":")
+  return idx === -1 ? null : tag.slice(0, idx)
+}
+
+/** Extract the sub-option from a colon-delimited tag, or null for flat tags */
+export function getEligibilitySubOption(tag: string): string | null {
+  const idx = tag.indexOf(":")
+  return idx === -1 ? null : tag.slice(idx + 1)
+}
+
+/** Get a display-friendly label for a tag (sub-option if category, or the tag itself) */
+export function getEligibilityTagLabel(tag: string): string {
+  return getEligibilitySubOption(tag) ?? tag
 }
 
 /** All enriched scholarships from the scraping pipeline */

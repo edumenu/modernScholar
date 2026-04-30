@@ -177,7 +177,10 @@
       "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(f'{r[\\\\\"statusCode\\\\\"]} | {r[\\\\\"name\\\\\"]} | {r[\\\\\"url\\\\\"]}'\\) for r in data if r['status']=='dead']\")",
       "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); print\\(f'Total: {len\\(data\\)}'\\); statuses={r['status'] for r in data}; print\\({s: sum\\(1 for r in data if r['status']==s\\) for s in statuses}\\)\")",
       "Bash(/bin/cat /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/package.json)",
-      "Bash(/bin/cat /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/scripts/output/scraped/acs-scholars-program-march-1.json)"
+      "Bash(/bin/cat /Users/edemdumenu/Documents/Workspace/DearModernScholar/modern-scholar/scripts/output/scraped/acs-scholars-program-march-1.json)",
+      "Bash(python3:*)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(sed 's/[$,]//g')"
     ]
   },
   "outputStyle": "Communicate in caveman compressed style (full intensity). Ultra-compressed output: ~75% fewer tokens. Drop articles, filler, transitions. Use sentence fragments. Keep ALL technical accuracy, code quality, file paths, and specifics intact. Never sacrifice correctness for brevity."

@@ -19,9 +19,12 @@ import {
   isScholarshipVisible,
   CLASSIFICATION_COLORS,
   getClassificationTint,
+  AWARD_MIN,
+  AWARD_MAX,
 } from "@/data/scholarships"
 import { filterAndSort } from "@/lib/scholarship-utils"
 import { ScholarshipFilters, type GridLayout } from "./scholarship-filters"
+import { ActiveFilterStrip } from "./filter-sheet"
 import { ScholarshipCard } from "./scholarship-card"
 import { ScholarshipListCardSpread } from "./scholarship-list-card"
 import {
@@ -50,6 +53,8 @@ export function ScholarshipGrid() {
   const [activeFilter, setActiveFilter] = useState<EducationLevelFilter>("All")
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [layout, setLayout] = useState<GridLayout>("grid")
+  const [eligibilityTags, setEligibilityTags] = useState<string[]>([])
+  const [awardRange, setAwardRange] = useState<[number, number]>([AWARD_MIN, AWARD_MAX])
   const previousFocusRef = useRef<HTMLElement | null>(null)
 
   // URL-persisted state
@@ -81,8 +86,10 @@ export function ScholarshipGrid() {
         activeFilter,
         searchQuery,
         sortBy,
+        eligibilityTags,
+        awardRange,
       ),
-    [seasonalScholarships, activeFilter, searchQuery, sortBy],
+    [seasonalScholarships, activeFilter, searchQuery, sortBy, eligibilityTags, awardRange],
   )
 
   // totalPages counts all items (matching + dimmed) intentionally — users can
@@ -124,7 +131,7 @@ export function ScholarshipGrid() {
     if (!lenis) return
     const timer = setTimeout(() => lenis.resize(), 100)
     return () => clearTimeout(timer)
-  }, [safePage, activeFilter, layout, lenis, searchQuery, sortBy])
+  }, [safePage, activeFilter, layout, lenis, searchQuery, sortBy, eligibilityTags, awardRange])
 
   const handleFilterChange = useCallback(
     (level: EducationLevelFilter) => {
@@ -187,10 +194,28 @@ export function ScholarshipGrid() {
     return () => window.removeEventListener("keydown", handler)
   }, [expandedId, handleClose])
 
+  const handleEligibilityTagsChange = useCallback(
+    (tags: string[]) => {
+      setEligibilityTags(tags)
+      setPage(null)
+    },
+    [setPage],
+  )
+
+  const handleAwardRangeChange = useCallback(
+    (range: [number, number]) => {
+      setAwardRange(range)
+      setPage(null)
+    },
+    [setPage],
+  )
+
   const clearAllFilters = useCallback(() => {
     setActiveFilter("All")
     setSearchQuery(null)
     setSortBy(null)
+    setEligibilityTags([])
+    setAwardRange([AWARD_MIN, AWARD_MAX])
     setPage(null)
   }, [setSearchQuery, setSortBy, setPage])
 
@@ -221,7 +246,25 @@ export function ScholarshipGrid() {
         onSortByChange={handleSortChange}
         resultCount={resultCount}
         seasonalScholarships={seasonalScholarships}
+        eligibilityTags={eligibilityTags}
+        onEligibilityTagsChange={handleEligibilityTagsChange}
+        awardRange={awardRange}
+        onAwardRangeChange={handleAwardRangeChange}
+        filteredCount={resultCount}
       />
+
+      {/* Active filter strip */}
+      <AnimatePresence>
+        {(eligibilityTags.length > 0 || awardRange[0] !== AWARD_MIN || awardRange[1] !== AWARD_MAX) && (
+          <ActiveFilterStrip
+            key="active-filter-strip"
+            selectedTags={eligibilityTags}
+            onTagsChange={handleEligibilityTagsChange}
+            awardRange={awardRange}
+            onAwardRangeChange={handleAwardRangeChange}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Empty state: no scholarships this season */}
       {seasonalScholarships.length === 0 ? (
@@ -256,8 +299,8 @@ export function ScholarshipGrid() {
             No scholarships found
           </p>
           <p className="max-w-sm text-center text-sm text-on-surface-variant">
-            Try adjusting your search or education level filter to discover more
-            opportunities.
+            Try adjusting your search, education level, or eligibility filters
+            to discover more opportunities.
           </p>
           <Button variant="outline" size="sm" onClick={clearAllFilters}>
             Clear all filters
@@ -451,6 +494,7 @@ export function ScholarshipGrid() {
                         )}
                       >
                         <button
+                          type="button"
                           onClick={handleClose}
                           className={cn(
                             "absolute right-6 top-6 z-10 flex size-10 items-center justify-center rounded-full transition-colors",
