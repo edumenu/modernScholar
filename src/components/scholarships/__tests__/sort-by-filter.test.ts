@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest"
 import { filterAndSort } from "@/lib/scholarship-utils"
 import type { Scholarship } from "@/data/scholarships"
+import type { Tag } from "@/lib/eligibility"
 
 const mockScholarships: Scholarship[] = [
   {
@@ -16,6 +17,7 @@ const mockScholarships: Scholarship[] = [
     eligibility: "Must be enrolled",
     season: "spring",
     description: "",
+    eligibilityTags: [],
   },
   {
     id: "2",
@@ -30,6 +32,7 @@ const mockScholarships: Scholarship[] = [
     eligibility: "Must be in high school",
     season: "summer",
     description: "",
+    eligibilityTags: [],
   },
   {
     id: "3",
@@ -44,6 +47,7 @@ const mockScholarships: Scholarship[] = [
     eligibility: "Open to all",
     season: "summer",
     description: "",
+    eligibilityTags: [],
   },
   {
     id: "4",
@@ -58,6 +62,7 @@ const mockScholarships: Scholarship[] = [
     eligibility: "Graduate students only",
     season: "summer",
     description: "",
+    eligibilityTags: [],
   },
 ]
 
@@ -117,6 +122,7 @@ describe("filterAndSort", () => {
         eligibility: "This is for engineering students",
         season: "spring",
             description: "",
+        eligibilityTags: [],
       },
     ]
     const result = filterAndSort(items, "All", "engineering", "deadline")
@@ -143,5 +149,29 @@ describe("filterAndSort", () => {
   it("returns empty array when search matches nothing", () => {
     const result = filterAndSort(mockScholarships, "All", "zzzznotfound", "deadline")
     expect(result).toHaveLength(0)
+  })
+})
+
+describe("filterAndSort selectedTags", () => {
+  it("empty selectedTags produces same output as omitting the parameter", () => {
+    const withEmpty = filterAndSort(mockScholarships, "All", "", "deadline", [])
+    const withoutArg = filterAndSort(mockScholarships, "All", "", "deadline")
+    expect(withEmpty).toEqual(withoutArg)
+  })
+
+  it("non-empty selectedTags hard-filters non-matching items", () => {
+    const taggedItems: Scholarship[] = [
+      { ...mockScholarships[0], id: "with-need", eligibilityTags: ["Need-Based"] },
+      { ...mockScholarships[1], id: "without-tag", eligibilityTags: [] },
+      { ...mockScholarships[2], id: "with-other", eligibilityTags: ["Merit-Based"] },
+    ]
+    const selected: Tag[] = ["Need-Based"]
+    const result = filterAndSort(taggedItems, "All", "", "deadline", selected)
+    expect(result).toHaveLength(1)
+    expect(result[0].scholarship.id).toBe("with-need")
+    expect(result.every((r) => r.matches)).toBe(true)
+    const ids = result.map((r) => r.scholarship.id)
+    expect(ids).not.toContain("without-tag")
+    expect(ids).not.toContain("with-other")
   })
 })

@@ -1,6 +1,7 @@
 import Papa from "papaparse"
 import slugify from "slugify"
 import fs from "fs"
+import type { Tag } from "@/lib/eligibility"
 
 // --- Types ---
 
@@ -33,6 +34,7 @@ export interface EnrichedScholarship {
   link: string
   openDate: string | null
   eligibility: string
+  eligibilityTags: Tag[]
   season: Season
   image: string
   description: string

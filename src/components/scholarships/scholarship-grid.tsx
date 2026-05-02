@@ -23,6 +23,7 @@ import {
   AWARD_MAX,
 } from "@/data/scholarships"
 import { filterAndSort } from "@/lib/scholarship-utils"
+import type { Tag } from "@/lib/eligibility"
 import { ScholarshipFilters, type GridLayout } from "./scholarship-filters"
 import { ActiveFilterStrip } from "./filter-sheet"
 import { ScholarshipCard } from "./scholarship-card"
@@ -86,7 +87,7 @@ export function ScholarshipGrid() {
         activeFilter,
         searchQuery,
         sortBy,
-        eligibilityTags,
+        eligibilityTags as Tag[],
         awardRange,
       ),
     [seasonalScholarships, activeFilter, searchQuery, sortBy, eligibilityTags, awardRange],

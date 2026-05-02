@@ -1,47 +1,13 @@
 import { describe, it, expect } from "vitest"
 import {
-  getCurrentSeason,
-  getNextSeason,
   isScholarshipVisible,
   parseAwardAmount,
   getClassificationTint,
   CLASSIFICATION_TINTS,
   CLASSIFICATION_COLORS,
   type Scholarship,
-  type Season,
   type EducationLevel,
 } from "../scholarships"
-
-describe("getCurrentSeason", () => {
-  const cases: [number, Season][] = [
-    [0, "winter"],  // January
-    [1, "winter"],  // February
-    [2, "spring"],  // March
-    [3, "spring"],  // April
-    [4, "spring"],  // May
-    [5, "summer"],  // June
-    [6, "summer"],  // July
-    [7, "summer"],  // August
-    [8, "fall"],    // September
-    [9, "fall"],    // October
-    [10, "fall"],   // November
-    [11, "winter"], // December
-  ]
-
-  it.each(cases)("month %i returns %s", (month, expected) => {
-    const date = new Date(2027, month, 15)
-    expect(getCurrentSeason(date)).toBe(expected)
-  })
-})
-
-describe("getNextSeason", () => {
-  it("cycles through seasons correctly", () => {
-    expect(getNextSeason("winter")).toBe("spring")
-    expect(getNextSeason("spring")).toBe("summer")
-    expect(getNextSeason("summer")).toBe("fall")
-    expect(getNextSeason("fall")).toBe("winter")
-  })
-})
 
 describe("isScholarshipVisible", () => {
   const baseScholarship: Scholarship = {
@@ -57,6 +23,7 @@ describe("isScholarshipVisible", () => {
     season: "spring",
     description: "",
     provider: "Test",
+    eligibilityTags: [],
   }
 
   it("returns true for matching season with future deadline", () => {

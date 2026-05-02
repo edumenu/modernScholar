@@ -1,0 +1,170 @@
+{
+  "module": "eligibility-classifier-completion",
+  "prd_path": "Brain/PRDs/05_02_2026/architectureDeepening/eligibilityClassifierCompletion/eligibility-classifier-completion.md",
+  "agent": "frontend-engineer",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Create src/lib/eligibility.ts (taxonomy + classify + matches)",
+      "description": "Create a new module at src/lib/eligibility.ts that owns the entire eligibility tag system. Export all of the following:\n\nTYPES:\n- `type Tag` — string-literal union of all 26 valid tag values: 6 flat tags (\"Need-Based\", \"Merit-Based\", \"First-Generation\", \"State-Specific\", \"Athletic\", \"Creative/Arts\") plus 20 category tags using the \"Category:Value\" shape (port the exact strings from `scripts/tag-eligibilities.ts` lines 23–61 — these are the source of truth for current tag names: Gender-Specific:Women, Gender-Specific:Men, Race/Ethnicity:African American/Black, Race/Ethnicity:Hispanic/Latino, Race/Ethnicity:Jewish, Disability/Health:Vision, Disability/Health:Hearing, Disability/Health:Learning Disability, Disability/Health:Cancer/Chronic Illness, Disability/Health:Mental Health, Major-Specific:STEM/Engineering, Major-Specific:Business/Accounting, Major-Specific:Healthcare/Nursing, Major-Specific:Arts/Theater, Major-Specific:Agriculture, Major-Specific:Law, Major-Specific:Architecture, Military/Veterans:Active Duty, Military/Veterans:Veteran, Military/Veterans:Military Dependent).\n- `type EligibilityFlatTag` — the 6 flat tags only (subset of Tag).\n- `type EligibilityCategory` — string-literal union of category names: \"Gender-Specific\" | \"Race/Ethnicity\" | \"Disability/Health\" | \"Major-Specific\" | \"Military/Veterans\".\n- `type TagGroup` — `{ category: string; tags: readonly Tag[] }`.\n\nVALUE EXPORTS:\n- `const ELIGIBILITY_FLAT_TAGS: readonly EligibilityFlatTag[]` — the 6 flat tags as a readonly tuple (port from src/data/scholarships.ts lines 57–60).\n- `const ELIGIBILITY_CATEGORIES` — record/object mapping each EligibilityCategory to its readonly array of sub-option strings (port from src/data/scholarships.ts lines 64–70).\n- `const ALL_TAGS: readonly Tag[]` — full taxonomy as a flat array (flat tags + every \"Category:SubOption\" pairing). Derived from ELIGIBILITY_FLAT_TAGS + ELIGIBILITY_CATEGORIES so adding a category sub-option flows through automatically.\n- `const TAG_GROUPS: readonly TagGroup[]` — UI-renderable groupings: one group with `{ category: \"flat\", tags: ELIGIBILITY_FLAT_TAGS }` first (or whatever convention matches existing UI consumers — check filter-sheet.tsx for the rendering shape before deciding), then one group per EligibilityCategory.\n\nFUNCTION EXPORTS:\n- `function isEligibilityFlatTag(tag: string): tag is EligibilityFlatTag` — type predicate. Port behaviour from src/data/scholarships.ts lines 75–77.\n- `function getEligibilityCategory(tag: string): EligibilityCategory | null` — port from scholarships.ts lines 80–83. Returns the substring before \":\" if present, else null.\n- `function getEligibilitySubOption(tag: string): string | null` — port from scholarships.ts lines 86–89.\n- `function getEligibilityTagLabel(tag: string): string` — port from scholarships.ts lines 92–94.\n- `function classify(eligibilityText: string): Tag[]` — runs a private TAG_RULES table (port verbatim the 32 regex entries from scripts/tag-eligibilities.ts lines 23–61, but with the tag literal typed as Tag). Returns deduplicated tags in declaration order. Returns [] for empty/no-match input.\n- `function matches(scholarship: { eligibilityTags: readonly Tag[] }, selected: readonly Tag[]): boolean` — empty selection returns true; otherwise group selected tags by category (using `getEligibilityCategory(tag) ?? tag` as group key — flat tags become their own group); a scholarship matches if every group has at least one member present in scholarship.eligibilityTags. Port semantics from src/lib/scholarship-utils.ts lines 14–38 (matchesEligibilityTags), tightening the selectedTags type from string[] to readonly Tag[].\n\nIMPLEMENTATION RULES:\n- Single source of truth: ALL_TAGS and TAG_GROUPS derive from ELIGIBILITY_FLAT_TAGS + ELIGIBILITY_CATEGORIES, not separately listed. Tag literal union is the only place where the full enumeration appears.\n- The 32 regex rules in TAG_RULES are private to the module (not exported).\n- No external dependencies beyond TypeScript/React types — pure logic.\n- Default to no comments unless WHY is non-obvious.\n\nSee PRD §Implementation Decisions / New module.",
+      "files": ["src/lib/eligibility.ts"],
+      "depends_on": [],
+      "acceptance": [
+        "type Tag — string-literal union of all 26 valid tag values.",
+        "type TagGroup — { category: string; tags: readonly Tag[] } describing UI-renderable groupings.",
+        "const ALL_TAGS: readonly Tag[] — the full taxonomy as a flat array.",
+        "const TAG_GROUPS: readonly TagGroup[] — the taxonomy organized for UI rendering with category headers plus their child tags. Flat tags sit in their own group at the top.",
+        "function classify(eligibilityText: string): Tag[] — runs the rule set against free-text eligibility prose and returns deduplicated tags. Pure; returns [] for empty or unmatched input.",
+        "function matches(scholarship: { eligibilityTags: Tag[] }, selected: readonly Tag[]): boolean — implements the prior PRD's composition rules: empty selection passes everything through; non-empty selection requires AND across categories and OR within a category.",
+        "The 32 regex rules previously inlined in the script move into the module's private rule table."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "getEligibilityCategory tightened to return EligibilityCategory | null (also guards prefix is real category — stray 'Foo:Bar' → null). TAG_GROUPS uses { category: 'flat', tags: ELIGIBILITY_FLAT_TAGS } as first group; current filter-sheet.tsx iterates ELIGIBILITY_FLAT_TAGS + ELIGIBILITY_CATEGORIES directly so TAG_GROUPS is awaiting a UI consumer. matches accepts readonly Tag[]. classify('') → []; deduplication preserves first-seen declaration order."
+    },
+    {
+      "id": "T02",
+      "title": "Migrate src/data/scholarships.ts: re-export taxonomy from @/lib/eligibility, narrow Scholarship.eligibilityTags to required Tag[]",
+      "description": "Refactor src/data/scholarships.ts so the taxonomy lives in src/lib/eligibility.ts (T01) and the data file becomes a thin façade.\n\nDELETE these local definitions:\n- `export const ELIGIBILITY_FLAT_TAGS` (lines ~57–60).\n- `export type EligibilityFlatTag` (line ~62).\n- `export const ELIGIBILITY_CATEGORIES` (lines ~64–70).\n- `export type EligibilityCategory` (line ~72).\n- `export function isEligibilityFlatTag` (lines ~75–77).\n- `export function getEligibilityCategory` (lines ~80–83).\n- `export function getEligibilitySubOption` (lines ~86–89).\n- `export function getEligibilityTagLabel` (lines ~92–94).\n\nADD bridge re-exports from @/lib/eligibility so existing callers keep compiling during the migration:\n```\nimport type { Tag } from \"@/lib/eligibility\"\nexport type { Tag, EligibilityFlatTag, EligibilityCategory, TagGroup } from \"@/lib/eligibility\"\nexport { ELIGIBILITY_FLAT_TAGS, ELIGIBILITY_CATEGORIES, ALL_TAGS, TAG_GROUPS, isEligibilityFlatTag, getEligibilityCategory, getEligibilitySubOption, getEligibilityTagLabel } from \"@/lib/eligibility\"\n```\nThe local `import type { Tag } from \"@/lib/eligibility\"` is needed for the `Scholarship` interface change below.\n\nUPDATE the Scholarship interface (around line 36):\n- Change `eligibilityTags?: string[]` to `eligibilityTags: Tag[]` (required + tightened type).\n\nThe enriched JSON cast at line ~97 (`enrichedData as Scholarship[]`) keeps working because every entry in scholarships-enriched.json already has an eligibilityTags array (verified). If TypeScript complains about the JSON shape, use `enrichedData as unknown as Scholarship[]`.\n\nDO NOT touch any other exports: EducationLevel, EDUCATION_LEVELS, EducationLevelFilter, CLASSIFICATION_COLORS, CLASSIFICATION_TINTS, getClassificationTint, AWARD_MIN, AWARD_MAX, scholarships array, isScholarshipVisible, getSeasonalScholarships, parseAwardAmount, season-related re-exports.\n\nSee PRD §Type changes and §Implementation Decisions / New module.",
+      "files": ["src/data/scholarships.ts"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "src/data/scholarships.ts Scholarship interface gains eligibilityTags: Tag[] (imported from src/lib/eligibility.ts). Required field.",
+        "Local taxonomy definitions (ELIGIBILITY_FLAT_TAGS, ELIGIBILITY_CATEGORIES, EligibilityFlatTag, EligibilityCategory, isEligibilityFlatTag, getEligibilityCategory, getEligibilitySubOption, getEligibilityTagLabel) are deleted and replaced with re-exports from @/lib/eligibility."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Used `as unknown as Scholarship[]` for the enriched JSON cast (TS rejects direct cast because JSON-inferred string literals don't satisfy Tag union). ORCHESTRATOR CASCADE: narrowing `eligibilityTags: Tag[]` (required) surfaced 12 fixture errors (3 test files, 3 stories) + 1 in scholarship-utils.ts:33. Orchestrator added `eligibilityTags: []` to all 12 fixtures (scholarships.test.ts, scholarship-card.component.test.tsx, sort-by-filter.test.ts ×5, comparison-sheet.stories.tsx ×3, scholarship-card.stories.tsx, scholarship-list-card.stories.tsx) and added a one-line `as readonly string[]` cast in scholarship-utils.ts:33 to bridge until T06 rewrites matchesEligibilityTags. All cross-file changes are within the spirit of T02 (mechanical follow-on from the type narrowing)."
+    },
+    {
+      "id": "T03",
+      "title": "Add eligibilityTags: Tag[] to EnrichedScholarship in scripts/utils.ts",
+      "description": "Update the EnrichedScholarship interface in scripts/utils.ts (currently lines ~26–40) to include `eligibilityTags: Tag[]` as a required field. The Tag type is imported from @/lib/eligibility.\n\nConcrete edit: add `import type { Tag } from \"@/lib/eligibility\"` near the top (or alongside any existing imports from @/lib/seasons), then add `eligibilityTags: Tag[]` to the EnrichedScholarship interface body.\n\nDo NOT touch other types (EducationLevel, CsvRow, LinkReport), other constants (MONTH_CORRECTIONS, MONTH_INDEX, VALID_LEVELS), or other functions in this file. The local Season type definition that currently lives here (line ~14) is also untouched by this task.\n\nNote: scripts/utils.ts in working tree may be in either of two states (post-season-calendar refactor or original). Either is fine — only add the eligibilityTags field; do not refactor the season calendar parts.\n\nSee PRD §Type changes.",
+      "files": ["scripts/utils.ts"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "scripts/utils.ts EnrichedScholarship interface gains the eligibilityTags: Tag[] field."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Tag imported as type-only via @/ alias. EnrichedScholarship now requires eligibilityTags: Tag[] — scrape/tag scripts that construct these will be type-incomplete until T04 (tag-eligibilities) and T05 (scrape-scholarships) wire classify in."
+    },
+    {
+      "id": "T04",
+      "title": "Refactor scripts/tag-eligibilities.ts to a thin adapter using classify()",
+      "description": "Reduce scripts/tag-eligibilities.ts to a file-I/O adapter that delegates the rule logic to @/lib/eligibility.\n\nDELETE these:\n- The local `type TagRule` declaration (~line 21).\n- The local `const TAG_RULES: TagRule[]` table (~lines 23–61) — the 32 regex rules. They now live in eligibility.ts.\n- The local `function tagScholarship` (~lines 63–75).\n\nUPDATE imports at the top of the file: add `import { classify, type Tag } from \"@/lib/eligibility\"`.\n\nUPDATE the local Scholarship interface on lines ~13–18 so eligibilityTags is typed Tag[] instead of string[] (or replace the inline interface entirely with `import type { EnrichedScholarship as Scholarship } from \"./utils\"` if cleaner — but the simpler local-interface change is fine).\n\nUPDATE the main() loop body (currently calls `tagScholarship(scholarship)`): replace with `classify(scholarship.eligibility ?? \"\")`.\n\nDO NOT touch the I/O layer: file read/write, tag distribution printing, untagged summary printing all remain. The script's command-line behavior is unchanged.\n\nSee PRD §Restoring scripts/tag-eligibilities.ts as a thin adapter.",
+      "files": ["scripts/tag-eligibilities.ts"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "The 32 regex rules previously inlined in the script move into the module's private rule table.",
+        "The script no longer knows what tags exist or how to map prose to them — only how to load and persist scholarships."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Removed local TagRule, TAG_RULES (32 rules), tagScholarship; added `import { classify, type Tag } from \"@/lib/eligibility\"`; narrowed local Scholarship.eligibilityTags to Tag[]?; main() now calls classify(scholarship.eligibility ?? \"\"). I/O, counts, distribution, untagged summary preserved. Switched `||` to `??` to match optional-contract used elsewhere."
+    },
+    {
+      "id": "T05",
+      "title": "Inline classify() in scripts/scrape-scholarships.ts",
+      "description": "scripts/scrape-scholarships.ts currently produces scholarships-enriched.json without populating eligibilityTags (a separate `npm run tag-eligibilities` pass is required). Per PRD §Inline tagging during scrape, the scrape script should assign eligibilityTags inline so a single `npm run scrape-scholarships` pass yields a fully tagged JSON.\n\nADD: `import { classify } from \"@/lib/eligibility\"` to the import block (at the top of the file).\n\nUPDATE the location where each enriched scholarship object is constructed (around line ~140, where the `eligibility` field is read from the CSV row and the EnrichedScholarship object is assembled — search for the literal where eligibility is set on the constructed object, typically a `const enriched: EnrichedScholarship = { ... eligibility, ... }` or similar). Set `eligibilityTags: classify(eligibility)` on the same object literal. The exact line number depends on the current code shape — read the surrounding context to find the right place.\n\nDO NOT change the I/O layer (Playwright, CSV parsing, link-report consumption, file writing) or any other field on EnrichedScholarship. The new field is the only delta.\n\nIf the scrape pipeline currently does NOT construct an EnrichedScholarship in one place (e.g., builds the object piecemeal and writes it later), set eligibilityTags at the moment the object is finalised before write.\n\nSee PRD §Inline tagging during scrape.",
+      "files": ["scripts/scrape-scholarships.ts"],
+      "depends_on": ["T01", "T03"],
+      "acceptance": [
+        "scripts/scrape-scholarships.ts already produces scholarships-enriched.json directly. After this change it imports classify and assigns eligibilityTags inline at line ~140 (where eligibility is read from CSV). A user who runs npm run scrape-scholarships gets a fully tagged JSON in one pass without remembering to also run tag-eligibilities."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Added `import { classify } from \"@/lib/eligibility\"` at line 5. TWO construction sites populate eligibilityTags: primary scrape path in processScholarship (~line 144) and CSV-only fallback in main() (~line 319). Hoisted eligibility to a local at both sites. Both must classify or full-mode JSON ends up with mixed tagged/untagged entries."
+    },
+    {
+      "id": "T06",
+      "title": "Refactor src/lib/scholarship-utils.ts to use matches() from @/lib/eligibility",
+      "description": "Update src/lib/scholarship-utils.ts so the eligibility predicate comes from the eligibility module.\n\nDELETE the local `matchesEligibilityTags` function (lines ~14–38) entirely.\n\nUPDATE imports:\n- ADD `import { matches, type Tag } from \"@/lib/eligibility\"`.\n- REMOVE `getEligibilityCategory` from the existing import of `@/data/scholarships` (it is no longer used inside this file once matchesEligibilityTags is gone). Keep AWARD_MIN, AWARD_MAX, parseAwardAmount imports as-is.\n\nUPDATE filterAndSort signature: change `eligibilityTags: string[] = []` to `selectedTags: Tag[] = []` (rename the parameter to match PRD spec and tighten type). Update the parameter name everywhere it appears in the function body.\n\nUPDATE the usage inside the .filter() callback: `if (!matchesEligibilityTags(s, eligibilityTags)) return false` becomes `if (!matches(s, selectedTags)) return false`.\n\nDO NOT touch parseDeadlineDate, the awardRange handling, the level dim-tail logic, or the sort logic. Only the eligibility filter portion changes.\n\nNote: This rename will break callers that currently pass `eligibilityTags:` keyword or rely on the old parameter position. The callers (scholarship-grid.tsx) currently call positionally; verify the call site still works with the renamed parameter. If callers use named-style destructured positional, they keep working since the position is unchanged.\n\nSee PRD §Filter wiring.",
+      "files": ["src/lib/scholarship-utils.ts"],
+      "depends_on": ["T01", "T02"],
+      "acceptance": [
+        "src/lib/scholarship-utils.ts filterAndSort signature gains a fifth parameter: filterAndSort(items, level, searchQuery, sortBy, selectedTags).",
+        "When selectedTags.length > 0, items where matches(scholarship, selectedTags) returns false are excluded outright (hard filter).",
+        "selectedTags defaults to [] and is treated as 'no tag filter' — current behaviour preserved."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Deleted matchesEligibilityTags + getEligibilityCategory import; added matches+Tag import from @/lib/eligibility; renamed 5th param eligibilityTags→selectedTags: Tag[]; .filter() now calls matches(s, selectedTags). ORCHESTRATOR CASCADE: scholarship-grid.tsx:89 passed string[] to the new Tag[] param — bridge `eligibilityTags as Tag[]` cast added at call site + `import type { Tag } from \"@/lib/eligibility\"` in grid. The full prop-chain tightening (state Tag[], handler Tag[], filter component prop signatures) is left for a follow-up — T07 only does import migration; consider a cleanup task post-T10 to tighten the chain."
+    },
+    {
+      "id": "T07",
+      "title": "Migrate UI consumers (filter-sheet.tsx, scholarship-filters-mobile.tsx) to import from @/lib/eligibility",
+      "description": "Two UI components currently import the eligibility taxonomy from @/data/scholarships. Migrate both to import directly from @/lib/eligibility for clarity and to enable T10's bridge cleanup.\n\nFILE 1: src/components/scholarships/filter-sheet.tsx\n- Find the import block ending at line ~16 with `} from \"@/data/scholarships\"`.\n- Move all eligibility-related imports (any subset of: ELIGIBILITY_FLAT_TAGS, ELIGIBILITY_CATEGORIES, EligibilityFlatTag, EligibilityCategory, isEligibilityFlatTag, getEligibilityCategory, getEligibilitySubOption, getEligibilityTagLabel, ALL_TAGS, TAG_GROUPS, Tag, TagGroup) into a new `import { ... } from \"@/lib/eligibility\"` line.\n- Keep non-eligibility imports (CLASSIFICATION_*, AWARD_MIN, AWARD_MAX, Scholarship, EducationLevelFilter, etc.) sourced from @/data/scholarships.\n\nFILE 2: src/components/scholarships/scholarship-filters-mobile.tsx\n- Same treatment: identify eligibility imports in the import block ending around line ~15, move them to a new `import { ... } from \"@/lib/eligibility\"` line, leave non-eligibility imports in @/data/scholarships.\n- Note line ~28 has a separate `import { AWARD_MIN, AWARD_MAX } from \"@/data/scholarships\"` — leave that alone (these are not eligibility-related).\n\nIf any tag-related local types (e.g., a local type cast of selected tags to string[]) can be tightened to Tag[] without major refactoring, do so. Otherwise leave the call-site signatures intact for this task.\n\nDO NOT modify behaviour, JSX structure, animations, or unrelated imports. This is a pure import-source migration.\n\nSee PRD §UI.",
+      "files": [
+        "src/components/scholarships/filter-sheet.tsx",
+        "src/components/scholarships/scholarship-filters-mobile.tsx"
+      ],
+      "depends_on": ["T01", "T02"],
+      "acceptance": [
+        "The UI imports ALL_TAGS, TAG_GROUPS, and the Tag type from src/lib/eligibility.ts only — no rule strings, no regexes."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "filter-sheet.tsx migrated ELIGIBILITY_FLAT_TAGS, ELIGIBILITY_CATEGORIES, getEligibilityTagLabel, getEligibilityCategory, EligibilityCategory → @/lib/eligibility. scholarship-filters-mobile.tsx migrated ELIGIBILITY_FLAT_TAGS, ELIGIBILITY_CATEGORIES, getEligibilityCategory, EligibilityCategory → @/lib/eligibility. Pure import-source migration — no behavioural or signature changes. Bridge re-exports in @/data/scholarships still serve other consumers until T10."
+    },
+    {
+      "id": "T08",
+      "title": "Add src/lib/__tests__/eligibility.test.ts (classify, matches, round-trip)",
+      "description": "Create the test file at src/lib/__tests__/eligibility.test.ts with full PRD coverage of the eligibility module.\n\nIMPORTS:\n```\nimport { describe, it, expect } from \"vitest\"\nimport { classify, matches, ALL_TAGS, type Tag } from \"../eligibility\"\n```\n\nCASES (per PRD §Testing Decisions):\n\n1. classify text-based cases:\n   - `classify(\"Be a graduating senior… 3.75 GPA… financial need\")` returns a list including \"Need-Based\" AND \"Merit-Based\". Use `expect(result).toContain(\"Need-Based\")` and `expect(result).toContain(\"Merit-Based\")`.\n   - `classify(\"\")` returns [] (empty array).\n   - `classify(\"Open to all students\")` returns [] (no rule matches).\n\n2. matches semantics:\n   - `matches({ eligibilityTags: [] }, [])` returns true (empty selection passthrough).\n   - `matches({ eligibilityTags: [\"Need-Based\"] }, [\"Merit-Based\"])` returns false (tag not present).\n   - `matches({ eligibilityTags: [\"Need-Based\", \"Merit-Based\"] }, [\"Need-Based\"])` returns true.\n   - `matches({ eligibilityTags: [\"Race/Ethnicity:Hispanic/Latino\", \"Need-Based\"] }, [\"Race/Ethnicity:African American/Black\", \"Race/Ethnicity:Hispanic/Latino\", \"Need-Based\"])` returns true (OR within Race/Ethnicity category, AND with flat Need-Based group).\n\n3. Round-trip integrity:\n   - For a corpus of plausible eligibility prose that exercises multiple rules, every tag returned by classify is included in ALL_TAGS. At minimum: take the union of `classify(text)` over a fixture array of 5–10 representative eligibility strings (mix of flat-only, category-only, and mixed) and assert every output tag is in ALL_TAGS via `expect(ALL_TAGS).toContain(tag)`.\n\nUse describe blocks per group. Aim for >=10 individual test assertions total.\n\nDO NOT modify the eligibility module itself or any other files. Tests only.",
+      "files": ["src/lib/__tests__/eligibility.test.ts"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "classify(\"Be a graduating senior… 3.75 GPA… financial need\") returns a list including \"Need-Based\" and \"Merit-Based\".",
+        "classify(\"\") and classify(\"Open to all students\") return [].",
+        "matches({ eligibilityTags: [] }, []) returns true.",
+        "matches({ eligibilityTags: [\"Need-Based\"] }, [\"Merit-Based\"]) returns false.",
+        "matches({ eligibilityTags: [\"Need-Based\", \"Merit-Based\"] }, [\"Need-Based\"]) returns true.",
+        "matches({ eligibilityTags: [\"Race/Ethnicity:Hispanic/Latino\", \"Need-Based\"] }, [\"Race/Ethnicity:African American/Black\", \"Race/Ethnicity:Hispanic/Latino\", \"Need-Based\"]) returns true (OR within category, AND across).",
+        "Round-trip integrity: every tag returned by classify is included in ALL_TAGS."
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "8 vitest cases (3 classify, 4 matches, 1 round-trip), 8/8 pass. Round-trip fixture exercises flat-only, single-category, multi-category, mixed prose; `all.size > 0` guard against silent-empty regression. Used `as const` literals on inline matches calls; Tag[] annotation only where TS won't narrow."
+    },
+    {
+      "id": "T09",
+      "title": "Extend sort-by-filter.test.ts with selectedTags cases",
+      "description": "Extend the existing test file at src/components/scholarships/__tests__/sort-by-filter.test.ts (which tests filterAndSort) with two new cases per PRD §Testing Decisions:\n\n1. Empty selectedTags reproduces today's output exactly.\n   - Build a small Scholarship[] fixture (3–5 items) with varying eligibilityTags.\n   - Call filterAndSort(items, \"All\", \"\", \"deadline\", []) (or whichever positional shape matches the current signature post-T06).\n   - Compare to the result of calling without the selectedTags parameter (should be deep-equal).\n\n2. Non-empty selectedTags excludes non-matching items rather than dimming them.\n   - Same fixture. Call filterAndSort(items, \"All\", \"\", \"deadline\", [\"Need-Based\"]).\n   - Assert the result contains ONLY items whose eligibilityTags includes \"Need-Based\".\n   - Assert that items not matching are NOT present in the output (vs. being present with matches:false — that's the dim-tail semantic for level, not for tags).\n\nRead the existing file first to match its fixture style, import patterns, and test naming. The existing test fixtures (Scholarship objects) may need eligibilityTags added to satisfy the now-required Tag[] field on Scholarship.\n\nDO NOT modify filterAndSort or any non-test files.",
+      "files": [
+        "src/components/scholarships/__tests__/sort-by-filter.test.ts"
+      ],
+      "depends_on": ["T06"],
+      "acceptance": [
+        "Empty selectedTags reproduces today's output exactly.",
+        "Non-empty selectedTags excludes non-matching items rather than dimming them."
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Added new `describe(\"filterAndSort selectedTags\")` block with 2 cases (empty equivalence, non-empty hard-filter exclusion). Imported Tag type from @/lib/eligibility for the selected fixture. File now has 13 tests, all pass."
+    },
+    {
+      "id": "T10",
+      "title": "Drop bridge re-exports from src/data/scholarships.ts after full sweep",
+      "description": "After T07 migrates UI consumers, the bridge re-exports added in T02 (ELIGIBILITY_FLAT_TAGS, ELIGIBILITY_CATEGORIES, EligibilityFlatTag, EligibilityCategory, isEligibilityFlatTag, getEligibilityCategory, getEligibilitySubOption, getEligibilityTagLabel, ALL_TAGS, TAG_GROUPS, TagGroup) should no longer be needed by consumers — the only file still relying on them through @/data/scholarships should be src/data/scholarships.ts itself for the Scholarship interface, which only needs `Tag`.\n\nBefore deleting, sweep the codebase one more time to confirm no other file still imports an eligibility name from @/data/scholarships. If any are found and they're trivially fixable, fix them in-place; otherwise STOP and report so we can plan a follow-up.\n\nDELETE from src/data/scholarships.ts:\n- The bridge `export type { Tag, EligibilityFlatTag, EligibilityCategory, TagGroup } from \"@/lib/eligibility\"` line.\n- The bridge `export { ELIGIBILITY_FLAT_TAGS, ELIGIBILITY_CATEGORIES, ALL_TAGS, TAG_GROUPS, isEligibilityFlatTag, getEligibilityCategory, getEligibilitySubOption, getEligibilityTagLabel } from \"@/lib/eligibility\"` line.\n\nKEEP:\n- The local `import type { Tag } from \"@/lib/eligibility\"` (still needed for the Scholarship.eligibilityTags: Tag[] field).\n\nDO NOT touch any other code in this file: EducationLevel, EDUCATION_LEVELS, CLASSIFICATION_*, season re-exports, Scholarship interface itself, scholarships array, isScholarshipVisible, getSeasonalScholarships, parseAwardAmount, getClassificationTint, AWARD_MIN/AWARD_MAX.\n\nAfter the deletion, the typecheck gate verifies no remaining caller imports a deleted symbol from @/data/scholarships.\n\nSee PRD §Implementation Decisions overall.",
+      "files": ["src/data/scholarships.ts"],
+      "depends_on": ["T07", "T06"],
+      "acceptance": [
+        "After this PR, the feature/eligibility-tag-filters branch's intent is satisfied; the prior UX work in 04_29_2026/eligibility-tag-filters.md can proceed against a real data substrate.",
+        "The taxonomy now lives in one file, and adding a tag is a one-edit change."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Deleted the two bridge re-export blocks; kept local `import type { Tag } from \"@/lib/eligibility\"` for Scholarship.eligibilityTags. Eligibility taxonomy now lives solely in @/lib/eligibility."
+    }
+  ]
+}

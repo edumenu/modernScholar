@@ -9,6 +9,7 @@
 - ~~Add dark theme versions of the 3D models~~
 - Look into strategies for getting user emails
 - Analyze the Scholarship List CSV file and come up with a general structure of how you are going to process all that data. 
+- Analyze the blogs and convert them into MDX files to be consumed by the website.
 -  Clean up tablet and mobile views
 - Start thinking about unique tests on every single page. 
 - Add hover animations to the hero section image. 

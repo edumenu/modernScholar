@@ -6,12 +6,14 @@ import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { useScrollLock } from "@/hooks/use-scroll-lock"
 import {
-  EDUCATION_LEVELS,
   ELIGIBILITY_FLAT_TAGS,
   ELIGIBILITY_CATEGORIES,
   getEligibilityCategory,
-  type EducationLevelFilter,
   type EligibilityCategory,
+} from "@/lib/eligibility"
+import {
+  EDUCATION_LEVELS,
+  type EducationLevelFilter,
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 import { Checkbox } from "@/components/ui/checkbox/checkbox"

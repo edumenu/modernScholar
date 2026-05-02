@@ -15,6 +15,7 @@ const scholarshipA: Scholarship = {
   eligibility: "Must be enrolled in an accredited university pursuing a STEM degree with a minimum 3.5 GPA.",
   season: "spring",
   description: "Awarded to students demonstrating exceptional skill in technology and innovation across all engineering disciplines.",
+  eligibilityTags: [],
 }
 
 const scholarshipB: Scholarship = {
@@ -30,6 +31,7 @@ const scholarshipB: Scholarship = {
   eligibility: "High school juniors who score in the top 1% on the PSAT/NMSQT.",
   season: "spring",
   description: "Prestigious scholarship recognizing outstanding academic ability among high school students nationwide.",
+  eligibilityTags: [],
 }
 
 const scholarshipC: Scholarship = {
@@ -45,6 +47,7 @@ const scholarshipC: Scholarship = {
   eligibility: "U.S. citizens with a bachelor's degree pursuing graduate study or research abroad.",
   season: "fall",
   description: "Funds international graduate study, advanced research, and teaching assistantships in over 140 countries.",
+  eligibilityTags: [],
 }
 
 const meta: Meta<typeof ComparisonSheetAuditLedger> = {

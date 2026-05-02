@@ -9,9 +9,11 @@ import {
   ELIGIBILITY_CATEGORIES,
   getEligibilityTagLabel,
   getEligibilityCategory,
+  type EligibilityCategory,
+} from "@/lib/eligibility"
+import {
   AWARD_MIN,
   AWARD_MAX,
-  type EligibilityCategory,
   type Scholarship,
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"

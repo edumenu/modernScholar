@@ -15,6 +15,7 @@ const baseScholarship: Scholarship = {
   eligibility: "Must be enrolled in an accredited university.",
   season: "spring",
   description: "Awarded to students demonstrating exceptional skill in technology.",
+  eligibilityTags: [],
 }
 
 const meta: Meta<typeof ScholarshipCard> = {

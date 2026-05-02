@@ -15,6 +15,7 @@ const baseScholarship: Scholarship = {
   eligibility: "Must be enrolled in an accredited university pursuing a STEM degree.",
   season: "spring",
   description: "Awarded to students demonstrating exceptional skill in technology and innovation.",
+  eligibilityTags: [],
 }
 
 const allClassifications: Scholarship[] = [

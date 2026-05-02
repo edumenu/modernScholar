@@ -28,12 +28,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Welcome.md",
+                "file": "future/Todos.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Welcome"
+              "title": "Todos"
             }
           }
         ],
@@ -218,41 +218,41 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
+    "PRDs/05_02_2026/architectureDeepening/eligibilityClassifierCompletion/eligibility-classifier-completion-verification.md",
+    "future/web-animation-best-practices.md",
+    "future/Website UI tips.md",
+    "Ideas.md",
+    "Welcome.md",
+    "PRDs/05_02_2026/blogContentSystem/blog-content-system.md",
+    "PRDs/05_02_2026/architectureDeepening/eligibilityClassifierCompletion/eligibility-classifier-completion-progress.txt",
+    "PRDs/05_02_2026/architectureDeepening/eligibilityClassifierCompletion/eligibility-classifier-completion-tasks.json",
+    "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module-verification.md",
+    "PRDs/05_02_2026/blogContentSystem",
+    "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module-tasks.json",
+    "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module-progress.txt",
+    "PRDs/05_02_2026/architectureDeepening/blogContentSystem/blog-content-system.md",
+    "PRDs/05_02_2026/architectureDeepening/blogContentSystem",
     "PRDs/05_02_2026/architectureDeepeningOverview/architecture-deepening-overview.md",
     "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module.md",
     "PRDs/05_02_2026/architectureDeepening/scholarshipFiltersHook/scholarship-filters-hook.md",
     "PRDs/05_02_2026/architectureDeepening/eligibilityClassifierCompletion/eligibility-classifier-completion.md",
     "PRDs/05_02_2026/architectureDeepening/expandedScholarshipOverlay/expanded-scholarship-overlay.md",
-    "PRDs/05_02_2026/architectureDeepening/blogContentSystem/blog-content-system.md",
     "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule",
     "PRDs/05_02_2026/architectureDeepening/scholarshipFiltersHook",
     "PRDs/05_02_2026/architectureDeepening/expandedScholarshipOverlay",
     "PRDs/05_02_2026/architectureDeepening/eligibilityClassifierCompletion",
-    "PRDs/05_02_2026/architectureDeepening/blogContentSystem",
     "PRDs/05_02_2026/architectureDeepening/architecture-deepening-overview.md",
-    "PRDs/05_02_2026/architectureDeepening",
     "PRDs/05_02_2026/architectureDeepeningOverview/seasonCalendarModule/season-calendar-module.md",
-    "PRDs/05_02_2026/architectureDeepeningOverview/seasonCalendarModule",
     "PRDs/05_02_2026/architectureDeepeningOverview/scholarshipFiltersHook/scholarship-filters-hook.md",
-    "PRDs/05_02_2026/architectureDeepeningOverview/scholarshipFiltersHook",
     "PRDs/05_02_2026/architectureDeepeningOverview/expandedScholarshipOverlay/expanded-scholarship-overlay.md",
-    "PRDs/05_02_2026/architectureDeepeningOverview/expandedScholarshipOverlay",
     "PRDs/05_02_2026/architectureDeepeningOverview/eligibilityClassifierCompletion/eligibility-classifier-completion.md",
-    "PRDs/05_02_2026/architectureDeepeningOverview/eligibilityClassifierCompletion",
     "PRDs/05_02_2026/architectureDeepeningOverview/blogContentSystem/blog-content-system.md",
-    "Welcome.md",
     "PRDs/05_02_2026/seasonCalendarModule/season-calendar-module.md",
     "PRDs/05_02_2026/expandedScholarshipOverlay/expanded-scholarship-overlay.md",
     "PRDs/05_02_2026/scholarshipFiltersHook/scholarship-filters-hook.md",
     "PRDs/05_02_2026/eligibilityClassifierCompletion/eligibility-classifier-completion.md",
-    "PRDs/05_02_2026/blogContentSystem/blog-content-system.md",
     "PRDs/05_02_2026/expanded-scholarship-overlay.md",
     "PRDs/05_02_2026/scholarship-filters-hook.md",
-    "PRDs/05_02_2026/eligibility-classifier-completion.md",
-    "PRDs/05_02_2026/season-calendar-module.md",
-    "PRDs/05_02_2026/architecture-deepening-overview.md",
-    "PRDs/05_02_2026/blog-content-system.md",
-    "future/Website UI tips.md",
-    "future/web-animation-best-practices.md"
+    "PRDs/05_02_2026/eligibility-classifier-completion.md"
   ]
 }

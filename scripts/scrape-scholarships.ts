@@ -2,6 +2,7 @@ import { chromium, type Browser } from "playwright"
 import fs from "fs"
 import path from "path"
 
+import { classify } from "@/lib/eligibility"
 import {
   generateSlug,
   deriveSeason,
@@ -128,6 +129,8 @@ async function processScholarship(
 
   const result = await scrapeUrl(entry.url)
 
+  const eligibility = csvRow.Eligibility?.trim() ?? ""
+
   const scholarship: Partial<EnrichedScholarship> = {
     id: slug,
     name: csvRow["Scholarship Name"].trim(),
@@ -137,7 +140,8 @@ async function processScholarship(
     classification: normalizeClassification(csvRow.Classification),
     link: cleanUrl(csvRow.Link),
     openDate: csvRow["Open date"]?.trim() || null,
-    eligibility: csvRow.Eligibility?.trim() ?? "",
+    eligibility,
+    eligibilityTags: classify(eligibility),
     season: deriveSeason(csvRow.Deadline),
     image: "gradient",
     description: "",
@@ -300,6 +304,8 @@ async function main() {
 
       if (season !== "all" && deriveSeason(row.Deadline) !== season) continue
 
+      const eligibility = row.Eligibility?.trim() ?? ""
+
       allScholarships.push({
         id: slug,
         name: row["Scholarship Name"].trim(),
@@ -309,7 +315,8 @@ async function main() {
         classification: normalizeClassification(row.Classification),
         link: cleanUrl(row.Link || ""),
         openDate: row["Open date"]?.trim() || null,
-        eligibility: row.Eligibility?.trim() ?? "",
+        eligibility,
+        eligibilityTags: classify(eligibility),
         season: deriveSeason(row.Deadline),
         image: "gradient",
         description: "",

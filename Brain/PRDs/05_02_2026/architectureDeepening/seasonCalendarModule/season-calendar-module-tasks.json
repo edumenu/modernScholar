@@ -1,0 +1,94 @@
+{
+  "module": "season-calendar-module",
+  "prd_path": "Brain/PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module.md",
+  "agent": "frontend-engineer",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Create src/lib/seasons.ts module",
+      "description": "Create a new file at src/lib/seasons.ts that owns the entire season calendar. Export: (1) `type Season` — string-literal union 'winter' | 'spring' | 'summer' | 'fall'; (2) `const SEASONS` — readonly tuple of all four seasons in calendar order ['winter','spring','summer','fall']; (3) `seasonForMonthIndex(monthIndex: number): Season` — used by runtime code working from Date objects; (4) `seasonForMonthName(name: string): Season | undefined` — case-insensitive lookup for build scripts parsing CSV month strings; returns undefined for unrecognised input; (5) `getCurrentSeason(referenceDate?: Date): Season` — convenience wrapper over seasonForMonthIndex defaulting to new Date(); (6) `getNextSeason(season: Season): Season` — calendar rollover winter→spring→summer→fall→winter. Use ONE internal data structure (object mapping month indices 0–11 to seasons). Implement seasonForMonthName by deriving a lowercase month-name → index map from the same data — no separate string-keyed table to drift. Preserve the current calendar mapping EXACTLY: December→winter, March–May→spring, June–August→summer, September–November→fall, January–February→winter. See PRD §Implementation Decisions / New module.",
+      "files": ["src/lib/seasons.ts"],
+      "depends_on": [],
+      "acceptance": [
+        "type Season — string-literal union of \"winter\" | \"spring\" | \"summer\" | \"fall\".",
+        "const SEASONS — readonly tuple of all four seasons in calendar order.",
+        "seasonForMonthIndex(monthIndex: number): Season — used by runtime code working from Date objects.",
+        "seasonForMonthName(name: string): Season | undefined — case-insensitive; returns undefined for unrecognised input.",
+        "getCurrentSeason(referenceDate?: Date): Season — convenience wrapper over seasonForMonthIndex defaulting to new Date().",
+        "getNextSeason(season: Season): Season — calendar rollover helper.",
+        "Internal structure: A single object mapping month indices 0–11 to seasons; seasonForMonthName is implemented in terms of the same data plus a name-to-index lookup. There is no separate string-keyed table to drift.",
+        "The current calendar mapping (December → winter, March–May → spring, June–August → summer, September–November → fall, January–February → winter) is preserved exactly.",
+        "getNextSeason order: winter → spring → summer → fall → winter."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Single source of truth is MONTH_INDEX_TO_SEASON. seasonForMonthName derives lowercase-name → index Map from a static MONTH_NAMES array, then routes through the same index map. seasonForMonthName trims input before lowercasing. getNextSeason uses SEASONS.indexOf + modulo so calendar order is owned solely by the SEASONS tuple."
+    },
+    {
+      "id": "T02",
+      "title": "Re-export season helpers from src/data/scholarships.ts",
+      "description": "Delete the local `MONTH_TO_SEASON` (lines ~101–114), `getCurrentSeason` (lines ~116–118), and `getNextSeason` (lines ~120–124) definitions from src/data/scholarships.ts AND the existing inline `export type Season = ...` and `export const SEASONS = ...` declarations. Replace with re-exports from src/lib/seasons.ts so that `Season`, `SEASONS`, `getCurrentSeason`, and `getNextSeason` continue to be importable from `@/data/scholarships` without any caller edits. Use `export { ... } from '@/lib/seasons'` and `export type { Season } from '@/lib/seasons'` patterns. The existing `isScholarshipVisible` and `getSeasonalScholarships` helpers continue to work because they call `getCurrentSeason` which is now re-exported. Do NOT touch any other exports in this file (EDUCATION_LEVELS, CLASSIFICATION_COLORS, eligibility tags, scholarships array, parseAwardAmount, CLASSIFICATION_TINTS, getClassificationTint). See PRD §Re-exports from src/data/scholarships.ts.",
+      "files": ["src/data/scholarships.ts"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "src/data/scholarships.ts continues to export Season, SEASONS, getCurrentSeason, and getNextSeason — but as re-exports from src/lib/seasons.ts. The local definitions are deleted.",
+        "Existing imports of getCurrentSeason, getNextSeason, Season, and SEASONS from @/data/scholarships keep working without edits."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Re-export pattern requires both local `import { getCurrentSeason, type Season } from \"@/lib/seasons\"` (for in-file consumers) AND `export { ... } from \"@/lib/seasons\"` re-exports (for downstream callers). No duplicate-identifier conflict since `export ... from` is a pure forward."
+    },
+    {
+      "id": "T03",
+      "title": "Refactor scripts/utils.ts to consume src/lib/seasons.ts",
+      "description": "Delete the local `MONTH_TO_SEASON` map (lines ~72–85) and the local `getCurrentSeason` function (lines ~224–231) from scripts/utils.ts. Update `extractMonth` (currently checks `MONTH_TO_SEASON[lower]` — change to use `seasonForMonthName(lower) !== undefined`) and `deriveSeason` (currently `MONTH_TO_SEASON[month.toLowerCase()] ?? \"fall\"` — change to `seasonForMonthName(month) ?? \"fall\"`) to call `seasonForMonthName` from the new module. Replace the local `export type Season = ...` with a re-export `export type { Season } from '../src/lib/seasons'` (or whatever relative path resolves correctly from scripts/) so existing consumers like scripts/scrape-scholarships.ts that import `Season` from `./utils` keep compiling. Also re-export `getCurrentSeason` from utils for the same compatibility reason if convenient — though T04 will migrate scrape-scholarships off it. Do NOT touch other utility functions (correctMonthTypo, deriveDeadlineYear, normalizeClassification, generateSlug, parseCsv, cleanUrl, extractDomain, formatProviderFromDomain, generateDescription) or unrelated constants (MONTH_CORRECTIONS, MONTH_INDEX, VALID_LEVELS). See PRD §Build script call sites.",
+      "files": ["scripts/utils.ts"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "scripts/utils.ts deletes the local MONTH_TO_SEASON and getCurrentSeason. extractMonth (line 124) and deriveSeason (line 133) call seasonForMonthName from the new module."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Agent correctly stopped after deleting getCurrentSeason because scrape-scholarships.ts still imports it from ./utils (TS2305). Orchestrator added one-line `export { getCurrentSeason } from \"@/lib/seasons\"` re-export to utils.ts to bridge until T04 migrates the import. Pattern matches PRD Build script call sites note: scrape-scholarships continues to work via re-export until migrated."
+    },
+    {
+      "id": "T04",
+      "title": "Migrate scripts/scrape-scholarships.ts to import from src/lib/seasons.ts",
+      "description": "scripts/scrape-scholarships.ts currently imports `getCurrentSeason` from `./utils` (line 14 of the import block). Migrate that import to come directly from src/lib/seasons.ts using the relative path that resolves from the scripts/ directory (e.g. `../src/lib/seasons`). The `Season` type import can stay where it is if T03 kept it exported from utils, OR migrate it to the new module too — pick whichever keeps the file's import block tidiest. Do NOT change the behaviour of the scrape pipeline; the only change is the import source. See PRD §Build script call sites — \"should be migrated to import directly from src/lib/seasons.ts for clarity.\"",
+      "files": ["scripts/scrape-scholarships.ts"],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "scripts/scrape-scholarships.ts (currently imports getCurrentSeason from src/data/scholarships) continues to work via the re-export but should be migrated to import directly from src/lib/seasons.ts for clarity."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Removed getCurrentSeason from `./utils` import; added `import { getCurrentSeason } from \"@/lib/seasons\"`. Bridge re-export in scripts/utils.ts is now dead unless other scripts import it — sweep scripts/*.ts before dropping in a future task."
+    },
+    {
+      "id": "T05",
+      "title": "Add src/lib/__tests__/seasons.test.ts and prune scholarships.test.ts",
+      "description": "Create src/lib/__tests__/seasons.test.ts covering every PRD test case: (a) `seasonForMonthIndex(0)` through `seasonForMonthIndex(11)` returns the right season for every month, including December→winter wrap and Jan/Feb as winter (use a `it.each` table — copy the existing pattern in src/data/__tests__/scholarships.test.ts lines 16–34); (b) `seasonForMonthName('january')` and `seasonForMonthName('DECEMBER')` (case-insensitive) return correct seasons — at minimum test one lower-case and one upper-case case; (c) `seasonForMonthName('not-a-month')` returns undefined; (d) `getCurrentSeason(new Date(2026, 0, 15))` returns 'winter' (sanity wrap of seasonForMonthIndex); (e) `getNextSeason('winter'|'spring'|'summer'|'fall')` cycles correctly with `getNextSeason('fall') === 'winter'`. Then DELETE the `describe('getCurrentSeason', ...)` block (lines 15–35) and the `describe('getNextSeason', ...)` block (lines 37–44) from src/data/__tests__/scholarships.test.ts — the coverage moves with the implementation per PRD §Testing Decisions / Prior Art. Update the import statement at the top of scholarships.test.ts to drop `getCurrentSeason` and `getNextSeason` (only if they're no longer referenced after deletion). Keep `isScholarshipVisible`, `parseAwardAmount`, `getClassificationTint`, `CLASSIFICATION_TINTS`, `CLASSIFICATION_COLORS`, and their tests untouched.",
+      "files": [
+        "src/lib/__tests__/seasons.test.ts",
+        "src/data/__tests__/scholarships.test.ts"
+      ],
+      "depends_on": ["T01", "T02"],
+      "acceptance": [
+        "src/lib/seasons.ts — full coverage. Cases: seasonForMonthIndex(0) through seasonForMonthIndex(11) returns the right season for every month, including the December→winter wrap and January/February as winter.",
+        "seasonForMonthName(\"january\") and seasonForMonthName(\"DECEMBER\") (case-insensitive) return correct seasons.",
+        "seasonForMonthName(\"not-a-month\") returns undefined.",
+        "getCurrentSeason(new Date(2026, 0, 15)) returns \"winter\" (sanity wrap of seasonForMonthIndex).",
+        "getNextSeason(\"fall\") returns \"winter\".",
+        "The old test cases for getCurrentSeason in scholarships.test.ts are deleted (the function still re-exports from the new module, but the coverage moves with the implementation)."
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "16 new tests in src/lib/__tests__/seasons.test.ts all pass. getCurrentSeason + getNextSeason describes deleted from scholarships.test.ts; orchestrator also dropped the now-unused `type Season` import to clear an ESLint warning. ORCHESTRATOR OVERRIDE: vitest reported 1 PRE-EXISTING failure in getClassificationTint > returns tint based on first classification (expects 'bg-surface-container-low' but CLASSIFICATION_TINTS.Graduate.bg = 'bg-white dark:bg-surface-container-low'). Unrelated to season calendar — flagged for verification report follow-up."
+    }
+  ]
+}
