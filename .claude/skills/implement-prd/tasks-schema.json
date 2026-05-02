@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://modernscholar.local/schemas/ralph-tasks.json",
+  "title": "Ralph Module Tasks",
+  "description": "Per-module task list consumed by the implement-prd Ralph loop. One file per PRD module: {module}-tasks.json.",
+  "type": "object",
+  "required": ["module", "prd_path", "agent", "tasks"],
+  "additionalProperties": false,
+  "properties": {
+    "module": {
+      "type": "string",
+      "description": "Module slug, matches the PRD filename without extension (e.g. 'membership-flow-overview' or 'membership-flow-login')."
+    },
+    "prd_path": {
+      "type": "string",
+      "description": "Repo-relative path to the PRD module markdown file (e.g. 'Brain/PRDs/05_02_2026/membership-flow/membership-flow.md')."
+    },
+    "agent": {
+      "type": "string",
+      "enum": ["frontend-engineer", "general-purpose", "ux-design-expert"],
+      "description": "Default sub-agent type the loop spawns for tasks in this module. Per-task override allowed via task.agent."
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/task" }
+    }
+  },
+  "$defs": {
+    "task": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "description",
+        "files",
+        "depends_on",
+        "acceptance",
+        "validation",
+        "passes"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^T[0-9]{2,}$",
+          "description": "Ordered task id, e.g. T01, T02. Loop picks lowest id whose passes=false and all depends_on are passes=true."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "description": {
+          "type": "string",
+          "description": "What to do, with enough technical detail that a fresh sub-agent can execute without re-reading the whole PRD."
+        },
+        "files": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "maxItems": 5,
+          "description": "Files this task is allowed to create or modify. >5 files means split the task."
+        },
+        "depends_on": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^T[0-9]{2,}$" },
+          "description": "Task ids that must be passes=true before this one becomes eligible."
+        },
+        "acceptance": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Bullets copied from the PRD's User Stories or Implementation Decisions that THIS task satisfies. Used by Step 6 to compose the verification report."
+        },
+        "validation": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "typecheck",
+              "lint:touched",
+              "test:targeted",
+              "build"
+            ]
+          },
+          "description": "Gates run after the sub-agent finishes. Default: ['typecheck', 'lint:touched']. All must pass before passes flips to true. 'build' is reserved for end-of-loop and should NOT appear per-task."
+        },
+        "agent": {
+          "type": "string",
+          "enum": ["frontend-engineer", "general-purpose", "ux-design-expert"],
+          "description": "Optional per-task override of the module-level agent."
+        },
+        "passes": {
+          "type": "boolean",
+          "default": false,
+          "description": "Loop flips to true after all validation gates pass."
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "description": "Loop increments on each failed iteration. Halts when attempts >= 3."
+        },
+        "notes": {
+          "type": "string",
+          "default": "",
+          "description": "Loop-appended log: errors hit, decisions made, follow-ups."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+- ~~Finish up the Coming soon section with the appropriate styling~~
+- ~~Clean up the what's next section~~
+- ~~Fix height on frequently asked questions
+- ~~Fix blog content width
+- ~~Audit the opacity filtering filter feature on the scholarship page
+- ~~Work on the "Web animation best practices"~~
+- ~~All page navigation links should redirect to the top of the page~~
+- On the Scholarship Explorer page give users the ability to select previous and next scholarships displayed once they've clicked on a scholarship.
+- ~~Add dark theme versions of the 3D models~~
+- Look into strategies for getting user emails
+- Analyze the Scholarship List CSV file and come up with a general structure of how you are going to process all that data. 
+-  Clean up tablet and mobile views
+- Start thinking about unique tests on every single page. 
+- Add hover animations to the hero section image. 
+
+Future todos:
+- Spline performance testing: [[spline-3d-performance-testing]]
+- Web animation best practices: [[web-animation-best-practices]]
+- Explore converting to bun
+- Combine cursor **
+- On the scholarship page, look into various ways scholarships can be categorized. eg https://bold.org/scholarships/, https://bigfuture.collegeboard.org/scholarship-search 

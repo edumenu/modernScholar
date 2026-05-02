@@ -36,7 +36,7 @@ Sketch major modules to build or modify — responsibility, interface, new vs ex
 [The pain from the user's perspective.]
 
 ## Location
-1. The PRD name should be the feature name in kebab_case and should be placed in the folder matching the current date. eg. /Users/edemdumenu/Documents/Workspace/DearModernScholar/Brain/PRDs/03_28_2026/user-authentication.md
+1. The PRD name should be the feature name in kebab_case and should be placed in the folder matching the current date. eg. /Users/edemdumenu/Documents/Workspace/DearModernScholar/Brain/PRDs/03_28_2026/userAuthentication/user-authentication.md
 2. If the feature is too large for one PRD, break them into parts and place them in a different folder. For example, if the feature is "User Authentication", it can be broken down into "User Authentication - Login", "User Authentication - Signup", "User Authentication - Forgot Password", etc. "user-authentication-overview.md", "user-authentication-login.md", "user-authentication-signup.md", "user-authentication-forgot-password.md"
 
 ## Solution
