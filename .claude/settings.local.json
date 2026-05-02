@@ -183,7 +183,9 @@
       "Bash(sed 's/[$,]//g')",
       "WebFetch(domain:www.aihero.dev)",
       "Read(//Users/edemdumenu/**)",
-      "Bash(git rebase *)"
+      "Bash(git rebase *)",
+      "Bash(git pull *)",
+      "Bash(git reset *)"
     ]
   },
   "outputStyle": "Communicate in caveman compressed style (full intensity). Ultra-compressed output: ~75% fewer tokens. Drop articles, filler, transitions. Use sentence fragments. Keep ALL technical accuracy, code quality, file paths, and specifics intact. Never sacrifice correctness for brevity."
