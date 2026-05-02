@@ -103,3 +103,8 @@ The full design system is documented in `SystemDesign.md`. Key essentials:
 - Ambient tinted shadows (warm brown base, 4-6% opacity) for floating elements
 - Neumorphic shadows for buttons (light top/left, dark bottom/right)
 - CSS custom properties for shadow scale (xs through xl)
+
+# Personal notes on scripts to run:
+  1. npm run check-links — Reads MasterScholarshipList.csv, checks every URL, writes scripts/output/link-report.json
+  2. npm run scrape-scholarships — Reads link-report.json (exits with error if missing), scrapes alive URLs, writes src/data/scholarships-enriched.json
+  3. npm run tag-eligibilities — Reads scholarships-enriched.json, adds eligibilityTags via keyword matching, writes back in-place
