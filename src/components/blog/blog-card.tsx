@@ -148,7 +148,7 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
-                  animateText
+                  animateIcon
                   variant="secondary"
                   data-icon="inline-start"
                   size="xs"
@@ -173,7 +173,7 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
-                animateText
+                animateIcon
                 variant="secondary"
                 data-icon="inline-start"
                 size="xs"
