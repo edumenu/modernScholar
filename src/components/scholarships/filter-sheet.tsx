@@ -316,7 +316,7 @@ export function ActiveFilterStrip({
             exit={{ opacity: 0, scale: 0.85, x: -4 }}
             transition={{ duration: 0.12 }}
             onClick={resetAwardRange}
-            className="flex shrink-0 items-center gap-1 rounded-full bg-secondary/10 px-2.5 py-1 text-xs font-medium text-secondary-800 transition-colors hover:bg-secondary/20 dark:text-secondary-200"
+            className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-secondary/10 px-2.5 py-1 text-xs font-medium text-secondary-800 transition-colors hover:bg-secondary/20 dark:text-secondary-200"
           >
             {awardChipLabel}
             <Icon icon="solar:close-circle-linear" className="size-3.5" />
@@ -342,10 +342,10 @@ export function ActiveFilterStrip({
       <button
         type="button"
         onClick={clearAll}
-        className="shrink-0 text-xs text-on-surface/50 underline-offset-2 hover:text-on-surface hover:underline"
+        className="shrink-0 text-xs cursor-pointer text-on-surface/50 underline-offset-2 hover:text-on-surface hover:underline"
       >
         Clear all
       </button>
     </motion.div>
-  )
+  );
 }

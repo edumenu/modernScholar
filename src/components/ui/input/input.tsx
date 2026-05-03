@@ -72,6 +72,8 @@ function SearchInput({
         className={cn(
           baseInputClass,
           "[&::-webkit-search-cancel-button]:appearance-none",
+          "placeholder:transition-[font-size] placeholder:duration-200 placeholder:ease-out",
+          "focus:placeholder:text-[10px]",
           hasValue && "pr-7",
           className,
         )}

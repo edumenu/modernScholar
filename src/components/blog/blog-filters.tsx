@@ -76,7 +76,7 @@ export function BlogFilters({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Escape") onSearchChange("")
+              if (e.key === "Escape") onSearchChange("");
             }}
             placeholder="Search blogs"
             aria-label="Search blogs"
@@ -142,7 +142,7 @@ export function BlogFilters({
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {categories.map((category) => {
-                        const isActive = activeCategory === category
+                        const isActive = activeCategory === category;
                         return (
                           <Button
                             key={category}
@@ -158,7 +158,7 @@ export function BlogFilters({
                           >
                             {category}
                           </Button>
-                        )
+                        );
                       })}
                     </div>
                   </div>
@@ -174,7 +174,7 @@ export function BlogFilters({
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
