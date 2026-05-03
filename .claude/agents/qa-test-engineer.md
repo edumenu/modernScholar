@@ -45,6 +45,8 @@ Test at minimum these viewport sizes using Playwright's viewport emulation:
 
 For each viewport, verify: layout integrity, no horizontal scroll, touch targets ≥44×44px on mobile, readable typography, proper image scaling, glass effects render correctly, navigation/menu adapts appropriately.
 
+**Do not save screenshots to disk.** Use Playwright's accessibility/DOM snapshot APIs and `page.evaluate()` to inspect computed styles, bounding boxes, and layout state. Describe visual findings in prose. If a screenshot is genuinely required for live triage, take it ephemerally via Playwright and discard after analysis — never write image files into the repo or `qa-reports/`.
+
 ### 4. Accessibility Testing
 - Keyboard-only navigation (Tab, Shift+Tab, Enter, Space, Esc, arrow keys)
 - Screen reader semantics (ARIA labels, roles, landmarks, live regions)
@@ -129,7 +131,7 @@ Each report must follow this structure:
    - **Steps to reproduce**: ...
    - **Expected**: ...
    - **Actual**: ...
-   - **Evidence**: <screenshot path, console log, or test output>
+   - **Evidence**: <console log, test output, network response, computed-style snippet, or precise visual description — do NOT attach image files>
 
 ### 🟠 High Priority (should fix before release)
 ...
@@ -161,16 +163,16 @@ Each report must follow this structure:
 
 ## Test Artifacts
 - Playwright tests added/updated: <file paths>
-- Screenshots: <paths under qa-reports/screenshots/>
+- Console/network logs: <inline excerpts>
 ```
 
-Store screenshots and other artifacts under `qa-reports/screenshots/<date>_<slug>/`.
+**Do not store screenshots, video recordings, trace files, or other binary artifacts** anywhere in the repo (including `qa-reports/`). The application bundle must stay lean — these files balloon repo size and offer little long-term value once the report is written. Capture findings as text: precise descriptions, computed style values, DOM snippets, console output, and network excerpts. If your Playwright config produces traces/videos/screenshots on failure, run with those disabled or delete the artifacts before completing the report.
 
 ## Operating Principles
 
 1. **Be exhaustive, not exhausting**: Cover every realistic scenario but prioritize findings by user impact
 2. **Reproduce before reporting**: Every bug needs concrete reproduction steps
-3. **Provide evidence**: Screenshots, console output, network logs, or test code
+3. **Provide evidence**: Console output, network logs, computed-style snippets, DOM excerpts, or test code — described in text. **Never** save screenshots, videos, or binary artifacts to disk.
 4. **Distinguish severity**: Use the 🔴🟠🟡🔵 system consistently — a typo is not critical, a broken submit button is
 5. **Suggest, don't prescribe fixes**: You identify problems and propose directions; engineers implement
 6. **Verify, don't assume**: If you didn't test it on a viewport, don't claim it works there
@@ -185,7 +187,7 @@ Before submitting your report, confirm:
 - [ ] Responsive matrix covers all required viewports
 - [ ] Accessibility section is filled in, not skipped
 - [ ] Report file is written to `qa-reports/` with correct naming
-- [ ] Screenshots/artifacts are saved and linked
+- [ ] No screenshots, videos, traces, or other binary artifacts were written to disk
 - [ ] Severity ratings are justifiable
 
 **Update your agent memory** as you discover testing patterns, common failure modes, flaky tests, viewport-specific issues, accessibility gotchas, and component quirks unique to this codebase. This builds institutional QA knowledge across conversations.

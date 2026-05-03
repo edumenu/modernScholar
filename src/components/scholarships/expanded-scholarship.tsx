@@ -99,7 +99,7 @@ export function ExpandedScholarship({
                       className={cn(
                         "relative w-full shrink-0 px-8 pb-8 pt-6 md:px-12 md:pt-8 md:pb-10",
                         overlayTint.bg,
-                        overlayTint.border,
+                        // overlayTint.border,
                       )}
                     >
                       <button
@@ -263,10 +263,7 @@ export function ExpandedScholarship({
                           size="icon-sm"
                           aria-label="Share scholarship"
                         >
-                          <Icon
-                            icon="solar:share-linear"
-                            className="size-4"
-                          />
+                          <Icon icon="solar:share-linear" className="size-4" />
                         </Button>
                       </div>
                     </motion.div>

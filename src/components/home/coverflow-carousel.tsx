@@ -164,7 +164,7 @@ function CoverflowCard({
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)]",
         "group",
         tint.bg,
-        tint.border,
+        // tint.border,
       )}
     >
       {/* Header: classification badges + season micro-tag */}
@@ -264,7 +264,7 @@ function CoverflowCard({
       <div className="flex-1" />
 
       {/* Specimen name (title) + provider at the bottom */}
-      <div className="flex flex-col gap-1.5 pb-5 px-5 pt-4 text-left">
+      <div className="flex flex-col items-start justify-start gap-1.5 px-5 py-12 text-left">
         <div
           className={cn(
             "h-px w-2/3 bg-linear-to-r to-transparent transition-all duration-300 group-hover:w-full",
@@ -272,14 +272,14 @@ function CoverflowCard({
           )}
           aria-hidden="true"
         />
-        <h3
+        <h2
           className={cn(
-            "line-clamp-2 font-heading text-base font-bold leading-tight",
+            "line-clamp-2 font-heading text-xl font-bold leading-tight",
             tint.text,
           )}
         >
           {scholarship.name}
-        </h3>
+        </h2>
         <p className={cn("line-clamp-1 text-[11px] font-medium", tint.muted)}>
           {scholarship.provider}
         </p>

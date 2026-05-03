@@ -49,7 +49,7 @@ export function ScholarshipCard({
       className={cn(
         "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl",
         tint.bg,
-        tint.border,
+        // tint.border,
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)] hover:shadow-[0_12px_48px_rgba(32,26,25,0.12)]",
         "transition-shadow duration-300",
         dimmed ? "pointer-events-none saturate-50" : "cursor-pointer",

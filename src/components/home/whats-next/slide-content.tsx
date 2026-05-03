@@ -92,7 +92,7 @@ export function SlideContent({
         </h2>
 
         {/* Visual component */}
-        <div className="flex aspect-video w-full items-center justify-center overflow-hidden rounded-xl">
+        <div className="flex aspect-video w-full py-6 items-center justify-center overflow-hidden rounded-xl">
           <PanelVisual visual={panel.visual} />
         </div>
       </motion.div>

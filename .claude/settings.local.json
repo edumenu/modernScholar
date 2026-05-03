@@ -186,7 +186,9 @@
       "Bash(git rebase *)",
       "Bash(git pull *)",
       "Bash(git reset *)",
-      "Bash(wait)"
+      "Bash(wait)",
+      "Bash(/usr/bin/python3 *)",
+      "mcp__playwright__browser_type"
     ]
   },
   "outputStyle": "Communicate in caveman compressed style (full intensity). Ultra-compressed output: ~75% fewer tokens. Drop articles, filler, transitions. Use sentence fragments. Keep ALL technical accuracy, code quality, file paths, and specifics intact. Never sacrifice correctness for brevity."
