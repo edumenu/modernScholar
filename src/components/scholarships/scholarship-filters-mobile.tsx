@@ -54,13 +54,16 @@ export function ScholarshipFiltersMobile({
 
   const isAwardRangeActive =
     filters.awardRange[0] !== AWARD_MIN || filters.awardRange[1] !== AWARD_MAX
+  const hasSearch = filters.searchQuery.trim().length > 0
   const hasActiveFilters =
+    hasSearch ||
     filters.activeFilter !== "All" ||
     filters.sortBy !== "deadline" ||
     filters.selectedTags.length > 0 ||
     isAwardRangeActive
 
   const filterBadgeCount =
+    (hasSearch ? 1 : 0) +
     (filters.activeFilter !== "All" ? 1 : 0) +
     (filters.sortBy !== "deadline" ? 1 : 0) +
     filters.selectedTags.length +
@@ -107,7 +110,7 @@ export function ScholarshipFiltersMobile({
         <div className="flex items-center gap-1 rounded-full bg-white/30 p-1 dark:bg-white/10">
           <Button
             variant="ghost"
-            size="icon-sm"
+            size="icon"
             aria-label="Grid layout"
             aria-pressed={filters.layout === "grid"}
             onClick={() => filters.setLayout("grid")}
@@ -122,7 +125,7 @@ export function ScholarshipFiltersMobile({
           </Button>
           <Button
             variant="ghost"
-            size="icon-sm"
+            size="icon"
             aria-label="List layout"
             aria-pressed={filters.layout === "list"}
             onClick={() => filters.setLayout("list")}
@@ -152,7 +155,7 @@ export function ScholarshipFiltersMobile({
               render={
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="default"
                   className="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
                 />
               }
@@ -336,7 +339,7 @@ export function ScholarshipFiltersMobile({
                           type="button"
                           onClick={() => filters.setSortBy(value)}
                           className={cn(
-                            "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                            "min-h-11 rounded-full px-5 py-3 text-sm font-medium transition-colors",
                             isActive
                               ? "bg-primary text-on-primary"
                               : "bg-white/20 text-on-surface/60 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/15",

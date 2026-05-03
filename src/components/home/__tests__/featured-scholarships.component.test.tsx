@@ -165,7 +165,7 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     expect(centerButton).toBeDefined();
     fireEvent.click(centerButton!);
 
-    expect(mockPush).toHaveBeenCalledWith("/scholarships?q=engebretson-foundation-scholarship-march-1");
+    expect(mockPush).toHaveBeenCalledWith("/scholarships?q=Engebretson%20Foundation%20Scholarship");
   });
 
   it("rotates side card to center on click instead of navigating", async () => {

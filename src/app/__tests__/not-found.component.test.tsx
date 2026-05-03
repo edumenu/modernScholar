@@ -27,9 +27,9 @@ describe("Not Found page", () => {
     const { default: NotFound } = await import("../not-found")
     render(<NotFound />)
 
-    expect(screen.getByText("404")).toBeInTheDocument()
+    expect(screen.getByText(/error 404/i)).toBeInTheDocument()
     expect(
-      screen.getByRole("heading", { name: /this page doesn't exist/i }),
+      screen.getByRole("heading", { name: /turned the page/i }),
     ).toBeInTheDocument()
   })
 

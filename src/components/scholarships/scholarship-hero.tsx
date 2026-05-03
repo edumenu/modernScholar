@@ -8,6 +8,7 @@ import {
   isScholarshipVisible,
   parseAwardAmount,
 } from "@/data/scholarships"
+import { ScholarshipHeroStats } from "./scholarship-hero-stats"
 
 const now = new Date()
 const currentSeason = getCurrentSeason(now)
@@ -68,19 +69,12 @@ export function ScholarshipHero() {
           </p>
         </AnimatedSection>
         {totalScholarships > 0 && (
-          <AnimatedSection delay={0.1}>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-on-surface-variant md:text-sm">
-              <span>{totalScholarships} scholarships</span>
-              <span>{educationLevelsCount} education levels</span>
-              {maxAmount && <span>Up to {maxAmount}</span>}
-              {deadlinesThisMonth > 0 && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/15 px-3 py-0.5 text-xs font-medium text-tertiary md:text-sm">
-                  {deadlinesThisMonth} deadline
-                  {deadlinesThisMonth !== 1 ? "s" : ""} this month
-                </span>
-              )}
-            </div>
-          </AnimatedSection>
+          <ScholarshipHeroStats
+            totalScholarships={totalScholarships}
+            educationLevelsCount={educationLevelsCount}
+            maxAmount={maxAmount}
+            deadlinesThisMonth={deadlinesThisMonth}
+          />
         )}
       </div>
     </>

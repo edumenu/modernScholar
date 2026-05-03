@@ -52,7 +52,7 @@ describe("parseAwardAmount", () => {
     expect(parseAwardAmount("$10,000")).toBe(10000)
   })
 
-  it("parses complex award string (first dollar amount)", () => {
+  it("parses complex award string with single dollar amount", () => {
     expect(parseAwardAmount("105 scholarships at $25,000 each")).toBe(25000)
   })
 
@@ -62,6 +62,11 @@ describe("parseAwardAmount", () => {
 
   it("parses small amounts", () => {
     expect(parseAwardAmount("$500")).toBe(500)
+  })
+
+  it("returns the largest amount when multiple are present", () => {
+    expect(parseAwardAmount("$5,000 per year (Total: $20,000)")).toBe(20000)
+    expect(parseAwardAmount("$2,000 to $7,500")).toBe(7500)
   })
 })
 
@@ -91,7 +96,7 @@ describe("CLASSIFICATION_TINTS", () => {
 describe("getClassificationTint", () => {
   it("returns tint based on first classification", () => {
     const tint = getClassificationTint(["Graduate", "Undergraduate"])
-    expect(tint.bg).toBe("bg-surface-container-low")
+    expect(tint.bg).toBe("bg-white dark:bg-surface-container-low")
     expect(tint.border).toBe("border-t-4 border-tertiary-600")
     expect(tint.text).toBe("text-on-surface")
   })

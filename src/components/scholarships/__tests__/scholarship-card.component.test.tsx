@@ -12,16 +12,33 @@ vi.mock("@/stores/comparison", () => ({
   }),
 }))
 
-// Mock motion to render static elements
+// Mock motion to render static elements. Forward `animate` as a serialized
+// data attribute so tests can introspect target opacity/transforms without
+// running the actual animation runtime.
 vi.mock("motion/react", () => ({
   motion: {
-    article: ({ children, className, onClick, ...rest }: React.ComponentProps<"article"> & Record<string, unknown>) => (
-      <article className={className as string} onClick={onClick} data-testid="card-root" {...rest}>
+    article: ({
+      children,
+      className,
+      onClick,
+      animate,
+      whileHover: _whileHover,
+      transition: _transition,
+      layoutId: _layoutId,
+      ...rest
+    }: React.ComponentProps<"article"> & Record<string, unknown>) => (
+      <article
+        className={className as string}
+        onClick={onClick}
+        data-testid="card-root"
+        data-animate={animate ? JSON.stringify(animate) : undefined}
+        {...(rest as React.HTMLAttributes<HTMLElement>)}
+      >
         {children}
       </article>
     ),
     span: ({ children, className, style, ...rest }: React.ComponentProps<"span"> & Record<string, unknown>) => (
-      <span className={className as string} style={style} {...rest}>{children}</span>
+      <span className={className as string} style={style} {...(rest as React.HTMLAttributes<HTMLElement>)}>{children}</span>
     ),
   },
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
@@ -50,7 +67,17 @@ describe("ScholarshipCard", () => {
     expect(screen.getByText("Test Scholarship")).toBeInTheDocument()
     expect(screen.getByText("Test Foundation")).toBeInTheDocument()
     expect(screen.getByText("$10,000")).toBeInTheDocument()
-    expect(screen.getByText("Deadline March 1")).toBeInTheDocument()
+    // Deadline renders inside a <span> with interpolated children — narrow the
+    // matcher to the SPAN tag to avoid double-matching the wrapping <div>.
+    expect(
+      screen.getByText((_, node) => {
+        if (node?.tagName !== "SPAN") return false
+        return (
+          node.textContent?.replace(/\s+/g, " ").trim() ===
+          "Deadline March 1, 2027"
+        )
+      }),
+    ).toBeInTheDocument()
     expect(screen.getByText("A test scholarship for students.")).toBeInTheDocument()
   })
 
@@ -76,33 +103,31 @@ describe("ScholarshipCard", () => {
     expect(screen.getByLabelText("View details for Test Scholarship")).toBeInTheDocument()
   })
 
-  it("applies neutral background with classification accent stripe", () => {
+  it("applies neutral surface tint regardless of classification", () => {
     const { container } = render(
       <ScholarshipCard scholarship={baseScholarship} onExpand={() => {}} />,
     )
     const card = container.querySelector("[data-testid='card-root']")
-    // All cards use neutral surface background
-    expect(card?.className).toContain("bg-surface-container-low")
-    // Undergraduate uses secondary-600 border stripe
-    expect(card?.className).toContain("border-secondary-600")
+    expect(card?.className).toContain("bg-white")
+    expect(card?.className).toContain("dark:bg-surface-container-low")
   })
 
-  it("applies primary border stripe for High School", () => {
+  it("uses the same surface tint for High School cards", () => {
     const hs = { ...baseScholarship, classification: ["High School"] as Scholarship["classification"] }
     const { container } = render(
       <ScholarshipCard scholarship={hs} onExpand={() => {}} />,
     )
     const card = container.querySelector("[data-testid='card-root']")
-    expect(card?.className).toContain("border-primary-400")
+    expect(card?.className).toContain("bg-white")
   })
 
-  it("applies tertiary border stripe for Graduate", () => {
+  it("uses the same surface tint for Graduate cards", () => {
     const grad = { ...baseScholarship, classification: ["Graduate"] as Scholarship["classification"] }
     const { container } = render(
       <ScholarshipCard scholarship={grad} onExpand={() => {}} />,
     )
     const card = container.querySelector("[data-testid='card-root']")
-    expect(card?.className).toContain("border-tertiary-600")
+    expect(card?.className).toContain("bg-white")
   })
 
   it("calls onExpand with scholarship id on click", async () => {
@@ -155,11 +180,13 @@ describe("ScholarshipCard", () => {
     expect(title.className).toContain("line-clamp-2")
   })
 
-  it("adds invisible class when isExpanded", () => {
+  it("animates to opacity 0 when isExpanded", () => {
     const { container } = render(
       <ScholarshipCard scholarship={baseScholarship} isExpanded onExpand={() => {}} />,
     )
     const card = container.querySelector("[data-testid='card-root']")
-    expect(card?.className).toContain("invisible")
+    const animate = card?.getAttribute("data-animate")
+    expect(animate).toBeTruthy()
+    expect(JSON.parse(animate!)).toMatchObject({ opacity: 0 })
   })
 })

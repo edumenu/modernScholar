@@ -169,7 +169,9 @@ export function ScholarshipCard({
         )}
       >
         <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
-        <span>Deadline {scholarship.deadline}</span>
+        <span>
+          Deadline {scholarship.deadline}, {scholarship.deadlineYear}
+        </span>
       </div>
 
       {/* Description */}

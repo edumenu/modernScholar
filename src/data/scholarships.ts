@@ -82,11 +82,18 @@ export function getSeasonalScholarships(
   return allScholarships.filter((s) => isScholarshipVisible(s, season, referenceDate))
 }
 
-/** Parse first dollar amount from a free-text award string: "$10,000" → 10000 */
+/** Parse the largest dollar amount from a free-text award string.
+ *  "$5,000 per year (Total: $20,000)" → 20000, "$2,000 to $7,500" → 7500.
+ *  Returns 0 when no `$N` token is present (e.g. "Varies"). */
 export function parseAwardAmount(awardAmount: string): number {
-  const match = awardAmount.match(/\$[\d,]+/)
-  if (!match) return 0
-  return Number(match[0].replace(/[$,]/g, "")) || 0
+  const matches = awardAmount.match(/\$[\d,]+/g)
+  if (!matches) return 0
+  let max = 0
+  for (const m of matches) {
+    const n = Number(m.replace(/[$,]/g, "")) || 0
+    if (n > max) max = n
+  }
+  return max
 }
 
 /** Classification-driven accent stripe + neutral card surface for WCAG-AA contrast */

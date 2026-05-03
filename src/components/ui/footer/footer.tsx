@@ -92,14 +92,13 @@ function FooterContent() {
       {/* Bottom bar */}
       <div className="flex flex-col gap-4 border-t border-outline-variant/20 pt-6 lg:flex-row md:items-center lg:justify-between">
         <p className="text-sm text-on-surface-variant">
-          &copy; {new Date().getFullYear()} Modern Scholar. All rights
-          reserved.
+          &copy; {new Date().getFullYear()} Modern Scholar. All rights reserved.
         </p>
       </div>
 
       {/* Large decorative brand text */}
       <div>
-        <p className="font-heading text-[clamp(2rem,8vw,5rem)] font-bold leading-none tracking-tighter text-on-surface/8">
+        <p className="font-heading text-[clamp(8rem,10vw,10rem)] font-bold leading-none tracking-tighter text-on-surface/8">
           Modern Scholar
         </p>
       </div>

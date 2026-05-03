@@ -27,9 +27,10 @@ describe("Error page", () => {
     render(<ErrorPage error={new Error("test")} reset={reset} />)
 
     expect(
-      screen.getByRole("heading", { name: /something went wrong/i }),
+      screen.getByRole("heading", { name: /unexpected hiccup/i }),
     ).toBeInTheDocument()
-    expect(screen.getByText(/unexpected error/i)).toBeInTheDocument()
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument()
+    expect(screen.getByText(/recover from/i)).toBeInTheDocument()
   })
 
   it("renders Try Again button that calls reset", async () => {

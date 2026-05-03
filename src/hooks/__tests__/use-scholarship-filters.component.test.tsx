@@ -362,7 +362,7 @@ describe("useScholarshipFilters", () => {
       expect(result.current.hasActiveFilters).toBe(false)
     })
 
-    it("does NOT reset layout", () => {
+    it("resets layout back to grid", () => {
       const { result } = renderHook(
         () => useScholarshipFilters({ scholarships: fixtures }),
         { wrapper: wrapper("") },
@@ -375,7 +375,7 @@ describe("useScholarshipFilters", () => {
         result.current.clearAll()
       })
 
-      expect(result.current.layout).toBe("list")
+      expect(result.current.layout).toBe("grid")
     })
   })
 })

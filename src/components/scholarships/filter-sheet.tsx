@@ -15,6 +15,7 @@ import {
 import {
   AWARD_MIN,
   AWARD_MAX,
+  type EducationLevelFilter,
   type Scholarship,
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
@@ -257,20 +258,44 @@ export function FilterSheet({
   )
 }
 
-/** Active filter strip showing selected eligibility tags and award range as removable chips.
- *  Parent must wrap in AnimatePresence and conditionally render for exit animation. */
+const SORT_LABELS: Record<string, string> = {
+  deadline: "Deadline",
+  amount: "Amount",
+}
+
+/** Active filter strip showing every active filter (search, level, sort, award range, tags)
+ *  as removable chips. Parent must wrap in AnimatePresence and conditionally render. */
 export function ActiveFilterStrip({
+  searchQuery,
+  onSearchClear,
+  level,
+  onLevelClear,
+  sortBy,
+  onSortClear,
   selectedTags,
   onTagsChange,
   awardRange,
   onAwardRangeChange,
+  onClearAll,
 }: {
+  searchQuery: string
+  onSearchClear: () => void
+  level: EducationLevelFilter
+  onLevelClear: () => void
+  sortBy: string
+  onSortClear: () => void
   selectedTags: Tag[]
   onTagsChange: (tags: Tag[]) => void
   awardRange: [number, number]
   onAwardRangeChange: (range: [number, number]) => void
+  onClearAll: () => void
 }) {
-  const isAwardRangeActive = awardRange[0] !== AWARD_MIN || awardRange[1] !== AWARD_MAX
+  const trimmedQuery = searchQuery.trim()
+  const hasSearch = trimmedQuery.length > 0
+  const hasLevel = level !== "All"
+  const hasSort = sortBy !== "deadline"
+  const isAwardRangeActive =
+    awardRange[0] !== AWARD_MIN || awardRange[1] !== AWARD_MAX
 
   const removeTag = useCallback(
     (tag: Tag) => onTagsChange(selectedTags.filter((t) => t !== tag)),
@@ -282,16 +307,12 @@ export function ActiveFilterStrip({
     [onAwardRangeChange],
   )
 
-  const clearAll = useCallback(() => {
-    onTagsChange([])
-    onAwardRangeChange([AWARD_MIN, AWARD_MAX])
-  }, [onTagsChange, onAwardRangeChange])
-
   const awardChipLabel = useMemo((): string => {
     const fmt = (v: number) => `$${v.toLocaleString("en-US")}`
     const minChanged = awardRange[0] !== AWARD_MIN
     const maxChanged = awardRange[1] !== AWARD_MAX
-    if (minChanged && maxChanged) return `${fmt(awardRange[0])} – ${fmt(awardRange[1])}`
+    if (minChanged && maxChanged)
+      return `${fmt(awardRange[0])} – ${fmt(awardRange[1])}`
     if (minChanged) return `Min ${fmt(awardRange[0])}`
     return `Max ${fmt(awardRange[1])}`
   }, [awardRange])
@@ -306,6 +327,59 @@ export function ActiveFilterStrip({
     >
       <span className="shrink-0 text-xs text-on-surface/40">Filtered by:</span>
       <AnimatePresence mode="popLayout">
+        {hasSearch && (
+          <motion.button
+            key="search-query"
+            type="button"
+            layout
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85, x: -4 }}
+            transition={{ duration: 0.12 }}
+            onClick={onSearchClear}
+            aria-label={`Clear search "${trimmedQuery}"`}
+            className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary-800 transition-colors hover:bg-primary/20 dark:text-primary-200"
+          >
+            <span className="max-w-[16ch] truncate">
+              &ldquo;{trimmedQuery}&rdquo;
+            </span>
+            <Icon icon="solar:close-circle-linear" className="size-3.5" />
+          </motion.button>
+        )}
+        {hasLevel && (
+          <motion.button
+            key="active-level"
+            type="button"
+            layout
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85, x: -4 }}
+            transition={{ duration: 0.12 }}
+            onClick={onLevelClear}
+            aria-label={`Clear ${level} education level`}
+            className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-tertiary/10 px-2.5 py-1 text-xs font-medium text-tertiary-800 transition-colors hover:bg-tertiary/20 dark:text-tertiary-200"
+          >
+            {level}
+            <Icon icon="solar:close-circle-linear" className="size-3.5" />
+          </motion.button>
+        )}
+        {hasSort && (
+          <motion.button
+            key="active-sort"
+            type="button"
+            layout
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85, x: -4 }}
+            transition={{ duration: 0.12 }}
+            onClick={onSortClear}
+            aria-label="Reset sort to default"
+            className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-on-surface/10 px-2.5 py-1 text-xs font-medium text-on-surface transition-colors hover:bg-on-surface/15"
+          >
+            Sort: {SORT_LABELS[sortBy] ?? sortBy}
+            <Icon icon="solar:close-circle-linear" className="size-3.5" />
+          </motion.button>
+        )}
         {isAwardRangeActive && (
           <motion.button
             key="award-range"
@@ -341,7 +415,7 @@ export function ActiveFilterStrip({
       </AnimatePresence>
       <button
         type="button"
-        onClick={clearAll}
+        onClick={onClearAll}
         className="shrink-0 text-xs cursor-pointer text-on-surface/50 underline-offset-2 hover:text-on-surface hover:underline"
       >
         Clear all

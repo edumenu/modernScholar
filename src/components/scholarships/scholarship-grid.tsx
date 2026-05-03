@@ -145,6 +145,22 @@ export function ScholarshipGrid() {
     filters.activeFilter !== "All" &&
     sortedItems.filter((i) => i.matches).length === 0
 
+  // Detect "all-dimmed page": every visible card is dimmed but matches exist
+  // elsewhere — surface a Jump-to-page-N banner so users don't read this as
+  // a broken filter.
+  const allOnPageDimmed =
+    visibleItems.length > 0 && visibleItems.every((i) => !i.matches)
+  const firstMatchingIdx = sortedItems.findIndex((i) => i.matches)
+  const firstMatchingPage =
+    firstMatchingIdx >= 0
+      ? Math.floor(firstMatchingIdx / PAGE_SIZE) + 1
+      : null
+  const showDimmedPageBanner =
+    allOnPageDimmed &&
+    resultCount > 0 &&
+    firstMatchingPage !== null &&
+    firstMatchingPage !== safePage
+
   return (
     <div
       id="scholarship-grid-top"
@@ -158,15 +174,25 @@ export function ScholarshipGrid() {
 
       {/* Active filter strip */}
       <AnimatePresence>
-        {(filters.selectedTags.length > 0 ||
+        {(filters.searchQuery !== "" ||
+          filters.activeFilter !== "All" ||
+          filters.sortBy !== "deadline" ||
+          filters.selectedTags.length > 0 ||
           filters.awardRange[0] !== AWARD_MIN ||
           filters.awardRange[1] !== AWARD_MAX) && (
           <ActiveFilterStrip
             key="active-filter-strip"
+            searchQuery={filters.searchQuery}
+            onSearchClear={() => filters.setSearchQuery("")}
+            level={filters.activeFilter}
+            onLevelClear={() => filters.setActiveFilter("All")}
+            sortBy={filters.sortBy}
+            onSortClear={() => filters.setSortBy("deadline")}
             selectedTags={filters.selectedTags}
             onTagsChange={filters.setSelectedTags}
             awardRange={filters.awardRange}
             onAwardRangeChange={filters.setAwardRange}
+            onClearAll={filters.clearAll}
           />
         )}
       </AnimatePresence>
@@ -224,6 +250,27 @@ export function ScholarshipGrid() {
               No {filters.activeFilter} scholarships this {seasonLabel.toLowerCase()}.
               New scholarships are added each season — check back in{" "}
               {nextSeasonLabel}!
+            </motion.div>
+          )}
+
+          {/* All-dimmed page hint */}
+          {showDimmedPageBanner && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-col items-center justify-center gap-3 rounded-xl bg-surface-container-low/60 px-6 py-4 text-center text-sm text-on-surface-variant sm:flex-row sm:justify-between sm:text-left"
+              role="status"
+            >
+              <span>
+                None of the scholarships on this page match your current filters.
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => goToPage(firstMatchingPage)}
+              >
+                Jump to page {firstMatchingPage}
+              </Button>
             </motion.div>
           )}
 

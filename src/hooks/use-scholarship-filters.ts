@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useEffect, useMemo, useCallback } from "react"
 import {
   useQueryState,
   parseAsInteger,
@@ -16,6 +16,12 @@ import {
 } from "@/data/scholarships"
 import { ALL_TAGS, type Tag } from "@/lib/eligibility"
 import type { GridLayout } from "@/components/scholarships/scholarship-filters"
+
+const VALID_SORTS = ["deadline", "amount"] as const
+type SortValue = (typeof VALID_SORTS)[number]
+
+const VALID_LAYOUTS = ["grid", "list"] as const
+type LayoutValue = (typeof VALID_LAYOUTS)[number]
 
 export type ScholarshipFiltersValue = {
   activeFilter: EducationLevelFilter
@@ -71,10 +77,13 @@ export function useScholarshipFilters(args: {
     "max",
     parseAsInteger.withDefault(AWARD_MAX),
   )
-
-  const [layout, setLayout] = useState<GridLayout>("grid")
+  const [layoutUrl, setLayoutUrl] = useQueryState(
+    "layout",
+    parseAsString.withDefault("grid"),
+  )
 
   const activeFilter = activeFilterUrl as EducationLevelFilter
+  const layout: GridLayout = layoutUrl === "list" ? "list" : "grid"
 
   const selectedTags = useMemo<Tag[]>(
     // .includes() can't narrow t: string against a readonly Tag tuple; the cast
@@ -118,6 +127,36 @@ export function useScholarshipFilters(args: {
     awardRange[0] !== AWARD_MIN ||
     awardRange[1] !== AWARD_MAX
 
+  // Mount-only sanitization: drop unknown levels/sorts/layouts, clamp + swap
+  // inverted ranges, prune unknown tags. Nuqs setters call router.replace, so
+  // shared links are rewritten without a navigation. Subsequent user input
+  // flows through the typed setters so this only needs to fire once.
+  useEffect(() => {
+    if (
+      !(EDUCATION_LEVELS as readonly string[]).includes(activeFilterUrl)
+    ) {
+      setActiveFilterUrl(null)
+    }
+    if (!(VALID_SORTS as readonly string[]).includes(sortByUrl)) {
+      setSortByUrl(null)
+    }
+    if (!(VALID_LAYOUTS as readonly string[]).includes(layoutUrl)) {
+      setLayoutUrl(null)
+    }
+    const cMin = Math.max(AWARD_MIN, Math.min(AWARD_MAX, minUrl))
+    const cMax = Math.max(AWARD_MIN, Math.min(AWARD_MAX, maxUrl))
+    const [lo, hi] = cMin > cMax ? [cMax, cMin] : [cMin, cMax]
+    if (lo !== minUrl) setMinUrl(lo === AWARD_MIN ? null : lo)
+    if (hi !== maxUrl) setMaxUrl(hi === AWARD_MAX ? null : hi)
+    const validTags = tagsUrl.filter((t) =>
+      (ALL_TAGS as readonly string[]).includes(t),
+    )
+    if (validTags.length !== tagsUrl.length) {
+      setTagsUrl(validTags.length === 0 ? null : validTags)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const runFilterUpdate = useCallback(
     (apply: () => void) => {
       if (onFilterChangeWhileExpanded) {
@@ -153,7 +192,10 @@ export function useScholarshipFilters(args: {
   const setSortBy = useCallback(
     (sort: string) => {
       runFilterUpdate(() => {
-        setSortByUrl(sort === "deadline" ? null : sort)
+        const next = (VALID_SORTS as readonly string[]).includes(sort)
+          ? (sort as SortValue)
+          : "deadline"
+        setSortByUrl(next === "deadline" ? null : next)
         setPageUrl(null)
       })
     },
@@ -190,6 +232,14 @@ export function useScholarshipFilters(args: {
     [setPageUrl],
   )
 
+  const setLayout = useCallback(
+    (next: GridLayout) => {
+      const validated: LayoutValue = next === "list" ? "list" : "grid"
+      setLayoutUrl(validated === "grid" ? null : validated)
+    },
+    [setLayoutUrl],
+  )
+
   const clearAll = useCallback(() => {
     setActiveFilterUrl(null)
     setSearchQueryUrl(null)
@@ -198,6 +248,7 @@ export function useScholarshipFilters(args: {
     setMinUrl(null)
     setMaxUrl(null)
     setPageUrl(null)
+    setLayoutUrl(null)
   }, [
     setActiveFilterUrl,
     setSearchQueryUrl,
@@ -206,6 +257,7 @@ export function useScholarshipFilters(args: {
     setMinUrl,
     setMaxUrl,
     setPageUrl,
+    setLayoutUrl,
   ])
 
   return {

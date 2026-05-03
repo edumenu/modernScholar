@@ -32,13 +32,12 @@ const CLASSIFICATION_TINT_MAP: Record<
   "K-12": { idle: "bg-secondary/8", hover: "group-hover/row:bg-secondary/10" },
 };
 
-function formatDeadlineShort(deadline: string): string {
+function formatDeadlineShort(deadline: string, year: number): string {
   const parts = deadline.split(" ")
   if (parts.length >= 2) {
-    const month = parts[0].slice(0, 3)
-    return `${month} ${parts[1]}`
+    return `${parts[0].slice(0, 3)} ${parts[1]}, ${year}`
   }
-  return deadline
+  return `${deadline}, ${year}`
 }
 
 export function ScholarshipListCardSpread({
@@ -64,7 +63,7 @@ export function ScholarshipListCardSpread({
         if (!dimmed) onExpand(scholarship.id);
       }}
       aria-labelledby={`list-card-title-${scholarship.id}`}
-      {...(dimmed ? { inert: "" as unknown as boolean } : {})}
+      inert={dimmed}
     >
       {/* Left zone — tinted panel with classification + amount */}
       <div
@@ -132,7 +131,7 @@ export function ScholarshipListCardSpread({
           </span>
           <span className="flex items-center gap-1">
             <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
-            {formatDeadlineShort(scholarship.deadline)}
+            {formatDeadlineShort(scholarship.deadline, scholarship.deadlineYear)}
           </span>
         </div>
 

@@ -51,8 +51,8 @@ function ThemeToggleInner({ className }: { className?: string }) {
       onClick={handleToggle}
       className={cn(
         "relative flex h-8 w-16 cursor-pointer items-center rounded-full p-0.5",
-        "shadow-[inset_3px_3px_6px_rgba(0,0,0,0.1),inset_-1px_-1px_2px_rgba(255,255,255,0.9)]",
-        "dark:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.3),inset_-1px_-1px_2px_rgba(255,255,255,0.05)]",
+        "shadow-[inset_1px_1px_2px_rgba(0,0,0,0.1),inset_-1px_-1px_2px_rgba(255,255,255,0.9)]",
+        "dark:shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3),inset_-1px_-1px_2px_rgba(255,255,255,0.05)]",
         className,
       )}
     >
@@ -74,8 +74,8 @@ function ThemeToggleInner({ className }: { className?: string }) {
         transition={{ type: "spring", stiffness: 200, damping: 35 }}
         className={cn(
           "relative z-10 flex size-7 items-center justify-center rounded-full",
-          "bg-surface-container-low shadow-[3px_3px_6px_rgba(0,0,0,0.15),-3px_-3px_6px_rgba(255,255,255,0.9)]",
-          "dark:bg-surface-container-high dark:shadow-[3px_3px_6px_rgba(0,0,0,0.3),-3px_-3px_6px_rgba(255,255,255,0.05)]",
+          "bg-surface-container-low shadow-[1px_1px_2px_rgba(0,0,0,0.15),-3px_-3px_6px_rgba(255,255,255,0.9)]",
+          "dark:bg-surface-container-high dark:shadow-[1px_1px_2px_rgba(0,0,0,0.3),-3px_-3px_6px_rgba(255,255,255,0.05)]",
         )}
       >
         <AnimatePresence mode="wait" initial={false}>
