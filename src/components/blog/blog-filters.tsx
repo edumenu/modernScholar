@@ -234,28 +234,32 @@ export function BlogFilters({
               : "text-on-surface/60 dark:text-white/50",
           )}
         />
-        <Input
-          ref={inputRef}
-          type="search"
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-          onFocus={() => setSearchOpen(true)}
-          onBlur={() => {
-            if (!searchQuery) setSearchOpen(false);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Escape") {
-              onSearchChange("");
-              inputRef.current?.blur();
-            }
-          }}
-          placeholder="Search blogs"
-          aria-label="Search blogs"
+        <div
           className={cn(
-            "h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0",
-            !searchOpen && "w-0",
+            "flex min-w-0 items-center overflow-hidden",
+            searchOpen ? "flex-1" : "w-0",
           )}
-        />
+        >
+          <Input
+            ref={inputRef}
+            type="search"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            onFocus={() => setSearchOpen(true)}
+            onBlur={() => {
+              if (!searchQuery) setSearchOpen(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                onSearchChange("");
+                inputRef.current?.blur();
+              }
+            }}
+            placeholder="Search blogs"
+            aria-label="Search blogs"
+            className="h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0"
+          />
+        </div>
       </motion.div>
     </div>
   );

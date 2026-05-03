@@ -70,6 +70,16 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             onError={() => setImgError(true)}
           />
+          {/* Soft primary tint — single light multiply pass */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 mix-blend-multiply bg-primary/20"
+          />
+          {/* Subtle bottom anchor */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-primary-900/65"
+          />
         </div>
 
         <div className="flex flex-1 flex-col p-6">
