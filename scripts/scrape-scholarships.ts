@@ -3,6 +3,7 @@ import fs from "fs"
 import path from "path"
 
 import { classify } from "@/lib/eligibility"
+import { getCurrentSeason } from "@/lib/seasons"
 import {
   generateSlug,
   deriveSeason,
@@ -12,7 +13,6 @@ import {
   formatProviderFromDomain,
   parseCsv,
   cleanUrl,
-  getCurrentSeason,
   generateDescription,
   type LinkReport,
   type EnrichedScholarship,

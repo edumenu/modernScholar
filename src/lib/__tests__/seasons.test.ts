@@ -37,19 +37,19 @@ describe("seasonForMonthName", () => {
     expect(seasonForMonthName("DECEMBER")).toBe("winter")
   })
 
-  it("returns winter for uppercase 'March'", () => {
+  it("returns spring for uppercase 'MARCH'", () => {
     expect(seasonForMonthName("MARCH")).toBe("spring")
   })
 
-  it("returns winter for uppercase 'May'", () => {
+  it("returns spring for uppercase 'MAY'", () => {
     expect(seasonForMonthName("MAY")).toBe("spring")
   })
 
-  it("returns winter for uppercase 'june'", () => {
+  it("returns summer for uppercase 'JUNE'", () => {
     expect(seasonForMonthName("JUNE")).toBe("summer")
   })
 
-  it("returns winter for uppercase 'august'", () => {
+  it("returns summer for uppercase 'AUGUST'", () => {
     expect(seasonForMonthName("AUGUST")).toBe("summer")
   })
 

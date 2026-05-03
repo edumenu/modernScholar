@@ -1,13 +1,12 @@
 "use client"
 
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState } from "react";
 import { motion, LayoutGroup } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   EDUCATION_LEVELS,
-  type EducationLevelFilter,
   type Scholarship,
 } from "@/data/scholarships";
 import { Button } from "@/components/ui/button/button"
@@ -23,68 +22,25 @@ import {
 import { Input } from "@/components/ui/input/input"
 import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile";
 import { FilterSheet } from "./filter-sheet";
+import type { ScholarshipFiltersValue } from "@/hooks/use-scholarship-filters"
 
 export type GridLayout = "grid" | "list"
 
 interface ScholarshipFiltersProps {
-  activeFilter: EducationLevelFilter;
-  onFilterChange: (level: EducationLevelFilter) => void;
-  layout: GridLayout;
-  onLayoutChange: (layout: GridLayout) => void;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
-  sortBy: string;
-  onSortByChange: (sort: string) => void;
-  resultCount: number;
-  seasonalScholarships: Scholarship[];
-  eligibilityTags: string[];
-  onEligibilityTagsChange: (tags: string[]) => void;
-  awardRange: [number, number];
-  onAwardRangeChange: (range: [number, number]) => void;
-  filteredCount: number;
+  filters: ScholarshipFiltersValue
+  resultCount: number
+  seasonalScholarships: Scholarship[]
 }
 
 export function ScholarshipFilters({
-  activeFilter,
-  onFilterChange,
-  layout,
-  onLayoutChange,
-  searchQuery,
-  onSearchChange,
-  sortBy,
-  onSortByChange,
+  filters,
   resultCount,
   seasonalScholarships,
-  eligibilityTags,
-  onEligibilityTagsChange,
-  awardRange,
-  onAwardRangeChange,
-  filteredCount,
 }: ScholarshipFiltersProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchOpen, setSearchOpen] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1023px)");
-
-  // Memoized: only recomputes when the seasonal scholarship list changes
-  const levelCounts = useMemo(
-    () =>
-      EDUCATION_LEVELS.reduce(
-        (acc, level) => {
-          acc[level] =
-            level === "All"
-              ? seasonalScholarships.length
-              : seasonalScholarships.filter((s) =>
-                  s.classification.includes(
-                    level as Exclude<EducationLevelFilter, "All">,
-                  ),
-                ).length;
-          return acc;
-        },
-        {} as Record<EducationLevelFilter, number>,
-      ),
-    [seasonalScholarships],
-  );
 
   if (isMobile === null) {
     return <div className="min-h-24" />;
@@ -93,19 +49,9 @@ export function ScholarshipFilters({
   if (isMobile) {
     return (
       <ScholarshipFiltersMobile
-        activeFilter={activeFilter}
-        onFilterChange={onFilterChange}
-        layout={layout}
-        onLayoutChange={onLayoutChange}
-        searchQuery={searchQuery}
-        onSearchChange={onSearchChange}
-        sortBy={sortBy}
-        onSortByChange={onSortByChange}
+        filters={filters}
         resultCount={resultCount}
-        eligibilityTags={eligibilityTags}
-        onEligibilityTagsChange={onEligibilityTagsChange}
-        awardRange={awardRange}
-        onAwardRangeChange={onAwardRangeChange}
+        seasonalScholarships={seasonalScholarships}
       />
     );
   }
@@ -123,8 +69,8 @@ export function ScholarshipFilters({
               aria-label="Filter by education level"
             >
               {EDUCATION_LEVELS.map((level) => {
-                const isActive = activeFilter === level;
-                const count = levelCounts[level];
+                const isActive = filters.activeFilter === level;
+                const count = filters.levelCounts[level];
                 return (
                   <div key={level} className="relative">
                     {isActive && (
@@ -141,7 +87,7 @@ export function ScholarshipFilters({
                     <Button
                       variant={isActive ? "default" : "ghost"}
                       size="sm"
-                      onClick={() => onFilterChange(level)}
+                      onClick={() => filters.setActiveFilter(level)}
                       aria-pressed={isActive}
                       className={cn(
                         "relative z-1 text-sm md:text-base",
@@ -191,7 +137,7 @@ export function ScholarshipFilters({
               aria-controls="scholarship-search-input"
               onClick={() => {
                 if (searchOpen) {
-                  onSearchChange("");
+                  filters.setSearchQuery("");
                   setSearchOpen(false);
                   inputRef.current?.blur();
                 } else {
@@ -215,15 +161,15 @@ export function ScholarshipFilters({
               ref={inputRef}
               id="scholarship-search-input"
               type="search"
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
+              value={filters.searchQuery}
+              onChange={(e) => filters.setSearchQuery(e.target.value)}
               onFocus={() => setSearchOpen(true)}
               onBlur={() => {
-                if (!searchQuery) setSearchOpen(false);
+                if (!filters.searchQuery) setSearchOpen(false);
               }}
               onKeyDown={(e) => {
                 if (e.key === "Escape") {
-                  onSearchChange("");
+                  filters.setSearchQuery("");
                   inputRef.current?.blur();
                 }
               }}
@@ -248,11 +194,11 @@ export function ScholarshipFilters({
             variant="ghost"
             size="icon-sm"
             aria-label="Grid layout"
-            aria-pressed={layout === "grid"}
-            onClick={() => onLayoutChange("grid")}
+            aria-pressed={filters.layout === "grid"}
+            onClick={() => filters.setLayout("grid")}
             className={cn(
               "rounded-full",
-              layout === "grid"
+              filters.layout === "grid"
                 ? "bg-white/60 text-on-surface dark:bg-white/20"
                 : "text-on-surface/60 hover:text-on-surface",
             )}
@@ -263,11 +209,11 @@ export function ScholarshipFilters({
             variant="ghost"
             size="icon-sm"
             aria-label="List layout"
-            aria-pressed={layout === "list"}
-            onClick={() => onLayoutChange("list")}
+            aria-pressed={filters.layout === "list"}
+            onClick={() => filters.setLayout("list")}
             className={cn(
               "rounded-full",
-              layout === "list"
+              filters.layout === "list"
                 ? "bg-white/60 text-on-surface dark:bg-white/20"
                 : "text-on-surface/60 hover:text-on-surface",
             )}
@@ -299,8 +245,8 @@ export function ScholarshipFilters({
               <DropdownMenuGroup>
                 <DropdownMenuLabel>Sort By</DropdownMenuLabel>
                 <DropdownMenuRadioGroup
-                  value={sortBy}
-                  onValueChange={onSortByChange}
+                  value={filters.sortBy}
+                  onValueChange={filters.setSortBy}
                 >
                   <DropdownMenuRadioItem value="deadline">
                     Deadline
@@ -313,12 +259,12 @@ export function ScholarshipFilters({
             </DropdownMenuContent>
           </DropdownMenu>
           <FilterSheet
-            selectedTags={eligibilityTags}
-            onTagsChange={onEligibilityTagsChange}
-            awardRange={awardRange}
-            onAwardRangeChange={onAwardRangeChange}
+            selectedTags={filters.selectedTags}
+            onTagsChange={filters.setSelectedTags}
+            awardRange={filters.awardRange}
+            onAwardRangeChange={filters.setAwardRange}
             seasonalScholarships={seasonalScholarships}
-            filteredCount={filteredCount}
+            filteredCount={resultCount}
           />
         </div>
       </div>

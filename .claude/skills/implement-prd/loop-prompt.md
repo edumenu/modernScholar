@@ -29,7 +29,7 @@ If none exist → write `ALL TASKS COMPLETE` to `PROGRESS_TXT`, do NOT call `Sch
 
 ### 2. Load context
 
-Read the last ~50 lines of `PROGRESS_TXT`. This carries forward decisions, gotchas, and prior failures across fresh contexts. Do NOT re-explore the codebase — that's what progress.txt exists to prevent.
+Read the last ~20 lines of `PROGRESS_TXT`. This carries forward decisions, gotchas, and prior failures across fresh contexts. Do NOT re-explore the codebase — that's what progress.txt exists to prevent. (Window is 20 lines because each PASS line is capped at ~200 chars in Step 5; long carry-forward lives in the task's `notes` field, not here.)
 
 ### 3. Spawn sub-agent
 
@@ -48,15 +48,16 @@ Files you may create/modify (DO NOT touch others): <files>
 Acceptance you must satisfy: <acceptance bullets>
 
 Recent progress notes (decisions/gotchas from prior tasks):
-<last 50 lines of PROGRESS_TXT>
+<last 20 lines of PROGRESS_TXT>
 
 Hard rules:
+- The description is a pointer, not a spec. If you need code shapes, type signatures, or rationale, READ THE PRD MODULE FILE (path above) and grep the source files in your `files` list. Don't ask for more detail in the description — fetch it yourself.
 - Do NOT commit code. Do NOT stage files. Do NOT push.
 - Stay inside the `files` list. If you discover you need another file, STOP and report — don't expand scope.
 - Follow CLAUDE.md conventions: Next.js 16 App Router (read node_modules/next/dist/docs/ before writing Next-specific code per AGENTS.md), TailwindCSS v4 with OKLCH tokens, Motion for declarative animations, Base UI for primitives, Noto Serif (headings) + Poppins (body) typography.
 - Glassmorphism only on Z-2+ floating elements (sticky nav, modals, dropdowns, tooltips) — never on cards/forms/sidebars per the SystemDesign.md rules.
 - Match existing patterns (see `src/components/ui/` for primitives, `src/components/<page>/` for page sections).
-- Report back: 1-line summary of what you changed, and any decision/gotcha worth carrying forward in progress.txt.
+- Report back: 1-line summary of what you changed (≤80 chars), and at most ONE gotcha worth carrying forward (≤80 chars). Anything longer goes in the task's `notes` field, not progress.txt.
 ```
 
 ### 4. Run validation gates
@@ -73,10 +74,12 @@ Capture stdout+stderr for each gate. ALL must exit 0.
 ### 5. On all gates pass
 
 - Use `Edit` tool to flip the task's `passes` field from `false` to `true` in `TASKS_JSON`. (Edit the exact `"passes": false` line for that task — match enough surrounding context, e.g. the task's `id` line above it, to be unique.)
-- Append one line to `PROGRESS_TXT`:
+- If the sub-agent reported a substantive carry-forward (cross-file cascade, design decision, jsdom limitation, etc.), write it to the task's `notes` field in `TASKS_JSON` via `Edit`. The progress.txt line stays terse.
+- Append **ONE LINE** (≤200 chars total) to `PROGRESS_TXT` in this exact shape:
   ```
-  [YYYY-MM-DD HH:MM] T<id> PASS — <one-line summary from sub-agent>. Files: <comma-separated>. Notes: <if sub-agent flagged anything>.
+  [YYYY-MM-DD HH:MM] T<id> PASS — <verb-phrase ≤80 chars>. Files: <comma-separated>. <one optional gotcha clause ≤80 chars>
   ```
+  No multi-sentence essays. No "ORCHESTRATOR CASCADE" paragraphs. Cross-file cascades and architectural decisions go in the task's `notes` field, not here. The progress.txt is a scannable timeline; `notes` is the long-form record.
 - Call `ScheduleWakeup` with `delaySeconds: 60`, `prompt: <<autonomous-loop-dynamic>>`, `reason: "next Ralph task"`.
 
 ### 6. On any gate fail

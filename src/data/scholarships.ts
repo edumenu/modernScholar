@@ -1,5 +1,9 @@
 import enrichedData from "./scholarships-enriched.json"
 import type { Tag } from "@/lib/eligibility"
+import { getCurrentSeason, type Season } from "@/lib/seasons"
+
+export type { Season } from "@/lib/seasons"
+export { SEASONS, getCurrentSeason, getNextSeason } from "@/lib/seasons"
 
 // --- Active types ---
 
@@ -9,8 +13,6 @@ export type EducationLevel =
   | "Graduate"
   | "K-8"
   | "K-12"
-
-export type Season = "winter" | "spring" | "summer" | "fall"
 
 export const EDUCATION_LEVELS = [
   "All",
@@ -22,8 +24,6 @@ export const EDUCATION_LEVELS = [
 ] as const
 
 export type EducationLevelFilter = (typeof EDUCATION_LEVELS)[number]
-
-export const SEASONS = ["winter", "spring", "summer", "fall"] as const
 
 /** Category-specific pill color classes (bg + text) using design-system shades */
 export const CLASSIFICATION_COLORS: Record<EducationLevel, { bg: string; text: string }> = {
@@ -56,34 +56,8 @@ export const AWARD_MIN = 0
 export const AWARD_MAX = 100_000
 
 /** All enriched scholarships from the scraping pipeline */
+// JSON literal can't satisfy Tag union without runtime narrowing; cast at the boundary, validation happens in the tagger.
 export const scholarships: Scholarship[] = enrichedData as unknown as Scholarship[]
-
-// --- Season utilities ---
-
-const MONTH_TO_SEASON: Record<number, Season> = {
-  0: "winter",   // January
-  1: "winter",   // February
-  2: "spring",   // March
-  3: "spring",   // April
-  4: "spring",   // May
-  5: "summer",   // June
-  6: "summer",   // July
-  7: "summer",   // August
-  8: "fall",     // September
-  9: "fall",     // October
-  10: "fall",    // November
-  11: "winter",  // December
-}
-
-export function getCurrentSeason(referenceDate: Date = new Date()): Season {
-  return MONTH_TO_SEASON[referenceDate.getMonth()]
-}
-
-export function getNextSeason(season: Season): Season {
-  const order: Season[] = ["winter", "spring", "summer", "fall"]
-  const idx = order.indexOf(season)
-  return order[(idx + 1) % order.length]
-}
 
 /** Check if a scholarship is visible: in the given season and deadline not yet passed */
 export function isScholarshipVisible(
