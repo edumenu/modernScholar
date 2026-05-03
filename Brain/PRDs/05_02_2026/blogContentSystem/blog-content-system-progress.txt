@@ -1,0 +1,29 @@
+# Ralph Progress — blog-content-system
+Started: 2026-05-02
+MAX_ITER=72
+---
+[2026-05-02 12:00] T01 PASS — Wired @next/mdx into next.config + top-level mdx-components stub. Files: package.json, next.config.ts, mdx-components.tsx. useMDXComponents arg-form differs from Next 16 docs.
+[2026-05-02 12:02] T02 PASS — Created blog-authors registry with AuthorKey + BlogAuthor types. Files: src/data/blog-authors.ts. /authors/*.jpg assets missing on disk.
+[2026-05-02 12:05] T03 PASS — src/lib/blog.ts deep module: zod schema, getAllPosts/getPostBySlug/getRelatedPosts, React.cache. Files: src/lib/blog.ts. scholarships-enriched.json key is 'id' not 'slug'.
+[2026-05-02 12:08] T04 PASS — 12 vitest cases for blog.ts (validation, drafts, sort, related, readTime). Files: src/lib/__tests__/blog.test.ts. React.cache requires vi.resetModules per test.
+[2026-05-02 12:10] T05 PASS — Callout (tip/warning/note) via CVA + OKLCH + Iconify. Files: src/components/blog/callout.tsx. Dark icons use 300-shade for contrast.
+[2026-05-02 12:13] T06 PASS — InlineScholarshipCard server component (lookup by id, throws on miss). Files: src/components/blog/inline-scholarship-card.tsx.
+[2026-05-02 12:16] T07 PASS — blog MDX map + top-level re-export. Files: src/components/blog/mdx-components.tsx, mdx-components.tsx. img.src needs string narrowing before next/image.
+[2026-05-02 12:20] T08 PASS — BlogDetailContent renders {post.body} via MDX; ArticleSection loop dropped. Files: src/components/blog/blog-detail-content.tsx. Prop type made structural to unblock cascade until T14.
+[2026-05-02 12:23] T09 PASS — BlogDetail uses structural post + optional seriesPosts; no blogPosts import. Files: src/components/blog/blog-detail.tsx.
+[2026-05-02 12:26] T10 PASS — RelatedPosts accepts posts:RelatedPostItem[]; legacy post prop tolerated until T14. Files: src/components/blog/related-posts.tsx.
+[2026-05-02 12:29] T11 PASS — BlogCard + BlogCardFeatured use structural post props. Files: src/components/blog/blog-card.tsx, blog-card-featured.tsx.
+[2026-05-02 12:32] T12 PASS — BlogGrid accepts optional posts prop (structural). Files: src/components/blog/blog-grid.tsx. Keys + filters now use slug (no id on new BlogPost).
+[2026-05-02 12:35] T13 PASS — blog page.tsx async, awaits getAllPosts, passes posts to BlogGrid. Files: src/app/blog/page.tsx.
+[2026-05-02 12:38] T14 PASS — [slug]/page wired to MDX loader (getPostBySlug + dynamic import + getRelatedPosts adapter). Files: src/app/blog/[slug]/page.tsx. Cascade closed.
+[2026-05-02 12:40] T15 PASS — sitemap async, enumerates blog routes via getAllPosts. Files: src/app/sitemap.ts.
+[2026-05-02 12:43] T16 PASS — Common Mistakes post migrated (4 ## headings + 4 Callout tips, escapes/typo fixed). Files: content/blog/common-scholarship-application-mistakes-to-avoid.mdx.
+[2026-05-02 12:45] T17 PASS — Winning Essay migrated (3 ## headings). Files: content/blog/how-to-write-a-winning-scholarship-essay.mdx.
+[2026-05-02 12:48] T18 PASS — First-Gen post migrated (cover: scholarship-3.jpg). Files: content/blog/navigating-scholarships-as-a-first-generation-student.mdx.
+[2026-05-02 12:51] T19 PASS — Recommendation Letters migrated (3 ## headings). Files: content/blog/how-to-get-strong-recommendation-letters.mdx.
+[2026-05-02 12:53] T20 PASS — public/blog/default-cover.jpg created (copied from scholarship-6.jpg). Files: public/blog/default-cover.jpg.
+[2026-05-02 12:56] T21 PASS — scaffold script + npm run new:blog. Files: scripts/new-blog-post.ts, package.json.
+[2026-05-02 12:58] T22 PASS — vitest for scaffold (2/2 pass: parse + refuse-overwrite). Files: scripts/__tests__/new-blog-post.test.ts.
+[2026-05-02 13:45] T23 PASS — storybook stories for PullQuote, Callout (3 variants), InlineScholarshipCard, kitchen-sink. Files: 4 .stories.tsx in src/components/blog/.
+[2026-05-02 14:01] T24 PASS — src/data/blog-posts.ts deleted; only stale doc-comments remain (cosmetic). Files: src/data/blog-posts.ts.
+ALL TASKS COMPLETE

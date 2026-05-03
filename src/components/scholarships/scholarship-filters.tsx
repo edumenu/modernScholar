@@ -76,7 +76,7 @@ export function ScholarshipFilters({
                     {isActive && (
                       <motion.span
                         layoutId="scholarship-filter-highlight"
-                        className="absolute inset-0 rounded-full bg-primary/30 dark:bg-primary"
+                        className="absolute inset-0 rounded-full bg-primary"
                         transition={{
                           type: "spring",
                           stiffness: 350,
@@ -85,14 +85,15 @@ export function ScholarshipFilters({
                       />
                     )}
                     <Button
-                      variant={isActive ? "default" : "ghost"}
+                      variant="ghost"
                       size="sm"
+                      noRipple={isActive}
                       onClick={() => filters.setActiveFilter(level)}
                       aria-pressed={isActive}
                       className={cn(
-                        "relative z-1 text-sm md:text-base",
+                        "relative z-1 text-sm md:text-base shadow-none",
                         isActive
-                          ? "shadow-none"
+                          ? "text-primary-foreground hover:text-primary-foreground hover:bg-transparent dark:hover:bg-transparent"
                           : "text-on-surface/60 hover:text-primary-400",
                       )}
                     >

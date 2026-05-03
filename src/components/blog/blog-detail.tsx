@@ -3,25 +3,71 @@
 import { useRef } from "react"
 import Link from "next/link"
 import { Icon } from "@iconify/react"
-import { blogPosts, type BlogPost } from "@/data/blog-posts"
 import { cn } from "@/lib/utils"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import { Button } from "@/components/ui/button/button"
 import { ReadingProgress } from "@/components/blog/reading-progress"
 
+// --- Structural types --------------------------------------------------------
+// Defined locally (not imported from @/lib/blog) so this component remains
+// type-compatible with both the legacy @/data/blog-posts BlogPost (still passed
+// by src/app/blog/[slug]/page.tsx until T14) and the new @/lib/blog BlogPost.
+// Mirrors the T08 pattern used by BlogDetailContent.
+
+interface BlogDetailSeries {
+  name: string
+  part: number
+  totalParts?: number
+}
+
+interface BlogDetailHeading {
+  id: string
+  title: string
+}
+
+interface BlogDetailPost {
+  // `id` is legacy-only; the new BlogPost uses `slug` as identity. Keep optional
+  // so both shapes satisfy the type.
+  id?: string
+  slug: string
+  title: string
+  category: string
+  publishDate: string
+  readTime: string
+  series?: BlogDetailSeries
+  /**
+   * Section headings for the ReadingProgress sidebar. Provided by the MDX
+   * loader (`src/lib/blog.ts`). When absent or empty, ReadingProgress simply
+   * renders no breadcrumb dots.
+   */
+  headings?: BlogDetailHeading[]
+}
+
+interface BlogDetailSeriesPost {
+  id?: string
+  slug: string
+  title: string
+  series?: BlogDetailSeries
+}
 
 interface BlogDetailProps {
-  post: BlogPost
+  post: BlogDetailPost
+  /**
+   * Posts in the same series, already filtered + sorted by the caller.
+   * When omitted (or empty), the series nav block is hidden even if
+   * `post.series` is set.
+   */
+  seriesPosts?: BlogDetailSeriesPost[]
   children: React.ReactNode
 }
 
-export function BlogDetail({ post, children }: BlogDetailProps) {
+export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
   const articleRef = useRef<HTMLElement>(null)
 
-  const sections = post.content.map((s) => ({
-    id: s.id,
-    title: s.title,
-  }))
+  const sections = post.headings ?? []
+
+  const showSeriesNav =
+    Boolean(post.series) && Array.isArray(seriesPosts) && seriesPosts.length > 0
 
   return (
     <div>
@@ -38,14 +84,14 @@ export function BlogDetail({ post, children }: BlogDetailProps) {
         ref={articleRef}
         className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[260px_1fr]"
       >
-        {/* Article Content — server-rendered via children */}
+        {/* Blog Content — server-rendered via children */}
         <div className="relative order-first lg:order-last">
           {children}
         </div>
 
         {/* Sidebar — horizontal strip on md, vertical sidebar on lg */}
         <aside className="order-last lg:order-first">
-          {/* On md (tablet): horizontal metadata strip above article */}
+          {/* On md (tablet): horizontal metadata strip above blog */}
           <div className="hidden md:flex lg:hidden flex-wrap items-center gap-4 rounded-2xl bg-surface-container-low p-4 shadow-xs dark:bg-surface-container-low">
             <div className="flex items-center gap-2 text-sm">
               <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
@@ -111,36 +157,33 @@ export function BlogDetail({ post, children }: BlogDetailProps) {
             </AnimatedSection>
 
             {/* Series navigation */}
-            {post.series && (
+            {showSeriesNav && post.series && (
               <AnimatedSection variant="fadeUp" delay={0.4}>
                 <div className="flex flex-col gap-3 rounded-2xl bg-surface-container-low p-4 shadow-md dark:bg-surface-container-low">
                   <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
                     {post.series.name}
                   </span>
                   <div className="flex flex-col gap-1.5">
-                    {blogPosts
-                      .filter((p) => p.series?.name === post.series?.name)
-                      .sort((a, b) => (a.series?.part ?? 0) - (b.series?.part ?? 0))
-                      .map((seriesPost) => {
-                        const isCurrent = seriesPost.id === post.id
-                        return (
-                          <Link
-                            key={seriesPost.id}
-                            href={`/blog/${seriesPost.slug}`}
-                            className={cn(
-                              "flex items-center gap-2 rounded-lg px-3 py-2 text-xs transition-colors",
-                              isCurrent
-                                ? "bg-primary/10 font-medium text-primary"
-                                : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
-                            )}
-                          >
-                            <span className="shrink-0 font-medium">
-                              {seriesPost.series?.part}.
-                            </span>
-                            <span className="truncate">{seriesPost.title}</span>
-                          </Link>
-                        )
-                      })}
+                    {seriesPosts!.map((seriesPost) => {
+                      const isCurrent = seriesPost.slug === post.slug
+                      return (
+                        <Link
+                          key={seriesPost.slug}
+                          href={`/blog/${seriesPost.slug}`}
+                          className={cn(
+                            "flex items-center gap-2 rounded-lg px-3 py-2 text-xs transition-colors",
+                            isCurrent
+                              ? "bg-primary/10 font-medium text-primary"
+                              : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+                          )}
+                        >
+                          <span className="shrink-0 font-medium">
+                            {seriesPost.series?.part}.
+                          </span>
+                          <span className="truncate">{seriesPost.title}</span>
+                        </Link>
+                      )
+                    })}
                   </div>
                 </div>
               </AnimatedSection>

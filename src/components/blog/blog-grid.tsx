@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useMemo } from "react"
 import { useLenis } from "lenis/react"
 import { useQueryState, parseAsInteger, parseAsString } from "nuqs"
+import { AnimatePresence } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
-import { blogPosts } from "@/data/blog-posts"
+import { BlogActiveFilterStrip } from "./blog-active-filter-strip"
 import { BlogCard } from "./blog-card"
 import { BlogCardFeatured } from "./blog-card-featured"
 import { BlogFilters } from "./blog-filters"
@@ -24,7 +25,30 @@ import {
 
 const PAGE_SIZE = 9
 
-export function BlogGrid() {
+/**
+ * Structural shape compatible with both legacy `@/data/blog-posts` and the
+ * new `@/lib/blog` `BlogPost` type. Field requirements mirror what BlogCard
+ * and BlogCardFeatured (T11) read so this prop is structurally assignable.
+ */
+export interface BlogGridPost {
+  id?: string
+  slug: string
+  title: string
+  excerpt: string
+  category: string
+  image: string
+  publishDate: string
+  readTime: string
+  author: { name: string; role: string; avatar: string }
+  featured?: boolean
+  series?: { name: string; part: number; totalParts: number }
+}
+
+interface BlogGridProps {
+  posts?: BlogGridPost[]
+}
+
+export function BlogGrid({ posts = [] }: BlogGridProps) {
   const [activeCategory, setActiveCategory] = useQueryState(
     "category",
     parseAsString.withDefault("All"),
@@ -38,28 +62,28 @@ export function BlogGrid() {
   const lenis = useLenis()
 
   const categories = useMemo(() => {
-    const unique = Array.from(new Set(blogPosts.map((p) => p.category)))
+    const unique = Array.from(new Set(posts.map((p) => p.category)))
     return ["All", ...unique]
-  }, [])
+  }, [posts])
 
   const filteredPosts = useMemo(() => {
-    let posts = blogPosts
+    let result = posts
 
     if (activeCategory !== "All") {
-      posts = posts.filter((p) => p.category === activeCategory)
+      result = result.filter((p) => p.category === activeCategory)
     }
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase()
-      posts = posts.filter(
+      result = result.filter(
         (p) =>
           p.title.toLowerCase().includes(q) ||
           p.excerpt.toLowerCase().includes(q),
       )
     }
 
-    return posts
-  }, [activeCategory, searchQuery])
+    return result
+  }, [posts, activeCategory, searchQuery])
 
   const totalPages = Math.max(1, Math.ceil(filteredPosts.length / PAGE_SIZE))
   const safePage = Math.min(Math.max(1, page), totalPages)
@@ -70,7 +94,7 @@ export function BlogGrid() {
   const featuredPost =
     safePage === 1 ? visiblePosts.find((p) => p.featured) ?? null : null
   const gridPosts = featuredPost
-    ? visiblePosts.filter((p) => p.id !== featuredPost.id)
+    ? visiblePosts.filter((p) => p.slug !== featuredPost.slug)
     : visiblePosts
 
   // Normalize URL if requested page is out of range
@@ -131,6 +155,19 @@ export function BlogGrid() {
         onSearchChange={handleSearchChange}
       />
 
+      <AnimatePresence>
+        {(searchQuery.trim() || activeCategory !== "All") && (
+          <BlogActiveFilterStrip
+            key="blog-active-filter-strip"
+            searchQuery={searchQuery}
+            onSearchClear={() => handleSearchChange("")}
+            activeCategory={activeCategory}
+            onCategoryClear={() => handleCategoryChange("All")}
+            onClearAll={handleClearFilters}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Featured post — editorial hero */}
       {featuredPost && (
         <div className="pt-2">
@@ -142,7 +179,7 @@ export function BlogGrid() {
       {gridPosts.length > 0 && (
         <div className="grid grid-cols-1 gap-6 pt-2 pb-10 sm:grid-cols-2 lg:grid-cols-3">
           {gridPosts.map((post) => (
-            <BlogCard key={post.id} post={post} />
+            <BlogCard key={post.id ?? post.slug} post={post} />
           ))}
         </div>
       )}
@@ -158,7 +195,7 @@ export function BlogGrid() {
           </div>
           <div className="text-center">
             <h3 className="font-heading text-lg font-medium text-on-surface">
-              No articles found
+              No blogs found
             </h3>
             <p className="mt-1 text-sm text-on-surface-variant">
               Try adjusting your search or filters to find what you&apos;re

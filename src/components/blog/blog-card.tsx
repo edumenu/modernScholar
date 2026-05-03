@@ -5,9 +5,32 @@ import Image from "next/image"
 import Link from "next/link";
 import { Icon } from "@iconify/react"
 import { cva, type VariantProps } from "class-variance-authority";
-import type { BlogPost } from "@/data/blog-posts";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button/button";
+
+/**
+ * Structural shape of the post BlogCard renders.
+ *
+ * Defined locally (not imported) so this component accepts BOTH the legacy
+ * `BlogPost` from `@/data/blog-posts` (still used by BlogGrid until T12) and
+ * the new `BlogPost` from `@/lib/blog` (used by RelatedPosts / blog page after
+ * T10/T14). Lists ONLY the fields BlogCard actually reads.
+ */
+export interface BlogCardPost {
+  slug: string
+  title: string
+  excerpt: string
+  category: string
+  image: string
+  publishDate: string
+  readTime: string
+  series?: { part: number; totalParts: number; name?: string }
+  author: {
+    name: string
+    role: string
+    avatar: string
+  }
+}
 
 const blogCardVariants = cva(
   "group relative flex h-full overflow-hidden cursor-pointer rounded-2xl shadow-md transition-shadow duration-300",
@@ -27,7 +50,7 @@ const blogCardVariants = cva(
 );
 
 interface BlogCardProps extends VariantProps<typeof blogCardVariants> {
-  post: BlogPost;
+  post: BlogCardPost;
 }
 
 export function BlogCard({ post, variant = "default" }: BlogCardProps) {
@@ -121,7 +144,7 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
                   size="xs"
                   hoverTrigger="parent"
                 >
-                  <span data-label>Read Article</span>
+                  <span data-label>Read Blog</span>
                   <Icon
                     icon="solar:arrow-right-linear"
                     data-icon="inline-end"
@@ -146,7 +169,7 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
                 size="xs"
                 hoverTrigger="parent"
               >
-                <span data-label>Read Article</span>
+                <span data-label>Read Blog</span>
                 <Icon icon="solar:arrow-right-linear" data-icon="inline-end" />
               </Button>
             </div>

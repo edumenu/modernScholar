@@ -57,6 +57,7 @@ Hard rules:
 - Follow CLAUDE.md conventions: Next.js 16 App Router (read node_modules/next/dist/docs/ before writing Next-specific code per AGENTS.md), TailwindCSS v4 with OKLCH tokens, Motion for declarative animations, Base UI for primitives, Noto Serif (headings) + Poppins (body) typography.
 - Glassmorphism only on Z-2+ floating elements (sticky nav, modals, dropdowns, tooltips) — never on cards/forms/sidebars per the SystemDesign.md rules.
 - Match existing patterns (see `src/components/ui/` for primitives, `src/components/<page>/` for page sections).
+- Time budget: if your first approach is taking longer than ~10 minutes of tool calls, stop and pick the simplest viable alternative. Note the reason in your gotcha. (Audit found one Storybook task spent 45 min trying to render real MDX in stories before a JSX-through-the-map fallback would have worked in 3 min.)
 - Report back: 1-line summary of what you changed (≤80 chars), and at most ONE gotcha worth carrying forward (≤80 chars). Anything longer goes in the task's `notes` field, not progress.txt.
 ```
 
@@ -80,7 +81,7 @@ Capture stdout+stderr for each gate. ALL must exit 0.
   [YYYY-MM-DD HH:MM] T<id> PASS — <verb-phrase ≤80 chars>. Files: <comma-separated>. <one optional gotcha clause ≤80 chars>
   ```
   No multi-sentence essays. No "ORCHESTRATOR CASCADE" paragraphs. Cross-file cascades and architectural decisions go in the task's `notes` field, not here. The progress.txt is a scannable timeline; `notes` is the long-form record.
-- Call `ScheduleWakeup` with `delaySeconds: 60`, `prompt: <<autonomous-loop-dynamic>>`, `reason: "next Ralph task"`.
+- Call `ScheduleWakeup` with `delaySeconds: 60`, `prompt: <<autonomous-loop-dynamic>>`, `reason: "next Ralph task"`. (60s is the runtime floor — the way to shrink elapsed time is fewer iterations via task batching at decomposition time, not shorter delays here.)
 
 ### 6. On any gate fail
 

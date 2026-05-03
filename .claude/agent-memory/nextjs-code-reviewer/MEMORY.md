@@ -5,3 +5,4 @@
 - [project_scholarship_card_redesign.md](project_scholarship_card_redesign.md) — Scholarship card immersive redesign: modal-in-grid, layoutId pattern, bento layout, comparison store, known bugs
 - [project_scholarship_list_review.md](project_scholarship_list_review.md) — Scholarships list-view review: tab-pattern ARIA bugs, inline modal focus-trap, `now` useMemo anti-pattern, dead commented code
 - [project_eligibility_filter_review.md](project_eligibility_filter_review.md) — Eligibility/award filter feature: Slider double-sync bug, AnimatePresence keying issue, toggleTag duplication, skeleton mismatch
+- [project_blog_content_system.md](project_blog_content_system.md) — Blog MDX content system: dynamicParams gap, body type mismatch, OG relative URL, Suspense decoration, slugify divergence, willChange overuse

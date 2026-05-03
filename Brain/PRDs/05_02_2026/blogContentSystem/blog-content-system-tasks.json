@@ -1,0 +1,367 @@
+{
+  "module": "blog-content-system",
+  "prd_path": "Brain/PRDs/05_02_2026/blogContentSystem/blog-content-system.md",
+  "agent": "frontend-engineer",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Install MDX deps + wire next.config.ts + top-level mdx-components.tsx",
+      "description": "Install @next/mdx, @mdx-js/react, @mdx-js/loader, gray-matter, remark-gfm, rehype-slug, rehype-autolink-headings, reading-time, zod. Wrap next.config.ts with @next/mdx (remark-gfm, rehype-slug, rehype-autolink-headings); add pageExtensions ['ts','tsx','mdx']; preserve existing output:'export' and images.unoptimized. Create top-level mdx-components.tsx exporting useMDXComponents that returns components arg unchanged (T07 will fill via re-export). Read node_modules/next/dist/docs/ for Next 16 MDX patterns. See PRD §next.config.ts Update + §New Dependencies.",
+      "files": ["package.json", "next.config.ts", "mdx-components.tsx"],
+      "depends_on": [],
+      "acceptance": [
+        "MDX support added; pageExtensions includes mdx; remark+rehype plugin chain configured",
+        "Top-level mdx-components.tsx exists per Next 16 convention"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Next 16 docs say useMDXComponents takes no args, but @next/mdx passes (components) — kept arg form."
+    },
+    {
+      "id": "T02",
+      "title": "Create author registry src/data/blog-authors.ts",
+      "description": "Export typed Record<AuthorKey,BlogAuthor> with the six authors (priya, david, amara, elena, james, mei) preserved verbatim from src/data/blog-posts.ts (names, roles, /authors/<file>.jpg paths). Export AuthorKey union and BlogAuthor type. Note: public/authors/ does not currently exist on disk — keep paths as-is per PRD; covers fall through Next Image alt. See PRD §Author Registry.",
+      "files": ["src/data/blog-authors.ts"],
+      "depends_on": [],
+      "acceptance": [
+        "Frontmatter references author by short key (priya, david, amara, elena, james, mei)",
+        "Author names, roles, avatar paths preserved verbatim from dummy file"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "public/authors/*.jpg files do not exist on disk; alt-text fallback only until assets added."
+    },
+    {
+      "id": "T03",
+      "title": "Create deep module src/lib/blog.ts",
+      "description": "Implement: zod frontmatter schema (required: title, excerpt, category, publishDate ISO, author key; optional: coverImage, updatedDate, tags[], series{name,part,totalParts}, featured, status default 'published', seoDescription, ogImage, coverCredit, relatedScholarships[]). Export BlogPost, BlogSeries types (body: ReactNode replaces content: ArticleSection[]; readTime computed). Implement getAllPosts (read content/blog/*.mdx via fs, parse via gray-matter, validate via zod, join author registry, compute readTime via reading-time, sort newest-first by publishDate, drop status:draft when NODE_ENV==='production', filename overrides frontmatter slug, fail loudly on duplicate slug / unknown author key / missing required field / unknown relatedScholarships slug). Implement getPostBySlug, getRelatedPosts (series>tag overlap>category, tiebreak recency, default limit 3). Wrap getAllPosts with React.cache. See PRD §src/lib/blog.ts + §Frontmatter Schema.",
+      "files": ["src/lib/blog.ts"],
+      "depends_on": ["T02"],
+      "acceptance": [
+        "getAllPosts loads, validates, sorts newest-first, filters drafts in prod, caches per build",
+        "Build fails on duplicate slugs, unknown author key, missing required field, bad related scholarship",
+        "getRelatedPosts ranks series > tag overlap > category, tiebreak recency"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "scholarships-enriched.json keys items by `id` not `slug` — relatedScholarships validates against id."
+    },
+    {
+      "id": "T04",
+      "title": "Vitest tests for src/lib/blog.ts",
+      "description": "Cover: missing title rejects; unknown author key rejects; invalid date rejects; duplicate slugs across files reject; draft filtered in production but visible in dev (NODE_ENV mocking); sort newest-first; getRelatedPosts ranking (series>tag>category>recency); readTime rounding. Use small fixture mdx files in src/lib/__tests__/__fixtures__/ or inline string parsing — pick whichever fits the loader's API. Mirror src/data/__tests__/scholarships.test.ts style.",
+      "files": ["src/lib/__tests__/blog.test.ts"],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "Vitest covers frontmatter validation, draft filtering, sort, related ranking, readTime"
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "React.cache survives across getAllPosts calls — tests use vi.resetModules() + re-import per case."
+    },
+    {
+      "id": "T05",
+      "title": "Create Callout component",
+      "description": "Three variants via CVA: tip (sage), warning (terracotta), note (surface-container). Props: type:'tip'|'warning'|'note', children. Use OKLCH tokens; respect light/dark; Iconify icon per variant (e.g., solar:lightbulb for tip, solar:danger-triangle for warning, solar:info-circle for note). Block-level rounded card with border-l accent. No glassmorphism (in-flow content per design rules). See PRD §MDX Renderer + Component Map.",
+      "files": ["src/components/blog/callout.tsx"],
+      "depends_on": [],
+      "acceptance": [
+        "<Callout type='tip|warning|note'> highlights actionable advice in MDX body",
+        "Three variants use existing OKLCH palette (sage tip, terracotta warning, surface note)"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Dark variants use icon-300 shades; -500/-600 too dim on dark surface."
+    },
+    {
+      "id": "T06",
+      "title": "Create InlineScholarshipCard component",
+      "description": "Reads src/data/scholarships-enriched.json at build (server import). Props: slug. Render compact card in-flow (title, provider, amount, deadline, link to /scholarships/<slug>). Reuse existing card primitives from src/components/ui/card or scholarship card patterns where they fit; otherwise compose a small layout. If slug missing, throw at build (caller's frontmatter validation in T03 will also catch).",
+      "files": ["src/components/blog/inline-scholarship-card.tsx"],
+      "depends_on": [],
+      "acceptance": [
+        "<InlineScholarshipCard slug='...'> pulls from scholarships-enriched.json without copying data"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Server component; lookup by `id` despite `slug` prop name."
+    },
+    {
+      "id": "T07",
+      "title": "Create blog MDX component map + wire top-level re-export",
+      "description": "Create src/components/blog/mdx-components.tsx exporting useMDXComponents map: h2, h3, p, ul, ol, li, a, code, pre, blockquote, img mapped to design-system class strings ported from blog-detail-content.tsx (font-heading, text-on-surface, leading-relaxed). Custom components in scope (no import in MDX): PullQuote (existing pull-quote.tsx), Callout (T05), InlineScholarshipCard (T06). Use Next Image for img where reasonable. Update top-level mdx-components.tsx to re-export from this blog map. See PRD §MDX Renderer + Component Map.",
+      "files": ["src/components/blog/mdx-components.tsx", "mdx-components.tsx"],
+      "depends_on": ["T01", "T05", "T06"],
+      "acceptance": [
+        "Element tags map to existing design-system class strings",
+        "PullQuote, Callout, InlineScholarshipCard available in MDX scope without import"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "img.src HTML type allows Blob; narrow to string before next/image."
+    },
+    {
+      "id": "T08",
+      "title": "Refactor BlogDetailContent to render MDX body",
+      "description": "Delete the post.content.map(section => …) loop. Component receives BlogPost (now with body: ReactNode from getPostBySlug). Render: title, optional series indicator, excerpt, hero image (existing BlogDetailHeroImage), {body} in a styled prose container, author bio card (unchanged). Keep AnimatedSection wrappers for entry animations. Remove ArticleSection/BlogPost imports from @/data/blog-posts; import BlogPost from @/lib/blog. See PRD §BlogDetailContent Refactor.",
+      "files": ["src/components/blog/blog-detail-content.tsx"],
+      "depends_on": ["T03", "T07"],
+      "acceptance": [
+        "Renderer renders MDX body; no ArticleSection loop remains",
+        "Reader sees consistent typographic hierarchy (title, excerpt, headings, body, pull quotes)"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Prop made structural (Pick of needed fields, body optional) so call site cascade typechecks until T14 wires real BlogPost. PullQuote import dropped here — pull-quote rendering now via MDX component map (T07)."
+    },
+    {
+      "id": "T09",
+      "title": "Refactor BlogDetail to drop blogPosts import",
+      "description": "Remove `import { blogPosts }` and the inline series filter block. Add optional prop `seriesPosts?: BlogPost[]` (already filtered + sorted by caller). Render the series nav from that prop instead of querying blogPosts. Update BlogPost type import to @/lib/blog. Keep all sidebar/series UI intact. See PRD §Page Wiring.",
+      "files": ["src/components/blog/blog-detail.tsx"],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "Series indicator and series nav render correctly when post.series present",
+        "Component no longer imports blogPosts"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Structural prop type; legacy callers key on `id`, new code keys on `slug` — both supported via optional id."
+    },
+    {
+      "id": "T10",
+      "title": "Refactor RelatedPosts to accept posts prop",
+      "description": "Remove `import { blogPosts }` and the inline category filter. Accept `posts: BlogPost[]` prop (already ranked by getRelatedPosts at the page boundary). Keep carousel UI intact. Update BlogPost import to @/lib/blog. If posts.length === 0 return null (existing behavior). See PRD §Page Wiring.",
+      "files": ["src/components/blog/related-posts.tsx"],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "Reader sees related-post recommendations (series>tag>category) at the bottom of a post",
+        "Component no longer imports blogPosts"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "posts made optional + legacy `post?: unknown` prop tolerated for cascade until T14. T14 must remove the legacy prop after rewiring page.tsx."
+    },
+    {
+      "id": "T11",
+      "title": "Update BlogCard + BlogCardFeatured BlogPost imports",
+      "description": "Switch `import type { BlogPost } from '@/data/blog-posts'` to `import type { BlogPost } from '@/lib/blog'` in both files. No runtime behavior change. If readTime/image/publishDate field shapes shifted (string vs number/Date), adapt prop usage accordingly — check the new BlogPost shape in src/lib/blog.ts.",
+      "files": [
+        "src/components/blog/blog-card.tsx",
+        "src/components/blog/blog-card-featured.tsx"
+      ],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "BlogCard and BlogCardFeatured compile against new BlogPost from @/lib/blog"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Used structural post props instead of @/lib/blog import — accepts both old and new shapes. Verification report should confirm structural shape ≈ Pick<BlogPost,'title'|...> downstream."
+    },
+    {
+      "id": "T12",
+      "title": "Refactor BlogGrid to accept posts prop",
+      "description": "Remove `import { blogPosts }`. Accept `posts: BlogPost[]` prop. Derive categories and filtered posts from the prop. Update BlogPost import to @/lib/blog. Keep all filter/pagination/empty-state UI intact. Stays 'use client' (uses nuqs + lenis).",
+      "files": ["src/components/blog/blog-grid.tsx"],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "BlogGrid renders correctly when fed posts from getAllPosts via the page server component"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Used `slug` not `id` for featured-filter and React key — new BlogPost has no id."
+    },
+    {
+      "id": "T13",
+      "title": "Wire src/app/blog/page.tsx to getAllPosts",
+      "description": "Convert page to async server component. `await getAllPosts()` and pass into <BlogGrid posts={posts} />. Keep Suspense fallback and BlogHero. Keep existing metadata export.",
+      "files": ["src/app/blog/page.tsx"],
+      "depends_on": ["T03", "T12"],
+      "acceptance": [
+        "Blog index lists posts loaded from content/blog at build"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Suspense fallback now only covers BlogGrid render, not data fetch (since getAllPosts awaits at the page level)."
+    },
+    {
+      "id": "T14",
+      "title": "Wire src/app/blog/[slug]/page.tsx to MDX loader",
+      "description": "Replace blogPosts import. generateStaticParams returns slugs from getAllPosts. generateMetadata uses post.seoDescription || post.excerpt, ogImage || coverImage, post.title. Page body: const post = await getPostBySlug(slug); if (!post) notFound(); const related = await getRelatedPosts(post); const seriesPosts = post.series ? (await getAllPosts()).filter(p => p.series?.name === post.series.name).sort((a,b)=>(a.series.part-b.series.part)) : undefined; render <BlogDetail post={post} seriesPosts={seriesPosts}><BlogDetailContent post={post} /></BlogDetail><RelatedPosts posts={related} />. See PRD §Page Wiring.",
+      "files": ["src/app/blog/[slug]/page.tsx"],
+      "depends_on": ["T03", "T08", "T09", "T10"],
+      "acceptance": [
+        "generateStaticParams + generateMetadata populated from MDX directory",
+        "Unknown slug returns the not-found page rather than crashing",
+        "OG image, page title, and description populated from frontmatter"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Dynamic import path `../../../../content/blog/${slug}.mdx` is webpack-scanned at build. RelatedPosts adapter maps slug→id. Cascade closed — sub-agents can now drop structural-prop crutch."
+    },
+    {
+      "id": "T15",
+      "title": "Update src/app/sitemap.ts to use getAllPosts",
+      "description": "Replace blogPosts import with `await getAllPosts()`. Convert sitemap function to async. Map posts to sitemap entries unchanged (slug, lastmod from updatedDate||publishDate).",
+      "files": ["src/app/sitemap.ts"],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "Sitemap enumerates blog routes from MDX directory"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "force-static + async getAllPosts ok — fs reads happen at build only."
+    },
+    {
+      "id": "T16",
+      "title": "Migrate post: Common Scholarship Application Mistakes to Avoid",
+      "description": "Source: ScholarshipBlogs.md (root) — first full post. Author: james. Slug filename: common-scholarship-application-mistakes-to-avoid.mdx. Fix smart-quote artifacts, escape sequences (\\!, \\-), the typo 'anapplication'. Convert bold-styled sub-headings (Not Following Directions, Submitting Generic Essays, Applying at the Last Minute, Not Proofreading) to ## headings. Convert each 'What to do instead:' block to <Callout type='tip'>. Set frontmatter: title, excerpt (first descriptive sentence), category 'Tips & Guides', publishDate (use 2026-03-01 or similar — pick a sensible recent date), author: james, coverImage: /scholarships/scholarship-1.jpg. See PRD §Migration of Real Content.",
+      "files": ["content/blog/common-scholarship-application-mistakes-to-avoid.mdx"],
+      "depends_on": ["T03", "T07"],
+      "acceptance": [
+        "Smart-quote, escape-artifact, sub-heading inconsistencies fixed in migration",
+        "'What to do instead:' blocks become <Callout type='tip'>"
+      ],
+      "validation": ["typecheck"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "author: james unquoted YAML — works as string."
+    },
+    {
+      "id": "T17",
+      "title": "Migrate post: How to Write a Winning Scholarship Essay",
+      "description": "Source: ScholarshipBlogs.md — second full post. Author: priya. Slug filename: how-to-write-a-winning-scholarship-essay.mdx. Sub-headings (The Power of a Personal Story, Structuring Your Essay, Tailoring to the Scholarship's Mission) become ##. Same normalization rules as T16. Set frontmatter: category 'Tips & Guides', publishDate sensible recent date, coverImage: /scholarships/scholarship-2.jpg. Optionally set series {name:'Application Mastery', part:1, totalParts:1} only if PRD/migration notes warrant — otherwise omit series.",
+      "files": ["content/blog/how-to-write-a-winning-scholarship-essay.mdx"],
+      "depends_on": ["T03", "T07"],
+      "acceptance": [
+        "MDX file parses and validates against frontmatter schema",
+        "Sub-headings converted from bold paragraphs to ## headings"
+      ],
+      "validation": ["typecheck"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Source mixed straight + smart quotes; preserved as-is per PRD."
+    },
+    {
+      "id": "T18",
+      "title": "Migrate post: Navigating Scholarships as a First-Generation Student",
+      "description": "Source: ScholarshipBlogs.md — first-generation post. Author: amara. Slug filename: navigating-scholarships-as-a-first-generation-student.mdx. Same normalization rules as T16. Set frontmatter: category sensible (e.g., 'First-Generation' or 'Student Stories' — match what makes editorial sense), coverImage: /scholarships/scholarship-3.jpg.",
+      "files": ["content/blog/navigating-scholarships-as-a-first-generation-student.mdx"],
+      "depends_on": ["T03", "T07"],
+      "acceptance": [
+        "MDX file parses and validates against frontmatter schema",
+        "Each migrated post assigned a distinct cover image from public/scholarships/"
+      ],
+      "validation": ["typecheck"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Source has no instead-blocks; no Callouts inserted."
+    },
+    {
+      "id": "T19",
+      "title": "Migrate post: How to Get Strong Recommendation Letters",
+      "description": "Source: ScholarshipBlogs.md — recommendation letters post. Author: james. Slug filename: how-to-get-strong-recommendation-letters.mdx. Same normalization rules as T16. Set frontmatter: category 'Tips & Guides', coverImage: /scholarships/scholarship-4.jpg.",
+      "files": ["content/blog/how-to-get-strong-recommendation-letters.mdx"],
+      "depends_on": ["T03", "T07"],
+      "acceptance": [
+        "MDX file parses and validates against frontmatter schema",
+        "Smart-quote and escape-artifact normalization applied"
+      ],
+      "validation": ["typecheck"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "No instead-blocks; zero Callouts emitted."
+    },
+    {
+      "id": "T20",
+      "title": "Add default cover image at public/blog/default-cover.jpg",
+      "description": "Create public/blog/ directory and copy one category-neutral photo from public/scholarships/ to public/blog/default-cover.jpg (e.g., cp public/scholarships/scholarship-6.jpg public/blog/default-cover.jpg). This is the fallback used by getAllPosts when frontmatter omits coverImage. See PRD §Image Strategy.",
+      "files": ["public/blog/default-cover.jpg"],
+      "depends_on": [],
+      "acceptance": [
+        "coverImage is optional; loader falls back to /blog/default-cover.jpg when omitted"
+      ],
+      "validation": ["typecheck"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Copied scholarship-6.jpg as default."
+    },
+    {
+      "id": "T21",
+      "title": "Create scaffold script scripts/new-blog-post.ts + npm run new:blog",
+      "description": "Script reads CLI arg (title) — generate kebab-case slug via existing slugify dep. Prompt (or accept flags) for author key, category, optional series. Write content/blog/<slug>.mdx with prefilled frontmatter (title, excerpt placeholder, category, publishDate ISO today, author, status:'draft') and a heading + paragraph stub. Refuse to overwrite an existing file. Add `\"new:blog\": \"npx tsx scripts/new-blog-post.ts\"` to package.json scripts. Mirror style of scripts/check-links.ts. See PRD §Scaffold Script.",
+      "files": ["scripts/new-blog-post.ts", "package.json"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "npm run new:blog scaffolds frontmatter-prefilled MDX template",
+        "Script refuses to overwrite an existing file"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "publishDate uses UTC via toISOString — may render next-day late evening locally."
+    },
+    {
+      "id": "T22",
+      "title": "Vitest test for scaffold script",
+      "description": "Run scripts/new-blog-post.ts in a temp dir; verify resulting MDX parses (re-use gray-matter + zod schema from src/lib/blog.ts); verify refusal-to-overwrite. Pattern from scripts/utils.test.ts.",
+      "files": ["scripts/__tests__/new-blog-post.test.ts"],
+      "depends_on": ["T21"],
+      "acceptance": [
+        "Test verifies scaffold output parses and refuses overwrite"
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Script CONTENT_DIR fixed via __dirname; tests run from project root with unique titles + afterEach cleanup."
+    },
+    {
+      "id": "T23",
+      "title": "Storybook stories for MDX components + kitchen sink",
+      "description": "Stories: PullQuote (default), Callout (tip/warning/note variants), InlineScholarshipCard (with a real slug from scholarships-enriched.json), kitchen-sink showing rendered MDX with h2/h3/p/ul/ol/code/blockquote/img + all three custom components. Use existing story conventions from src/components/ui/* stories (Storybook 10).",
+      "files": [
+        "src/components/blog/pull-quote.stories.tsx",
+        "src/components/blog/callout.stories.tsx",
+        "src/components/blog/inline-scholarship-card.stories.tsx",
+        "src/components/blog/mdx-kitchen-sink.stories.tsx"
+      ],
+      "depends_on": ["T05", "T06"],
+      "acceptance": [
+        "Storybook stories cover PullQuote, Callout variants, InlineScholarshipCard, kitchen-sink MDX"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Kitchen-sink renders MDX map JSX directly — no MDX compile in Storybook."
+    },
+    {
+      "id": "T24",
+      "title": "Delete src/data/blog-posts.ts",
+      "description": "Remove the file. Verify via grep that no consumers remain — all imports should now resolve to @/lib/blog (types) and @/data/blog-authors (authors). If grep finds any remaining import, halt and report — do not auto-update unrelated files.",
+      "files": ["src/data/blog-posts.ts"],
+      "depends_on": ["T08", "T09", "T10", "T11", "T12", "T13", "T14", "T15"],
+      "acceptance": [
+        "Existing blogPosts array and BlogPost/ArticleSection types in src/data/blog-posts.ts are deleted"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Stale doc-comments referring to @/data/blog-posts remain in 4 component files; cosmetic, not blocking."
+    }
+  ]
+}

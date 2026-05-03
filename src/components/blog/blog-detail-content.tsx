@@ -1,15 +1,21 @@
-import Image from "next/image"
-import { Icon } from "@iconify/react"
-import type { BlogPost } from "@/data/blog-posts"
-import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
-import { PullQuote } from "@/components/blog/pull-quote"
-import { BlogDetailHeroImage } from "@/components/blog/blog-detail-hero-image"
+import type { ReactNode } from "react";
+import Image from "next/image";
+import { Icon } from "@iconify/react";
+import { AnimatedSection } from "@/components/ui/animatedSection/animated-section";
+import { BlogDetailHeroImage } from "@/components/blog/blog-detail-hero-image";
 
 interface BlogDetailContentProps {
-  post: BlogPost
+  post: {
+    title: string;
+    excerpt: string;
+    image: string;
+    series?: { name: string; part: number; totalParts: number };
+    author: { name: string; role: string; avatar: string };
+  };
+  body: ReactNode;
 }
 
-export function BlogDetailContent({ post }: BlogDetailContentProps) {
+export function BlogDetailContent({ post, body }: BlogDetailContentProps) {
   return (
     <>
       {/* Title */}
@@ -21,7 +27,8 @@ export function BlogDetailContent({ post }: BlogDetailContentProps) {
         {post.series && (
           <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3.5 py-1.5 text-xs font-medium text-primary">
             <Icon icon="solar:documents-linear" className="size-3.5" />
-            Part {post.series.part} of {post.series.totalParts} &mdash; {post.series.name}
+            Part {post.series.part} of {post.series.totalParts} &mdash;{" "}
+            {post.series.name}
           </div>
         )}
       </AnimatedSection>
@@ -40,51 +47,10 @@ export function BlogDetailContent({ post }: BlogDetailContentProps) {
         </div>
       </AnimatedSection>
 
-      {/* Dynamic Prose Content */}
-      <div className="mt-10 space-y-8">
-        {post.content.map((section, i) => (
-          <AnimatedSection
-            key={section.id}
-            variant="fadeUp"
-            delay={i === 0 ? 0.3 : 0.1}
-          >
-            {/* Section heading with chapter break (except first) */}
-            {i > 0 && (
-              <div className="border-t border-primary/20 pt-8 mt-8" />
-            )}
-            <h2
-              id={section.id}
-              className="font-heading text-2xl font-bold text-on-surface md:text-3xl"
-            >
-              {section.title}
-            </h2>
-
-            {/* Paragraphs */}
-            {section.content.map((paragraph, pIdx) => (
-              <p
-                key={pIdx}
-                className="mt-4 text-base leading-relaxed text-on-surface"
-              >
-                {paragraph}
-              </p>
-            ))}
-
-            {/* Pull quote — breaks out of prose column */}
-            {section.blockquote && (
-              <PullQuote quote={section.blockquote} />
-            )}
-
-            {/* List */}
-            {section.list && (
-              <ul className="mt-4 list-disc space-y-2 pl-6 text-base leading-relaxed text-on-surface">
-                {section.list.map((item, lIdx) => (
-                  <li key={lIdx}>{item}</li>
-                ))}
-              </ul>
-            )}
-          </AnimatedSection>
-        ))}
-      </div>
+      {/* MDX Body — element-level styling provided by useMDXComponents map */}
+      <AnimatedSection variant="fadeUp" delay={0.3}>
+        <div className="mt-10 space-y-8">{body}</div>
+      </AnimatedSection>
 
       {/* Author bio card */}
       <AnimatedSection variant="fadeUp" delay={0.1}>
@@ -109,5 +75,5 @@ export function BlogDetailContent({ post }: BlogDetailContentProps) {
         </div>
       </AnimatedSection>
     </>
-  )
+  );
 }

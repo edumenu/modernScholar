@@ -218,6 +218,10 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
+    "Screenshot 2026-05-03 at 9.16.55 AM.png",
+    "PRDs/05_02_2026/blogContentSystem/blog-content-system-verification.md",
+    "PRDs/05_02_2026/blogContentSystem/blog-content-system-progress.txt",
+    "PRDs/05_02_2026/blogContentSystem/blog-content-system-tasks.json",
     "PRDs/05_02_2026/architectureDeepening/expandedScholarshipOverlay/expanded-scholarship-overlay-verification.md",
     "PRDs/05_02_2026/architectureDeepening/expandedScholarshipOverlay/expanded-scholarship-overlay-progress.txt",
     "PRDs/05_02_2026/architectureDeepening/expandedScholarshipOverlay/expanded-scholarship-overlay-tasks.json",
@@ -235,9 +239,7 @@
     "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module-verification.md",
     "PRDs/05_02_2026/blogContentSystem",
     "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module-tasks.json",
-    "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module-progress.txt",
     "PRDs/05_02_2026/architectureDeepening/blogContentSystem/blog-content-system.md",
-    "PRDs/05_02_2026/architectureDeepening/blogContentSystem",
     "PRDs/05_02_2026/architectureDeepeningOverview/architecture-deepening-overview.md",
     "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module.md",
     "PRDs/05_02_2026/architectureDeepening/scholarshipFiltersHook/scholarship-filters-hook.md",
@@ -251,8 +253,6 @@
     "PRDs/05_02_2026/architectureDeepeningOverview/blogContentSystem/blog-content-system.md",
     "PRDs/05_02_2026/seasonCalendarModule/season-calendar-module.md",
     "PRDs/05_02_2026/expandedScholarshipOverlay/expanded-scholarship-overlay.md",
-    "PRDs/05_02_2026/scholarshipFiltersHook/scholarship-filters-hook.md",
-    "PRDs/05_02_2026/eligibilityClassifierCompletion/eligibility-classifier-completion.md",
-    "PRDs/05_02_2026/expanded-scholarship-overlay.md"
+    "PRDs/05_02_2026/scholarshipFiltersHook/scholarship-filters-hook.md"
   ]
 }

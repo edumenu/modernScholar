@@ -46,9 +46,8 @@ export function ReadingProgress({
     const pct = Math.round(latest * 100)
     setPercentage(pct)
 
-    if (pct >= 100 && !isComplete) {
-      setIsComplete(true)
-    }
+    // Threshold avoids floating-point jitter near 100%; reset when scrolling back up.
+    setIsComplete(pct >= 99)
 
     // Active section detection using reading-zone offset (30% from top)
     const readingZone = window.innerHeight * 0.3
@@ -119,7 +118,7 @@ export function ReadingProgress({
       {/* Percentage + completion label */}
       <div className="flex items-center justify-between">
         <span className="font-heading text-xs tracking-wider text-on-surface-variant">
-          {isComplete ? "Article Complete" : "Reading Progress"}
+          {isComplete ? "Blog Complete" : "Reading Progress"}
         </span>
         <motion.span
           className={`font-heading text-sm font-medium tabular-nums ${isComplete ? "text-secondary" : "text-on-surface"}`}

@@ -70,7 +70,7 @@ Optional: `coverImage` (public-relative path; falls back to a default cover when
 
 ### Author Registry
 
-`src/data/blog-authors.ts` exports a typed `Record<AuthorKey, BlogAuthor>` keyed by short string (`priya`, `david`, `amara`, `elena`, `james`, `mei`). Frontmatter references the key only (`author: priya`). The existing six authors from the dummy file are preserved verbatim — names, roles, avatar paths.
+`src/data/blog-authors.ts` exports a typed `Record<AuthorKey, BlogAuthor>` keyed by short string (`Catherine Dumenu`). Frontmatter references the key only (`author: Catherine Dumenu`). The existing six authors from the dummy file are preserved verbatim — names, roles, avatar paths.
 
 ### `src/lib/blog.ts` — Deep Module
 
@@ -129,7 +129,7 @@ The four full posts in `ScholarshipBlogs.md` become four MDX files. During migra
 - Sub-section headings currently expressed as bold-styled lines (e.g., "Not Following Directions") become real `## Heading` lines.
 - "What to do instead:" blocks become `<Callout type="tip">` components.
 - Lists stay as standard markdown bullet lists.
-- Each post is assigned an author from the existing six (Priya for essay/personal-statement-style, James for mistakes/recommendations, Amara for first-gen) and a `coverImage` pointing at one of the existing photos in `public/scholarships/` (each post gets a distinct photo).
+- Each post is assigned an author from the existing six (Catherine Dumenu for essay/personal-statement-style, James for mistakes/recommendations, Amara for first-gen) and a `coverImage` pointing at one of the existing photos in `public/scholarships/` (each post gets a distinct photo).
 - The three placeholder titles ("No Essay Scholarships Aren't Worth Your Time", "International Students", "Sarah's Story", "Marcus's Medical Degree") are **dropped**. They are titles without content.
 
 ### `src/data/blog-posts.ts` Deletion
@@ -205,5 +205,5 @@ MDX parsing is build-time only (server components, `React.cache`d). Production b
 ### Open Questions
 
 1. Should `relatedScholarships` in frontmatter be human-curated (author picks slugs), or auto-derived from tag overlap with `eligibilityTags` on scholarships? **Proposal:** start human-curated for editorial control; reconsider after 10+ posts exist.
-2. Should the four migrated posts share an author, or be distributed across the existing six? **Proposal:** distribute by topic fit (Priya: essay/statement; James: mistakes/recommendations; Amara: first-gen success).
+2. Should the four migrated posts share an author, or be distributed across the existing six? **Proposal:** distribute by topic fit (Catherine Dumenu: essay/statement; James: mistakes/recommendations; Amara: first-gen success).
 3. Which four photos from `public/scholarships/` should each migrated post use? **Proposal:** assign during migration so each launch post gets a distinct hero; revisit if any pairing feels visually off.
