@@ -50,8 +50,21 @@ export function BlogCardFeatured({ post }: BlogCardFeaturedProps) {
             onError={() => setImgError(true)}
           />
 
-          {/* Gradient overlay — vertical from transparent to dark */}
-          <div className="absolute inset-0 bg-linear-to-b from-black/10 via-black/30 to-black/80" />
+          {/* Overlay #3 — editorial bottom fade in brand color */}
+          {/* Top: fixed warm-cream lift (theme-stable) so the photo dissolves into the page */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-1/3"
+            style={{
+              background:
+                "linear-gradient(to bottom, oklch(0.95 0.012 55 / 0.45), transparent)",
+            }}
+          />
+          {/* Bottom: primary-900 scrim for type legibility */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-3/4 bg-linear-to-t from-primary-900/95 via-primary-900/55 to-transparent"
+          />
 
           {/* Content overlaid on image */}
           <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 md:p-12">

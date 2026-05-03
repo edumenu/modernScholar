@@ -158,31 +158,35 @@ export function ScholarshipFilters({
                 )}
               />
             </button>
-            <Input
-              ref={inputRef}
-              id="scholarship-search-input"
-              type="search"
-              value={filters.searchQuery}
-              onChange={(e) => filters.setSearchQuery(e.target.value)}
-              onFocus={() => setSearchOpen(true)}
-              onBlur={() => {
-                if (!filters.searchQuery) setSearchOpen(false);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                  filters.setSearchQuery("");
-                  inputRef.current?.blur();
-                }
-              }}
-              placeholder="Search..."
-              aria-label="Search scholarships"
-              aria-hidden={!searchOpen}
-              tabIndex={searchOpen ? 0 : -1}
+            <div
               className={cn(
-                "h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0",
-                !searchOpen && "invisible w-0",
+                "flex min-w-0 items-center overflow-hidden",
+                searchOpen ? "flex-1" : "invisible w-0",
               )}
-            />
+            >
+              <Input
+                ref={inputRef}
+                id="scholarship-search-input"
+                type="search"
+                value={filters.searchQuery}
+                onChange={(e) => filters.setSearchQuery(e.target.value)}
+                onFocus={() => setSearchOpen(true)}
+                onBlur={() => {
+                  if (!filters.searchQuery) setSearchOpen(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    filters.setSearchQuery("");
+                    inputRef.current?.blur();
+                  }
+                }}
+                placeholder="Search..."
+                aria-label="Search scholarships"
+                aria-hidden={!searchOpen}
+                tabIndex={searchOpen ? 0 : -1}
+                className="h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0"
+              />
+            </div>
           </motion.div>
         </div>
       </div>
