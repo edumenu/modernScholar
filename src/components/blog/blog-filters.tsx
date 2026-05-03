@@ -78,8 +78,8 @@ export function BlogFilters({
             onKeyDown={(e) => {
               if (e.key === "Escape") onSearchChange("")
             }}
-            placeholder="Search articles"
-            aria-label="Search articles"
+            placeholder="Search blogs"
+            aria-label="Search blogs"
             className="h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0"
           />
         </div>
@@ -188,19 +188,20 @@ export function BlogFilters({
                 {isActive && (
                   <motion.span
                     layoutId="blog-filter-highlight"
-                    className="absolute inset-0 rounded-full bg-primary/30 dark:bg-primary"
+                    className="absolute inset-0 rounded-full bg-primary"
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
                 )}
                 <Button
-                  variant={isActive ? "default" : "ghost"}
+                  variant="ghost"
                   size="sm"
+                  noRipple={isActive}
                   onClick={() => onCategoryChange(category)}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "relative z-1 text-sm md:text-base",
+                    "relative z-1 text-sm md:text-base shadow-none",
                     isActive
-                      ? "shadow-none"
+                      ? "text-primary-foreground hover:text-primary-foreground hover:bg-transparent dark:hover:bg-transparent"
                       : "text-on-surface/60 hover:text-primary-400",
                   )}
                 >
@@ -248,8 +249,8 @@ export function BlogFilters({
               inputRef.current?.blur();
             }
           }}
-          placeholder="Search articles"
-          aria-label="Search articles"
+          placeholder="Search blogs"
+          aria-label="Search blogs"
           className={cn(
             "h-auto border-0 bg-transparent px-0 py-0 ring-0 focus-visible:border-0 focus-visible:ring-0",
             !searchOpen && "w-0",

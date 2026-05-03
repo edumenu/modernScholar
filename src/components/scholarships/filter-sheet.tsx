@@ -9,9 +9,12 @@ import {
   ELIGIBILITY_CATEGORIES,
   getEligibilityTagLabel,
   getEligibilityCategory,
+  type EligibilityCategory,
+  type Tag,
+} from "@/lib/eligibility"
+import {
   AWARD_MIN,
   AWARD_MAX,
-  type EligibilityCategory,
   type Scholarship,
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
@@ -26,8 +29,8 @@ import { Checkbox } from "@/components/ui/checkbox/checkbox"
 import { AwardRangeFilter } from "./award-range-filter"
 
 interface FilterSheetProps {
-  selectedTags: string[]
-  onTagsChange: (tags: string[]) => void
+  selectedTags: Tag[]
+  onTagsChange: (tags: Tag[]) => void
   awardRange: [number, number]
   onAwardRangeChange: (range: [number, number]) => void
   seasonalScholarships: Scholarship[]
@@ -55,7 +58,7 @@ export function FilterSheet({
     return counts
   }, [seasonalScholarships])
 
-  const toggleTag = (tag: string) => {
+  const toggleTag = (tag: Tag) => {
     if (selectedTags.includes(tag)) {
       onTagsChange(selectedTags.filter((t) => t !== tag))
     } else {
@@ -193,7 +196,9 @@ export function FilterSheet({
                             >
                               <div className="flex flex-col gap-1 pb-1 pl-6">
                                 {subOptions.map((subOption) => {
-                                  const fullTag = `${category}:${subOption}`
+                                  // TS doesn't narrow template literals to a Tag literal-union member;
+                                  // ELIGIBILITY_CATEGORIES entries map to valid Tags by construction.
+                                  const fullTag = `${category}:${subOption}` as Tag
                                   return (
                                     <div
                                       key={fullTag}
@@ -260,15 +265,15 @@ export function ActiveFilterStrip({
   awardRange,
   onAwardRangeChange,
 }: {
-  selectedTags: string[]
-  onTagsChange: (tags: string[]) => void
+  selectedTags: Tag[]
+  onTagsChange: (tags: Tag[]) => void
   awardRange: [number, number]
   onAwardRangeChange: (range: [number, number]) => void
 }) {
   const isAwardRangeActive = awardRange[0] !== AWARD_MIN || awardRange[1] !== AWARD_MAX
 
   const removeTag = useCallback(
-    (tag: string) => onTagsChange(selectedTags.filter((t) => t !== tag)),
+    (tag: Tag) => onTagsChange(selectedTags.filter((t) => t !== tag)),
     [selectedTags, onTagsChange],
   )
 

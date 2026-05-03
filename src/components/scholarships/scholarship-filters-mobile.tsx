@@ -6,12 +6,15 @@ import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { useScrollLock } from "@/hooks/use-scroll-lock"
 import {
-  EDUCATION_LEVELS,
   ELIGIBILITY_FLAT_TAGS,
   ELIGIBILITY_CATEGORIES,
   getEligibilityCategory,
-  type EducationLevelFilter,
   type EligibilityCategory,
+  type Tag,
+} from "@/lib/eligibility"
+import {
+  EDUCATION_LEVELS,
+  type Scholarship,
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 import { Checkbox } from "@/components/ui/checkbox/checkbox"
@@ -27,7 +30,7 @@ import {
 import { Input } from "@/components/ui/input/input"
 import { AWARD_MIN, AWARD_MAX } from "@/data/scholarships"
 import { AwardRangeFilter } from "./award-range-filter"
-import type { GridLayout } from "./scholarship-filters"
+import type { ScholarshipFiltersValue } from "@/hooks/use-scholarship-filters"
 
 const SORT_OPTIONS = [
   { value: "deadline", label: "Deadline" },
@@ -35,63 +38,46 @@ const SORT_OPTIONS = [
 ] as const
 
 interface ScholarshipFiltersMobileProps {
-  activeFilter: EducationLevelFilter
-  onFilterChange: (level: EducationLevelFilter) => void
-  layout: GridLayout
-  onLayoutChange: (layout: GridLayout) => void
-  searchQuery: string
-  onSearchChange: (query: string) => void
-  sortBy: string
-  onSortByChange: (sort: string) => void
+  filters: ScholarshipFiltersValue
   resultCount: number
-  eligibilityTags: string[]
-  onEligibilityTagsChange: (tags: string[]) => void
-  awardRange: [number, number]
-  onAwardRangeChange: (range: [number, number]) => void
+  seasonalScholarships: Scholarship[]
 }
 
 export function ScholarshipFiltersMobile({
-  activeFilter,
-  onFilterChange,
-  layout,
-  onLayoutChange,
-  searchQuery,
-  onSearchChange,
-  sortBy,
-  onSortByChange,
+  filters,
   resultCount,
-  eligibilityTags,
-  onEligibilityTagsChange,
-  awardRange,
-  onAwardRangeChange,
 }: ScholarshipFiltersMobileProps) {
   const [sheetOpen, setSheetOpen] = useState(false)
   const [expandedCategory, setExpandedCategory] = useState<EligibilityCategory | null>(null)
 
   useScrollLock(sheetOpen)
 
-  const isAwardRangeActive = awardRange[0] !== AWARD_MIN || awardRange[1] !== AWARD_MAX
+  const isAwardRangeActive =
+    filters.awardRange[0] !== AWARD_MIN || filters.awardRange[1] !== AWARD_MAX
   const hasActiveFilters =
-    activeFilter !== "All" || sortBy !== "deadline" || eligibilityTags.length > 0 || isAwardRangeActive
+    filters.activeFilter !== "All" ||
+    filters.sortBy !== "deadline" ||
+    filters.selectedTags.length > 0 ||
+    isAwardRangeActive
 
   const filterBadgeCount =
-    (activeFilter !== "All" ? 1 : 0) +
-    (sortBy !== "deadline" ? 1 : 0) +
-    eligibilityTags.length +
+    (filters.activeFilter !== "All" ? 1 : 0) +
+    (filters.sortBy !== "deadline" ? 1 : 0) +
+    filters.selectedTags.length +
     (isAwardRangeActive ? 1 : 0)
 
   const clearFilters = () => {
-    onFilterChange("All")
-    onSortByChange("deadline")
-    onEligibilityTagsChange([])
-    onAwardRangeChange([AWARD_MIN, AWARD_MAX])
+    filters.clearAll()
   }
 
   const toggleTag = (tag: string) => {
-    if (eligibilityTags.includes(tag)) {
-      onEligibilityTagsChange(eligibilityTags.filter((t) => t !== tag))
+    // Caller passes the constructed `${category}:${subOption}` literal — narrow
+    // back to Tag at this boundary; ELIGIBILITY_CATEGORIES guarantees validity.
+    const t = tag as Tag
+    if (filters.selectedTags.includes(t)) {
+      filters.setSelectedTags(filters.selectedTags.filter((x) => x !== t))
     } else {
-      onEligibilityTagsChange([...eligibilityTags, tag])
+      filters.setSelectedTags([...filters.selectedTags, t])
     }
   }
 
@@ -105,10 +91,10 @@ export function ScholarshipFiltersMobile({
         />
         <Input
           type="search"
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
+          value={filters.searchQuery}
+          onChange={(e) => filters.setSearchQuery(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Escape") onSearchChange("")
+            if (e.key === "Escape") filters.setSearchQuery("")
           }}
           placeholder="Search scholarships"
           aria-label="Search scholarships"
@@ -123,11 +109,11 @@ export function ScholarshipFiltersMobile({
             variant="ghost"
             size="icon-sm"
             aria-label="Grid layout"
-            aria-pressed={layout === "grid"}
-            onClick={() => onLayoutChange("grid")}
+            aria-pressed={filters.layout === "grid"}
+            onClick={() => filters.setLayout("grid")}
             className={cn(
               "rounded-full",
-              layout === "grid"
+              filters.layout === "grid"
                 ? "bg-white/60 text-on-surface dark:bg-white/20"
                 : "text-on-surface/60 hover:text-on-surface",
             )}
@@ -138,11 +124,11 @@ export function ScholarshipFiltersMobile({
             variant="ghost"
             size="icon-sm"
             aria-label="List layout"
-            aria-pressed={layout === "list"}
-            onClick={() => onLayoutChange("list")}
+            aria-pressed={filters.layout === "list"}
+            onClick={() => filters.setLayout("list")}
             className={cn(
               "rounded-full",
-              layout === "list"
+              filters.layout === "list"
                 ? "bg-white/60 text-on-surface dark:bg-white/20"
                 : "text-on-surface/60 hover:text-on-surface",
             )}
@@ -208,7 +194,7 @@ export function ScholarshipFiltersMobile({
                   </h3>
                   <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by education level">
                     {EDUCATION_LEVELS.map((level) => {
-                      const isActive = activeFilter === level
+                      const isActive = filters.activeFilter === level
                       return (
                         <Button
                           key={level}
@@ -216,7 +202,7 @@ export function ScholarshipFiltersMobile({
                           size="sm"
                           aria-pressed={isActive}
                           onClick={() => {
-                            onFilterChange(level)
+                            filters.setActiveFilter(level)
                             setSheetOpen(false)
                           }}
                           className={cn(
@@ -235,8 +221,8 @@ export function ScholarshipFiltersMobile({
 
                 {/* Award Amount Slider */}
                 <AwardRangeFilter
-                  value={awardRange}
-                  onValueChange={onAwardRangeChange}
+                  value={filters.awardRange}
+                  onValueChange={filters.setAwardRange}
                 />
 
                 {/* Eligibility tags */}
@@ -249,7 +235,7 @@ export function ScholarshipFiltersMobile({
                     {ELIGIBILITY_FLAT_TAGS.map((tag) => (
                       <div key={tag} className="rounded-lg px-1 py-1.5">
                         <Checkbox
-                          checked={eligibilityTags.includes(tag)}
+                          checked={filters.selectedTags.includes(tag)}
                           onCheckedChange={() => toggleTag(tag)}
                         >
                           {tag}
@@ -264,7 +250,7 @@ export function ScholarshipFiltersMobile({
                       (category) => {
                         const subOptions = ELIGIBILITY_CATEGORIES[category]
                         const isExpanded = expandedCategory === category
-                        const selectedInCategory = eligibilityTags.filter(
+                        const selectedInCategory = filters.selectedTags.filter(
                           (t) => getEligibilityCategory(t) === category,
                         ).length
 
@@ -312,11 +298,12 @@ export function ScholarshipFiltersMobile({
                                 >
                                   <div className="flex flex-col gap-1 px-6 pb-2 pt-1">
                                     {subOptions.map((subOption) => {
-                                      const fullTag = `${category}:${subOption}`
+                                      // See toggleTag note: template-literal cast narrows to Tag.
+                                      const fullTag = `${category}:${subOption}` as Tag
                                       return (
                                         <div key={fullTag} className="rounded-lg py-1">
                                           <Checkbox
-                                            checked={eligibilityTags.includes(fullTag)}
+                                            checked={filters.selectedTags.includes(fullTag)}
                                             onCheckedChange={() => toggleTag(fullTag)}
                                           >
                                             {subOption}
@@ -342,12 +329,12 @@ export function ScholarshipFiltersMobile({
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {SORT_OPTIONS.map(({ value, label }) => {
-                      const isActive = sortBy === value
+                      const isActive = filters.sortBy === value
                       return (
                         <button
                           key={value}
                           type="button"
-                          onClick={() => onSortByChange(value)}
+                          onClick={() => filters.setSortBy(value)}
                           className={cn(
                             "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                             isActive
@@ -375,7 +362,7 @@ export function ScholarshipFiltersMobile({
 
       {/* Result count feedback */}
       <AnimatePresence>
-        {(searchQuery || hasActiveFilters) && (
+        {(filters.searchQuery || hasActiveFilters) && (
           <motion.p
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}

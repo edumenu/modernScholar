@@ -45,7 +45,7 @@ A scaffold script (`npm run new:blog`) prompts for title, slug, author, and cate
 14. As an author, I want to embed an `<InlineScholarshipCard slug="..." />` that pulls from `scholarships-enriched.json` so I can cross-link real scholarships without copying data.
 15. As an author, I want `readTime` computed automatically from word count so I do not have to estimate it manually.
 16. As an author, I want a `status: draft | published` field that hides drafts from production builds (but keeps them visible in `npm run dev`) so I can commit work-in-progress safely.
-17. As an author, I want an image-prompt template documented in `CLAUDE.md` so I can generate consistent cover images without re-deriving the style each time.
+17. As an author, I want to reuse the existing photos in `public/scholarships/` for cover images during MVP so I do not need to source or generate new artwork.
 18. As an author migrating the four posts from `ScholarshipBlogs.md`, I want the smart-quote, escape-artifact, and sub-heading inconsistencies fixed in the migration so the resulting MDX files are clean from day one.
 
 ### Build / system
@@ -62,15 +62,15 @@ A new top-level `content/` directory holds authoring source. Posts live at `cont
 
 ### Frontmatter Schema
 
-Required: `title`, `excerpt`, `category`, `publishDate` (ISO 8601 string), `author` (key into the author registry), `coverImage` (path under `/public/blog/...`).
+Required: `title`, `excerpt`, `category`, `publishDate` (ISO 8601 string), `author` (key into the author registry).
 
-Optional: `updatedDate`, `tags` (string array), `series` (object: `name`, `part`, `totalParts`), `featured` (boolean), `status` (`draft` | `published`, defaults to `published`), `seoDescription` (falls back to `excerpt`), `ogImage` (falls back to `coverImage`), `coverCredit`, `relatedScholarships` (array of scholarship slugs).
+Optional: `coverImage` (public-relative path; falls back to a default cover when omitted), `updatedDate`, `tags` (string array), `series` (object: `name`, `part`, `totalParts`), `featured` (boolean), `status` (`draft` | `published`, defaults to `published`), `seoDescription` (falls back to `excerpt`), `ogImage` (falls back to `coverImage`), `coverCredit`, `relatedScholarships` (array of scholarship slugs).
 
 `readTime` is **never** in frontmatter — it is computed from MDX body word count at load time.
 
 ### Author Registry
 
-`src/data/blog-authors.ts` exports a typed `Record<AuthorKey, BlogAuthor>` keyed by short string (`priya`, `david`, `amara`, `elena`, `james`, `mei`). Frontmatter references the key only (`author: priya`). The existing six authors from the dummy file are preserved verbatim — names, roles, avatar paths.
+`src/data/blog-authors.ts` exports a typed `Record<AuthorKey, BlogAuthor>` keyed by short string (`Catherine Dumenu`). Frontmatter references the key only (`author: Catherine Dumenu`). The existing six authors from the dummy file are preserved verbatim — names, roles, avatar paths.
 
 ### `src/lib/blog.ts` — Deep Module
 
@@ -102,15 +102,19 @@ The component is simplified to render: title, optional series indicator, excerpt
 
 `src/app/blog/page.tsx` and `src/app/blog/[slug]/page.tsx` switch from synchronous `blogPosts` import to `await getAllPosts()` / `await getPostBySlug(slug)`. `generateStaticParams` enumerates MDX filenames. `generateMetadata` reads `seoDescription`, `ogImage`, and `title` from the resolved post.
 
-### Image Strategy (Decision)
+### Image Strategy (Decision — MVP)
 
-**AI-generated abstract editorial backgrounds** are the primary cover image source. Rationale: the "Academic Curator" palette (warm cream, deep brownish-red, sage, terracotta) is hard to match consistently with stock photography; abstract imagery avoids the awkwardness of using stock photos of real people for personal stories like "Sarah's Journey".
+**Reuse the existing photos in `public/scholarships/`** as cover images for the MVP. Rationale: these assets already exist, already match the site's visual tone (the dummy data referenced them via `scholarship-1.jpg` … `scholarship-12.jpg`), and require zero new sourcing or generation work. This unblocks shipping the four real posts immediately.
 
-A canonical prompt template is added to `CLAUDE.md`:
+**Frontmatter usage:**
 
-> Editorial magazine cover illustration, abstract composition, warm cream background (#F9F3F2), accents of deep brownish-red (#76312D), sage green (#536256), and terracotta (#943E30), soft diffused lighting, paper textures, no text, no people, no logos, 16:9 aspect ratio, photorealistic but minimal — [POST-SPECIFIC SUBJECT].
+- Each MDX file's frontmatter sets `coverImage: /scholarships/<filename>` pointing at the chosen photo from `public/scholarships/`.
+- `coverImage` is **optional**. When omitted, the loader falls back to a single default cover image at `/blog/default-cover.jpg` (committed once, copied from one of the existing scholarship photos selected to feel category-neutral).
+- The four migrated launch posts are each assigned a distinct photo from `public/scholarships/` so no two share a hero image.
 
-Recraft is the recommended tool because its "Brand Style" feature locks the palette across batches. Generated images are committed to `public/blog/` as `<slug>-cover.webp`. Author bio avatars remain stock-style portraits under `public/authors/` (existing assets retained).
+**Author bio avatars:** unchanged — remain under `public/authors/` (existing assets retained).
+
+**Rollout:** no new image directory or prompt template is introduced in this PRD. A dedicated `public/blog/` directory and a custom-photo or AI-generated cover pipeline can be reconsidered post-MVP once content volume warrants it.
 
 ### Scaffold Script
 
@@ -125,7 +129,7 @@ The four full posts in `ScholarshipBlogs.md` become four MDX files. During migra
 - Sub-section headings currently expressed as bold-styled lines (e.g., "Not Following Directions") become real `## Heading` lines.
 - "What to do instead:" blocks become `<Callout type="tip">` components.
 - Lists stay as standard markdown bullet lists.
-- Each post is assigned an author from the existing six (Priya for essay/personal-statement-style, James for mistakes/recommendations, Amara for first-gen) and a generated cover image following the prompt template.
+- Each post is assigned an author from the existing six (Catherine Dumenu for essay/personal-statement-style, James for mistakes/recommendations, Amara for first-gen) and a `coverImage` pointing at one of the existing photos in `public/scholarships/` (each post gets a distinct photo).
 - The three placeholder titles ("No Essay Scholarships Aren't Worth Your Time", "International Students", "Sarah's Story", "Marcus's Medical Degree") are **dropped**. They are titles without content.
 
 ### `src/data/blog-posts.ts` Deletion
@@ -168,7 +172,8 @@ Add `pageExtensions: ['ts', 'tsx', 'mdx']` and the MDX plugin chain (remark + re
 ## Out of Scope
 
 - A CMS UI (Sanity, Contentful, Decap) — MDX-on-disk is the system; CMS is a future evaluation.
-- Automated AI-image generation as part of the build pipeline — covers are generated manually using the documented prompt template, then committed.
+- AI-generated, custom-shot, or stock-photo cover images — MVP reuses `public/scholarships/`. Bespoke imagery is post-MVP.
+- A dedicated `public/blog/` image directory — not introduced in MVP; covers live alongside scholarship photos.
 - Comments, reactions, or social-share counts on posts.
 - RSS/Atom feed generation — easy to add later from `getAllPosts()`, but not required for launch.
 - Search across blog posts — defer until post count justifies it (>20 posts).
@@ -192,7 +197,7 @@ MDX parsing is build-time only (server components, `React.cache`d). Production b
 ### Author Workflow Summary (Future-You Reference)
 
 1. `npm run new:blog "My Post Title"` → creates `content/blog/my-post-title.mdx` with frontmatter stub.
-2. Generate cover image using the prompt template in `CLAUDE.md`, save to `public/blog/my-post-title-cover.webp`.
+2. Pick a photo from `public/scholarships/` and set `coverImage: /scholarships/<filename>` in the frontmatter (or leave the field out to use the default cover).
 3. Write the post in MDX. Use `<PullQuote>`, `<Callout>`, and `<InlineScholarshipCard>` as needed.
 4. Set `status: published` (defaults to `published` already; switch to `draft` only if you want it hidden in prod).
 5. Commit. Build validates frontmatter and fails loudly on errors.
@@ -200,5 +205,5 @@ MDX parsing is build-time only (server components, `React.cache`d). Production b
 ### Open Questions
 
 1. Should `relatedScholarships` in frontmatter be human-curated (author picks slugs), or auto-derived from tag overlap with `eligibilityTags` on scholarships? **Proposal:** start human-curated for editorial control; reconsider after 10+ posts exist.
-2. Should the four migrated posts share an author, or be distributed across the existing six? **Proposal:** distribute by topic fit (Priya: essay/statement; James: mistakes/recommendations; Amara: first-gen success).
-3. Cover image source for the four launch posts — generate before merge, or ship with placeholder and replace post-merge? **Proposal:** generate before merge so launch is not visually broken.
+2. Should the four migrated posts share an author, or be distributed across the existing six? **Proposal:** distribute by topic fit (Catherine Dumenu: essay/statement; James: mistakes/recommendations; Amara: first-gen success).
+3. Which four photos from `public/scholarships/` should each migrated post use? **Proposal:** assign during migration so each launch post gets a distinct hero; revisit if any pairing feels visually off.

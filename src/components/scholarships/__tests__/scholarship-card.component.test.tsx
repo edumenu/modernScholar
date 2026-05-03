@@ -40,6 +40,7 @@ const baseScholarship: Scholarship = {
   eligibility: "Must be enrolled",
   season: "spring",
   description: "A test scholarship for students.",
+  eligibilityTags: [],
 }
 
 describe("ScholarshipCard", () => {

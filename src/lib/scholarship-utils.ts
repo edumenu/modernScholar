@@ -1,40 +1,10 @@
 import type { Scholarship, EducationLevelFilter } from "@/data/scholarships"
-import { parseAwardAmount, getEligibilityCategory, AWARD_MIN, AWARD_MAX } from "@/data/scholarships"
+import { parseAwardAmount, AWARD_MIN, AWARD_MAX } from "@/data/scholarships"
+import { matches, type Tag } from "@/lib/eligibility"
 
 /** Parse deadline string + year into a timestamp for sorting. */
 export function parseDeadlineDate(deadline: string, deadlineYear: number): number {
   return new Date(`${deadline}, ${deadlineYear}`).getTime() || 0
-}
-
-/**
- * Check if a scholarship matches the selected eligibility tags.
- * - Within a category: OR (match any selected sub-option)
- * - Across categories/flat tags: AND (must match all)
- */
-export function matchesEligibilityTags(
-  scholarship: Scholarship,
-  selectedTags: string[],
-): boolean {
-  if (selectedTags.length === 0) return true
-
-  const tags = scholarship.eligibilityTags ?? []
-
-  // Group selected tags by category (null = flat tag)
-  const groups = new Map<string | null, string[]>()
-  for (const tag of selectedTags) {
-    const category = getEligibilityCategory(tag)
-    const key = category ?? tag // flat tags are their own group key
-    if (!groups.has(key)) groups.set(key, [])
-    groups.get(key)!.push(tag)
-  }
-
-  // AND across groups: every group must have at least one match
-  for (const [, groupTags] of groups) {
-    const hasMatch = groupTags.some((t) => tags.includes(t))
-    if (!hasMatch) return false
-  }
-
-  return true
 }
 
 /**
@@ -52,7 +22,7 @@ export function filterAndSort(
   level: EducationLevelFilter,
   searchQuery: string,
   sortBy: string,
-  eligibilityTags: string[] = [],
+  selectedTags: Tag[] = [],
   awardRange: [number, number] | null = null,
 ): { scholarship: Scholarship; matches: boolean }[] {
   const query = searchQuery.toLowerCase().trim()
@@ -66,7 +36,7 @@ export function filterAndSort(
       if (!haystack.includes(query)) return false
     }
     // Eligibility hard filter
-    if (!matchesEligibilityTags(s, eligibilityTags)) return false
+    if (!matches(s, selectedTags)) return false
     // Award range hard filter
     if (isRangeActive) {
       const amount = parseAwardAmount(s.awardAmount)

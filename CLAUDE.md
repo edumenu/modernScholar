@@ -108,3 +108,28 @@ The full design system is documented in `SystemDesign.md`. Key essentials:
   1. npm run check-links — Reads MasterScholarshipList.csv, checks every URL, writes scripts/output/link-report.json
   2. npm run scrape-scholarships — Reads link-report.json (exits with error if missing), scrapes alive URLs, writes src/data/scholarships-enriched.json
   3. npm run tag-eligibilities — Reads scholarships-enriched.json, adds eligibilityTags via keyword matching, writes back in-place
+  4. npm run convert:blogs — Reads ScholarshipBlogs.md (single source of truth for all blog posts), splits on `## **Title**`, generates one MDX file per post in content/blog/. Refuses to overwrite existing files; pass `--force` to overwrite.
+
+## Adding a new blog post
+
+1. Open `ScholarshipBlogs.md` and append a new section using the convention:
+   ```
+   ## **Your Post Title**
+   <!-- author: Catherine Dumenu; category: Tips & Guides; date: 2026-04-01; cover: scholarship-5.jpg -->
+
+   First descriptive sentence becomes the excerpt.
+
+   ### First Sub-heading
+
+   Body paragraphs...
+
+   What to do instead:
+   This paragraph auto-wraps in <Callout type="tip">.
+   ```
+   - `author` must be one of: `Catherine Dumenu`.
+   - `cover` filename must exist in `public/scholarships/`.
+   - In-post sections use `### ` (h3); the post title uses `## **Bold**`.
+   - "What to do instead:" auto-wraps the next paragraph in a tip Callout.
+2. `npm run convert:blogs` — emits `content/blog/<slug>.mdx`.
+3. Edit the generated MDX if you want to add `<PullQuote>`, `<InlineScholarshipCard>`, `tags`, `series`, or `relatedScholarships` — those don't come from the source markdown. Manual edits survive future `npm run convert:blogs` runs (script skips existing files; use `--force` to overwrite).
+4. `npm run build` validates frontmatter and lists the new route.

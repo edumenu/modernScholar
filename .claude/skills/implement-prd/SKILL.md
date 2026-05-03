@@ -130,3 +130,9 @@ If verification reveals a problem, add a fix-up task to `tasks.json` (next avail
 - Respect "Out of Scope" sections strictly.
 - If a sub-agent reports it needs files outside the task's `files` list, halt and ask — never auto-expand scope.
 - All implementation goes through specialized sub-agents (`frontend-engineer` by default) — this skill orchestrates, it doesn't edit code itself.
+
+### Performance notes
+
+- The Ralph loop's wake delay is runtime-clamped to **60s minimum**. Total wall-clock time scales linearly with iteration count, so fewer larger-grained tasks beat many tiny ones. See `decompose-prompt.md` rule 11 (batch siblings) and rule 12 (cascade-safe refactors).
+- Sub-agent ramp-up (~30–60s of file reads per fresh context) is the second largest cost after wakes. Tight `description` pointers + accurate `files` lists (per `decompose-prompt.md` §"Task description content") keep ramp-up minimal.
+- Per-task `validation` defaults to `["typecheck", "lint:touched"]`. For tasks that don't touch TypeScript (binary asset copies, MDX content migrations), drop typecheck — see `tasks-schema.json` (validation array allows empty). Saves ~5–10s per such task.

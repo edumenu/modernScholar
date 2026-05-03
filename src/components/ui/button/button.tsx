@@ -63,6 +63,7 @@ type ButtonProps = ButtonPrimitive.Props &
     animateIcon?: boolean;
     animateText?: boolean;
     hoverTrigger?: "self" | "parent";
+    noRipple?: boolean;
   };
 
 function Button({
@@ -72,13 +73,14 @@ function Button({
   animateIcon = false,
   animateText = false,
   hoverTrigger = "self",
+  noRipple = false,
   children,
   ...props
 }: ButtonProps) {
   const isParent = hoverTrigger === "parent";
 
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const hasRipple = variant !== "link";
+  const hasRipple = variant !== "link" && !noRipple;
 
   const { ripple, rippleStyle, rippleMotionProps, handlers, onAnimationComplete } = useRipple(
     buttonRef,

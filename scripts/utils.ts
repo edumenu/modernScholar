@@ -1,6 +1,11 @@
 import Papa from "papaparse"
 import slugify from "slugify"
 import fs from "fs"
+import type { Tag } from "@/lib/eligibility"
+import { seasonForMonthName, type Season } from "@/lib/seasons"
+
+export type { Season } from "@/lib/seasons"
+export { getCurrentSeason } from "@/lib/seasons"
 
 // --- Types ---
 
@@ -10,8 +15,6 @@ export type EducationLevel =
   | "Graduate"
   | "K-8"
   | "K-12"
-
-export type Season = "winter" | "spring" | "summer" | "fall"
 
 export interface CsvRow {
   Deadline: string
@@ -33,6 +36,7 @@ export interface EnrichedScholarship {
   link: string
   openDate: string | null
   eligibility: string
+  eligibilityTags: Tag[]
   season: Season
   image: string
   description: string
@@ -65,23 +69,6 @@ const MONTH_CORRECTIONS: Record<string, string> = {
   ocotber: "October",
   novmber: "November",
   decmber: "December",
-}
-
-// --- Season mapping ---
-
-const MONTH_TO_SEASON: Record<string, Season> = {
-  december: "winter",
-  january: "winter",
-  february: "winter",
-  march: "spring",
-  april: "spring",
-  may: "spring",
-  june: "summer",
-  july: "summer",
-  august: "summer",
-  september: "fall",
-  october: "fall",
-  november: "fall",
 }
 
 // --- Month index (0-based) for date parsing ---
@@ -121,7 +108,7 @@ export function correctMonthTypo(month: string): string {
 export function extractMonth(deadline: string): string | null {
   const corrected = correctMonthTypo(deadline.split(/\s+/)[0])
   const lower = corrected.toLowerCase()
-  if (MONTH_TO_SEASON[lower]) {
+  if (seasonForMonthName(lower) !== undefined) {
     return corrected.charAt(0).toUpperCase() + corrected.slice(1).toLowerCase()
   }
   return null
@@ -130,7 +117,7 @@ export function extractMonth(deadline: string): string | null {
 export function deriveSeason(deadline: string): Season {
   const month = extractMonth(deadline)
   if (!month) return "fall" // fallback
-  return MONTH_TO_SEASON[month.toLowerCase()] ?? "fall"
+  return seasonForMonthName(month) ?? "fall"
 }
 
 /**
@@ -219,15 +206,6 @@ export function formatProviderFromDomain(domain: string): string {
     .slice(0, -1)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ")
-}
-
-export function getCurrentSeason(referenceDate: Date = new Date()): Season {
-  const monthNames = [
-    "january", "february", "march", "april", "may", "june",
-    "july", "august", "september", "october", "november", "december",
-  ]
-  const monthName = monthNames[referenceDate.getMonth()]
-  return MONTH_TO_SEASON[monthName]
 }
 
 export function generateDescription(

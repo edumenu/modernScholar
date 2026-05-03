@@ -12,6 +12,7 @@ import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button/button";
 import type { Scholarship } from "@/data/scholarships";
 import { CLASSIFICATION_COLORS, getClassificationTint } from "@/data/scholarships";
+import { getEligibilityTagLabel } from "@/lib/eligibility";
 
 /* ------------------------------------------------------------------ */
 /*  Transform config                                                   */
@@ -82,8 +83,41 @@ function getTransformValues(
 }
 
 /* ------------------------------------------------------------------ */
-/*  CoverflowCard — Immersive Tonal (tall variant)                     */
+/*  CoverflowCard — Stat-First Specimen (tall variant)                 */
 /* ------------------------------------------------------------------ */
+
+function MetaItem({
+  label,
+  value,
+  tintMuted,
+  tintText,
+}: {
+  label: string;
+  value: string;
+  tintMuted: string;
+  tintText: string;
+}) {
+  return (
+    <div className="min-w-0">
+      <dt
+        className={cn(
+          "text-[9px] font-semibold uppercase tracking-widest",
+          tintMuted,
+        )}
+      >
+        {label}
+      </dt>
+      <dd
+        className={cn(
+          "mt-1 line-clamp-2 text-[11px] font-medium leading-snug wrap-break-word",
+          tintText,
+        )}
+      >
+        {value}
+      </dd>
+    </div>
+  );
+}
 
 function CoverflowCard({
   scholarship,
@@ -96,6 +130,29 @@ function CoverflowCard({
 }) {
   const tint = getClassificationTint(scholarship.classification);
 
+  const seasonLabel = `${scholarship.season} '${String(
+    scholarship.deadlineYear,
+  ).slice(-2)}`;
+  const eligibilityLabel =
+    scholarship.eligibilityTags.length > 0
+      ? scholarship.eligibilityTags
+          .slice(0, 2)
+          .map(getEligibilityTagLabel)
+          .join(" · ")
+      : "Open to all";
+  const opensLabel = scholarship.openDate ?? "Rolling";
+  const levelLabel = scholarship.classification.join(" · ");
+  const deadlineLabel = `${scholarship.deadline}, ${scholarship.deadlineYear}`;
+
+  // Scale hero amount to fit long award strings (e.g. "Up to $5,000", "105 scholarships at $25,000 each")
+  const awardLength = scholarship.awardAmount.length;
+  const awardSizeClass =
+    awardLength > 18
+      ? "text-lg leading-snug"
+      : awardLength > 10
+        ? "text-2xl leading-tight"
+        : "text-[2.25rem] leading-none";
+
   return (
     <button
       type="button"
@@ -103,47 +160,111 @@ function CoverflowCard({
       data-cursor="text"
       data-cursor-text={isCenter ? "View" : "Focus"}
       className={cn(
-        "relative flex h-full w-80 shrink-0 flex-col cursor-pointer overflow-hidden rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "relative flex h-full w-80 shrink-0 cursor-pointer flex-col overflow-hidden rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)]",
         "group",
         tint.bg,
         tint.border,
       )}
     >
-      {/* Top: Education level pills */}
-      <div className="flex flex-wrap items-center gap-1.5 px-6 pt-6">
-        {scholarship.classification.slice(0, 2).map((level) => {
-          const colors = CLASSIFICATION_COLORS[level];
-          return (
-            <span
-              key={level}
-              className={cn(
-                "inline-flex items-center rounded-full px-2.5 py-0.5",
-                "text-[10px] font-semibold tracking-wider uppercase",
-                colors.bg,
-                colors.text,
-              )}
-            >
-              {level}
-            </span>
-          );
-        })}
-      </div>
-
-      {/* Spacer for generous whitespace */}
-      <div className="flex-1" />
-
-      {/* Title + gradient-fade underline */}
-      <div className="flex flex-col gap-3 px-6">
-        <h3
+      {/* Header: classification badges + season micro-tag */}
+      <div className="flex items-start justify-between gap-2 px-5 pt-5">
+        <div className="flex flex-wrap items-center gap-1.5">
+          {scholarship.classification.slice(0, 2).map((level) => {
+            const colors = CLASSIFICATION_COLORS[level];
+            return (
+              <span
+                key={level}
+                className={cn(
+                  "inline-flex items-center rounded-full px-2 py-0.5",
+                  "text-[9px] font-semibold uppercase tracking-wider",
+                  colors.bg,
+                  colors.text,
+                )}
+              >
+                {level}
+              </span>
+            );
+          })}
+        </div>
+        <span
           className={cn(
-            "text-left font-heading text-xl font-bold leading-tight",
-            tint.text,
-            "line-clamp-2",
+            "shrink-0 pt-0.5 font-heading text-[10px] italic tracking-wide",
+            tint.muted,
           )}
         >
-          {scholarship.name}
-        </h3>
+          {seasonLabel}
+        </span>
+      </div>
+
+      {/* Hero amount */}
+      <div className="px-5 pt-6 text-left">
+        <p
+          className={cn(
+            "text-[9px] font-semibold uppercase tracking-[0.25em]",
+            tint.muted,
+          )}
+        >
+          Award
+        </p>
+        <p
+          className={cn(
+            "mt-1.5 line-clamp-2 wrap-break-word font-heading font-bold tracking-tight",
+            awardSizeClass,
+            tint.text,
+          )}
+        >
+          {scholarship.awardAmount}
+        </p>
+      </div>
+
+      {/* Hairline rule with classification dot */}
+      <div className="relative mx-5 mt-5 h-px" aria-hidden="true">
+        <div
+          className={cn(
+            "absolute inset-0 bg-linear-to-r to-transparent",
+            tint.accent,
+          )}
+        />
+        <div
+          className={cn(
+            "absolute left-1/2 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full",
+          )}
+        />
+      </div>
+
+      {/* Two-column metadata grid */}
+      <dl className="grid grid-cols-2 gap-x-3 gap-y-3 px-5 pt-4 text-left">
+        <MetaItem
+          label="Eligibility"
+          value={eligibilityLabel}
+          tintMuted={tint.muted}
+          tintText={tint.text}
+        />
+        <MetaItem
+          label="Opens"
+          value={opensLabel}
+          tintMuted={tint.muted}
+          tintText={tint.text}
+        />
+        <MetaItem
+          label="Level"
+          value={levelLabel}
+          tintMuted={tint.muted}
+          tintText={tint.text}
+        />
+        <MetaItem
+          label="Deadline"
+          value={deadlineLabel}
+          tintMuted={tint.muted}
+          tintText={tint.text}
+        />
+      </dl>
+
+      <div className="flex-1" />
+
+      {/* Specimen name (title) + provider at the bottom */}
+      <div className="flex flex-col gap-1.5 pb-5 px-5 pt-4 text-left">
         <div
           className={cn(
             "h-px w-2/3 bg-linear-to-r to-transparent transition-all duration-300 group-hover:w-full",
@@ -151,38 +272,17 @@ function CoverflowCard({
           )}
           aria-hidden="true"
         />
-      </div>
-
-      {/* Provider */}
-      <p className={cn("px-6 pt-3 text-left text-xs font-medium", tint.muted)}>
-        {scholarship.provider}
-      </p>
-
-      {/* Display amount */}
-      <div className="flex items-end gap-1.5 px-6 pt-4">
-        <Icon
-          icon="solar:money-bag-linear"
-          className={cn("mb-0.5 size-4 shrink-0", tint.muted)}
-        />
-        <span
+        <h3
           className={cn(
-            "font-heading text-2xl font-bold leading-none tracking-tight",
+            "line-clamp-2 font-heading text-base font-bold leading-tight",
             tint.text,
           )}
         >
-          {scholarship.awardAmount}
-        </span>
-      </div>
-
-      {/* Deadline */}
-      <div
-        className={cn(
-          "flex items-center gap-1.5 px-6 pb-6 pt-2 text-xs",
-          tint.muted,
-        )}
-      >
-        <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
-        <span>Deadline {scholarship.deadline}</span>
+          {scholarship.name}
+        </h3>
+        <p className={cn("line-clamp-1 text-[11px] font-medium", tint.muted)}>
+          {scholarship.provider}
+        </p>
       </div>
     </button>
   );
@@ -359,7 +459,7 @@ export function CoverflowCarousel({
               style={{
                 zIndex: t.zIndex,
                 transformStyle: "preserve-3d",
-                willChange: "transform",
+                willChange: Math.abs(offset) <= 1 ? "transform" : "auto",
               }}
             >
               <CoverflowCard

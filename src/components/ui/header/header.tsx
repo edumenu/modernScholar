@@ -121,7 +121,7 @@ export function Header() {
                 alt="Modern Scholar"
                 width={28}
                 height={28}
-                className="size-7 object-contain block dark:hidden"
+                className="size-12 object-contain block dark:hidden"
               />
               <Image
                 src="/iconWhite.png"
@@ -159,7 +159,7 @@ export function Header() {
                       linkRefs.current[item.href] = el;
                     }}
                     className={cn(
-                      "relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface",
+                      "relative flex items-center rounded-full px-3 text-sm tracking-tight text-on-surface hover:text-primary-400",
                       isActive && "text-primary font-medium",
                     )}
                   >
