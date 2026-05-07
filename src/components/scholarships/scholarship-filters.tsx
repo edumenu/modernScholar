@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion, LayoutGroup } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
@@ -22,7 +22,11 @@ import {
 import { Input } from "@/components/ui/input/input"
 import { ScholarshipFiltersMobile } from "./scholarship-filters-mobile";
 import { FilterSheet } from "./filter-sheet";
-import type { ScholarshipFiltersValue } from "@/hooks/use-scholarship-filters"
+import { MonthDropdown } from "./month-dropdown";
+import {
+  type ScholarshipFiltersValue,
+} from "@/hooks/use-scholarship-filters"
+import { computeMonthCounts } from "@/lib/scholarship-utils"
 
 export type GridLayout = "grid" | "list"
 
@@ -41,6 +45,11 @@ export function ScholarshipFilters({
   const [searchOpen, setSearchOpen] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 1023px)");
+
+  const monthCounts = useMemo(
+    () => computeMonthCounts(seasonalScholarships),
+    [seasonalScholarships],
+  );
 
   if (isMobile === null) {
     return <div className="min-h-24" />;
@@ -191,7 +200,7 @@ export function ScholarshipFilters({
         </div>
       </div>
 
-      {/* Row 2: Layout toggle (left) + Sort (right) */}
+      {/* Row 2: Layout toggle (left) + Month + Sort + Filters (right) */}
       <div className="flex items-center justify-between pt-3">
         {/* Left: Layout toggle */}
         <div className="flex items-center gap-1 rounded-full bg-muted/80 p-1 dark:bg-white/10">
@@ -227,8 +236,16 @@ export function ScholarshipFilters({
           </Button>
         </div>
 
-        {/* Right: Sort */}
+        {/* Right: Month + Sort + Filters */}
         <div className="flex items-center gap-2">
+          <MonthDropdown
+            month={filters.month}
+            onMonthChange={filters.setMonth}
+            monthCounts={monthCounts}
+            totalCount={seasonalScholarships.length}
+            variant="outline"
+            triggerClassName="shrink-0 rounded-full"
+          />
           <DropdownMenu>
             <DropdownMenuTrigger
               render={

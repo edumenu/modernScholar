@@ -1,6 +1,6 @@
 import enrichedData from "./scholarships-enriched.json"
 import type { Tag } from "@/lib/eligibility"
-import { getCurrentSeason, type Season } from "@/lib/seasons"
+import type { Season } from "@/lib/seasons"
 
 export type { Season } from "@/lib/seasons"
 export { SEASONS, getCurrentSeason, getNextSeason } from "@/lib/seasons"
@@ -59,27 +59,14 @@ export const AWARD_MAX = 100_000
 // JSON literal can't satisfy Tag union without runtime narrowing; cast at the boundary, validation happens in the tagger.
 export const scholarships: Scholarship[] = enrichedData as unknown as Scholarship[]
 
-/** Check if a scholarship is visible: in the given season and deadline not yet passed */
-export function isScholarshipVisible(
+/** Check if a scholarship is active: deadline has not yet passed (no season check). */
+export function isScholarshipActive(
   scholarship: Scholarship,
-  season: Season,
   today: Date = new Date(),
 ): boolean {
-  if (scholarship.season !== season) return false
-
-  const deadlineDate = new Date(
-    `${scholarship.deadline}, ${scholarship.deadlineYear}`,
-  )
-  return deadlineDate.getTime() >= today.getTime()
-}
-
-/** Get all visible scholarships for the current season */
-export function getSeasonalScholarships(
-  allScholarships: Scholarship[] = scholarships,
-  referenceDate: Date = new Date(),
-): Scholarship[] {
-  const season = getCurrentSeason(referenceDate)
-  return allScholarships.filter((s) => isScholarshipVisible(s, season, referenceDate))
+  const deadlineMs =
+    new Date(`${scholarship.deadline}, ${scholarship.deadlineYear}`).getTime() || 0
+  return deadlineMs >= today.getTime()
 }
 
 /** Parse the largest dollar amount from a free-text award string.
@@ -99,7 +86,6 @@ export function parseAwardAmount(awardAmount: string): number {
 /** Classification-driven accent stripe + neutral card surface for WCAG-AA contrast */
 export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: string; accent: string; text: string; muted: string }> = {
   "High School": {
-    // bg: "bg-surface-container-highest",
     bg: "bg-white dark:bg-surface-container-low",
     border: "border-t-4 border-primary-400",
     accent: "from-primary/40",
@@ -107,7 +93,6 @@ export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: 
     muted: "text-on-surface-variant",
   },
   Undergraduate: {
-    // bg: "bg-surface-container-highest",
     bg: "bg-white dark:bg-surface-container-low",
     border: "border-t-4 border-secondary-600",
     accent: "from-secondary/40",
@@ -115,7 +100,6 @@ export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: 
     muted: "text-on-surface-variant",
   },
   Graduate: {
-    // bg: "bg-surface-container-highest",
     bg: "bg-white dark:bg-surface-container-low",
     border: "border-t-4 border-tertiary-600",
     accent: "from-tertiary/40",
@@ -123,7 +107,6 @@ export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: 
     muted: "text-on-surface-variant",
   },
   "K-8": {
-    // bg: "bg-surface-container-highest",
     bg: "bg-white dark:bg-surface-container-low",
     border: "border-t-4 border-primary-300",
     accent: "from-primary/30",
@@ -131,7 +114,6 @@ export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: 
     muted: "text-on-surface-variant",
   },
   "K-12": {
-    // bg: "bg-surface-container-highest",
     bg: "bg-white dark:bg-surface-container-low",
     border: "border-t-4 border-secondary-400",
     accent: "from-secondary/30",

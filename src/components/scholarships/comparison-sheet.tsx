@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/sheet/sheet"
 import { ComparisonSheetAuditLedger } from "./comparison-sheet-audit-ledger"
 import { cn } from "@/lib/utils"
+import { getExpiredBadge } from "@/lib/expired-status";
+import { SESSION_DATE } from "@/lib/session-date";
 
 export function ComparisonSheet() {
   const { selectedIds, remove, clear, isSheetOpen, closeSheet } =
@@ -40,7 +42,7 @@ export function ComparisonSheet() {
     <Sheet
       open={isSheetOpen}
       onOpenChange={(open) => {
-        if (!open) closeSheet()
+        if (!open) closeSheet();
       }}
     >
       <SheetContent
@@ -61,27 +63,44 @@ export function ComparisonSheet() {
 
         <div className="flex-1 overflow-y-auto px-6 pb-6">
           {/* Selected scholarships row */}
-          <div className="flex items-center gap-3 pb-6">
+          <div className="flex flex-wrap items-start gap-3 pb-6">
             {selected.map((s) => {
-              const color = CLASSIFICATION_COLORS[s.classification[0]]
+              const color = CLASSIFICATION_COLORS[s.classification[0]];
+              const { isExpired: expired, label: reopenLabel } =
+                getExpiredBadge(s, SESSION_DATE);
               return (
                 <div
                   key={s.id}
-                  className="group relative flex items-center gap-2 rounded-full border border-outline-variant/30 py-1 pl-1 pr-3"
+                  className={cn("flex flex-col gap-1", expired && "opacity-60")}
                 >
-                  <div className={cn("size-6 shrink-0 rounded-full", color?.bg ?? "bg-surface-container")} />
-                  <span className="text-xs font-medium text-on-surface line-clamp-1 max-w-24">
-                    {s.name}
-                  </span>
-                  <button
-                    onClick={() => remove(s.id)}
-                    className="ml-1 flex size-4 shrink-0 items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100 hover:bg-on-surface/10"
-                    aria-label={`Remove ${s.name} from comparison`}
-                  >
-                    <Icon icon="solar:close-circle-bold" className="size-3.5 text-on-surface-variant" />
-                  </button>
+                  <div className="group relative flex items-center gap-2 rounded-full border border-outline-variant/30 py-1 pl-1 pr-3">
+                    <div
+                      className={cn(
+                        "size-6 shrink-0 rounded-full",
+                        color?.bg ?? "bg-surface-container",
+                      )}
+                    />
+                    <span className="text-xs font-medium text-on-surface line-clamp-1 max-w-24">
+                      {s.name}
+                    </span>
+                    <button
+                      onClick={() => remove(s.id)}
+                      className="ml-1 flex size-4 shrink-0 items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100 hover:bg-on-surface/10"
+                      aria-label={`Remove ${s.name} from comparison`}
+                    >
+                      <Icon
+                        icon="solar:close-circle-bold"
+                        className="size-3.5 text-on-surface-variant"
+                      />
+                    </button>
+                  </div>
+                  {expired && reopenLabel && (
+                    <span className="pl-2 text-[10px] font-medium text-on-surface-variant">
+                      {reopenLabel}
+                    </span>
+                  )}
                 </div>
-              )
+              );
             })}
             {Array.from({ length: 3 - selected.length }).map((_, i) => (
               <div
@@ -115,18 +134,14 @@ export function ComparisonSheet() {
             variant="ghost"
             size="sm"
             onClick={() => {
-              clear()
+              clear();
             }}
           >
             Clear All
           </Button>
-          <SheetClose
-            render={<Button size="sm" />}
-          >
-            Done
-          </SheetClose>
+          <SheetClose render={<Button size="sm" />}>Done</SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

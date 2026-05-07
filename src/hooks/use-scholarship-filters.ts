@@ -23,12 +23,47 @@ type SortValue = (typeof VALID_SORTS)[number]
 const VALID_LAYOUTS = ["grid", "list"] as const
 type LayoutValue = (typeof VALID_LAYOUTS)[number]
 
+export const MONTHS = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+] as const
+export type Month = (typeof MONTHS)[number]
+export type MonthFilter = Month | "all"
+const VALID_MONTH_VALUES = [...MONTHS, "all"] as const
+
+export const MONTH_LABELS: Record<MonthFilter, string> = {
+  all: "All months",
+  january: "January",
+  february: "February",
+  march: "March",
+  april: "April",
+  may: "May",
+  june: "June",
+  july: "July",
+  august: "August",
+  september: "September",
+  october: "October",
+  november: "November",
+  december: "December",
+}
+
 export type ScholarshipFiltersValue = {
   activeFilter: EducationLevelFilter
   layout: GridLayout
   searchQuery: string
   sortBy: string
   selectedTags: Tag[]
+  month: Month | "all"
   page: number
   awardRange: [number, number]
   levelCounts: Record<EducationLevelFilter, number>
@@ -38,6 +73,7 @@ export type ScholarshipFiltersValue = {
   setSearchQuery: (query: string) => void
   setSortBy: (sort: string) => void
   setSelectedTags: (tags: Tag[]) => void
+  setMonth: (month: Month | "all") => void
   setPage: (page: number) => void
   setAwardRange: (range: [number, number]) => void
   clearAll: () => void
@@ -81,9 +117,18 @@ export function useScholarshipFilters(args: {
     "layout",
     parseAsString.withDefault("grid"),
   )
+  const [monthUrl, setMonthUrl] = useQueryState(
+    "month",
+    parseAsString.withDefault("all"),
+  )
 
   const activeFilter = activeFilterUrl as EducationLevelFilter
   const layout: GridLayout = layoutUrl === "list" ? "list" : "grid"
+  const month: Month | "all" = (
+    VALID_MONTH_VALUES as readonly string[]
+  ).includes(monthUrl)
+    ? (monthUrl as Month | "all")
+    : "all"
 
   const selectedTags = useMemo<Tag[]>(
     // .includes() can't narrow t: string against a readonly Tag tuple; the cast
@@ -125,7 +170,8 @@ export function useScholarshipFilters(args: {
     sortByUrl !== "deadline" ||
     selectedTags.length > 0 ||
     awardRange[0] !== AWARD_MIN ||
-    awardRange[1] !== AWARD_MAX
+    awardRange[1] !== AWARD_MAX ||
+    month !== "all"
 
   // Mount-only sanitization: drop unknown levels/sorts/layouts, clamp + swap
   // inverted ranges, prune unknown tags. Nuqs setters call router.replace, so
@@ -142,6 +188,9 @@ export function useScholarshipFilters(args: {
     }
     if (!(VALID_LAYOUTS as readonly string[]).includes(layoutUrl)) {
       setLayoutUrl(null)
+    }
+    if (!(VALID_MONTH_VALUES as readonly string[]).includes(monthUrl)) {
+      setMonthUrl(null)
     }
     const cMin = Math.max(AWARD_MIN, Math.min(AWARD_MAX, minUrl))
     const cMax = Math.max(AWARD_MIN, Math.min(AWARD_MAX, maxUrl))
@@ -214,6 +263,21 @@ export function useScholarshipFilters(args: {
     [runFilterUpdate, setTagsUrl, setPageUrl],
   )
 
+  const setMonth = useCallback(
+    (next: Month | "all") => {
+      runFilterUpdate(() => {
+        const validated: Month | "all" = (
+          VALID_MONTH_VALUES as readonly string[]
+        ).includes(next)
+          ? next
+          : "all"
+        setMonthUrl(validated === "all" ? null : validated)
+        setPageUrl(null)
+      })
+    },
+    [runFilterUpdate, setMonthUrl, setPageUrl],
+  )
+
   const setAwardRange = useCallback(
     (range: [number, number]) => {
       runFilterUpdate(() => {
@@ -249,6 +313,7 @@ export function useScholarshipFilters(args: {
     setMaxUrl(null)
     setPageUrl(null)
     setLayoutUrl(null)
+    setMonthUrl(null)
   }, [
     setActiveFilterUrl,
     setSearchQueryUrl,
@@ -258,6 +323,7 @@ export function useScholarshipFilters(args: {
     setMaxUrl,
     setPageUrl,
     setLayoutUrl,
+    setMonthUrl,
   ])
 
   return {
@@ -266,6 +332,7 @@ export function useScholarshipFilters(args: {
     searchQuery: searchQueryUrl,
     sortBy: sortByUrl,
     selectedTags,
+    month,
     page: pageUrl,
     awardRange,
     levelCounts,
@@ -275,6 +342,7 @@ export function useScholarshipFilters(args: {
     setSearchQuery,
     setSortBy,
     setSelectedTags,
+    setMonth,
     setPage,
     setAwardRange,
     clearAll,

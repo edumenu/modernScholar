@@ -50,6 +50,38 @@ const scholarshipC: Scholarship = {
   eligibilityTags: [],
 }
 
+const scholarshipExpiredWithOpenDate: Scholarship = {
+  id: "comp-expired-reopen",
+  name: "Heritage Arts Scholarship",
+  provider: "Cultural Heritage Foundation",
+  awardAmount: "$5,000",
+  deadline: "January 1",
+  deadlineYear: 2024,
+  classification: ["Undergraduate"],
+  link: "https://example.com/apply-expired-reopen",
+  openDate: "January 1",
+  eligibility: "Undergraduate students pursuing degrees in the visual or performing arts with demonstrated cultural impact.",
+  season: "winter",
+  description: "Recognizes emerging artists who preserve and reinterpret cultural heritage through original creative work.",
+  eligibilityTags: [],
+}
+
+const scholarshipExpiredFallback: Scholarship = {
+  id: "comp-expired-fallback",
+  name: "Civic Leadership Award",
+  provider: "Civic Futures Trust",
+  awardAmount: "$3,500",
+  deadline: "January 1",
+  deadlineYear: 2024,
+  classification: ["High School"],
+  link: "https://example.com/apply-expired-fallback",
+  openDate: null,
+  eligibility: "High school seniors with sustained civic engagement and a record of community organizing.",
+  season: "winter",
+  description: "Supports young leaders shaping public life through service, advocacy, and democratic participation.",
+  eligibilityTags: [],
+}
+
 const meta: Meta<typeof ComparisonSheetAuditLedger> = {
   title: "Scholarships/ComparisonAuditLedger",
   component: ComparisonSheetAuditLedger,
@@ -78,5 +110,17 @@ export const TwoItems: Story = {
 export const ThreeItems: Story = {
   args: {
     items: [scholarshipA, scholarshipB, scholarshipC],
+  },
+}
+
+export const WithExpiredEntry: Story = {
+  args: {
+    items: [scholarshipA, scholarshipExpiredWithOpenDate],
+  },
+}
+
+export const ExpiredFallbackEntry: Story = {
+  args: {
+    items: [scholarshipB, scholarshipExpiredFallback],
   },
 }

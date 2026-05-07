@@ -3,7 +3,6 @@ import fs from "fs"
 import path from "path"
 
 import { classify } from "@/lib/eligibility"
-import { getCurrentSeason } from "@/lib/seasons"
 import {
   generateSlug,
   deriveSeason,
@@ -202,7 +201,7 @@ function parseSeason(): Season | "all" {
   if (process.argv.includes("--all")) return "all"
 
   const idx = process.argv.indexOf("--season")
-  if (idx === -1) return getCurrentSeason()
+  if (idx === -1) return "all"
 
   const val = process.argv[idx + 1]
   const validSeasons: Season[] = ["winter", "spring", "summer", "fall"]
@@ -227,6 +226,9 @@ async function main() {
   if (limit) console.log(`  Test mode:   --limit ${limit}`)
   if (season !== "all") console.log(`  Season:      ${season}`)
   else console.log(`  Season:      all (no filter)`)
+  if (process.argv.includes("--all")) {
+    console.log(`  Note:        --all is now the default; you can drop the flag.`)
+  }
   if (force) console.log(`  Force:       re-scraping all entries`)
   console.log()
 
@@ -353,9 +355,9 @@ main().catch(async (err) => {
 
 /**
  *   Usage:
-  npm run scrape-scholarships                    # Spring only (default), cached
+  npm run scrape-scholarships                    # All seasons (default), cached
   npm run scrape-scholarships -- --limit 3       # Test with 3 URLs
   npm run scrape-scholarships -- --force         # Re-scrape everything
-  npm run scrape-scholarships -- --all           # All seasons
-  npm run scrape-scholarships -- --season winter # Specific season
+  npm run scrape-scholarships -- --all           # All seasons (explicit)
+  npm run scrape-scholarships -- --season winter # Specific season (dev override)
  */

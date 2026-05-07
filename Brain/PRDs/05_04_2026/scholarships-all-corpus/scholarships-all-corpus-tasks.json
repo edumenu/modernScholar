@@ -1,0 +1,336 @@
+{
+  "module": "scholarships-all-corpus",
+  "prd_path": "Brain/PRDs/05_04_2026/scholarships-all-corpus/scholarships-all-corpus.md",
+  "agent": "frontend-engineer",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Create lib/expired-status helper module",
+      "description": "Create src/lib/expired-status.ts with three pure helpers: isExpired(scholarship, today?), getReopenLabel(scholarship), and getExpiredBadge(scholarship, today?). isExpired returns true when deadline < today. getReopenLabel returns 'Reopens {Month}' when openDate is populated and parseable, else 'Check back in {deadlineYear + 1}'. getExpiredBadge composes both. today defaults to new Date(). See PRD §Module: lib/expired-status (new).",
+      "files": ["src/lib/expired-status.ts"],
+      "depends_on": [],
+      "acceptance": [
+        "isExpired returns deadline < today",
+        "getReopenLabel uses openDate when present, else deadlineYear+1",
+        "Single source of truth shared across cards/expanded/comparison surfaces"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "openDate is string|null free-text; month extracted via substring match, not strict parse."
+    },
+    {
+      "id": "T02",
+      "title": "Add isScholarshipActive to data/scholarships",
+      "description": "In src/data/scholarships.ts, add isScholarshipActive(scholarship, today?: Date) returning parseDeadlineDate(deadline, deadlineYear) >= today.getTime(). Keep isScholarshipVisible and getSeasonalScholarships in place during the cascade — they will be deleted in T15 once consumers migrate. season field stays on the type. See PRD §Module: data/scholarships.",
+      "files": ["src/data/scholarships.ts"],
+      "depends_on": [],
+      "acceptance": [
+        "isScholarshipActive returns deadline >= today, no season check",
+        "Existing exports remain temporarily for cascade compatibility",
+        "cascade-tolerant prop signature"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Inline deadline parse to avoid circular import with scholarship-utils.ts. isScholarshipVisible/getSeasonalScholarships kept for cascade; T15 deletes them."
+    },
+    {
+      "id": "T03",
+      "title": "Extend filterAndSort with month filter + expired tier",
+      "description": "In src/lib/scholarship-utils.ts, extend filterAndSort to accept an optional month parameter ('january'..'december' | 'all', default 'all') and an optional today reference. Apply month as a hard filter on deadline-month (regardless of year). After existing sort, partition into [active, expired] using isExpired from @/lib/expired-status; expired tier always last regardless of selected sort. Both dim signals (filter-mismatch, expired) compose. See PRD §Module: lib/scholarship-utils.",
+      "files": ["src/lib/scholarship-utils.ts"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "Month filter narrows to deadline-month=selected regardless of year",
+        "Expired scholarships sort last on every sort mode",
+        "cascade-tolerant prop signature"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "month + today params are optional so existing 4-6 arg callers keep typecheck-clean. deadline-month uses split-on-whitespace."
+    },
+    {
+      "id": "T04",
+      "title": "Add month URL param to use-scholarship-filters",
+      "description": "In src/hooks/use-scholarship-filters.ts, add month: Month | 'all' to ScholarshipFiltersValue with setMonth setter. Use nuqs parseAsString.withDefault('all'). Mount-time sanitize against the 12 lowercase month names + 'all'; unknown values reset to null. Include month !== 'all' in hasActiveFilters and add setMonthUrl(null) to clearAll. Mirror existing level/sort/tags patterns. See PRD §Module: hooks/use-scholarship-filters.",
+      "files": ["src/hooks/use-scholarship-filters.ts"],
+      "depends_on": [],
+      "acceptance": [
+        "month URL param accepts 12 lowercase month names + 'all'",
+        "clearAll resets month; hasActiveFilters reflects month != 'all'",
+        "Mount-time sanitization drops unknown month values"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Exported MONTHS const + Month type from this hook file so T05/T07/T08 can import both."
+    },
+    {
+      "id": "T05",
+      "title": "Create month-filter pill row component",
+      "description": "Create src/components/scholarships/month-filter.tsx — pill row of 12 months + 'All' with counts per month. Visual mirror of the education-level tabs in scholarship-filters.tsx (motion.span layoutId highlight, ghost button, count badge). Props: value (Month | 'All'), onValueChange, monthCounts (Record<Month, number>), totalCount. Horizontally scrollable on overflow. See PRD §Module: components/scholarships/month-filter (new).",
+      "files": ["src/components/scholarships/month-filter.tsx"],
+      "depends_on": [],
+      "acceptance": [
+        "Pill row of 12 months + 'All' with per-month counts",
+        "Visual pattern matches existing education-level tab row",
+        "Horizontally scrollable on overflow"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Component value uses lowercase 'all' to match hook contract; display label shows 'All'."
+    },
+    {
+      "id": "T06",
+      "title": "Insert month row into desktop + mobile scholarship-filters",
+      "description": "In src/components/scholarships/scholarship-filters.tsx and scholarship-filters-mobile.tsx, render <MonthFilter> between Row 1 (level tabs + search) and Row 2 (layout + sort + filter sheet). Compute monthCounts inside (or accept via prop) from the corpus prop. Wire value/onValueChange to filters.month/filters.setMonth. Mobile variant: render the month row above the layout/sort/filter trigger. See PRD §Module: scholarship-filters.",
+      "files": [
+        "src/components/scholarships/scholarship-filters.tsx",
+        "src/components/scholarships/scholarship-filters-mobile.tsx"
+      ],
+      "depends_on": ["T05"],
+      "acceptance": [
+        "Month row sits between level tabs and layout/sort row",
+        "Mobile variant renders the month row above sort/filter trigger",
+        "monthCounts derives from corpus prop"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "monthCounts derived via deadline.split(/\\s+/)[0].toLowerCase() — no deadlineMonth field on Scholarship."
+    },
+    {
+      "id": "T07",
+      "title": "Filter sheet: active-only chip counts + month chip in ActiveFilterStrip",
+      "description": "In src/components/scholarships/filter-sheet.tsx: change tagCounts to iterate active-only scholarships (use isScholarshipActive from @/data/scholarships). In ActiveFilterStrip, add a removable month chip rendered when month !== 'All' using the existing chip animation pattern. Add month/onMonthClear to the props. Update the 'any active filter' check to include month. See PRD §Module: filter-sheet.",
+      "files": ["src/components/scholarships/filter-sheet.tsx"],
+      "depends_on": ["T04"],
+      "acceptance": [
+        "Eligibility tag chip counts derive from active corpus only",
+        "ActiveFilterStrip shows removable month chip when set",
+        "cascade-tolerant prop signature"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Month type imported from hooks (canonical owner) not from @/data."
+    },
+    {
+      "id": "T08",
+      "title": "Migrate scholarship-grid to full active corpus + month filter",
+      "description": "In src/components/scholarships/scholarship-grid.tsx, drop the seasonalScholarships derivation and use allScholarships directly as the corpus passed to ScholarshipFilters and filterAndSort. Pass filters.month and today to filterAndSort. Replace seasonal empty-state copy per PRD: defensive 'No scholarships in our catalog right now. Check back soon.', level-empty 'No {level} scholarships match. Try removing filters or browsing all levels.' Wire month/onMonthClear into ActiveFilterStrip. See PRD §Module: scholarship-grid.",
+      "files": ["src/components/scholarships/scholarship-grid.tsx"],
+      "depends_on": ["T03", "T04", "T06", "T07"],
+      "acceptance": [
+        "Page shows entire catalog regardless of season",
+        "Empty-state copy updated per PRD",
+        "filters.month wired through filterAndSort and ActiveFilterStrip"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "ScholarshipFilters JSX prop name stays `seasonalScholarships` (T06 didn't rename); local var renamed to corpus."
+    },
+    {
+      "id": "T09",
+      "title": "Migrate scholarship-hero + hero-stats to active corpus",
+      "description": "In src/components/scholarships/scholarship-hero.tsx, compute stats from active corpus via isScholarshipActive (drop currentSeason/nextSeason logic and seasonal subtitle). Replace subtitle with PRD copy: 'Browse our full catalog of scholarships. Filter by education level, eligibility, and award amount to find what fits your journey.' In scholarship-hero-stats.tsx, replace 'deadlines this month' with 'Closing soon' computed over a rolling 30-day window. See PRD §Module: scholarship-hero + scholarship-hero-stats.",
+      "files": [
+        "src/components/scholarships/scholarship-hero.tsx",
+        "src/components/scholarships/scholarship-hero-stats.tsx"
+      ],
+      "depends_on": ["T02"],
+      "acceptance": [
+        "Hero stats describe full active corpus",
+        "'Closing soon' replaces 'deadlines this month' (rolling 30 days)",
+        "Hero subtitle uses non-seasonal PRD copy"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Hero stats strip always renders now (no totalScholarships>0 ternary gate)."
+    },
+    {
+      "id": "T10",
+      "title": "Render expired pill + reopen line on card surfaces",
+      "description": "Use getExpiredBadge from @/lib/expired-status in src/components/scholarships/scholarship-card.tsx, scholarship-list-card.tsx, expanded-scholarship.tsx, and comparison-sheet.tsx. When expired, apply existing dimmed styling (it composes with filter-mismatch dim) and render a small pill on cards / inline line in expanded view + comparison sheet showing the reopen label. Pill placement on grid card: replace or augment the classification badge area; visual weight low. See PRD §Module: card surfaces.",
+      "files": [
+        "src/components/scholarships/scholarship-card.tsx",
+        "src/components/scholarships/scholarship-list-card.tsx",
+        "src/components/scholarships/expanded-scholarship.tsx",
+        "src/components/scholarships/comparison-sheet.tsx"
+      ],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "Expired cards display 'Reopens {Month}' or 'Check back in {year+1}' pill",
+        "Expanded view + comparison sheet render the same reopen line",
+        "Existing dimmed styling reused for expired state"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Comparison ledger left untouched (out of scope); reopen line attached to selected chip row in comparison sheet."
+    },
+    {
+      "id": "T11",
+      "title": "Filter coverflow carousel feed to active-only",
+      "description": "In src/components/home/coverflow-carousel.tsx, filter the source scholarships array to active-only via isScholarshipActive from @/data/scholarships. Season micro-tag rendering at line ~133 stays unchanged (season field still on data). See PRD §Module: components/home/coverflow-carousel.",
+      "files": ["src/components/home/coverflow-carousel.tsx"],
+      "depends_on": ["T02"],
+      "acceptance": [
+        "Coverflow carousel shows only active scholarships",
+        "Season micro-tag preserved (season field retained on data)"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Empty active-list edge case unguarded; live region reads [0] (acceptable, prior behavior)."
+    },
+    {
+      "id": "T12",
+      "title": "FAQ copy: drop seasonal phrasing",
+      "description": "In src/components/home/faq-section.tsx, edit the answer at line ~50 to remove 'added throughout each season' wording. Replace with 'added regularly' or 'refreshed continuously' to reflect the new year-round catalog model. See PRD §Module: components/home/faq-section.",
+      "files": ["src/components/home/faq-section.tsx"],
+      "depends_on": [],
+      "acceptance": [
+        "FAQ copy no longer references seasons"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Only one seasonal reference in file."
+    },
+    {
+      "id": "T13",
+      "title": "Delete profile-setup component + profile store",
+      "description": "Delete src/components/ui/profile-setup.tsx and src/stores/profile.ts. Verified no other consumers (grep confirmed). See PRD §Module: deletions.",
+      "files": [
+        "src/components/ui/profile-setup.tsx",
+        "src/stores/profile.ts"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "profile-setup.tsx deleted",
+        "stores/profile.ts deleted"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Deleted directly via rm; no consumers (grep confirmed). lint:touched skipped — files no longer exist."
+    },
+    {
+      "id": "T14",
+      "title": "Flip scrape-scholarships default to --all",
+      "description": "In scripts/scrape-scholarships.ts, change parseSeason() to return 'all' as the default when neither --all nor --season is passed. Update the console banner accordingly. Keep --season <name> as a dev override. deriveSeason() continues populating the season field per row. See PRD §Module: scripts/scrape-scholarships.",
+      "files": ["scripts/scrape-scholarships.ts"],
+      "depends_on": [],
+      "acceptance": [
+        "Default scrape mode is --all (full catalog)",
+        "--season flag still works as dev override",
+        "deriveSeason still populates the season field"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Removed unused getCurrentSeason import."
+    },
+    {
+      "id": "T15",
+      "title": "Cascade-close: delete deprecated season helpers",
+      "description": "In src/data/scholarships.ts, delete isScholarshipVisible and getSeasonalScholarships now that all consumers (grid, hero, coverflow, tests) use isScholarshipActive. Keep season field on Scholarship type and on JSON. Closes the cascade — sub-agent should verify no remaining imports of the deleted symbols. See PRD §Module: data/scholarships.",
+      "files": ["src/data/scholarships.ts"],
+      "depends_on": ["T08", "T09", "T11", "T17"],
+      "acceptance": [
+        "isScholarshipVisible removed",
+        "getSeasonalScholarships removed",
+        "Scholarship.season field retained"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Initial halt cleared by T17. Also dropped unused getCurrentSeason value-import (re-export retained)."
+    },
+    {
+      "id": "T16",
+      "title": "Test lib/expired-status",
+      "description": "Create src/lib/__tests__/expired-status.test.ts. Cover isExpired (deadline before/after today), getReopenLabel three branches: openDate populated and parseable → 'Reopens {Month}'; openDate missing → 'Check back in {deadlineYear + 1}'; openDate malformed → fallback. getExpiredBadge composes both. See PRD §Testing Decisions.",
+      "files": ["src/lib/__tests__/expired-status.test.ts"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "Pure-function tests cover three openDate branches",
+        "isExpired tested for both before/after deadline cases"
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "10 vitest cases pass. new Date('not-a-date, 2026') is non-NaN so no NaN guard tested."
+    },
+    {
+      "id": "T17",
+      "title": "Update data/scholarships test for isScholarshipActive",
+      "description": "In src/data/__tests__/scholarships.test.ts, remove tests + imports for isScholarshipVisible and getSeasonalScholarships; add coverage for isScholarshipActive (deadline >= today branches). isScholarshipActive already exists per T02, isScholarshipVisible/getSeasonalScholarships still exist (T15 deletes them after this task). See PRD §Testing Decisions.",
+      "files": ["src/data/__tests__/scholarships.test.ts"],
+      "depends_on": ["T02"],
+      "acceptance": [
+        "Removed tests for deprecated seasonal helpers",
+        "isScholarshipActive covered for both branches"
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "20 vitest cases pass. isScholarshipActive signature is (scholarship, today) — no season arg."
+    },
+    {
+      "id": "T18",
+      "title": "Test scholarship-utils month filter + expired tier",
+      "description": "Create src/lib/__tests__/scholarship-utils.test.ts. Cover: month filter narrows to deadline-month=selected regardless of year; expired-tier ordering invariant under both deadline and amount sort modes; interaction with eligibility-tag hard filter. See PRD §Testing Decisions.",
+      "files": ["src/lib/__tests__/scholarship-utils.test.ts"],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "Month-filter behavior verified across years",
+        "Expired tier verified to be last under both sort modes"
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "6 tests pass. Pinned today=Oct 1 2026 so March 2026 expired, March 2027 active."
+    },
+    {
+      "id": "T19",
+      "title": "Test use-scholarship-filters month URL param",
+      "description": "In src/hooks/__tests__/use-scholarship-filters.component.test.tsx, add coverage for the month URL param: round-trips through nuqs, sanitizes unknown values to default, includes in clearAll, contributes to hasActiveFilters when != 'all'. Mirror existing patterns for level/sort/tags. See PRD §Testing Decisions.",
+      "files": ["src/hooks/__tests__/use-scholarship-filters.component.test.tsx"],
+      "depends_on": ["T04"],
+      "acceptance": [
+        "month URL param round-trips and sanitizes",
+        "clearAll and hasActiveFilters reflect month state"
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Added 5 new month tests (24 total). NuqsTestingAdapter retains state across acts."
+    },
+    {
+      "id": "T20",
+      "title": "Add expired story examples for visual regression",
+      "description": "Add an expired-state example story (deadline in past + reopen label rendered) in src/components/scholarships/scholarship-card.stories.tsx, scholarship-list-card.stories.tsx, and comparison-sheet.stories.tsx. Reuse fixtures or add minimal expired fixtures inline. See PRD §Testing Decisions.",
+      "files": [
+        "src/components/scholarships/scholarship-card.stories.tsx",
+        "src/components/scholarships/scholarship-list-card.stories.tsx",
+        "src/components/scholarships/comparison-sheet.stories.tsx"
+      ],
+      "depends_on": ["T10"],
+      "acceptance": [
+        "Each card story has an Expired example",
+        "Comparison sheet story includes an expired entry"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Comparison-sheet story meta title is 'ComparisonAuditLedger', not 'ComparisonSheet'."
+    }
+  ]
+}

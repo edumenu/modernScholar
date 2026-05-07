@@ -5,16 +5,10 @@ import { AnimatePresence, motion } from "motion/react"
 import { useLenis } from "lenis/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
-import {
-  scholarships as allScholarships,
-  getCurrentSeason,
-  getNextSeason,
-  isScholarshipVisible,
-  AWARD_MIN,
-  AWARD_MAX,
-} from "@/data/scholarships"
+import { scholarships as allScholarships } from "@/data/scholarships"
 import { filterAndSort } from "@/lib/scholarship-utils"
 import { useScholarshipFilters } from "@/hooks/use-scholarship-filters"
+import { SESSION_DATE } from "@/lib/session-date"
 import { ScholarshipFilters } from "./scholarship-filters"
 import { ActiveFilterStrip } from "./filter-sheet"
 import { ScholarshipCard } from "./scholarship-card"
@@ -37,9 +31,6 @@ import { ComparisonFab } from "./comparison-fab"
 
 const PAGE_SIZE = 12
 
-// Snapshot taken at module load; a full page reload is needed to cross season boundaries.
-const SESSION_DATE = new Date()
-
 /* -- Main Component -- */
 
 export function ScholarshipGrid() {
@@ -47,37 +38,34 @@ export function ScholarshipGrid() {
 
   const lenis = useLenis()
 
-  // Get current season and filter scholarships
-  const currentSeason = useMemo(() => getCurrentSeason(SESSION_DATE), [])
-  const nextSeason = useMemo(() => getNextSeason(currentSeason), [currentSeason])
-
-  const seasonalScholarships = useMemo(
-    () => allScholarships.filter((s) => isScholarshipVisible(s, currentSeason, SESSION_DATE)),
-    [currentSeason],
-  )
+  // Full active corpus — no seasonal filtering. Expired tier handled inside filterAndSort.
+  const corpus = allScholarships
 
   const filters = useScholarshipFilters({
-    scholarships: seasonalScholarships,
+    scholarships: corpus,
     onFilterChangeWhileExpanded: () => setExpandedId(null),
   })
 
   const sortedItems = useMemo(
     () =>
       filterAndSort(
-        seasonalScholarships,
+        corpus,
         filters.activeFilter,
         filters.searchQuery,
         filters.sortBy,
         filters.selectedTags,
         filters.awardRange,
+        filters.month,
+        SESSION_DATE,
       ),
     [
-      seasonalScholarships,
+      corpus,
       filters.activeFilter,
       filters.searchQuery,
       filters.sortBy,
       filters.selectedTags,
       filters.awardRange,
+      filters.month,
     ],
   )
 
@@ -88,7 +76,7 @@ export function ScholarshipGrid() {
   const start = (safePage - 1) * PAGE_SIZE
   const visibleItems = sortedItems.slice(start, start + PAGE_SIZE)
   const expandedScholarship = expandedId
-    ? (seasonalScholarships.find((s) => s.id === expandedId) ?? null)
+    ? (corpus.find((s) => s.id === expandedId) ?? null)
     : null
 
   // Normalize URL if requested page is out of range
@@ -112,6 +100,7 @@ export function ScholarshipGrid() {
     filters.sortBy,
     filters.selectedTags,
     filters.awardRange,
+    filters.month,
   ])
 
   const goToPage = useCallback(
@@ -135,10 +124,6 @@ export function ScholarshipGrid() {
   }, [])
 
   const resultCount = sortedItems.filter((i) => i.matches).length
-
-  // Season-aware empty state
-  const seasonLabel = currentSeason.charAt(0).toUpperCase() + currentSeason.slice(1)
-  const nextSeasonLabel = nextSeason.charAt(0).toUpperCase() + nextSeason.slice(1)
 
   // Education level empty state
   const isLevelEmpty =
@@ -169,17 +154,12 @@ export function ScholarshipGrid() {
       <ScholarshipFilters
         filters={filters}
         resultCount={resultCount}
-        seasonalScholarships={seasonalScholarships}
+        seasonalScholarships={corpus}
       />
 
       {/* Active filter strip */}
       <AnimatePresence>
-        {(filters.searchQuery !== "" ||
-          filters.activeFilter !== "All" ||
-          filters.sortBy !== "deadline" ||
-          filters.selectedTags.length > 0 ||
-          filters.awardRange[0] !== AWARD_MIN ||
-          filters.awardRange[1] !== AWARD_MAX) && (
+        {filters.hasActiveFilters && (
           <ActiveFilterStrip
             key="active-filter-strip"
             searchQuery={filters.searchQuery}
@@ -192,13 +172,15 @@ export function ScholarshipGrid() {
             onTagsChange={filters.setSelectedTags}
             awardRange={filters.awardRange}
             onAwardRangeChange={filters.setAwardRange}
+            month={filters.month}
+            onMonthClear={() => filters.setMonth("all")}
             onClearAll={filters.clearAll}
           />
         )}
       </AnimatePresence>
 
-      {/* Empty state: no scholarships this season */}
-      {seasonalScholarships.length === 0 ? (
+      {/* Defensive empty state: catalog is empty entirely */}
+      {corpus.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -209,11 +191,7 @@ export function ScholarshipGrid() {
             className="size-16 text-on-surface/20"
           />
           <p className="text-lg font-medium text-on-surface/60">
-            No scholarships available this {seasonLabel.toLowerCase()}
-          </p>
-          <p className="max-w-sm text-center text-sm text-on-surface-variant">
-            New scholarships are coming in {nextSeasonLabel}! Check back soon for
-            fresh opportunities.
+            No scholarships in our catalog right now. Check back soon.
           </p>
         </motion.div>
       ) : sortedItems.length === 0 ? (
@@ -247,9 +225,8 @@ export function ScholarshipGrid() {
               className="rounded-xl bg-surface-container-low/60 px-6 py-4 text-center text-sm text-on-surface-variant"
               role="status"
             >
-              No {filters.activeFilter} scholarships this {seasonLabel.toLowerCase()}.
-              New scholarships are added each season — check back in{" "}
-              {nextSeasonLabel}!
+              No {filters.activeFilter} scholarships match. Try removing filters
+              or browsing all levels.
             </motion.div>
           )}
 

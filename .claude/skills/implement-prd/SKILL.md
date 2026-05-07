@@ -20,7 +20,7 @@ Activate the `caveman:caveman` skill (full level) for all user-facing communicat
 ### Step 1: Find the PRD
 
 - Look in `Brain/PRDs/` for the most recent PRD file (or the one specified by the user).
-- Convention: `Brain/PRDs/<MM_DD_YYYY>/<featureName>/<feature-name>/<feature-name>.md`.
+- **Path is repo-relative to the project root** (i.e. `<repo-root>/Brain/PRDs/...`). Convention: `Brain/PRDs/<MM_DD_YYYY>/<feature-name>/<feature-name>.md`. Verify with `ls Brain/PRDs/` before assuming — never construct absolute paths from memory.
 - If the PRD is a directory with a `<feature>-overview.md` plus `<feature>-<part>.md` files, treat each part file as an independent module.
 - Read the overview + every module file thoroughly before proceeding.
 
@@ -54,10 +54,10 @@ Once the user approves `tasks.json`:
    ```
    # Ralph Progress — <module>
    Started: <ISO timestamp>
-   MAX_ITER=<tasks.length * 3>
+   MAX_ITER=<tasks.length * 2>
    ---
    ```
-   The `MAX_ITER` line is the global iteration cap. Loop reads it in Step 0 and halts if exceeded (protects against decomposition errors or runaway retry cascades).
+   The `MAX_ITER` line is the global iteration cap. Loop reads it in Step 0 and halts if exceeded (protects against decomposition errors or runaway retry cascades). With aggressive batching (decompose-prompt rule 13) and parallel fan-out (loop-prompt §1.5), `* 2` is enough budget for one retry per task.
 2. Tell the user:
    > Starting Ralph loop for module `<module>`. Each iteration runs ONE task in a fresh sub-agent. Say "stop loop" to halt at any time. Progress streams to `{module}-progress.txt`.
 3. Invoke the `loop` skill in dynamic-pacing mode (no interval). Pass the `loop-prompt.md` content as the per-iteration prompt, with the three state paths injected:
@@ -70,6 +70,22 @@ Once the user approves `tasks.json`:
    - Any task hits `attempts >= 3` → write `HALT` to progress.txt, return to user with the failing task's error excerpt and ask how to proceed (override, edit task, skip).
 
 Cross-module: when one module completes, ask the user before starting the next module's loop. Don't auto-chain modules — keeps a human checkpoint between major chunks.
+
+### Step 4.5: Mid-flight smoke (UI-touching PRDs only)
+
+If the PRD touches user-facing UI, **pause the loop after the cascade-closing task passes** (the task with the highest `depends_on` count — typically the one that wires everything together) and run a quick browser smoke test before letting the loop continue to the test-only and story-only tasks.
+
+Why mid-flight, not at the end:
+- URL-contract bugs (a query-param consumer left behind, a state-mirror that didn't update) are not caught by typecheck, lint, or unit tests. Only the browser sees them.
+- Catching them while the relevant task's sub-agent is still cheap to spawn (warm conventions, fresh PRD context) is much cheaper than fixing after Step 5.
+
+Procedure:
+1. Start the dev server if not running (`npm run dev`).
+2. Use Playwright tools to navigate to the affected page(s). Check: golden path, the new feature, expired/empty/edge states, dark/light, mobile breakpoint, browser console.
+3. For each issue found, append a fix-up task to `tasks.json` (next available id) with `passes:false` and the failing `files` listed. The loop will pick it up on the next iteration.
+4. Resume the loop only after smoke passes (or the user explicitly accepts the issues for follow-up).
+
+Skip this step if the PRD only touches scripts, data, or non-UI code.
 
 ### Step 5: Verify
 
