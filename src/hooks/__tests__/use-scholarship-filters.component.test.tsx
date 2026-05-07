@@ -378,4 +378,73 @@ describe("useScholarshipFilters", () => {
       expect(result.current.layout).toBe("grid")
     })
   })
+
+  describe("month URL param", () => {
+    it("setMonth round-trips through nuqs", () => {
+      const { result } = renderHook(
+        () => useScholarshipFilters({ scholarships: fixtures }),
+        { wrapper: wrapper("") },
+      )
+
+      expect(result.current.month).toBe("all")
+
+      act(() => {
+        result.current.setMonth("march")
+      })
+
+      expect(result.current.month).toBe("march")
+    })
+
+    it("hydrates 'march' from URL on mount", () => {
+      const { result } = renderHook(
+        () => useScholarshipFilters({ scholarships: fixtures }),
+        { wrapper: wrapper("?month=march") },
+      )
+
+      expect(result.current.month).toBe("march")
+    })
+
+    it("sanitizes unknown month value to 'all' on mount", () => {
+      const { result } = renderHook(
+        () => useScholarshipFilters({ scholarships: fixtures }),
+        { wrapper: wrapper("?month=garbage") },
+      )
+
+      expect(result.current.month).toBe("all")
+    })
+
+    it("clearAll resets month to 'all'", () => {
+      const { result } = renderHook(
+        () => useScholarshipFilters({ scholarships: fixtures }),
+        { wrapper: wrapper("?month=september") },
+      )
+
+      expect(result.current.month).toBe("september")
+
+      act(() => {
+        result.current.clearAll()
+      })
+
+      expect(result.current.month).toBe("all")
+    })
+
+    it("contributes to hasActiveFilters when month != 'all'", () => {
+      const { result } = renderHook(
+        () => useScholarshipFilters({ scholarships: fixtures }),
+        { wrapper: wrapper("") },
+      )
+
+      expect(result.current.hasActiveFilters).toBe(false)
+
+      act(() => {
+        result.current.setMonth("july")
+      })
+      expect(result.current.hasActiveFilters).toBe(true)
+
+      act(() => {
+        result.current.setMonth("all")
+      })
+      expect(result.current.hasActiveFilters).toBe(false)
+    })
+  })
 })

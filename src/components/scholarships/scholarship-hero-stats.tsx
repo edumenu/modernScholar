@@ -13,35 +13,35 @@ interface ScholarshipHeroStatsProps {
   totalScholarships: number
   educationLevelsCount: number
   maxAmount: string | null
-  deadlinesThisMonth: number
+  closingSoon: number
 }
 
 export function ScholarshipHeroStats({
   totalScholarships,
   educationLevelsCount,
   maxAmount,
-  deadlinesThisMonth,
+  closingSoon,
 }: ScholarshipHeroStatsProps) {
-  // The stat strip describes the unfiltered seasonal corpus. When any filter is
-  // active, the per-result counts in the filter footer/sheet take over and this
-  // strip would become misleading — so hide it.
+  // Stats describe the unfiltered active corpus. Hide whenever a filter is
+  // active so the numbers don't lie about what the user can see. Sort is
+  // intentionally excluded — it reorders the corpus but doesn't shrink it.
   const [q] = useQueryState("q", parseAsString.withDefault(""))
   const [level] = useQueryState("level", parseAsString.withDefault("All"))
-  const [sort] = useQueryState("sort", parseAsString.withDefault("deadline"))
   const [tags] = useQueryState(
     "tags",
     parseAsArrayOf(parseAsString).withDefault([]),
   )
   const [min] = useQueryState("min", parseAsInteger.withDefault(AWARD_MIN))
   const [max] = useQueryState("max", parseAsInteger.withDefault(AWARD_MAX))
+  const [month] = useQueryState("month", parseAsString.withDefault("all"))
 
   const anyFilterActive =
     q !== "" ||
     level !== "All" ||
-    sort !== "deadline" ||
     tags.length > 0 ||
     min !== AWARD_MIN ||
-    max !== AWARD_MAX
+    max !== AWARD_MAX ||
+    month !== "all"
 
   if (anyFilterActive) return null
 
@@ -51,10 +51,9 @@ export function ScholarshipHeroStats({
         <span>{totalScholarships} scholarships</span>
         <span>{educationLevelsCount} education levels</span>
         {maxAmount && <span>Up to {maxAmount}</span>}
-        {deadlinesThisMonth > 0 && (
+        {closingSoon > 0 && (
           <span className="inline-flex items-center gap-1.5 rounded-full bg-tertiary/15 px-3 py-0.5 text-xs font-medium text-tertiary md:text-sm">
-            {deadlinesThisMonth} deadline
-            {deadlinesThisMonth !== 1 ? "s" : ""} this month
+            {closingSoon} closing soon
           </span>
         )}
       </div>

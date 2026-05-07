@@ -15,6 +15,9 @@ import {
 } from "@/data/scholarships";
 import { Button } from "@/components/ui/button/button"
 import { useComparisonStore } from "@/stores/comparison"
+import { isExpired } from "@/lib/expired-status";
+import { SESSION_DATE } from "@/lib/session-date";
+import { ExpiredStamp } from "./expired-stamp";
 
 interface ScholarshipCardProps {
   scholarship: Scholarship
@@ -34,6 +37,12 @@ export function ScholarshipCard({
   const { toggle, isSelected } = useComparisonStore()
   const compared = isSelected(scholarship.id)
   const tint = getClassificationTint(scholarship.classification);
+  const expired = isExpired(scholarship, SESSION_DATE);
+
+  // Article opacity carries only the filter-mismatch dim. The expired dim moves
+  // to an inner wrapper so the ExpiredStamp (sibling of the wrapper) renders at
+  // full opacity / saturation instead of inheriting the cascade.
+  const idleOpacity = dimmed ? 0.4 : 1;
 
   return (
     <motion.article
@@ -41,7 +50,7 @@ export function ScholarshipCard({
         layoutId: `card-${scholarship.id}`,
       })}
       whileHover={dimmed ? undefined : { scale: 1.015, y: -3 }}
-      animate={{ opacity: isExpanded ? 0 : dimmed ? 0.4 : 1 }}
+      animate={{ opacity: isExpanded ? 0 : idleOpacity }}
       transition={{
         opacity: { duration: isExpanded ? 0 : 0.15 },
         layout: { type: "tween", stiffness: 340, damping: 28 },
@@ -49,7 +58,6 @@ export function ScholarshipCard({
       className={cn(
         "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl",
         tint.bg,
-        // tint.border,
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)] hover:shadow-[0_12px_48px_rgba(32,26,25,0.12)]",
         "transition-shadow duration-300",
         dimmed ? "pointer-events-none saturate-50" : "cursor-pointer",
@@ -59,10 +67,26 @@ export function ScholarshipCard({
         if (!dimmed) onExpand(scholarship.id);
       }}
       aria-label={scholarship.name}
+      inert={dimmed}
     >
-      {/* Top row: classification pills + compare toggle */}
-      <div className="flex items-start justify-between gap-2 px-6 pt-6">
-        <div className="flex flex-wrap gap-1.5">
+      {expired && <ExpiredStamp size="lg" />}
+
+      <div
+        className={cn(
+          "flex h-full w-full flex-col",
+          expired && !dimmed && "opacity-60 saturate-75",
+        )}
+      >
+      {/* Top row: classification pills + compare toggle.
+          When expired the ExpiredStamp tag occupies the top-right corner, so
+          we push chips down (pt-10) and drop the redundant compare toggle. */}
+      <div
+        className={cn(
+          "flex items-start gap-2 px-6",
+          expired ? "pt-10" : "justify-between pt-6",
+        )}
+      >
+        <div className="flex flex-wrap items-center gap-1.5">
           {scholarship.classification.map((level) => {
             const colors = CLASSIFICATION_COLORS[level];
             return (
@@ -81,42 +105,47 @@ export function ScholarshipCard({
           })}
         </div>
 
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggle(scholarship.id);
-                }}
-                className={cn(
-                  "flex size-8 shrink-0 items-center justify-center rounded-full",
-                  "transition-all duration-200",
-                  compared
-                    ? "bg-on-surface text-surface shadow-sm"
-                    : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
-                )}
-                aria-label={
-                  compared ? "Remove from comparison" : "Add to comparison"
-                }
-              />
-            }
-          >
-            <Icon
-              icon={
-                compared ? "solar:check-circle-bold" : "solar:add-circle-linear"
+        {!expired && (
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggle(scholarship.id);
+                  }}
+                  className={cn(
+                    "flex size-8 shrink-0 items-center justify-center rounded-full",
+                    "transition-all duration-200",
+                    compared
+                      ? "bg-on-surface text-surface shadow-sm"
+                      : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
+                  )}
+                  aria-label={
+                    compared ? "Remove from comparison" : "Add to comparison"
+                  }
+                >
+                  <Icon
+                    icon={
+                      compared
+                        ? "solar:check-circle-bold"
+                        : "solar:add-circle-linear"
+                    }
+                    className="size-4.5"
+                  />
+                </button>
               }
-              className="size-4.5"
             />
-          </TooltipTrigger>
-          <TooltipContent
-            side="bottom"
-            sideOffset={8}
-            className="*:last:hidden"
-          >
-            {compared ? "Remove from compare" : "Add to compare"}
-          </TooltipContent>
-        </Tooltip>
+            <TooltipContent
+              side="bottom"
+              sideOffset={8}
+              className="*:last:hidden"
+            >
+              {compared ? "Remove from compare" : "Add to compare"}
+            </TooltipContent>
+          </Tooltip>
+        )}
       </div>
 
       {/* Title + gradient-fade underline */}
@@ -211,6 +240,7 @@ export function ScholarshipCard({
         >
           <Icon icon="solar:arrow-right-linear" />
         </Button>
+      </div>
       </div>
     </motion.article>
   );

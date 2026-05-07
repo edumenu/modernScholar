@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 const mockPush = vi.fn();
@@ -88,10 +88,21 @@ vi.mock("@/lib/pretext/fonts", () => ({
   },
 }));
 
+// Freeze "now" so the active-scholarship slice stays stable as the corpus
+// ages. Both the carousel (calls `new Date()` at render) and the test helper
+// below see the same instant.
+const FROZEN_NOW = new Date("2026-05-07T12:00:00Z");
+
 describe("FeaturedScholarships with CoverflowCarousel", () => {
   beforeEach(() => {
     mockReducedMotion = false;
     mockPush.mockClear();
+    vi.useFakeTimers();
+    vi.setSystemTime(FROZEN_NOW);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   function getCarousel(container: HTMLElement) {
@@ -115,13 +126,26 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     expect(slides.length).toBe(10);
   });
 
+  // The carousel filters its source feed to active-only at runtime, then takes
+  // the first 10. We compute the same slice in the tests so the assertions
+  // don't break when the underlying data changes.
+  async function getActiveCarouselNames(): Promise<string[]> {
+    const { scholarships } = await import("@/data/scholarships");
+    const { isScholarshipActive } = await import("@/data/scholarships");
+    return scholarships
+      .slice(0, 10)
+      .filter((s) => isScholarshipActive(s, FROZEN_NOW))
+      .map((s) => s.name);
+  }
+
   it("has a live region announcing the active scholarship", async () => {
     const { FeaturedScholarships } = await import("../featured-scholarships");
     const { container } = render(<FeaturedScholarships />);
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
     expect(liveRegion).not.toBeNull();
-    expect(liveRegion!.textContent).toContain("Engebretson Foundation Scholarship");
+    const names = await getActiveCarouselNames();
+    expect(liveRegion!.textContent).toContain(names[0]);
   });
 
   it("advances to next card on ArrowRight key", async () => {
@@ -133,7 +157,8 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     fireEvent.keyDown(carousel, { key: "ArrowRight" });
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
-    expect(liveRegion!.textContent).toContain("Horatio Alger: National Scholarship");
+    const names = await getActiveCarouselNames();
+    expect(liveRegion!.textContent).toContain(names[1]);
   });
 
   it("goes to previous card on ArrowLeft key", async () => {
@@ -142,30 +167,33 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
 
     const carousel = getCarousel(container);
     carousel.focus();
-    // ArrowLeft from index 0 wraps to last (index 9)
+    // ArrowLeft from index 0 wraps to the last active slot
     fireEvent.keyDown(carousel, { key: "ArrowLeft" });
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
-    // 10th scholarship in enriched data
-    const allScholarships = (await import("@/data/scholarships")).scholarships;
-    const tenthName = allScholarships[9]?.name;
-    expect(liveRegion!.textContent).toContain(tenthName);
+    const names = await getActiveCarouselNames();
+    expect(liveRegion!.textContent).toContain(names[names.length - 1]);
   });
 
   it("navigates to /scholarships?q={id} when clicking center card", async () => {
     const { FeaturedScholarships } = await import("../featured-scholarships");
     render(<FeaturedScholarships />);
 
-    // The first card (index 0) is the center card by default
-    const buttons = screen.getAllByRole("button", { name: /Engebretson Foundation/i });
-    // Find the one that is the center card (data-cursor-text="View")
+    // First active scholarship in the carousel slice is the center card by default.
+    const names = await getActiveCarouselNames();
+    const centerName = names[0];
+    // Escape any regex specials in the name for the accessible-name matcher.
+    const namePattern = new RegExp(centerName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    const buttons = screen.getAllByRole("button", { name: namePattern });
     const centerButton = buttons.find(
       (btn) => btn.getAttribute("data-cursor-text") === "View",
     );
     expect(centerButton).toBeDefined();
     fireEvent.click(centerButton!);
 
-    expect(mockPush).toHaveBeenCalledWith("/scholarships?q=Engebretson%20Foundation%20Scholarship");
+    expect(mockPush).toHaveBeenCalledWith(
+      `/scholarships?q=${encodeURIComponent(centerName)}`,
+    );
   });
 
   it("rotates side card to center on click instead of navigating", async () => {
@@ -199,7 +227,8 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     fireEvent.click(nextBtn);
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
-    expect(liveRegion!.textContent).toContain("Horatio Alger: National Scholarship");
+    const names = await getActiveCarouselNames();
+    expect(liveRegion!.textContent).toContain(names[1]);
   });
 
   it("renders reduced motion fallback as scrollable list without 3D", async () => {

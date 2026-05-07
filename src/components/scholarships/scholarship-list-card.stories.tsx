@@ -77,3 +77,29 @@ export const LongTitle: Story = {
     },
   },
 }
+
+export const ExpiredWithReopenDate: Story = {
+  args: {
+    scholarship: {
+      ...baseScholarship,
+      id: "list-expired-reopen",
+      name: "Tech Excellence Scholarship",
+      deadline: "January 1",
+      deadlineYear: 2024,
+      openDate: "January 1",
+    },
+  },
+}
+
+export const ExpiredFallback: Story = {
+  args: {
+    scholarship: {
+      ...baseScholarship,
+      id: "list-expired-fallback",
+      name: "Tech Excellence Scholarship",
+      deadline: "January 1",
+      deadlineYear: 2024,
+      openDate: null,
+    },
+  },
+}

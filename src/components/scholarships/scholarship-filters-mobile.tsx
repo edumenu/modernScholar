@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
@@ -30,7 +30,11 @@ import {
 import { Input } from "@/components/ui/input/input"
 import { AWARD_MIN, AWARD_MAX } from "@/data/scholarships"
 import { AwardRangeFilter } from "./award-range-filter"
-import type { ScholarshipFiltersValue } from "@/hooks/use-scholarship-filters"
+import { MonthDropdown } from "./month-dropdown"
+import {
+  type ScholarshipFiltersValue,
+} from "@/hooks/use-scholarship-filters"
+import { computeMonthCounts } from "@/lib/scholarship-utils"
 
 const SORT_OPTIONS = [
   { value: "deadline", label: "Deadline" },
@@ -46,21 +50,32 @@ interface ScholarshipFiltersMobileProps {
 export function ScholarshipFiltersMobile({
   filters,
   resultCount,
+  seasonalScholarships,
 }: ScholarshipFiltersMobileProps) {
   const [sheetOpen, setSheetOpen] = useState(false)
   const [expandedCategory, setExpandedCategory] = useState<EligibilityCategory | null>(null)
 
   useScrollLock(sheetOpen)
 
+  const monthCounts = useMemo(
+    () => computeMonthCounts(seasonalScholarships),
+    [seasonalScholarships],
+  )
+
   const isAwardRangeActive =
     filters.awardRange[0] !== AWARD_MIN || filters.awardRange[1] !== AWARD_MAX
   const hasSearch = filters.searchQuery.trim().length > 0
+  const hasMonth = filters.month !== "all"
+  // Includes month so the "Clear" link is reachable when month is the only
+  // active filter. Filter sheet's badge stays month-exclusive on purpose —
+  // month lives outside the sheet, alongside Sort/Filters.
   const hasActiveFilters =
     hasSearch ||
     filters.activeFilter !== "All" ||
     filters.sortBy !== "deadline" ||
     filters.selectedTags.length > 0 ||
-    isAwardRangeActive
+    isAwardRangeActive ||
+    hasMonth
 
   const filterBadgeCount =
     (hasSearch ? 1 : 0) +
@@ -105,7 +120,7 @@ export function ScholarshipFiltersMobile({
         />
       </div>
 
-      {/* Layout toggle + Filters button */}
+      {/* Layout toggle + Month dropdown + Filters button */}
       <div className="flex w-full items-center justify-between pt-2">
         <div className="flex items-center gap-1 rounded-full bg-white/30 p-1 dark:bg-white/10">
           <Button
@@ -141,6 +156,14 @@ export function ScholarshipFiltersMobile({
         </div>
 
         <div className="flex items-center gap-2">
+          <MonthDropdown
+            month={filters.month}
+            onMonthChange={filters.setMonth}
+            monthCounts={monthCounts}
+            totalCount={seasonalScholarships.length}
+            variant="ghost"
+            triggerClassName="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
+          />
           {hasActiveFilters && (
             <button
               type="button"

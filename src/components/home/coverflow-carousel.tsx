@@ -11,7 +11,11 @@ import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button/button";
 import type { Scholarship } from "@/data/scholarships";
-import { CLASSIFICATION_COLORS, getClassificationTint } from "@/data/scholarships";
+import {
+  CLASSIFICATION_COLORS,
+  getClassificationTint,
+  isScholarshipActive,
+} from "@/data/scholarships";
 import { getEligibilityTagLabel } from "@/lib/eligibility";
 
 /* ------------------------------------------------------------------ */
@@ -324,12 +328,18 @@ function ReducedMotionFallback({
 /* ------------------------------------------------------------------ */
 
 export function CoverflowCarousel({
-  scholarships,
+  scholarships: scholarshipsProp,
 }: {
   scholarships: Scholarship[];
 }) {
   const shouldReduceMotion = useReducedMotion();
   const router = useRouter();
+  // Filter to active-only at the source so every downstream consumer
+  // (autoplay, drag, keyboard nav, live region) only sees open scholarships.
+  // `new Date()` is fine here per PRD — freshly-expired won't drop until reload.
+  const scholarships = scholarshipsProp.filter((s) =>
+    isScholarshipActive(s, new Date()),
+  );
   const total = scholarships.length;
 
   const [activeIndex, setActiveIndex] = useState(0);

@@ -5,7 +5,6 @@ import type { Tag } from "@/lib/eligibility"
 import { seasonForMonthName, type Season } from "@/lib/seasons"
 
 export type { Season } from "@/lib/seasons"
-export { getCurrentSeason } from "@/lib/seasons"
 
 // --- Types ---
 

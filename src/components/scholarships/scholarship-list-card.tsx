@@ -8,6 +8,9 @@ import { CLASSIFICATION_COLORS } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip/tooltip"
 import { useComparisonStore } from "@/stores/comparison"
+import { isExpired } from "@/lib/expired-status";
+import { SESSION_DATE } from "@/lib/session-date";
+import { ExpiredStamp } from "./expired-stamp";
 
 interface ScholarshipListCardSpreadProps {
   scholarship: Scholarship
@@ -49,6 +52,7 @@ export function ScholarshipListCardSpread({
   const compared = isSelected(scholarship.id)
   const primaryLevel = scholarship.classification[0]
   const tint = CLASSIFICATION_TINT_MAP[primaryLevel] ?? CLASSIFICATION_TINT_MAP["High School"]
+  const expired = isExpired(scholarship, SESSION_DATE);
 
   return (
     <motion.article
@@ -65,6 +69,13 @@ export function ScholarshipListCardSpread({
       aria-labelledby={`list-card-title-${scholarship.id}`}
       inert={dimmed}
     >
+      {expired && <ExpiredStamp size="sm" />}
+      <div
+        className={cn(
+          "flex w-full items-stretch",
+          expired && !dimmed && "opacity-60 saturate-75",
+        )}
+      >
       {/* Left zone — tinted panel with classification + amount */}
       <div
         className={cn(
@@ -73,7 +84,7 @@ export function ScholarshipListCardSpread({
           tint.hover,
         )}
       >
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap items-center gap-1">
           {scholarship.classification.map((level) => {
             const colors = CLASSIFICATION_COLORS[level];
             return (
@@ -131,7 +142,10 @@ export function ScholarshipListCardSpread({
           </span>
           <span className="flex items-center gap-1">
             <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
-            {formatDeadlineShort(scholarship.deadline, scholarship.deadlineYear)}
+            {formatDeadlineShort(
+              scholarship.deadline,
+              scholarship.deadlineYear,
+            )}
           </span>
         </div>
 
@@ -142,39 +156,46 @@ export function ScholarshipListCardSpread({
         )}
       </div>
 
-      {/* Actions — compare toggle + arrow CTA */}
+      {/* Actions — compare toggle + arrow CTA.
+          The compare toggle is hidden when expired since the ExpiredStamp tag
+          already communicates that comparison isn't available. */}
       <div className="flex shrink-0 items-center gap-1.5 pr-4 sm:gap-2 sm:pr-6">
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggle(scholarship.id);
-                }}
-                className={cn(
-                  "flex size-8 items-center justify-center rounded-full transition-all duration-200",
-                  compared
-                    ? "bg-on-surface text-surface shadow-sm"
-                    : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
-                )}
-                aria-label={
-                  compared ? "Remove from comparison" : "Add to comparison"
-                }
-              />
-            }
-          >
-            <Icon
-              icon={
-                compared ? "solar:check-circle-bold" : "solar:add-circle-linear"
+        {!expired && (
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggle(scholarship.id);
+                  }}
+                  className={cn(
+                    "flex size-8 items-center justify-center rounded-full transition-all duration-200",
+                    compared
+                      ? "bg-on-surface text-surface shadow-sm"
+                      : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
+                  )}
+                  aria-label={
+                    compared ? "Remove from comparison" : "Add to comparison"
+                  }
+                >
+                  <Icon
+                    icon={
+                      compared
+                        ? "solar:check-circle-bold"
+                        : "solar:add-circle-linear"
+                    }
+                    className="size-4.5"
+                  />
+                </button>
               }
-              className="size-4.5"
             />
-          </TooltipTrigger>
-          <TooltipContent side="top" sideOffset={8} className="*:last:hidden">
-            {compared ? "Remove from compare" : "Add to compare"}
-          </TooltipContent>
-        </Tooltip>
+            <TooltipContent side="top" sideOffset={8} className="*:last:hidden">
+              {compared ? "Remove from compare" : "Add to compare"}
+            </TooltipContent>
+          </Tooltip>
+        )}
 
         <Button
           variant="ghost"
@@ -193,6 +214,7 @@ export function ScholarshipListCardSpread({
             <Icon icon="solar:arrow-right-linear" className="size-4.5" />
           </motion.span>
         </Button>
+      </div>
       </div>
     </motion.article>
   );

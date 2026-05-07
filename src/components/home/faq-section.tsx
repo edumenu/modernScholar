@@ -28,11 +28,6 @@ const faqs: FAQItem[] = [
     answer:
       "We feature a wide range of scholarships including merit-based, need-based, community service, STEM, arts, athletics, and identity-based awards. Scholarships range from $500 to full-tuition coverage across undergraduate and graduate programs.",
   },
-  // {
-  //   question: "How do I apply for a scholarship through the platform?",
-  //   answer:
-  //     "Each scholarship listing includes detailed application requirements, deadlines, and a direct link to the provider's application portal. We streamline the process by saving your profile information so you can apply faster across multiple scholarships.",
-  // },
   {
     question: "Can I track my scholarship applications?",
     answer:
@@ -47,24 +42,8 @@ const faqs: FAQItem[] = [
   {
     question: "How often is the scholarship list updated?",
     answer:
-      "We refresh the catalog regularly. Closed deadlines drop off automatically, new opportunities are added throughout each season, and we re-check provider links so broken or outdated listings don't reach you.",
+      "We refresh the catalog regularly. Closed deadlines drop off automatically, new opportunities are added regularly throughout the year, and we re-check provider links so broken or outdated listings don't reach you.",
   },
-  // {
-  //   question: "Can I compare scholarships side by side?",
-  //   answer:
-  //     "Yes — pin up to three scholarships from any listing and we'll show their deadlines, awards, eligibility, and requirements together, so you can decide where to focus your effort first.",
-  // },
-  // {
-  //   question: "Can I filter by my major, eligibility, or award amount?",
-  //   answer:
-  //     "Absolutely. The scholarships page lets you filter by education level, eligibility tags (STEM, first-generation, women, veterans, and more), and an award-amount slider, then sort by deadline so the most urgent matches surface first.",
-  // },
-  // {
-  //   question:
-  //     "Are there scholarships for first-generation students or specific communities?",
-  //   answer:
-  //     "Yes. Our catalog includes awards for first-generation students, women, students of color, veterans and military families, students with disabilities, and many major-specific opportunities across STEM, the arts, healthcare, business, and law.",
-  // },
 ];
 
 function AccordionItem({

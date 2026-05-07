@@ -67,12 +67,7 @@ Raise anything that doesn't add up.
 
 ### Phase 5: Summary
 
-When all branches are exhausted and internally consistent, generate a decision summary document. Write it to a file (suggest `DECISIONS.md` or ask the user where they want it).
-
-The summary should follow this structure:
-
-### Phase 6: Follow-up
-After the interview, ALWAYS ask the user if they want to move on to the "write-prd" skill to turn the decisions into a formal plan for implementation.
+When all branches are exhausted and internally consistent, ALWAYS ask the user if they want to move on to the "write-prd" skill to turn the decisions into a formal plan for implementation.
 
 ```markdown
 # Project Decisions — [Project Name]

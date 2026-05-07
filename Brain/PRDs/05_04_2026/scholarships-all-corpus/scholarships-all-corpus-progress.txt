@@ -1,0 +1,27 @@
+# Ralph Progress — scholarships-all-corpus
+Started: 2026-05-04T00:00:00Z
+MAX_ITER=60
+---
+[2026-05-04 00:01] T01 PASS — added expired-status helpers (isExpired/getReopenLabel/getExpiredBadge). Files: src/lib/expired-status.ts. openDate is string|null free-text; month via substring match.
+[2026-05-04 00:02] T02 PASS — added isScholarshipActive with inline deadline parse. Files: src/data/scholarships.ts. Old seasonal helpers retained for cascade.
+[2026-05-04 00:03] T03 PASS — filterAndSort extended with month + expired tier (optional params). Files: src/lib/scholarship-utils.ts.
+[2026-05-04 00:04] T04 PASS — month URL param wired with sanitize, clearAll, hasActiveFilters. Files: src/hooks/use-scholarship-filters.ts. Exports MONTHS+Month for T05/T07/T08.
+[2026-05-04 00:05] T05 PASS — MonthFilter pill row mirrors level tabs. Files: src/components/scholarships/month-filter.tsx. Value lowercase 'all' to match hook.
+[2026-05-04 00:06] T06 PASS — month row inserted between level tabs and sort in desktop+mobile. Files: scholarship-filters.tsx, scholarship-filters-mobile.tsx. monthCounts via deadline.split[0].lowercase.
+[2026-05-04 00:07] T07 PASS — tagCounts active-only via isScholarshipActive; ActiveFilterStrip month chip optional+animated. Files: src/components/scholarships/filter-sheet.tsx.
+[2026-05-04 00:08] T08 PASS — corpus=allScholarships, month/today wired, empty-state copy + ActiveFilterStrip month chip done. Files: src/components/scholarships/scholarship-grid.tsx.
+[2026-05-04 00:09] T09 PASS — hero uses active corpus + closingSoon (30d rolling); subtitle non-seasonal. Files: scholarship-hero.tsx, scholarship-hero-stats.tsx.
+[2026-05-04 00:10] T10 PASS — getExpiredBadge wired in 4 card surfaces; pill on cards, line in modal/sheet. Files: scholarship-card.tsx, scholarship-list-card.tsx, expanded-scholarship.tsx, comparison-sheet.tsx.
+[2026-05-04 00:11] T11 PASS — coverflow filters to active-only at component entry. Files: src/components/home/coverflow-carousel.tsx. T15 cascade-close now eligible.
+[2026-05-04 00:12] T12 PASS — FAQ copy edit: 'throughout each season' → 'regularly throughout the year'. Files: src/components/home/faq-section.tsx.
+[2026-05-04 00:13] T13 PASS — deleted profile-setup.tsx + stores/profile.ts. lint:touched n/a (files removed).
+[2026-05-04 00:14] T14 PASS — parseSeason defaults to 'all'; usage comment + unused getCurrentSeason import updated. Files: scripts/scrape-scholarships.ts.
+[2026-05-04 00:15] T15 STOP (no attempt charge) — test file still imports isScholarshipVisible. Repatched dep graph: T17 now gates T15; T17 deps relaxed to T02 only.
+[2026-05-04 00:16] T16 PASS — 10 vitest cases cover expired-status branches. Files: src/lib/__tests__/expired-status.test.ts.
+[2026-05-04 00:17] T17 PASS — replaced isScholarshipVisible suite with 3 isScholarshipActive cases (20 total). Files: src/data/__tests__/scholarships.test.ts. Unblocks T15.
+[2026-05-04 00:18] T15 PASS — deleted isScholarshipVisible + getSeasonalScholarships. Files: src/data/scholarships.ts. Cascade closed.
+[2026-05-04 00:19] T18 PASS — 6 tests cover month-filter cross-year + expired-tier under both sort modes. Files: src/lib/__tests__/scholarship-utils.test.ts.
+[2026-05-04 00:20] T19 PASS — 5 new month tests (24 total) cover round-trip, sanitize, clearAll, hasActiveFilters. Files: src/hooks/__tests__/use-scholarship-filters.component.test.tsx.
+[2026-05-04 00:21] T20 PASS — Expired + ExpiredFallback exports added to 3 story files. Files: scholarship-card.stories.tsx, scholarship-list-card.stories.tsx, comparison-sheet.stories.tsx.
+ALL TASKS COMPLETE
+[2026-05-04 00:22] SMOKE PASS — desktop + mobile verified: month filter URL round-trip, expired pill (both branches), Clear all, mobile pill row scroll. Patched: hero-stats anyFilterActive now includes month. Files: src/components/scholarships/scholarship-hero-stats.tsx.

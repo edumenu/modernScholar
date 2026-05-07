@@ -36,8 +36,8 @@ Sketch major modules to build or modify — responsibility, interface, new vs ex
 [The pain from the user's perspective.]
 
 ## Location
-1. The PRD name should be the feature name in kebab_case and should be placed in the folder matching the current date. eg. /Users/edemdumenu/Documents/Workspace/DearModernScholar/Brain/PRDs/03_28_2026/userAuthentication/user-authentication.md
-2. If the feature is too large for one PRD, break them into parts and place them in a different folder. For example, if the feature is "User Authentication", it can be broken down into "User Authentication - Login", "User Authentication - Signup", "User Authentication - Forgot Password", etc. "user-authentication-overview.md", "user-authentication-login.md", "user-authentication-signup.md", "user-authentication-forgot-password.md"
+1. The PRD name should be the feature name in kebab-case, placed in the folder matching the current date. **Path is always repo-relative to the project root** (i.e. `<repo-root>/Brain/PRDs/...`) — never use absolute paths from your home directory or workspace root, since the `Brain/` folder lives inside the project, not as a sibling. Example: `Brain/PRDs/03_28_2026/user-authentication/user-authentication.md`. Verify the parent folder with `ls Brain/PRDs/` before writing.
+2. If the feature is too large for one PRD, break them into parts and place them in the same folder. For example, "User Authentication" → `user-authentication-overview.md`, `user-authentication-login.md`, `user-authentication-signup.md`, `user-authentication-forgot-password.md` — all under `Brain/PRDs/<MM_DD_YYYY>/user-authentication/`.
 
 ## Solution
 [What changes for the user.]

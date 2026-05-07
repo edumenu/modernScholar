@@ -15,9 +15,12 @@ import {
 import {
   AWARD_MIN,
   AWARD_MAX,
+  isScholarshipActive,
   type EducationLevelFilter,
   type Scholarship,
 } from "@/data/scholarships"
+import { MONTH_LABELS, type Month } from "@/hooks/use-scholarship-filters"
+import { SESSION_DATE } from "@/lib/session-date"
 import { Button } from "@/components/ui/button/button"
 import {
   Sheet,
@@ -52,6 +55,7 @@ export function FilterSheet({
   const tagCounts = useMemo(() => {
     const counts: Record<string, number> = {}
     for (const s of seasonalScholarships) {
+      if (!isScholarshipActive(s, SESSION_DATE)) continue
       for (const tag of s.eligibilityTags ?? []) {
         counts[tag] = (counts[tag] || 0) + 1
       }
@@ -276,6 +280,8 @@ export function ActiveFilterStrip({
   onTagsChange,
   awardRange,
   onAwardRangeChange,
+  month = "all",
+  onMonthClear,
   onClearAll,
 }: {
   searchQuery: string
@@ -288,12 +294,15 @@ export function ActiveFilterStrip({
   onTagsChange: (tags: Tag[]) => void
   awardRange: [number, number]
   onAwardRangeChange: (range: [number, number]) => void
+  month?: Month | "all"
+  onMonthClear?: () => void
   onClearAll: () => void
 }) {
   const trimmedQuery = searchQuery.trim()
   const hasSearch = trimmedQuery.length > 0
   const hasLevel = level !== "All"
   const hasSort = sortBy !== "deadline"
+  const hasMonth = month !== "all"
   const isAwardRangeActive =
     awardRange[0] !== AWARD_MIN || awardRange[1] !== AWARD_MAX
 
@@ -377,6 +386,23 @@ export function ActiveFilterStrip({
             className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-on-surface/10 px-2.5 py-1 text-xs font-medium text-on-surface transition-colors hover:bg-on-surface/15"
           >
             Sort: {SORT_LABELS[sortBy] ?? sortBy}
+            <Icon icon="solar:close-circle-linear" className="size-3.5" />
+          </motion.button>
+        )}
+        {hasMonth && onMonthClear && (
+          <motion.button
+            key="active-month"
+            type="button"
+            layout
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85, x: -4 }}
+            transition={{ duration: 0.12 }}
+            onClick={onMonthClear}
+            aria-label={`Clear ${MONTH_LABELS[month]} filter`}
+            className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-secondary/10 px-2.5 py-1 text-xs font-medium text-secondary-800 transition-colors hover:bg-secondary/20 dark:text-secondary-200"
+          >
+            {MONTH_LABELS[month]}
             <Icon icon="solar:close-circle-linear" className="size-3.5" />
           </motion.button>
         )}

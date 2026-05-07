@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest"
 import {
-  isScholarshipVisible,
+  isScholarshipActive,
   parseAwardAmount,
   getClassificationTint,
   CLASSIFICATION_TINTS,
@@ -9,7 +9,7 @@ import {
   type EducationLevel,
 } from "../scholarships"
 
-describe("isScholarshipVisible", () => {
+describe("isScholarshipActive", () => {
   const baseScholarship: Scholarship = {
     id: "test",
     name: "Test",
@@ -26,24 +26,19 @@ describe("isScholarshipVisible", () => {
     eligibilityTags: [],
   }
 
-  it("returns true for matching season with future deadline", () => {
-    const today = new Date(2027, 1, 15) // Feb 15, 2027
-    expect(isScholarshipVisible(baseScholarship, "spring", today)).toBe(true)
+  it("returns true when deadline is in the future", () => {
+    const today = new Date(2027, 1, 15) // Feb 15, 2027 — before March 1, 2027
+    expect(isScholarshipActive(baseScholarship, today)).toBe(true)
   })
 
-  it("returns false for wrong season", () => {
-    const today = new Date(2027, 1, 15)
-    expect(isScholarshipVisible(baseScholarship, "fall", today)).toBe(false)
+  it("returns false when deadline has already passed", () => {
+    const today = new Date(2027, 5, 1) // June 1, 2027 — after March 1, 2027
+    expect(isScholarshipActive(baseScholarship, today)).toBe(false)
   })
 
-  it("returns false for past deadline", () => {
-    const today = new Date(2027, 5, 1) // June 1, 2027 — after March 1
-    expect(isScholarshipVisible(baseScholarship, "spring", today)).toBe(false)
-  })
-
-  it("returns true when deadline is today", () => {
+  it("returns true when deadline is exactly today", () => {
     const today = new Date(2027, 2, 1) // March 1, 2027
-    expect(isScholarshipVisible(baseScholarship, "spring", today)).toBe(true)
+    expect(isScholarshipActive(baseScholarship, today)).toBe(true)
   })
 })
 
