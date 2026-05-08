@@ -121,6 +121,7 @@ export function Header() {
                 alt="Modern Scholar"
                 width={28}
                 height={28}
+                priority
                 className="size-12 object-contain block dark:hidden"
               />
               <Image
@@ -128,6 +129,7 @@ export function Header() {
                 alt="Modern Scholar"
                 width={28}
                 height={28}
+                priority
                 className="size-7 object-contain hidden dark:block"
               />
             </Link>
@@ -195,6 +197,7 @@ export function Header() {
                 alt="Modern Scholar"
                 width={24}
                 height={24}
+                priority
                 className="size-6 object-contain block dark:hidden"
               />
               <Image
@@ -202,6 +205,7 @@ export function Header() {
                 alt="Modern Scholar"
                 width={24}
                 height={24}
+                priority
                 className="size-6 object-contain hidden dark:block"
               />
             </Link>

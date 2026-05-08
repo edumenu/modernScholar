@@ -194,9 +194,16 @@ export function useScholarshipFilters(args: {
     }
     const cMin = Math.max(AWARD_MIN, Math.min(AWARD_MAX, minUrl))
     const cMax = Math.max(AWARD_MIN, Math.min(AWARD_MAX, maxUrl))
-    const [lo, hi] = cMin > cMax ? [cMax, cMin] : [cMin, cMax]
-    if (lo !== minUrl) setMinUrl(lo === AWARD_MIN ? null : lo)
-    if (hi !== maxUrl) setMaxUrl(hi === AWARD_MAX ? null : hi)
+    if (cMin > cMax) {
+      // Inverted range (?min=99999&max=10): revert both to defaults rather
+      // than silently swap-and-activate. A swap would misrepresent the
+      // pasted URL's intent and leave a stale active-filter chip on screen.
+      if (minUrl !== AWARD_MIN) setMinUrl(null)
+      if (maxUrl !== AWARD_MAX) setMaxUrl(null)
+    } else {
+      if (cMin !== minUrl) setMinUrl(cMin === AWARD_MIN ? null : cMin)
+      if (cMax !== maxUrl) setMaxUrl(cMax === AWARD_MAX ? null : cMax)
+    }
     const validTags = tagsUrl.filter((t) =>
       (ALL_TAGS as readonly string[]).includes(t),
     )

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { Icon } from "@iconify/react"
+import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 import { useFocusTrap } from "@/hooks/use-focus-trap"
 import { useScrollLock } from "@/hooks/use-scroll-lock"
@@ -34,6 +35,36 @@ function ExpandedScholarshipContent({
     scholarship,
     SESSION_DATE,
   );
+
+  const handleShare = useCallback(async () => {
+    const shareData = {
+      title: scholarship.name,
+      text: `${scholarship.name} — ${scholarship.awardAmount}`,
+      url: scholarship.link,
+    };
+    try {
+      if (
+        typeof navigator !== "undefined" &&
+        typeof navigator.share === "function"
+      ) {
+        await navigator.share(shareData);
+        return;
+      }
+      if (
+        typeof navigator !== "undefined" &&
+        navigator.clipboard?.writeText
+      ) {
+        await navigator.clipboard.writeText(scholarship.link);
+        toast.success("Link copied to clipboard");
+        return;
+      }
+      toast.error("Sharing isn't supported in this browser");
+    } catch (err) {
+      // AbortError fires when the user cancels the system share sheet — quiet.
+      if (err instanceof DOMException && err.name === "AbortError") return;
+      toast.error("Couldn't share scholarship");
+    }
+  }, [scholarship.name, scholarship.awardAmount, scholarship.link]);
   // When the scholarship is expired and we have a reopen label, suppress the
   // raw "Opens" line — the closure copy already covers the same information
   // in clearer language.
@@ -212,6 +243,7 @@ function ExpandedScholarshipContent({
             variant="outline"
             size="icon-sm"
             aria-label="Share scholarship"
+            onClick={handleShare}
           >
             <Icon icon="solar:share-linear" className="size-4" />
           </Button>

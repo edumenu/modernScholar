@@ -11,6 +11,8 @@ import { CustomCursor } from "@/components/ui/custom-cursor";
 import { PageTransition } from "@/components/ui/page-transition";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "@/components/ui/sonner/sonner";
+import { MotionConfigProvider } from "@/components/motion-config-provider";
+import { ComparisonRehydrator } from "@/components/scholarships/comparison-rehydrator";
 
 const notoSerif = Noto_Serif({
   subsets: ["latin"],
@@ -48,15 +50,18 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <NuqsAdapter>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <SmoothScrollProvider>
-              <CustomCursor />
-              <Header />
-              <PageShell className="">
-                <PageTransition>{children}</PageTransition>
-              </PageShell>
-              <Footer />
-              <Toaster />
-            </SmoothScrollProvider>
+            <MotionConfigProvider>
+              <SmoothScrollProvider>
+                <ComparisonRehydrator />
+                <CustomCursor />
+                <Header />
+                <PageShell className="">
+                  <PageTransition>{children}</PageTransition>
+                </PageShell>
+                <Footer />
+                <Toaster />
+              </SmoothScrollProvider>
+            </MotionConfigProvider>
           </ThemeProvider>
         </NuqsAdapter>
       </body>

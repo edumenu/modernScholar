@@ -155,7 +155,7 @@ export function ScholarshipFiltersMobile({
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <MonthDropdown
             month={filters.month}
             onMonthChange={filters.setMonth}
@@ -179,11 +179,14 @@ export function ScholarshipFiltersMobile({
                 <Button
                   variant="ghost"
                   size="default"
+                  aria-label="Filters"
                   className="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
                 />
               }
             >
-              Filters
+              {/* Word hides below 360px so the row fits a 320px viewport without
+                  overflow. Icon + count badge keep the trigger discoverable. */}
+              <span className="max-[359px]:hidden">Filters</span>
               {hasActiveFilters && (
                 <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-on-primary">
                   {filterBadgeCount}

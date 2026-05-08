@@ -3,14 +3,20 @@
 import { motion, AnimatePresence } from "motion/react"
 import { Icon } from "@iconify/react"
 import { useComparisonStore } from "@/stores/comparison"
+import { useHasMounted } from "@/hooks/use-has-mounted"
 import { Button } from "@/components/ui/button/button";
 
 export function ComparisonFab() {
   const { selectedIds, openSheet } = useComparisonStore()
+  // FAB visibility depends on the persisted store; gate so the SSR-empty
+  // selectedIds state matches the first client render and we don't get a
+  // hydration mismatch the moment localStorage hydrates.
+  const hasMounted = useHasMounted()
+  const visibleCount = hasMounted ? selectedIds.length : 0
 
   return (
     <AnimatePresence>
-      {selectedIds.length > 0 && (
+      {visibleCount > 0 && (
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -23,7 +29,7 @@ export function ComparisonFab() {
             size="lg"
             onClick={openSheet}
             className="gap-2.5"
-            aria-label={`Compare ${selectedIds.length} scholarships`}
+            aria-label={`Compare ${visibleCount} scholarships`}
             aria-live="polite"
             animateIcon
           >
@@ -34,7 +40,7 @@ export function ComparisonFab() {
             />
             Compare
             <span className="flex size-6 items-center mx-1 justify-center rounded-full bg-white/20 text-xs font-semibold">
-              {selectedIds.length}
+              {visibleCount}
             </span>
           </Button>
         </motion.div>

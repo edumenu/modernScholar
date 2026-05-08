@@ -5,7 +5,10 @@ import { AnimatePresence, motion } from "motion/react"
 import { useLenis } from "lenis/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
-import { scholarships as allScholarships } from "@/data/scholarships"
+import {
+  scholarships as allScholarships,
+  isScholarshipActive,
+} from "@/data/scholarships"
 import { filterAndSort } from "@/lib/scholarship-utils"
 import { useScholarshipFilters } from "@/hooks/use-scholarship-filters"
 import { SESSION_DATE } from "@/lib/session-date"
@@ -38,11 +41,21 @@ export function ScholarshipGrid() {
 
   const lenis = useLenis()
 
-  // Full active corpus — no seasonal filtering. Expired tier handled inside filterAndSort.
+  // Full corpus drives rendering (expired tier still renders with the stamp,
+  // partitioned to the end inside filterAndSort).
   const corpus = allScholarships
 
+  // Active-only subset drives every user-visible *count*: hero stat, level-tab
+  // badges, month-dropdown totals, and filter-sheet footer. Keeping the two
+  // separate means the page can still display closed scholarships informationally
+  // while counts reflect what students can actually apply for.
+  const activeScholarships = useMemo(
+    () => corpus.filter((s) => isScholarshipActive(s, SESSION_DATE)),
+    [corpus],
+  )
+
   const filters = useScholarshipFilters({
-    scholarships: corpus,
+    scholarships: activeScholarships,
     onFilterChangeWhileExpanded: () => setExpandedId(null),
   })
 
@@ -123,7 +136,11 @@ export function ScholarshipGrid() {
     setExpandedId(null)
   }, [])
 
-  const resultCount = sortedItems.filter((i) => i.matches).length
+  // Count only active matches so the filter-sheet footer agrees with the hero
+  // and the level-tab badges (181, not 211 in the no-filter case).
+  const resultCount = sortedItems.filter(
+    (i) => i.matches && isScholarshipActive(i.scholarship, SESSION_DATE),
+  ).length
 
   // Education level empty state
   const isLevelEmpty =
@@ -154,7 +171,7 @@ export function ScholarshipGrid() {
       <ScholarshipFilters
         filters={filters}
         resultCount={resultCount}
-        seasonalScholarships={corpus}
+        seasonalScholarships={activeScholarships}
       />
 
       {/* Active filter strip */}

@@ -4,17 +4,26 @@ description: Documented sizes of mobile filter controls and WCAG implications fo
 type: project
 ---
 
-Measured at 375px viewport in the mobile filter sheet (`scholarship-filters-mobile.tsx`):
+Measured at 375px viewport on the /scholarships page (2026-05-07):
 
-- Education level chips ("All", "High School", etc.): **34 × {47–139}px**
-- Eligibility category accordion buttons ("Gender-Specific", etc.): **36 × 327px**
-- Sort pill buttons ("Deadline", "Amount"): **36 × {89, 95}px**
-- Sheet close X button: **34 × 34px**
-- Page-level layout toggle (Grid/List): **34 × 34px**
-- Filter button (trigger): **93 × 34px**
+Page-level filter controls:
+- Grid layout / List layout toggle buttons: **44 × 44px** (improved from 34×34) — pass WCAG 2.5.5 AAA / Apple HIG
+- Filters button (trigger): **107 × 44px** — pass AAA
+- Month dropdown trigger: **96.66 × 34px** — passes 2.5.8 AA (≥24×24); fails AAA (≥44×44)
+- Sort button: ~36px tall — same as Month
 
-**Why:** WCAG 2.5.8 (Level AA, new in 2.2) requires ≥24×24 CSS px — these all PASS that bar. WCAG 2.5.5 (Level AAA) requires ≥44×44 CSS px and Apple HIG recommends 44×44 — these all FAIL that bar.
+Inside cards (grid layout):
+- "Add to comparison" toggle: **32 × 32px** — passes AA, fails AAA
+- "View details for X" arrow button: **34 × 34px** — passes AA, fails AAA
 
-**How to apply:** When auditing the mobile filter UX, flag any new control that's smaller than the existing 34×34 or 36×N pattern as a regression. If the team decides to upsize, the icon buttons (34×34) are the lowest-hanging fruit since they have no text constraints.
+Inside the filter sheet (Base UI Sheet):
+- Sheet close X button: ~34 × 34px (per prior QA)
+- Eligibility category accordion buttons: ~36 × ~327px (full-width)
+- Sort pill buttons: ~36 × {89, 95}px
+- Education level chips (mobile): ~34 × {47–139}px
 
-The desktop filter row uses similar pill heights (~32-36px) and is acceptable for mouse precision. Don't apply mobile-touch-target rules to desktop unless the user explicitly opts into a touch profile.
+**Why:** WCAG 2.5.8 (Level AA, new in 2.2) requires ≥24×24 CSS px — these all PASS. WCAG 2.5.5 (Level AAA) and Apple HIG recommend ≥44×44 CSS px — most page-level controls now pass except the month/sort dropdown triggers (height 34) and the in-card icon buttons (32 / 34).
+
+**How to apply:** When auditing the mobile filter UX, the in-card 32×32 / 34×34 buttons are the lowest-hanging fruit if upsizing is requested. Don't apply mobile-touch-target rules to desktop unless the user explicitly opts into a touch profile.
+
+**Horizontal-scroll note (320 px viewport):** the page currently overflows at 320px because the Filters button (107px) + Month + Layout toggle row totals ~336px. Standard test viewport is 375; if 320 support is required, the filter row needs a wrap or a narrower Filter trigger.

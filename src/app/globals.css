@@ -484,6 +484,21 @@
   }
 }
 
+/* Reduced motion preference — collapse CSS animations and transitions site-wide.
+   Motion (framer-motion) honours its own MotionConfig reducedMotion="user" set in
+   layout.tsx; this rule covers everything outside Motion (Tailwind transitions,
+   keyframes, scroll-behavior). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* Fallback for browsers without backdrop-filter support */
 @supports not (backdrop-filter: blur(1px)) {
   .glass-panel,

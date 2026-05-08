@@ -8,6 +8,7 @@ import { CLASSIFICATION_COLORS } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip/tooltip"
 import { useComparisonStore } from "@/stores/comparison"
+import { useHasMounted } from "@/hooks/use-has-mounted"
 import { isExpired } from "@/lib/expired-status";
 import { SESSION_DATE } from "@/lib/session-date";
 import { ExpiredStamp } from "./expired-stamp";
@@ -49,7 +50,9 @@ export function ScholarshipListCardSpread({
   onExpand,
 }: ScholarshipListCardSpreadProps) {
   const { toggle, isSelected } = useComparisonStore()
-  const compared = isSelected(scholarship.id)
+  // Same hydration gate as the grid card — see scholarship-card.tsx.
+  const hasMounted = useHasMounted()
+  const compared = hasMounted && isSelected(scholarship.id)
   const primaryLevel = scholarship.classification[0]
   const tint = CLASSIFICATION_TINT_MAP[primaryLevel] ?? CLASSIFICATION_TINT_MAP["High School"]
   const expired = isExpired(scholarship, SESSION_DATE);
@@ -60,12 +63,22 @@ export function ScholarshipListCardSpread({
         "group/row relative flex min-h-38 w-full items-stretch",
         "rounded-lg bg-white dark:bg-surface-container-low overflow-hidden",
         "transition-colors duration-200",
+        "outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
         dimmed ? "opacity-40 saturate-50" : "cursor-pointer",
       )}
       onClick={(e) => {
         e.stopPropagation();
         if (!dimmed) onExpand(scholarship.id);
       }}
+      onKeyDown={(e) => {
+        if (dimmed) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onExpand(scholarship.id);
+        }
+      }}
+      role="button"
+      tabIndex={dimmed ? -1 : 0}
       aria-labelledby={`list-card-title-${scholarship.id}`}
       inert={dimmed}
     >

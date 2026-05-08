@@ -5,9 +5,11 @@ import {
   getClassificationTint,
   CLASSIFICATION_TINTS,
   CLASSIFICATION_COLORS,
+  scholarships,
   type Scholarship,
   type EducationLevel,
 } from "../scholarships"
+import { parseDeadlineDate } from "@/lib/scholarship-utils"
 
 describe("isScholarshipActive", () => {
   const baseScholarship: Scholarship = {
@@ -100,6 +102,40 @@ describe("getClassificationTint", () => {
     const tint = getClassificationTint([] as unknown as EducationLevel[])
     expect(tint.bg).toBe("bg-surface-container")
     expect(tint.border).toBe("border-t-4 border-outline-variant")
+  })
+})
+
+// Data integrity guards. These run against the live enriched dataset and
+// would have caught the prior duplicate-id (March 31 cohort) and "Feburary"
+// regressions — keep them so the next pipeline run can't silently reintroduce
+// either class of defect.
+describe("scholarships dataset integrity", () => {
+  it("has unique ids across the entire corpus", () => {
+    const ids = scholarships.map((s) => s.id)
+    const seen = new Set<string>()
+    const duplicates: string[] = []
+    for (const id of ids) {
+      if (seen.has(id)) duplicates.push(id)
+      seen.add(id)
+    }
+    expect(duplicates).toEqual([])
+    expect(seen.size).toBe(scholarships.length)
+  })
+
+  it("every deadline parses to a valid timestamp", () => {
+    const unparseable = scholarships.filter(
+      (s) => parseDeadlineDate(s.deadline, s.deadlineYear) === 0,
+    )
+    expect(unparseable).toEqual([])
+  })
+
+  it("every deadline uses correctly spelled month names", () => {
+    const valid =
+      /^(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}$/
+    const malformed = scholarships
+      .map((s) => ({ id: s.id, deadline: s.deadline }))
+      .filter((s) => !valid.test(s.deadline))
+    expect(malformed).toEqual([])
   })
 })
 

@@ -15,6 +15,7 @@ import {
 } from "@/data/scholarships";
 import { Button } from "@/components/ui/button/button"
 import { useComparisonStore } from "@/stores/comparison"
+import { useHasMounted } from "@/hooks/use-has-mounted"
 import { isExpired } from "@/lib/expired-status";
 import { SESSION_DATE } from "@/lib/session-date";
 import { ExpiredStamp } from "./expired-stamp";
@@ -35,7 +36,10 @@ export function ScholarshipCard({
   onExpand,
 }: ScholarshipCardProps) {
   const { toggle, isSelected } = useComparisonStore()
-  const compared = isSelected(scholarship.id)
+  // Gate the persisted-state read so SSR HTML (empty store) matches the first
+  // client render. After mount, the real selection state takes over.
+  const hasMounted = useHasMounted()
+  const compared = hasMounted && isSelected(scholarship.id)
   const tint = getClassificationTint(scholarship.classification);
   const expired = isExpired(scholarship, SESSION_DATE);
 
@@ -60,12 +64,22 @@ export function ScholarshipCard({
         tint.bg,
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)] hover:shadow-[0_12px_48px_rgba(32,26,25,0.12)]",
         "transition-shadow duration-300",
+        "outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
         dimmed ? "pointer-events-none saturate-50" : "cursor-pointer",
       )}
       onClick={(e) => {
         e.stopPropagation();
         if (!dimmed) onExpand(scholarship.id);
       }}
+      onKeyDown={(e) => {
+        if (dimmed) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onExpand(scholarship.id);
+        }
+      }}
+      role="button"
+      tabIndex={dimmed ? -1 : 0}
       aria-label={scholarship.name}
       inert={dimmed}
     >

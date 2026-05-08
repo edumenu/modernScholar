@@ -109,7 +109,7 @@ export function ScholarshipFilters({
                       {level}
                       <span
                         className={cn(
-                          "ml-1 inline-flex size-5 items-center justify-center rounded-full text-[10px] font-medium",
+                          "ml-1 inline-flex size-6 items-center justify-center rounded-full text-[10px] font-medium",
                           isActive
                             ? "bg-white/30 text-on-primary dark:bg-white/20"
                             : "bg-on-surface/8 text-on-surface/50",

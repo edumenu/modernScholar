@@ -89,7 +89,7 @@ export function FilterSheet({
       >
         Filters
         {activeCount > 0 && (
-          <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-white">
+          <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-primary-foreground">
             {activeCount}
           </span>
         )}
