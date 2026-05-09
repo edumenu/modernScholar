@@ -1,8 +1,17 @@
 "use client"
 
+import { Suspense, lazy, useEffect, useState, startTransition } from "react";
 import { motion, useReducedMotion } from "motion/react"
+import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react"
 import { ButtonLink } from "@/components/ui/button/button-link"
+import { splineScenes } from "@/config/spline-scenes";
+
+const SplineScene = lazy(() =>
+  import("@/components/home/spline-scene").then((m) => ({
+    default: m.SplineScene,
+  })),
+);
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -142,47 +151,77 @@ function ZeroRing({ reduced }: { reduced: boolean }) {
 export function NotFoundClient() {
   const prefersReducedMotion = useReducedMotion()
   const reduced = !!prefersReducedMotion
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    startTransition(() => setMounted(true));
+  }, []);
+
+  const splineUrl =
+    mounted && resolvedTheme === "dark"
+      ? splineScenes.notFoundDark()
+      : splineScenes.notFoundLight();
+
+  const splineFallback = (
+    <div className="flex size-full items-center justify-center">
+      <div className="size-12 animate-pulse rounded-full bg-surface-container" />
+    </div>
+  );
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center px-6 py-16 overflow-hidden">
+    <main className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden px-6 pt-28 pb-16">
       <FloatingElements />
 
-      <div className="relative z-10 flex flex-col items-center text-center">
-        {/* Eyebrow */}
-        <motion.p
-          className="text-xs font-medium uppercase tracking-[0.2em] text-tertiary"
-          initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0, ease }}
+      {/* Spline scene as backdrop — absolute, behind content, decorative */}
+      {!reduced && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-start justify-center pt-20 lg:items-center lg:pt-0"
         >
-          Error 404
-        </motion.p>
-
-        {/* Giant 404 */}
-        <div className="mt-4 flex items-baseline justify-center text-[25vw] font-heading font-bold leading-none text-primary sm:text-[22vw] lg:text-[18vw]">
-          <motion.span
-            initial={reduced ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease }}
-          >
-            4
-          </motion.span>
-
-          <ZeroRing reduced={reduced} />
-
-          <motion.span
-            initial={reduced ? { opacity: 1, x: 0 } : { opacity: 0, x: 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease }}
-          >
-            4
-          </motion.span>
+          <div className="aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
+            <Suspense fallback={splineFallback}>
+              {mounted ? (
+                <SplineScene
+                  key={resolvedTheme}
+                  scene={splineUrl}
+                  className="size-full"
+                />
+              ) : (
+                splineFallback
+              )}
+            </Suspense>
+          </div>
         </div>
+      )}
 
+      {/* Top — Eyebrow */}
+      <motion.p
+        className="relative z-10 text-xs font-medium uppercase tracking-[0.2em] text-tertiary"
+        initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0, ease }}
+      >
+        Error 404
+      </motion.p>
+
+      {/* Reduced-motion: static 404 in middle (no Spline backdrop) */}
+      {reduced && (
+        <div className="relative z-10 flex items-baseline justify-center text-[25vw] font-heading font-bold leading-none text-primary sm:text-[22vw] lg:text-[18vw]">
+          <span>4</span>
+          <ZeroRing reduced />
+          <span>4</span>
+        </div>
+      )}
+
+      {/* Bottom — content stack overlaying the Spline floor */}
+      <div className="relative z-10 flex flex-col items-center text-center">
         {/* Decorative rule */}
         <motion.div
-          className="mx-auto mt-8 h-px w-24 bg-secondary"
-          initial={reduced ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
+          className="mx-auto h-px w-24 bg-secondary"
+          initial={
+            reduced ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }
+          }
           animate={{ scaleX: 1, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5, ease }}
           style={{ transformOrigin: "left" }}
@@ -190,12 +229,12 @@ export function NotFoundClient() {
 
         {/* Headline */}
         <motion.h1
-          className="mt-6 font-heading text-2xl font-medium tracking-tight text-on-surface md:text-3xl"
+          className="mt-4 font-heading text-2xl font-medium tracking-tight text-on-surface md:text-3xl"
           initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55, ease }}
         >
-          The page you sought has turned the page.
+          We couldn&rsquo;t find that page.
         </motion.h1>
 
         {/* Body */}
@@ -205,8 +244,8 @@ export function NotFoundClient() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.65, ease }}
         >
-          It seems this chapter is missing from our archive. Perhaps you mistyped
-          the address, or this page has been moved to a new shelf entirely.
+          The link may be broken, or the page may have been moved or removed.
+          Try one of the options below to keep exploring.
         </motion.p>
 
         {/* Navigation links */}
@@ -244,5 +283,5 @@ export function NotFoundClient() {
         </div>
       </div>
     </main>
-  )
+  );
 }

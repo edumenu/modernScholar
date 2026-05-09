@@ -7,3 +7,4 @@
 - [project_eligibility_filter_review.md](project_eligibility_filter_review.md) — Eligibility/award filter feature: Slider double-sync bug, AnimatePresence keying issue, toggleTag duplication, skeleton mismatch
 - [project_blog_content_system.md](project_blog_content_system.md) — Blog MDX content system: dynamicParams gap, body type mismatch, OG relative URL, Suspense decoration, slugify divergence, willChange overuse
 - [project_scholarships_all_corpus.md](project_scholarships_all_corpus.md) — Full-corpus refactor: expired-status module, Month type duplication, monthCounts duplication, filterStrip gate fragility, SESSION_DATE snapshot intent
+- [project_providers_mdx_build.md](project_providers_mdx_build.md) — Providers/MDX/build config: output:export vs next start mismatch, --webpack pin, missing remark-gfm, hooks-in-story violation, ThemeProvider gaps, no typecheck script

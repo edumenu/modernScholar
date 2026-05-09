@@ -105,7 +105,7 @@ export function RelatedPosts({ posts = [] }: RelatedPostsProps) {
             </div>
           </div>
 
-          <CarouselContent className="-ml-4">
+          <CarouselContent className="-ml-4 px-8 pb-8">
             {posts.map((relatedPost) => (
               <CarouselItem
                 key={relatedPost.id}
@@ -118,5 +118,5 @@ export function RelatedPosts({ posts = [] }: RelatedPostsProps) {
         </Carousel>
       </section>
     </AnimatedSection>
-  )
+  );
 }

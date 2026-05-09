@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { ScholarshipHero } from "@/components/scholarships/scholarship-hero";
 import { ScholarshipGrid } from "@/components/scholarships/scholarship-grid";
+import { PageTransition } from "@/components/ui/page-transition";
 
 export const metadata: Metadata = {
   title: "Explore Scholarships | Modern Scholar",
@@ -10,9 +11,11 @@ export const metadata: Metadata = {
 
 export default function ScholarshipsPage() {
   return (
-    <div className="page-padding-y flex flex-col gap-16 h-auto">
-      <ScholarshipHero />
-      <ScholarshipGrid />
-    </div>
+    <PageTransition>
+      <div className="page-padding-y flex flex-col gap-16 h-auto">
+        <ScholarshipHero />
+        <ScholarshipGrid />
+      </div>
+    </PageTransition>
   );
 }

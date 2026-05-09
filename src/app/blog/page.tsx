@@ -1,6 +1,7 @@
 import { BlogHero } from "@/components/blog/blog-hero";
 import { BlogGrid } from "@/components/blog/blog-grid";
 import { getAllPosts } from "@/lib/blog";
+import { PageTransition } from "@/components/ui/page-transition";
 
 export const metadata = {
   title: "Blog | Modern Scholar",
@@ -12,9 +13,11 @@ export default async function BlogPage() {
   const posts = await getAllPosts();
 
   return (
-    <div className="page-padding-y flex flex-col gap-16 h-auto">
-      <BlogHero />
-      <BlogGrid posts={posts} />
-    </div>
+    <PageTransition>
+      <div className="page-padding-y flex flex-col gap-16 h-auto">
+        <BlogHero />
+        <BlogGrid posts={posts} />
+      </div>
+    </PageTransition>
   );
 }

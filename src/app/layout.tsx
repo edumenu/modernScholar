@@ -8,7 +8,6 @@ import { Footer } from "@/components/ui/footer";
 import { PageShell } from "@/components/ui/page-shell";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { CustomCursor } from "@/components/ui/custom-cursor";
-import { PageTransition } from "@/components/ui/page-transition";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "@/components/ui/sonner/sonner";
 import { MotionConfigProvider } from "@/components/motion-config-provider";
@@ -55,9 +54,7 @@ export default function RootLayout({
                 <ComparisonRehydrator />
                 <CustomCursor />
                 <Header />
-                <PageShell className="">
-                  <PageTransition>{children}</PageTransition>
-                </PageShell>
+                <PageShell className="">{children}</PageShell>
                 <Footer />
                 <Toaster />
               </SmoothScrollProvider>

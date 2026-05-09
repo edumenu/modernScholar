@@ -223,7 +223,7 @@ function ExpandedScholarshipContent({
         )}
 
         {/* CTA row */}
-        <div className="flex items-center gap-3 border-t border-outline-variant/30 pt-4 dark:border-white/10">
+        <div className="flex items-center gap-3 border-t py-4 border-outline-variant/30 pt-4 dark:border-white/10">
           <Button
             size="default"
             className="flex-1 sm:flex-none"

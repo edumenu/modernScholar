@@ -4,19 +4,19 @@ description: Key structural gaps found during production readiness audit — mis
 type: project
 ---
 
-Critical gaps confirmed during full production readiness audit (2026-04-22):
+Critical gaps confirmed during full production readiness audit (2026-04-22), updated 2026-05-08:
 
-1. **No loading.tsx, error.tsx, or not-found.tsx** exist anywhere in src/app. All route segments are completely unprotected for loading and error states.
-2. **No robots.ts or sitemap.ts** — zero SEO crawl infrastructure.
+1. **`global-error.tsx` still missing** — `src/app/error.tsx` exists now but `global-error.tsx` does not. Layout-level crashes (providers, Header, Footer) have no fallback.
+2. **robots.ts and sitemap.ts now exist** — both correct, but privacy/terms/cookies pages are absent from sitemap.
 3. **No opengraph-image** file (static or generated) anywhere.
 4. **Exposed API key** — `.env` contains a Firecrawl API key. `.env` (without `.local`) is gitignored via `.env*` glob, but this needs verification.
-5. **Home page (`src/app/page.tsx`) has no metadata export** — falls back only to the root layout's generic title/description.
-6. **Blog page metadata uses a plain object** (`export const metadata = {...}`) instead of typed `Metadata` from next — same for scholarships and contact pages.
+5. **Home page (`src/app/page.tsx`) has no metadata export** — falls back only to the root layout's generic title/description. Still missing as of 2026-05-08.
+6. **Blog/contact/privacy/terms/cookies metadata uses a plain object** (`export const metadata = {...}`) instead of typed `Metadata` from next. Still untyped as of 2026-05-08.
 7. **FAQ accordion is missing `aria-controls`/`id` pairing** — `aria-expanded` is present but the controlled region has no `id` for association.
 8. **`BlogGrid` uses `useState` for category/search** instead of `useQueryState` — filters are not URL-persisted, unlike the scholarship grid.
-9. **`blog/page.tsx` has a `<Suspense>` with no fallback prop** — renders nothing during loading.
-10. **`ScholarshipHero` runs module-level `getDeadlinesThisMonth()`** at import time — executes on every server render, not cached.
-11. **Footer links to `/privacy`, `/terms`, `/cookies`** — these pages do not exist in src/app.
+9. **`blog/page.tsx`** — no segment-level `loading.tsx` or `error.tsx`. Async `getAllPosts()` call has no loading skeleton at the blog segment level.
+10. **`contact/page.tsx`** — no segment-level `loading.tsx`.
+11. **Legal pages (`/privacy`, `/terms`, `/cookies`)** now exist in src/app but are placeholder stubs; absent from sitemap.ts.
 12. **`featured-scholarships.tsx` defines a local `Scholarship` interface** that duplicates the canonical type in `src/data/scholarships.ts`.
 
 **Why:** Full production readiness audit requested to find issues before launch.

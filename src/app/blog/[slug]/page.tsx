@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { BlogDetail } from "@/components/blog/blog-detail"
 import { BlogDetailContent } from "@/components/blog/blog-detail-content"
 import { RelatedPosts } from "@/components/blog/related-posts"
+import { PageTransition } from "@/components/ui/page-transition"
 import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/blog"
 import { SITE_URL } from "@/lib/constants"
 
@@ -99,11 +100,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }))
 
   return (
-    <div className="page-padding-y flex gap-20 flex-col">
-      <BlogDetail post={post} seriesPosts={seriesPosts}>
-        <BlogDetailContent post={post} body={<Mdx />} />
-      </BlogDetail>
-      <RelatedPosts posts={relatedItems} />
-    </div>
+    <PageTransition>
+      <div className="page-padding-y flex gap-20 flex-col">
+        <BlogDetail post={post} seriesPosts={seriesPosts}>
+          <BlogDetailContent post={post} body={<Mdx />} />
+        </BlogDetail>
+        <RelatedPosts posts={relatedItems} />
+      </div>
+    </PageTransition>
   )
 }

@@ -104,7 +104,7 @@ export function AnimatedLines({
             {chars.map((char, i) => (
               <span
                 key={`${i}-${char}`}
-                className="inline-block overflow-hidden pt-[0.1em] pb-[0.2em]"
+                className="inline-block overflow-hidden pt-[0.3em] pb-[0.2em] -mt-[0.2em]"
                 aria-hidden="true"
               >
                 <motion.span

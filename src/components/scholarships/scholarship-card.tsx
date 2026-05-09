@@ -91,170 +91,170 @@ export function ScholarshipCard({
           expired && !dimmed && "opacity-60 saturate-75",
         )}
       >
-      {/* Top row: classification pills + compare toggle.
+        {/* Top row: classification pills + compare toggle.
           When expired the ExpiredStamp tag occupies the top-right corner, so
           we push chips down (pt-10) and drop the redundant compare toggle. */}
-      <div
-        className={cn(
-          "flex items-start gap-2 px-6",
-          expired ? "pt-10" : "justify-between pt-6",
-        )}
-      >
-        <div className="flex flex-wrap items-center gap-1.5">
-          {scholarship.classification.map((level) => {
-            const colors = CLASSIFICATION_COLORS[level];
-            return (
-              <span
-                key={level}
-                className={cn(
-                  "inline-flex items-center rounded-full px-2.5 py-0.5",
-                  "text-[10px] font-semibold tracking-wider uppercase",
-                  colors.bg,
-                  colors.text,
-                )}
-              >
-                {level}
-              </span>
-            );
-          })}
-        </div>
-
-        {!expired && (
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggle(scholarship.id);
-                  }}
-                  className={cn(
-                    "flex size-8 shrink-0 items-center justify-center rounded-full",
-                    "transition-all duration-200",
-                    compared
-                      ? "bg-on-surface text-surface shadow-sm"
-                      : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
-                  )}
-                  aria-label={
-                    compared ? "Remove from comparison" : "Add to comparison"
-                  }
-                >
-                  <Icon
-                    icon={
-                      compared
-                        ? "solar:check-circle-bold"
-                        : "solar:add-circle-linear"
-                    }
-                    className="size-4.5"
-                  />
-                </button>
-              }
-            />
-            <TooltipContent
-              side="bottom"
-              sideOffset={8}
-              className="*:last:hidden"
-            >
-              {compared ? "Remove from compare" : "Add to compare"}
-            </TooltipContent>
-          </Tooltip>
-        )}
-      </div>
-
-      {/* Title + gradient-fade underline */}
-      <div className="flex flex-col gap-3 px-6 pt-5">
-        <h3
-          className={cn(
-            "font-heading text-xl font-bold leading-tight",
-            tint.text,
-            "line-clamp-2",
-          )}
-        >
-          {scholarship.name}
-        </h3>
-
         <div
           className={cn(
-            "h-px w-2/3 bg-linear-to-r to-transparent transition-all duration-300 group-hover:w-full",
-            tint.accent,
-          )}
-          aria-hidden="true"
-        />
-      </div>
-
-      {/* Provider */}
-      <p className={cn("px-6 pt-3 text-xs font-medium", tint.muted)}>
-        {scholarship.provider}
-      </p>
-
-      {/* Display amount */}
-      <div className="flex items-end gap-1.5 px-6 pt-4">
-        <Icon
-          icon="solar:money-bag-linear"
-          className={cn("mb-0.5 size-4 shrink-0", tint.muted)}
-        />
-        <span
-          className={cn(
-            "font-heading text-2xl font-bold leading-none tracking-tight",
-            tint.text,
+            "flex items-start gap-2 px-6",
+            expired ? "pt-10" : "justify-between pt-6",
           )}
         >
-          {scholarship.awardAmount}
-        </span>
-      </div>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {scholarship.classification.map((level) => {
+              const colors = CLASSIFICATION_COLORS[level];
+              return (
+                <span
+                  key={level}
+                  className={cn(
+                    "inline-flex items-center rounded-full px-2.5 py-0.5",
+                    "text-[10px] font-semibold tracking-wider uppercase",
+                    colors.bg,
+                    colors.text,
+                  )}
+                >
+                  {level}
+                </span>
+              );
+            })}
+          </div>
 
-      {/* Deadline */}
-      <div
-        className={cn(
-          "flex items-center gap-1.5 px-6 pt-2 text-xs",
-          tint.muted,
-        )}
-      >
-        <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
-        <span>
-          Deadline {scholarship.deadline}, {scholarship.deadlineYear}
-        </span>
-      </div>
-
-      {/* Description */}
-      {scholarship.description && (
-        <p
-          className={cn(
-            "line-clamp-2 px-6 pt-4 text-xs leading-relaxed",
-            tint.muted,
+          {!expired && (
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggle(scholarship.id);
+                    }}
+                    className={cn(
+                      "flex size-8 shrink-0 items-center justify-center rounded-full",
+                      "transition-all duration-200",
+                      compared
+                        ? "bg-on-surface text-surface shadow-sm"
+                        : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
+                    )}
+                    aria-label={
+                      compared ? "Remove from comparison" : "Add to comparison"
+                    }
+                  >
+                    <Icon
+                      icon={
+                        compared
+                          ? "solar:check-circle-bold"
+                          : "solar:add-circle-linear"
+                      }
+                      className="size-4.5"
+                    />
+                  </button>
+                }
+              />
+              <TooltipContent
+                side="bottom"
+                sideOffset={8}
+                className="*:last:hidden"
+              >
+                {compared ? "Remove from compare" : "Add to compare"}
+              </TooltipContent>
+            </Tooltip>
           )}
-        >
-          {scholarship.description}
+        </div>
+
+        {/* Title + gradient-fade underline */}
+        <div className="flex flex-col gap-3 px-6 pt-5">
+          <h3
+            className={cn(
+              "font-heading text-xl font-bold leading-tight",
+              tint.text,
+              "line-clamp-2",
+            )}
+          >
+            {scholarship.name}
+          </h3>
+
+          <div
+            className={cn(
+              "h-px w-2/3 bg-linear-to-r to-transparent transition-all duration-300 group-hover:w-full",
+              tint.accent,
+            )}
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* Provider */}
+        <p className={cn("px-6 pt-3 text-xs font-medium", tint.muted)}>
+          {scholarship.provider}
         </p>
-      )}
 
-      {/* Spacer */}
-      <div className="flex-1" />
+        {/* Display amount */}
+        <div className="flex items-end gap-1.5 px-6 pt-4">
+          <Icon
+            icon="solar:money-bag-linear"
+            className={cn("mb-0.5 size-4 shrink-0", tint.muted)}
+          />
+          <span
+            className={cn(
+              "font-heading text-2xl font-bold leading-none tracking-tight",
+              tint.text,
+            )}
+          >
+            {scholarship.awardAmount}
+          </span>
+        </div>
 
-      {/* CTA row */}
-      <div className="flex items-center justify-between px-6 pb-6 pt-5">
-        <span
+        {/* Deadline */}
+        <div
           className={cn(
-            "text-[10px] font-semibold uppercase tracking-widest",
+            "flex items-center gap-1.5 px-6 pt-2 text-xs",
             tint.muted,
           )}
         >
-          View Details
-        </span>
+          <Icon icon="solar:calendar-linear" className="size-3.5 shrink-0" />
+          <span>
+            Deadline {scholarship.deadline}, {scholarship.deadlineYear}
+          </span>
+        </div>
 
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={(e) => {
-            e.stopPropagation();
-            onExpand(scholarship.id);
-          }}
-          aria-label={`View details for ${scholarship.name}`}
-        >
-          <Icon icon="solar:arrow-right-linear" />
-        </Button>
-      </div>
+        {/* Description */}
+        {scholarship.description && (
+          <p
+            className={cn(
+              "line-clamp-2 px-6 pt-4 text-xs leading-relaxed",
+              tint.muted,
+            )}
+          >
+            {scholarship.description}
+          </p>
+        )}
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* CTA row */}
+        <div className="flex items-center justify-between px-6 pb-6 pt-5">
+          <span
+            className={cn(
+              "text-[10px] font-semibold uppercase tracking-widest",
+              tint.muted,
+            )}
+          >
+            View Details
+          </span>
+
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onExpand(scholarship.id);
+            }}
+            aria-label={`View details for ${scholarship.name}`}
+          >
+            <Icon icon="solar:arrow-right-linear" />
+          </Button>
+        </div>
       </div>
     </motion.article>
   );

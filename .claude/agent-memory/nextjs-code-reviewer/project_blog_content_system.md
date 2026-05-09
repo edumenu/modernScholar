@@ -9,7 +9,8 @@ MDX-based blog replaces static `src/data/blog-posts.ts`. Content lives in `conte
 **Why:** Enables real authored content with frontmatter validation, reading-time, heading extraction, and a series/related-posts graph.
 
 **Key architectural facts to remember:**
-- `dynamicParams = false` is missing from `src/app/blog/[slug]/page.tsx` — with `output: "export"`, unrecognised slugs silently 404 at runtime rather than at build. Under a server-runtime this would be a hard 404 blocker.
+- `dynamicParams = false` **is now present** in `src/app/blog/[slug]/page.tsx` (added as of 2026-05-08 review). `params` is correctly typed as `Promise<{ slug: string }>` and awaited in both `generateMetadata` and the page component — Next.js 15/16 async-params pattern is correctly applied.
+- The dynamic `import(`content/blog/${slug}.mdx`)` at line 77 has no try/catch. If webpack can't resolve the slug (edge case since `dynamicParams=false`), the error surfaces as an unhandled server exception with no error boundary below. Recommend wrapping with try/catch → `notFound()`.
 - `body: ReactNode` on `BlogPost` is typed as `ReactNode` but carries a raw `string` in practice. The `BlogDetailContent` accepts `body?: ReactNode`, so it works at runtime, but the type contract is a lie that could mislead callers.
 - `blog/page.tsx` passes the full `posts` array to `<BlogGrid>` (client component) — wrapping in Suspense doesn't defer that data; the Suspense fallback fires only if BlogGrid itself were async (it isn't). The Suspense wrapper is effectively decorative.
 - `React.cache` busts per-import via `vi.resetModules()` in tests — valid pattern for this project.
