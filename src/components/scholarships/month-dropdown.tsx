@@ -75,14 +75,15 @@ export function MonthDropdown({
           <Button
             variant={variant}
             size="sm"
-            className={triggerClassName}
+            className={cn("group/month-trigger", triggerClassName)}
             aria-label={`Filter by deadline month, currently ${MONTH_LABELS[month]}`}
           >
+            <Icon icon="solar:calendar-linear" className="size-4" />
             {month === "all" ? "Month" : MONTH_LABELS[month]}
             <Icon
               data-icon="inline-end"
-              icon="solar:calendar-linear"
-              className="size-4"
+              icon="solar:alt-arrow-down-line-duotone"
+              className="size-4 transition-transform duration-200 group-data-popup-open/month-trigger:rotate-180"
             />
           </Button>
         }
@@ -141,8 +142,8 @@ export function MonthDropdown({
           <DropdownMenuItem
             closeOnClick={false}
             onClick={(e) => {
-              e.preventDefault()
-              setExpanded((prev) => !prev)
+              e.preventDefault();
+              setExpanded((prev) => !prev);
             }}
             aria-expanded={expanded}
             className="justify-center gap-1.5 py-2 text-xs text-on-surface/60 hover:text-on-surface"
@@ -161,5 +162,5 @@ export function MonthDropdown({
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

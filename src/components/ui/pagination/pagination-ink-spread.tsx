@@ -83,7 +83,7 @@ function PaginationLinkInkSpread({
         </AnimatePresence>
       )}
     </a>
-  )
+  );
 }
 
 /* ─── Previous with Arrow Nudge ─── */

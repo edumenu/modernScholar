@@ -119,18 +119,18 @@ export function Header() {
               <Image
                 src="/iconBurgundy.png"
                 alt="Modern Scholar"
-                width={28}
-                height={28}
+                width={42}
+                height={42}
                 priority
                 className="size-12 object-contain block dark:hidden"
               />
               <Image
                 src="/iconWhite.png"
                 alt="Modern Scholar"
-                width={28}
-                height={28}
+                width={42}
+                height={42}
                 priority
-                className="size-7 object-contain hidden dark:block"
+                className="size-12 object-contain hidden dark:block"
               />
             </Link>
 
@@ -195,18 +195,18 @@ export function Header() {
               <Image
                 src="/iconBurgundy.png"
                 alt="Modern Scholar"
-                width={24}
-                height={24}
+                width={36}
+                height={36}
                 priority
-                className="size-6 object-contain block dark:hidden"
+                className="size-9 object-contain block dark:hidden"
               />
               <Image
                 src="/iconWhite.png"
                 alt="Modern Scholar"
-                width={24}
-                height={24}
+                width={36}
+                height={36}
                 priority
-                className="size-6 object-contain hidden dark:block"
+                className="size-9 object-contain hidden dark:block"
               />
             </Link>
             <MobileMenuButton />

@@ -372,10 +372,10 @@
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
 
   /* Neumorphic shadows — buttons (warm/cool highlights per variant) */
-  --shadow-neu-primary: 2px 3px 8px rgba(0, 0, 0, 0.55), -4px -4px 12px rgba(255, 200, 180, 0.18);
-  --shadow-neu-outline: 2px 3px 8px rgba(0, 0, 0, 0.45), -4px -4px 12px rgba(255, 255, 255, 0.16);
-  --shadow-neu-secondary: 2px 3px 8px rgba(0, 0, 0, 0.55), -4px -4px 12px rgba(200, 230, 200, 0.17);
-  --shadow-neu-tertiary: 2px 3px 8px rgba(0, 0, 0, 0.55), -4px -4px 12px rgba(255, 210, 190, 0.18);
+  --shadow-neu-primary: 2px 3px 8px rgba(0, 0, 0, 0.55), -2px -2px 6px rgba(255, 200, 180, 0.18);
+    --shadow-neu-outline: 2px 3px 8px rgba(0, 0, 0, 0.45), -2px -2px 6px rgba(255, 255, 255, 0.16);
+    --shadow-neu-secondary: 2px 3px 8px rgba(0, 0, 0, 0.55), -2px -2px 6px rgba(200, 230, 200, 0.17);
+    --shadow-neu-tertiary: 2px 3px 8px rgba(0, 0, 0, 0.55), -2px -2px 6px rgba(255, 210, 190, 0.18);
 
   /* Sidebar */
   --sidebar: oklch(0.200 0.010 28.0);

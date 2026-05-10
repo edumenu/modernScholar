@@ -96,14 +96,14 @@ export function ScholarshipFilters({
                     <Button
                       variant="ghost"
                       size="sm"
-                      noRipple={isActive}
+                      noRipple={true}
                       onClick={() => filters.setActiveFilter(level)}
                       aria-pressed={isActive}
                       className={cn(
                         "relative z-1 text-sm md:text-base shadow-none",
                         isActive
-                          ? "text-primary-foreground hover:text-primary-foreground hover:bg-transparent dark:hover:bg-transparent"
-                          : "text-on-surface/60 hover:text-primary-400",
+                          ? "text-primary-foreground hover:text-primary-foreground hover:bg-transparent"
+                          : "text-on-surface/60 hover:text-primary-400 hover:bg-none",
                       )}
                     >
                       {level}
@@ -252,13 +252,13 @@ export function ScholarshipFilters({
                 <Button
                   variant="outline"
                   size="sm"
-                  className="shrink-0 rounded-full"
+                  className="group/sort-trigger shrink-0 rounded-full"
                 >
                   Sort
                   <Icon
                     data-icon="inline-end"
-                    icon="solar:sort-vertical-linear"
-                    className="size-4"
+                    icon="solar:alt-arrow-down-line-duotone"
+                    className="size-4 transition-transform duration-200 group-data-popup-open/sort-trigger:rotate-180"
                   />
                 </Button>
               }

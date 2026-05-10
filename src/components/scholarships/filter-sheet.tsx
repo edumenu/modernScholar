@@ -107,22 +107,56 @@ export function FilterSheet({
           className="data-[side=right]:sm:max-w-sm data-[side=right]:lg:max-w-md"
         >
           <SheetHeader>
-            <SheetTitle className="font-heading text-lg">Filters</SheetTitle>
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0.1,
+              }}
+            >
+              <SheetTitle className="font-heading text-lg">Filters</SheetTitle>
+            </motion.div>
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto px-6 pb-6">
             <div className="flex flex-col gap-6">
               {/* Award Amount Slider */}
-              <AwardRangeFilter
-                value={awardRange}
-                onValueChange={onAwardRangeChange}
-              />
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.32,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 0.16,
+                }}
+              >
+                <AwardRangeFilter
+                  value={awardRange}
+                  onValueChange={onAwardRangeChange}
+                />
+              </motion.div>
 
               {/* Separator */}
-              <div className="h-px bg-outline-variant/10" />
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2, delay: 0.22 }}
+                className="h-px bg-outline-variant/10"
+              />
 
               {/* Eligibility: Flat tags */}
-              <div className="flex flex-col gap-1">
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.32,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 0.24,
+                }}
+                className="flex flex-col gap-1"
+              >
                 <h3 className="mb-2 text-sm font-medium text-on-surface/70">
                   Eligibility
                 </h3>
@@ -144,94 +178,112 @@ export function FilterSheet({
                     )}
                   </div>
                 ))}
-              </div>
+              </motion.div>
 
               {/* Separator */}
-              <div className="h-px bg-outline-variant/10" />
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2, delay: 0.3 }}
+                className="h-px bg-outline-variant/10"
+              />
 
               {/* Eligibility: Category accordions */}
-              <div className="flex flex-col gap-1">
-                {(Object.keys(ELIGIBILITY_CATEGORIES) as EligibilityCategory[]).map(
-                  (category) => {
-                    const subOptions = ELIGIBILITY_CATEGORIES[category]
-                    const isExpanded = expandedCategory === category
-                    const selectedInCategory = selectedTags.filter(
-                      (t) => getEligibilityCategory(t) === category,
-                    ).length
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.32,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: 0.32,
+                }}
+                className="flex flex-col gap-1"
+              >
+                {(
+                  Object.keys(ELIGIBILITY_CATEGORIES) as EligibilityCategory[]
+                ).map((category) => {
+                  const subOptions = ELIGIBILITY_CATEGORIES[category];
+                  const isExpanded = expandedCategory === category;
+                  const selectedInCategory = selectedTags.filter(
+                    (t) => getEligibilityCategory(t) === category,
+                  ).length;
 
-                    return (
-                      <div key={category}>
-                        <button
-                          type="button"
-                          aria-expanded={isExpanded}
-                          aria-controls={`filter-category-${category.replace(/\//g, "-")}`}
-                          onClick={() =>
-                            setExpandedCategory((prev) =>
-                              prev === category ? null : category,
-                            )
-                          }
+                  return (
+                    <div key={category}>
+                      <button
+                        type="button"
+                        aria-expanded={isExpanded}
+                        aria-controls={`filter-category-${category.replace(/\//g, "-")}`}
+                        onClick={() =>
+                          setExpandedCategory((prev) =>
+                            prev === category ? null : category,
+                          )
+                        }
+                        className={cn(
+                          "flex w-full items-center gap-2.5 rounded-lg px-1 py-2 text-sm font-medium text-on-surface/80 outline-none transition-colors",
+                          "hover:bg-surface-container-low/60 focus-visible:ring-[3px] focus-visible:ring-ring/50",
+                        )}
+                      >
+                        <Icon
+                          icon="solar:alt-arrow-right-line-duotone"
                           className={cn(
-                            "flex w-full items-center gap-2.5 rounded-lg px-1 py-2 text-sm font-medium text-on-surface/80 outline-none transition-colors",
-                            "hover:bg-surface-container-low/60 focus-visible:ring-[3px] focus-visible:ring-ring/50",
+                            "size-4 transition-transform duration-200",
+                            isExpanded && "rotate-90",
                           )}
-                        >
-                          <Icon
-                            icon="solar:alt-arrow-right-line-duotone"
-                            className={cn(
-                              "size-4 transition-transform duration-200",
-                              isExpanded && "rotate-90",
-                            )}
-                          />
-                          <span className="flex-1 text-left">{category}</span>
-                          {selectedInCategory > 0 && (
-                            <span className="flex size-5 items-center justify-center rounded-full bg-secondary/20 text-[10px] font-medium text-secondary-800 dark:bg-secondary/30 dark:text-secondary-200">
-                              {selectedInCategory}
-                            </span>
-                          )}
-                        </button>
-                        <AnimatePresence initial={false}>
-                          {isExpanded && (
-                            <motion.div
-                              id={`filter-category-${category.replace(/\//g, "-")}`}
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.2, ease: "easeOut" }}
-                              className="overflow-hidden"
-                            >
-                              <div className="flex flex-col gap-1 pb-1 pl-6">
-                                {subOptions.map((subOption) => {
-                                  // TS doesn't narrow template literals to a Tag literal-union member;
-                                  // ELIGIBILITY_CATEGORIES entries map to valid Tags by construction.
-                                  const fullTag = `${category}:${subOption}` as Tag
-                                  return (
-                                    <div
-                                      key={fullTag}
-                                      className="flex items-center justify-between rounded-lg px-1 py-1.5 transition-colors hover:bg-surface-container-low/60"
+                        />
+                        <span className="flex-1 text-left">{category}</span>
+                        {selectedInCategory > 0 && (
+                          <span className="flex size-5 items-center justify-center rounded-full bg-secondary/20 text-[10px] font-medium text-secondary-800 dark:bg-secondary/30 dark:text-secondary-200">
+                            {selectedInCategory}
+                          </span>
+                        )}
+                      </button>
+                      <AnimatePresence initial={false}>
+                        {isExpanded && (
+                          <motion.div
+                            id={`filter-category-${category.replace(/\//g, "-")}`}
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{
+                              duration: 0.22,
+                              ease: [0.22, 1, 0.36, 1],
+                            }}
+                            className="overflow-hidden"
+                          >
+                            <div className="flex flex-col gap-1 pb-1 pl-6">
+                              {subOptions.map((subOption) => {
+                                // TS doesn't narrow template literals to a Tag literal-union member;
+                                // ELIGIBILITY_CATEGORIES entries map to valid Tags by construction.
+                                const fullTag =
+                                  `${category}:${subOption}` as Tag;
+                                return (
+                                  <div
+                                    key={fullTag}
+                                    className="flex items-center justify-between rounded-lg px-1 py-1.5 transition-colors hover:bg-surface-container-low/60"
+                                  >
+                                    <Checkbox
+                                      checked={selectedTags.includes(fullTag)}
+                                      onCheckedChange={() => toggleTag(fullTag)}
                                     >
-                                      <Checkbox
-                                        checked={selectedTags.includes(fullTag)}
-                                        onCheckedChange={() => toggleTag(fullTag)}
-                                      >
-                                        {subOption}
-                                      </Checkbox>
-                                      {(tagCounts[fullTag] ?? 0) > 0 && (
-                                        <span className="text-xs tabular-nums text-on-surface/40">
-                                          {tagCounts[fullTag]}
-                                        </span>
-                                      )}
-                                    </div>
-                                  )
-                                })}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    )
-                  },
-                )}
-              </div>
+                                      {subOption}
+                                    </Checkbox>
+                                    {(tagCounts[fullTag] ?? 0) > 0 && (
+                                      <span className="text-xs tabular-nums text-on-surface/40">
+                                        {tagCounts[fullTag]}
+                                      </span>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </motion.div>
             </div>
           </div>
 
@@ -259,7 +311,7 @@ export function FilterSheet({
         </SheetContent>
       </Sheet>
     </>
-  )
+  );
 }
 
 const SORT_LABELS: Record<string, string> = {
@@ -348,6 +400,7 @@ export function ActiveFilterStrip({
             onClick={onSearchClear}
             aria-label={`Clear search "${trimmedQuery}"`}
             className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary-800 transition-colors hover:bg-primary/20 dark:text-primary-200"
+            data-cursor="fade"
           >
             <span className="max-w-[16ch] truncate">
               &ldquo;{trimmedQuery}&rdquo;
@@ -367,6 +420,7 @@ export function ActiveFilterStrip({
             onClick={onLevelClear}
             aria-label={`Clear ${level} education level`}
             className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-tertiary/10 px-2.5 py-1 text-xs font-medium text-tertiary-800 transition-colors hover:bg-tertiary/20 dark:text-tertiary-200"
+            data-cursor="fade"
           >
             {level}
             <Icon icon="solar:close-circle-linear" className="size-3.5" />
@@ -384,6 +438,7 @@ export function ActiveFilterStrip({
             onClick={onSortClear}
             aria-label="Reset sort to default"
             className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-on-surface/10 px-2.5 py-1 text-xs font-medium text-on-surface transition-colors hover:bg-on-surface/15"
+            data-cursor="fade"
           >
             Sort: {SORT_LABELS[sortBy] ?? sortBy}
             <Icon icon="solar:close-circle-linear" className="size-3.5" />
@@ -401,6 +456,7 @@ export function ActiveFilterStrip({
             onClick={onMonthClear}
             aria-label={`Clear ${MONTH_LABELS[month]} filter`}
             className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-secondary/10 px-2.5 py-1 text-xs font-medium text-secondary-800 transition-colors hover:bg-secondary/20 dark:text-secondary-200"
+            data-cursor="fade"
           >
             {MONTH_LABELS[month]}
             <Icon icon="solar:close-circle-linear" className="size-3.5" />
@@ -417,6 +473,7 @@ export function ActiveFilterStrip({
             transition={{ duration: 0.12 }}
             onClick={resetAwardRange}
             className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-secondary/10 px-2.5 py-1 text-xs font-medium text-secondary-800 transition-colors hover:bg-secondary/20 dark:text-secondary-200"
+            data-cursor="fade"
           >
             {awardChipLabel}
             <Icon icon="solar:close-circle-linear" className="size-3.5" />
@@ -433,6 +490,7 @@ export function ActiveFilterStrip({
             transition={{ duration: 0.12 }}
             onClick={() => removeTag(tag)}
             className="flex shrink-0 items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary-800 transition-colors hover:bg-primary/20 dark:text-primary-200"
+            data-cursor="fade"
           >
             {getEligibilityTagLabel(tag)}
             <Icon icon="solar:close-circle-linear" className="size-3.5" />
@@ -443,6 +501,7 @@ export function ActiveFilterStrip({
         type="button"
         onClick={onClearAll}
         className="shrink-0 text-xs cursor-pointer text-on-surface/50 underline-offset-2 hover:text-on-surface hover:underline"
+        data-cursor="fade"
       >
         Clear all
       </button>

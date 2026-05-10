@@ -42,14 +42,14 @@ function DropdownMenuContent({
         <MenuPrimitive.Popup
           data-slot="dropdown-menu-content"
           className={cn(
-                                            "glass-panel z-50 max-h-(--available-height) w-(--anchor-width) min-w-48 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg p-1 text-popover-foreground duration-100 outline-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:overflow-hidden data-closed:fade-out-0 data-closed:zoom-out-95 **:data-[slot$=-item]:focus:bg-surface-container-highest **:data-[slot$=-item]:data-highlighted:bg-surface-container-highest **:data-[slot$=-separator]:bg-outline-variant/10 **:data-[slot$=-trigger]:focus:bg-surface-container-high **:data-[slot$=-trigger]:aria-expanded:bg-surface-container-high! **:data-[variant=destructive]:focus:bg-destructive/10! **:data-[variant=destructive]:text-destructive! **:data-[variant=destructive]:**:text-destructive!",
-                                            className
-                                          )}
+            "glass-panel z-50 max-h-(--available-height) w-(--anchor-width) min-w-48 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg p-1 text-popover-foreground outline-none data-[side=bottom]:slide-in-from-top-1 data-[side=inline-end]:slide-in-from-left-1 data-[side=inline-start]:slide-in-from-right-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-[0.97] data-open:animation-duration-[1050ms] data-open:[animation-timing-function:cubic-bezier(0.22,1,0.36,1)] data-closed:animate-out data-closed:overflow-hidden data-closed:fade-out-0 data-closed:zoom-out-[0.97] data-closed:animation-duration-[220ms] data-closed:[animation-timing-function:cubic-bezier(0.4,0,1,1)] **:data-[slot$=-item]:focus:bg-surface-container-highest **:data-[slot$=-item]:data-highlighted:bg-surface-container-highest **:data-[slot$=-separator]:bg-outline-variant/10 **:data-[slot$=-trigger]:focus:bg-surface-container-high **:data-[slot$=-trigger]:aria-expanded:bg-surface-container-high! **:data-[variant=destructive]:focus:bg-destructive/10! **:data-[variant=destructive]:text-destructive! **:data-[variant=destructive]:**:text-destructive!",
+            className,
+          )}
           {...props}
         />
       </MenuPrimitive.Positioner>
     </MenuPrimitive.Portal>
-  )
+  );
 }
 
 function DropdownMenuGroup({ ...props }: MenuPrimitive.Group.Props) {
@@ -139,7 +139,7 @@ function DropdownMenuSubContent({
     <DropdownMenuContent
       data-slot="dropdown-menu-sub-content"
       className={cn(
-        "glass-panel w-auto min-w-36 rounded-lg p-1 text-popover-foreground duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 **:data-[slot$=-item]:focus:bg-surface-container-lowest **:data-[slot$=-item]:data-highlighted:bg-surface-container-high **:data-[slot$=-separator]:bg-outline-variant/10 **:data-[slot$=-trigger]:focus:bg-surface-container-high **:data-[slot$=-trigger]:aria-expanded:bg-surface-container-high! **:data-[variant=destructive]:focus:bg-destructive/10! **:data-[variant=destructive]:text-destructive! **:data-[variant=destructive]:**:text-destructive!",
+        "glass-panel w-auto min-w-36 rounded-lg p-1 text-popover-foreground data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-[0.97] data-open:animation-duration-[1050ms] data-open:[animation-timing-function:cubic-bezier(0.22,1,0.36,1)] data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-[0.97] data-closed:animation-duration-[220ms] data-closed:[animation-timing-function:cubic-bezier(0.4,0,1,1)] **:data-[slot$=-item]:focus:bg-surface-container-lowest **:data-[slot$=-item]:data-highlighted:bg-surface-container-high **:data-[slot$=-separator]:bg-outline-variant/10 **:data-[slot$=-trigger]:focus:bg-surface-container-high **:data-[slot$=-trigger]:aria-expanded:bg-surface-container-high! **:data-[variant=destructive]:focus:bg-destructive/10! **:data-[variant=destructive]:text-destructive! **:data-[variant=destructive]:**:text-destructive!",
         className,
       )}
       align={align}

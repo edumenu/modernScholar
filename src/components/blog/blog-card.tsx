@@ -152,13 +152,13 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
                   variant="secondary"
                   data-icon="inline-start"
                   size="xs"
-                  hoverTrigger="parent"
+                  // hoverTrigger="parent"
                 >
                   <span data-label>Read Blog</span>
-                  <Icon
+                  {/* <Icon
                     icon="solar:arrow-right-linear"
                     data-icon="inline-end"
-                  />
+                  /> */}
                 </Button>
               </div>
             </>
@@ -177,10 +177,10 @@ export function BlogCard({ post, variant = "default" }: BlogCardProps) {
                 variant="secondary"
                 data-icon="inline-start"
                 size="xs"
-                hoverTrigger="parent"
+                // hoverTrigger="parent"
               >
                 <span data-label>Read Blog</span>
-                <Icon icon="solar:arrow-right-linear" data-icon="inline-end" />
+                {/* <Icon icon="solar:arrow-right-linear" data-icon="inline-end" /> */}
               </Button>
             </div>
           )}

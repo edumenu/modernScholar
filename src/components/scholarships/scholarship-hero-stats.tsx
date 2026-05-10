@@ -1,19 +1,11 @@
-"use client"
-
-import {
-  useQueryState,
-  parseAsInteger,
-  parseAsString,
-  parseAsArrayOf,
-} from "nuqs"
-import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
-import { AWARD_MIN, AWARD_MAX } from "@/data/scholarships"
+"use client";
+import { AnimatedSection } from "@/components/ui/animatedSection/animated-section";
 
 interface ScholarshipHeroStatsProps {
-  totalScholarships: number
-  educationLevelsCount: number
-  maxAmount: string | null
-  closingSoon: number
+  totalScholarships: number;
+  educationLevelsCount: number;
+  maxAmount: string | null;
+  closingSoon: number;
 }
 
 export function ScholarshipHeroStats({
@@ -22,29 +14,6 @@ export function ScholarshipHeroStats({
   maxAmount,
   closingSoon,
 }: ScholarshipHeroStatsProps) {
-  // Stats describe the unfiltered active corpus. Hide whenever a filter is
-  // active so the numbers don't lie about what the user can see. Sort is
-  // intentionally excluded — it reorders the corpus but doesn't shrink it.
-  const [q] = useQueryState("q", parseAsString.withDefault(""))
-  const [level] = useQueryState("level", parseAsString.withDefault("All"))
-  const [tags] = useQueryState(
-    "tags",
-    parseAsArrayOf(parseAsString).withDefault([]),
-  )
-  const [min] = useQueryState("min", parseAsInteger.withDefault(AWARD_MIN))
-  const [max] = useQueryState("max", parseAsInteger.withDefault(AWARD_MAX))
-  const [month] = useQueryState("month", parseAsString.withDefault("all"))
-
-  const anyFilterActive =
-    q !== "" ||
-    level !== "All" ||
-    tags.length > 0 ||
-    min !== AWARD_MIN ||
-    max !== AWARD_MAX ||
-    month !== "all"
-
-  if (anyFilterActive) return null
-
   return (
     <AnimatedSection delay={0.1}>
       <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-on-surface-variant md:text-sm">
@@ -58,5 +27,5 @@ export function ScholarshipHeroStats({
         )}
       </div>
     </AnimatedSection>
-  )
+  );
 }

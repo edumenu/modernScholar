@@ -120,10 +120,10 @@ export function BlogCardFeatured({ post }: BlogCardFeaturedProps) {
                 variant="outline"
                 size="sm"
                 className="text-white border-white/30 hover:bg-white/10 hover:text-white shadow-none"
-                hoverTrigger="parent"
+                // hoverTrigger="parent"
               >
                 Read Blog
-                <Icon icon="solar:arrow-right-linear" data-icon="inline-end" />
+                {/* <Icon icon="solar:arrow-right-linear" data-icon="inline-end" /> */}
               </Button>
             </div>
           </div>

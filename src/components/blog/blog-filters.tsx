@@ -195,13 +195,13 @@ export function BlogFilters({
                 <Button
                   variant="ghost"
                   size="sm"
-                  noRipple={isActive}
+                  noRipple={true}
                   onClick={() => onCategoryChange(category)}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "relative z-1 text-sm md:text-base shadow-none",
+                    "relative z-1 text-sm md:text-base shadow-none hover:bg-transparent",
                     isActive
-                      ? "text-primary-foreground hover:text-primary-foreground hover:bg-transparent dark:hover:bg-transparent"
+                      ? "text-primary-foreground hover:text-primary-foreground hover:bg-none dark:hover:bg-none"
                       : "text-on-surface/60 hover:text-primary-400",
                   )}
                 >

@@ -44,6 +44,7 @@ export function BlogActiveFilterStrip({
             onClick={onSearchClear}
             aria-label={`Clear search "${trimmedQuery}"`}
             className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary-800 transition-colors hover:bg-primary/20 dark:text-primary-200"
+            data-cursor="fade"
           >
             <span className="max-w-[16ch] truncate">
               &ldquo;{trimmedQuery}&rdquo;
@@ -63,6 +64,7 @@ export function BlogActiveFilterStrip({
             onClick={onCategoryClear}
             aria-label={`Clear category ${activeCategory}`}
             className="flex shrink-0 cursor-pointer items-center gap-1 rounded-full bg-secondary/10 px-2.5 py-1 text-xs font-medium text-secondary-800 transition-colors hover:bg-secondary/20 dark:text-secondary-200"
+            data-cursor="fade"
           >
             {activeCategory}
             <Icon icon="solar:close-circle-linear" className="size-3.5" />
@@ -73,6 +75,7 @@ export function BlogActiveFilterStrip({
         type="button"
         onClick={onClearAll}
         className="shrink-0 cursor-pointer text-xs text-on-surface/50 underline-offset-2 hover:text-on-surface hover:underline"
+        data-cursor="fade"
       >
         Clear all
       </button>

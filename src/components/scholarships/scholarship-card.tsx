@@ -124,6 +124,7 @@ export function ScholarshipCard({
               <TooltipTrigger
                 render={
                   <button
+                    data-cursor="fade"
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();

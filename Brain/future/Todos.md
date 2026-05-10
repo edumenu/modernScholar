@@ -4,7 +4,7 @@
 - ~~Do an extensive test for the scholarship search page
 - Fix QA issues
 - Look into general performance especially with spline 3D
-- Animation to extra filter sheet, remove ripple effect on filter options
+- ~~Animation to extra filter sheet, remove ripple effect on filter options
 - Look into K to 12 categories
 - Look into strategies for getting user emails
 -  Clean up tablet and mobile views

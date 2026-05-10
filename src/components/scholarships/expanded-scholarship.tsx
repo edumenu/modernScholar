@@ -89,6 +89,7 @@ function ExpandedScholarshipContent({
             overlayTint.text,
           )}
           aria-label="Close"
+          data-cursor="fade"
         >
           <Icon
             icon="solar:close-circle-linear"
