@@ -1,5 +1,23 @@
 # UI Primitives Review
 
+_Reviewed 2026-05-08. Re-audited 2026-05-10 — see "Status update" section below; original report content unchanged._
+
+---
+
+## Status update — 2026-05-10
+
+**Resolved:** none. Notably, the duplicate `src/components/ui/table.tsx` is **still present** alongside `table/table.tsx`.
+
+**Needs runtime verification:**
+- `pagination.tsx:52-61` `PaginationLink` `render={<a/>}`. `Button` (`button/button.tsx`) does spread `{...props}`, so `render` and `nativeButton` *flow through* to `@base-ui/react/button` — but `ref={buttonRef}` is hard-typed as `HTMLButtonElement` while the actual rendered DOM is an anchor. Open `/scholarships` paginated, middle-click "2", and verify (a) it opens in a new tab, (b) `aria-current="page"` is set on the active anchor. If both pass, mark this item resolved despite the type-level mismatch.
+
+**Still open — every other finding in this report:**
+- Critical: `slider.tsx:3` still imports `@radix-ui/react-slider` (still in `package.json:24`, no Base UI slider); slider thumbs still get `aria-label` only via `thumbLabels`; `checkbox.tsx` still missing `data-slot` + `aria-label` plumbing; `Curve` (`mobile-menu.tsx:67-96` + `not-found-client.tsx:67-69`) still snapshots `window.innerHeight` without resize handling; `mobile-menu.tsx:260, 290` still raw `backdrop-blur-2xl` / `backdrop-blur-md` instead of `glassPill`/`glass-heavy`; `sheet.tsx:32` still uses `className || "glass-elevated"` short-circuit; **`src/components/ui/table.tsx` duplicate not deleted**.
+- High: `header.tsx` doubled-fixed positioning, footer reveal mechanics, `theme-toggle.tsx:14` `useSyncExternalStore` mounted-check, `dropdown-menu.tsx` glass-panel duplication, `carousel.tsx` `onKeyDownCapture`, `tabs.tsx` overlapping background utilities, `page-transition.tsx` pathname-keyed wrapper — all unchanged.
+- Medium: `dialog.tsx:34` still uses raw `bg-black/80 supports-backdrop-filter:backdrop-blur-xs` instead of glass utility; `mobile-menu.tsx:139, 233-236` derived-state issues unchanged; `not-found-client.tsx:32-41` 8 motion.divs unchanged; `sonner.tsx` hardcoded rgba unchanged; `styles.ts` `glassPill` `dark:shadow-neu-primary` typo unchanged.
+
+---
+
 ## Summary
 
 The primitives layer is broadly in good shape: Base UI is consistently used as the underlying a11y engine, `cn()` is used everywhere, `data-slot` compound patterns are followed, OKLCH tokens are referenced through CSS variables, and React 19 ref-as-prop is in use across most files. The main risks cluster around (1) duplicate / divergent code paths (`table.tsx` and `table/table.tsx`; `pagination/pagination.tsx` references Button props that don't exist; `slider` imports Radix instead of Base UI), (2) glassmorphism rule violations (full‑page mobile menu backdrop, `mobile-menu` button skipping the shared `glassPill` token, `Sheet` overlay falling back to `glass-elevated`), (3) a noticeable `'use client'` and SSR safety footprint on a few primitives that don't need it (`Card`, `Skeleton`, `Textarea` are clean — but `Carousel`, `MobileNav`'s `Curve`, and `theme-toggle`'s `useSyncExternalStore` mounted-pattern have issues), and (4) some accessibility regressions (`Checkbox` label has no associated text input control connection beyond visual wrapping; `Slider` thumbs have only `aria-label` from `thumbLabels`; `useFocusTrap` returns focus from drawer, but the close happens on `pathname` change without resetting `selectedIndicator`).

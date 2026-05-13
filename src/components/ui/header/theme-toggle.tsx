@@ -1,21 +1,18 @@
 "use client"
 
 import { useTheme } from "next-themes"
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback } from "react";
 import { AnimatePresence, motion } from "motion/react"
 import useSound from "use-sound";
 
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
+import { useHasMounted } from "@/hooks/use-has-mounted"
 
 function ThemeToggleInner({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme()
   const [playSwitch] = useSound("/sounds/switch-click.mp3", { volume: 0.3 });
-  const mounted = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
+  const mounted = useHasMounted();
 
   const handleToggle = useCallback(() => {
     playSwitch();

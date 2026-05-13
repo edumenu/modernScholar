@@ -25,11 +25,6 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
 export const metadata: Metadata = {
   title: "Modern Scholar",
   description: "Empowering students to discover and secure scholarships.",
@@ -48,7 +43,13 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col overflow-x-hidden">
         <NuqsAdapter>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            enableColorScheme
+          >
             <MotionConfigProvider>
               <SmoothScrollProvider>
                 <ComparisonRehydrator />

@@ -77,6 +77,17 @@ function Carousel({
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
+      // Don't hijack arrow keys when the user is editing inside the carousel
+      // (input / textarea / contenteditable). The previous onKeyDownCapture
+      // wiring intercepted text-cursor movement.
+      const target = event.target as HTMLElement | null
+      if (
+        target?.closest(
+          "input, textarea, select, [contenteditable=true]",
+        )
+      ) {
+        return
+      }
       if (event.key === "ArrowLeft") {
         event.preventDefault()
         scrollPrev()
@@ -119,7 +130,7 @@ function Carousel({
       }}
     >
       <div
-        onKeyDownCapture={handleKeyDown}
+        onKeyDown={handleKeyDown}
         className={cn("relative", className)}
         role="region"
         aria-roledescription="carousel"

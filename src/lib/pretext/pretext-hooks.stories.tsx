@@ -547,88 +547,90 @@ export const InteractivePlayground: Story = {
   ),
 };
 
-export const CLSPrevention: Story = {
-  name: "CLS Prevention — Fallback Font",
-  render: () => {
-    const text = "This text is measured with both a fallback and web font";
-    const font = PRETEXT_FONTS.heroHeadline;
-    const fallback = PRETEXT_FALLBACK_FONTS.heroHeadline;
-    const maxWidth = 500;
-    const lineHeight = 56;
+function CLSPreventionDemo() {
+  const text = "This text is measured with both a fallback and web font";
+  const font = PRETEXT_FONTS.heroHeadline;
+  const fallback = PRETEXT_FALLBACK_FONTS.heroHeadline;
+  const maxWidth = 500;
+  const lineHeight = 56;
 
-    const withWebFont = useTextLayout({
-      text,
-      font,
-      maxWidth,
-      lineHeight,
-    });
-    const withFallback = useTextLayout({
-      text,
-      font: fallback,
-      maxWidth,
-      lineHeight,
-    });
+  const withWebFont = useTextLayout({
+    text,
+    font,
+    maxWidth,
+    lineHeight,
+  });
+  const withFallback = useTextLayout({
+    text,
+    font: fallback,
+    maxWidth,
+    lineHeight,
+  });
 
-    return (
-      <div className="flex flex-col gap-8">
-        <p className="text-sm text-on-surface-variant">
-          CLS prevention works by measuring with a system fallback font
-          immediately, then re-measuring once the web font loads. The height
-          difference is usually small enough to avoid visible layout shift.
-        </p>
-        <div className="flex gap-8">
-          <div>
-            <p className="mb-2 text-xs font-medium uppercase tracking-widest text-tertiary">
-              Fallback (serif)
-            </p>
-            <div
-              className="rounded-lg border border-outline-variant/30 p-4"
-              style={{ width: maxWidth }}
-            >
-              <p style={{ font: fallback, lineHeight: `${lineHeight}px` }}>
-                {text}
-              </p>
-            </div>
-            <p className="mt-2 text-sm text-on-surface-variant">
-              Lines: {withFallback.lineCount} &middot; Height:{" "}
-              {withFallback.height}px
+  return (
+    <div className="flex flex-col gap-8">
+      <p className="text-sm text-on-surface-variant">
+        CLS prevention works by measuring with a system fallback font
+        immediately, then re-measuring once the web font loads. The height
+        difference is usually small enough to avoid visible layout shift.
+      </p>
+      <div className="flex gap-8">
+        <div>
+          <p className="mb-2 text-xs font-medium uppercase tracking-widest text-tertiary">
+            Fallback (serif)
+          </p>
+          <div
+            className="rounded-lg border border-outline-variant/30 p-4"
+            style={{ width: maxWidth }}
+          >
+            <p style={{ font: fallback, lineHeight: `${lineHeight}px` }}>
+              {text}
             </p>
           </div>
-          <div>
-            <p className="mb-2 text-xs font-medium uppercase tracking-widest text-tertiary">
-              Web font (Noto Serif)
-            </p>
-            <div
-              className="rounded-lg border border-outline-variant/30 p-4"
-              style={{ width: maxWidth }}
-            >
-              <p
-                className="font-heading"
-                style={{
-                  fontSize: "48px",
-                  fontWeight: 700,
-                  lineHeight: `${lineHeight}px`,
-                }}
-              >
-                {text}
-              </p>
-            </div>
-            <p className="mt-2 text-sm text-on-surface-variant">
-              Lines: {withWebFont.lineCount} &middot; Height:{" "}
-              {withWebFont.height}px
-            </p>
-          </div>
+          <p className="mt-2 text-sm text-on-surface-variant">
+            Lines: {withFallback.lineCount} &middot; Height:{" "}
+            {withFallback.height}px
+          </p>
         </div>
-        <div className="rounded-lg bg-surface-container p-4 text-sm">
-          Height difference:{" "}
-          <strong>
-            {Math.abs(withWebFont.height - withFallback.height)}px
-          </strong>{" "}
-          — {withWebFont.height === withFallback.height
-            ? "no layout shift"
-            : "minimal layout shift"}
+        <div>
+          <p className="mb-2 text-xs font-medium uppercase tracking-widest text-tertiary">
+            Web font (Noto Serif)
+          </p>
+          <div
+            className="rounded-lg border border-outline-variant/30 p-4"
+            style={{ width: maxWidth }}
+          >
+            <p
+              className="font-heading"
+              style={{
+                fontSize: "48px",
+                fontWeight: 700,
+                lineHeight: `${lineHeight}px`,
+              }}
+            >
+              {text}
+            </p>
+          </div>
+          <p className="mt-2 text-sm text-on-surface-variant">
+            Lines: {withWebFont.lineCount} &middot; Height:{" "}
+            {withWebFont.height}px
+          </p>
         </div>
       </div>
-    );
-  },
+      <div className="rounded-lg bg-surface-container p-4 text-sm">
+        Height difference:{" "}
+        <strong>
+          {Math.abs(withWebFont.height - withFallback.height)}px
+        </strong>{" "}
+        — {withWebFont.height === withFallback.height
+          ? "no layout shift"
+          : "minimal layout shift"}
+      </div>
+    </div>
+  );
+}
+
+export const CLSPrevention: Story = {
+  name: "CLS Prevention — Fallback Font",
+  render: () => <CLSPreventionDemo />,
 };

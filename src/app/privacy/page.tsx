@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
 import { PageTransition } from "@/components/ui/page-transition";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Privacy Policy | Modern Scholar",
   description: "Privacy policy for Modern Scholar.",
 };

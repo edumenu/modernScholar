@@ -47,7 +47,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         {
           "--normal-bg": "var(--surface-container-highest)",
           "--normal-text": "var(--on-surface)",
-          "--normal-border": "rgba(219, 193, 188, 0.15)",
+          "--normal-border": "var(--outline-variant)",
           "--border-radius": "var(--radius)",
         } as React.CSSProperties
       }

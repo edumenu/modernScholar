@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   motion,
@@ -17,6 +17,7 @@ import {
   isScholarshipActive,
 } from "@/data/scholarships";
 import { getEligibilityTagLabel } from "@/lib/eligibility";
+import { SESSION_DATE } from "@/lib/session-date";
 
 /* ------------------------------------------------------------------ */
 /*  Transform config                                                   */
@@ -336,14 +337,18 @@ export function CoverflowCarousel({
   const router = useRouter();
   // Filter to active-only at the source so every downstream consumer
   // (autoplay, drag, keyboard nav, live region) only sees open scholarships.
-  // `new Date()` is fine here per PRD — freshly-expired won't drop until reload.
-  const scholarships = scholarshipsProp.filter((s) =>
-    isScholarshipActive(s, new Date()),
+  // Memoize against scholarshipsProp so autoplay re-renders don't rebuild the
+  // array; SESSION_DATE keeps the snapshot stable across the session.
+  const scholarships = useMemo(
+    () =>
+      scholarshipsProp.filter((s) => isScholarshipActive(s, SESSION_DATE)),
+    [scholarshipsProp],
   );
   const total = scholarships.length;
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1024);
@@ -369,12 +374,13 @@ export function CoverflowCarousel({
   const next = useCallback(() => goTo(activeIndex + 1), [activeIndex, goTo]);
   const prev = useCallback(() => goTo(activeIndex - 1), [activeIndex, goTo]);
 
-  // Autoplay
+  // Autoplay — also pauses when the carousel has keyboard focus so SR users
+  // aren't interrupted every 8s by the live region announcing a new slide.
   useEffect(() => {
-    if (shouldReduceMotion || isPaused || isDragging) return;
+    if (shouldReduceMotion || isPaused || isDragging || isFocused) return;
     const timer = setInterval(next, 8000);
     return () => clearInterval(timer);
-  }, [shouldReduceMotion, isPaused, isDragging, next]);
+  }, [shouldReduceMotion, isPaused, isDragging, isFocused, next]);
 
   // Keyboard navigation
   const handleKeyDown = useCallback(
@@ -390,10 +396,12 @@ export function CoverflowCarousel({
     [next, prev],
   );
 
-  // Drag handler
+  // Drag handler — gate on horizontal-dominant motion so vertical page scrolls
+  // through the carousel area on touch devices don't trigger horizontal nav.
   const handleDragEnd = useCallback(
     (_: unknown, info: PanInfo) => {
       setIsDragging(false);
+      if (Math.abs(info.offset.x) <= Math.abs(info.offset.y)) return;
       const threshold = 50;
       const velocity = 500;
       if (info.offset.x < -threshold || info.velocity.x < -velocity) {
@@ -430,6 +438,8 @@ export function CoverflowCarousel({
       onKeyDown={handleKeyDown}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       className="group relative outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-4 py-20"
     >
       {/* Live region for screen readers */}
@@ -442,6 +452,10 @@ export function CoverflowCarousel({
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.15}
+        // dragDirectionLock makes Motion only report movement on whichever
+        // axis the user starts in — prevents vertical page-scroll gestures
+        // on touch from being misread as horizontal carousel nav.
+        dragDirectionLock
         onDragStart={() => setIsDragging(true)}
         onDragEnd={handleDragEnd}
         className="pointer-events-none relative flex h-120 items-center justify-center"

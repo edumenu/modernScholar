@@ -11,6 +11,9 @@ interface CheckboxProps {
   disabled?: boolean
   children?: React.ReactNode
   className?: string
+  id?: string
+  "aria-label"?: string
+  "aria-labelledby"?: string
 }
 
 function Checkbox({
@@ -19,19 +22,32 @@ function Checkbox({
   disabled = false,
   children,
   className,
+  id,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
 }: CheckboxProps) {
   return (
     <label
+      htmlFor={id}
       className={cn(
-        "group flex cursor-default items-center gap-3 select-none",
+        "group flex cursor-pointer items-center gap-3 select-none",
         disabled && "pointer-events-none opacity-50",
         className,
       )}
     >
       <CheckboxPrimitive.Root
+        id={id}
+        data-slot="checkbox"
         checked={checked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
+        aria-label={
+          // Fall back to a name when no visible label is rendered (icon-only
+          // usage). When children are present the wrapping <label> already
+          // provides the name.
+          children ? ariaLabel : (ariaLabel ?? "Toggle")
+        }
+        aria-labelledby={ariaLabelledBy}
         className={cn(
           "flex size-4.5 shrink-0 items-center justify-center rounded-[5px] border-2 transition-colors duration-150 outline-none",
           "focus-visible:ring-[3px] focus-visible:ring-ring/50",

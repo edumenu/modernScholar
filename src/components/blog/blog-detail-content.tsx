@@ -18,9 +18,10 @@ interface BlogDetailContentProps {
 export function BlogDetailContent({ post, body }: BlogDetailContentProps) {
   return (
     <>
-      {/* Title */}
+      {/* Title — capped at a readable measure so display-size Noto Serif
+          doesn't run to ~120ch on xl viewports. */}
       <AnimatedSection variant="fadeUp">
-        <h1 className="font-heading text-3xl font-bold leading-tight text-on-surface md:text-4xl lg:text-5xl">
+        <h1 className="max-w-prose font-heading text-3xl font-bold leading-tight text-on-surface md:text-4xl lg:text-5xl">
           {post.title}
         </h1>
         {/* Series indicator */}
@@ -47,9 +48,11 @@ export function BlogDetailContent({ post, body }: BlogDetailContentProps) {
         </div>
       </AnimatedSection>
 
-      {/* MDX Body — element-level styling provided by useMDXComponents map */}
+      {/* MDX Body — element-level styling (mt-* on h2/h3/p/ul/ol) is owned by
+          useMDXComponents. Don't add space-y-* here or the two stack and
+          throw the rhythm off. Capped to max-w-prose for measure. */}
       <AnimatedSection variant="fadeUp" delay={0.3}>
-        <div className="mt-10 space-y-8">{body}</div>
+        <div className="mt-10 max-w-prose">{body}</div>
       </AnimatedSection>
 
       {/* Author bio card */}

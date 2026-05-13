@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button/button"
+import { Button, buttonVariants } from "@/components/ui/button/button"
 import { Icon } from "@iconify/react"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
@@ -44,20 +44,21 @@ function PaginationLink({
   size = "icon",
   ...props
 }: PaginationLinkProps) {
+  // Render as a real anchor (not Base UI Button) so middle-click and
+  // right-click "Copy link address" work, and aria-current is on the link
+  // element where assistive tech expects it. We compose buttonVariants() for
+  // the visual styling.
   return (
-    <Button
-      variant={isActive ? "outline" : "ghost"}
-      size={size}
-      className={cn(className)}
-      nativeButton={false}
-      render={
-        <a
-          aria-current={isActive ? "page" : undefined}
-          data-slot="pagination-link"
-          data-active={isActive}
-          {...props}
-        />
-      }
+    <a
+      aria-current={isActive ? "page" : undefined}
+      data-slot="pagination-link"
+      data-active={isActive}
+      data-cursor="fade"
+      className={cn(
+        buttonVariants({ variant: isActive ? "outline" : "ghost", size }),
+        className,
+      )}
+      {...props}
     />
   )
 }

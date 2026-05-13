@@ -2,7 +2,7 @@ import type { Scholarship, EducationLevelFilter } from "@/data/scholarships"
 import { parseAwardAmount, AWARD_MIN, AWARD_MAX } from "@/data/scholarships"
 import { matches, type Tag } from "@/lib/eligibility"
 import { isExpired } from "@/lib/expired-status"
-import { MONTHS, type Month, type MonthFilter } from "@/hooks/use-scholarship-filters"
+import { MONTHS, type Month, type MonthFilter } from "@/lib/constants"
 
 export type { Month, MonthFilter }
 

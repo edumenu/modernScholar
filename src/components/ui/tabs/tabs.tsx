@@ -59,8 +59,12 @@ function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
       data-slot="tabs-trigger"
       className={cn(
         "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap text-on-surface-variant transition-all group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start group-data-vertical/tabs:px-2.5 group-data-vertical/tabs:py-1.5 hover:text-on-surface focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Variant=line uses surface-container-high for the active tab.
         "group-data-[variant=line]/tabs-list:bg-transparent group-data-[variant=line]/tabs-list:data-active:bg-surface-container-high dark:group-data-[variant=line]/tabs-list:data-active:border-transparent dark:group-data-[variant=line]/tabs-list:data-active:bg-surface-container-high",
-        "data-active:bg-surface-container-lowest data-active:text-on-surface data-active:shadow-[0_4px_16px_rgba(32,26,25,0.04)] dark:data-active:bg-surface-container-high dark:data-active:text-on-surface",
+        // Variant=default uses surface-container-lowest with an ambient shadow.
+        // Gated to default-only so it doesn't fight the line-variant rules above.
+        "group-data-[variant=default]/tabs-list:data-active:bg-surface-container-lowest group-data-[variant=default]/tabs-list:data-active:shadow-[0_4px_16px_rgba(32,26,25,0.04)] dark:group-data-[variant=default]/tabs-list:data-active:bg-surface-container-high",
+        "data-active:text-on-surface dark:data-active:text-on-surface",
         className
       )}
       {...props}

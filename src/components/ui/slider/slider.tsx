@@ -26,7 +26,7 @@ function Slider({ className, thumbLabels, ref, ...props }: SliderProps & { ref?:
       {Array.from({ length: thumbCount }, (_, index) => (
         <SliderPrimitive.Thumb
           key={index}
-          aria-label={thumbLabels?.[index]}
+          aria-label={thumbLabels?.[index] ?? `Value ${index + 1}`}
           className="block size-5 rounded-full border-2 border-primary bg-white shadow-sm transition-colors focus-visible:outline-[3px] focus-visible:outline-ring/40 data-disabled:cursor-not-allowed"
         />
       ))}

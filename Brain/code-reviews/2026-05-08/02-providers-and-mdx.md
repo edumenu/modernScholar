@@ -1,6 +1,18 @@
 # Providers, MDX & Build Config Review
 
-_Reviewed 2026-05-08. Next.js 16.2.1 docs consulted: `node_modules/next/dist/docs/01-app/02-guides/mdx.md`, `01-app/01-getting-started/01-installation.md`._
+_Reviewed 2026-05-08. Re-audited 2026-05-10 — see "Status update" section below; original report content unchanged._
+_Next.js 16.2.1 docs consulted: `node_modules/next/dist/docs/01-app/02-guides/mdx.md`, `01-app/01-getting-started/01-installation.md`._
+
+---
+
+## Status update — 2026-05-10
+
+**Resolved:** none.
+
+**Still open — every finding in this report:**
+- Critical: `pretext-hooks.stories.tsx:559-570` Rules-of-Hooks violation in `CLSPrevention` story unchanged; `package.json:8` `"start": "next start"` + `next.config.ts:6` `output: "export"` mismatch unchanged.
+- High: `--webpack` flag still pinned in dev/build scripts; `remark-gfm` still absent (`next.config.ts:21` only has `remarkFrontmatter`, no `remark-gfm` in `package.json`); pretext font-ready race in `use-text-lines.ts` / `use-text-layout.ts` unchanged.
+- Medium: `ThemeProvider` still missing `disableTransitionOnChange` + `enableColorScheme` (`layout.tsx:51` unchanged); h2 still has no anchor id in `mdx-components.tsx`; `tsconfig.json` still without `noUncheckedIndexedAccess`; no `typecheck` script in `package.json`; commented-out `Geist_Mono` block still at `layout.tsx:28-31`.
 
 ---
 

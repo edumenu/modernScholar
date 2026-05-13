@@ -25,24 +25,26 @@ import {
 
 const PAGE_SIZE = 9
 
+import type { BlogPost } from "@/lib/blog"
+
 /**
- * Structural shape compatible with both legacy `@/data/blog-posts` and the
- * new `@/lib/blog` `BlogPost` type. Field requirements mirror what BlogCard
- * and BlogCardFeatured (T11) read so this prop is structurally assignable.
+ * Subset of BlogPost actually consumed by BlogGrid + its descendant
+ * BlogCard / BlogCardFeatured. Derived via Pick so a BlogPost array is
+ * structurally assignable.
  */
-export interface BlogGridPost {
-  id?: string
-  slug: string
-  title: string
-  excerpt: string
-  category: string
-  image: string
-  publishDate: string
-  readTime: string
-  author: { name: string; role: string; avatar: string }
-  featured?: boolean
-  series?: { name: string; part: number; totalParts: number }
-}
+export type BlogGridPost = Pick<
+  BlogPost,
+  | "slug"
+  | "title"
+  | "excerpt"
+  | "category"
+  | "image"
+  | "publishDate"
+  | "readTime"
+  | "author"
+  | "featured"
+  | "series"
+>
 
 interface BlogGridProps {
   posts?: BlogGridPost[]
@@ -179,7 +181,7 @@ export function BlogGrid({ posts = [] }: BlogGridProps) {
       {gridPosts.length > 0 && (
         <div className="grid grid-cols-1 gap-6 pt-2 pb-10 sm:grid-cols-2 lg:grid-cols-3">
           {gridPosts.map((post) => (
-            <BlogCard key={post.id ?? post.slug} post={post} />
+            <BlogCard key={post.slug} post={post} />
           ))}
         </div>
       )}

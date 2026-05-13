@@ -22,15 +22,17 @@ export function BlogDetailHeroImage({ src, alt }: BlogDetailHeroImageProps) {
         priority
         onError={() => setImgError(true)}
       />
-      {/* Soft primary tint — single light multiply pass */}
+      {/* Soft primary tint — lighter pass in dark mode where the page chrome
+          already provides plenty of contrast and a heavy multiply just
+          flattens the photo. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 mix-blend-multiply bg-primary/30"
+        className="pointer-events-none absolute inset-0 mix-blend-multiply bg-primary/30 dark:bg-primary/15"
       />
       {/* Subtle bottom anchor */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-primary-900/35"
+        className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-primary-900/35 dark:to-primary-900/15"
       />
     </>
   );

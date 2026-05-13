@@ -1,5 +1,7 @@
 # Modern Scholar — Codebase Review Summary
 
+_Reviewed 2026-05-08, re-audited 2026-05-10 against the live tree. Re-audit appendix lives at the bottom of this file under "Status update — 2026-05-10"; the original summary below is preserved unchanged for historical reference._
+
 _Reviewed 2026-05-08 across 5 parallel agent passes (2 × `nextjs-code-reviewer`, 3 × `frontend-engineer`). Source reports:_
 
 - `01-app-routes-and-data.md` — App Router, data layer, sitemap/robots, lib helpers
@@ -141,3 +143,88 @@ The five blog components carry `BlogCardPost`/`BlogGridPost`/`BlogDetailPost`/et
 4. **Roadmap** — Larger initiatives (Turbopack, static-vs-server, typecheck gate). Treat `output: "export"` direction as a strategic decision, not a fix.
 
 Total surface area: 5 critical, ~20 high-impact, ~30 medium, ~25 low/nits across all five reports. Roughly 8 hours of focused work to clear everything from "critical" through "high-impact".
+
+---
+
+# Status update — 2026-05-10
+
+Re-audit of the live tree against the May-08 findings. Original report bodies are unchanged; only this appendix and per-file "Status update" sections reflect 2026-05-10 state.
+
+## Resolved since 2026-05-08
+
+- **Quick win #11** — `src/components/scholarships/match-badge.tsx` deleted (no remaining references).
+- **Medium initiative — corpus split** — `src/data/scholarships.ts` reduced from 5,360 → 135 lines (corpus relocated; the home-page `featured-scholarships.tsx` no longer drags the full JSON into its bundle).
+- **Quick win #9 — partial** — `src/app/blog/loading.tsx` and `src/app/contact/loading.tsx` were added.
+
+## Resolved-but-incomplete
+
+- The blog/contact `loading.tsx` files shipped without their `error.tsx` siblings, and **without** the skeleton-vs-grid CLS fix from item #9 — see Theme A below. This combination means the original CLS risk that #9 flagged is **now live in production** rather than dormant. Treat as escalated, not resolved.
+
+## Still applicable — Critical/High table (re-audited)
+
+| # | Severity | Status | Note |
+|---|---|---|---|
+| 1 | Critical | **OPEN** | `src/app/global-error.tsx` still missing |
+| 2 | Critical | **OPEN** | `package.json:8` `"start": "next start"` + `next.config.ts:6` `output: "export"` both unchanged |
+| 3 | Critical | **NEEDS RUNTIME VERIFICATION** | `pagination.tsx:52-53` unchanged. `Button` *does* spread `{...props}` so `render` flows to `@base-ui/react/button`, but `ref={buttonRef}` is hard-typed `HTMLButtonElement`. Confirm middle-click + `aria-current` work in the browser; if yes, mark resolved. |
+| 4 | Critical | **OPEN** | `use-focus-trap.ts:26-60` still has no `previouslyFocused` capture/restore |
+| 5 | Critical | **OPEN** | `pretext-hooks.stories.tsx:559-570` still calls `useTextLayout` twice inside `render: () => {...}` |
+| 6 | High | **OPEN** | All four files (`scholarship-card.tsx:38`, `scholarship-list-card.tsx:56`, `comparison-fab.tsx:10`, `comparison-sheet.tsx:28`) still destructure `useComparisonStore()` without selectors |
+| 7 | High | **OPEN** | `hero-section.tsx:13` still uses `React.lazy`; line 48 still has `key={resolvedTheme}` |
+| 8 | High | **OPEN** | `blog/[slug]/page.tsx:78` dynamic `import()` still has no try/catch |
+| 9 | High | **ESCALATED** | Skeleton (8 cards + featured) vs grid (up to 9, no featured on page 2+) divergence unchanged in `blog-grid-skeleton.tsx:77-80`. Now visible because `blog/loading.tsx` shipped. |
+| 10 | High | **OPEN** | `sheet/sheet.tsx:32` still uses `className \|\| "glass-elevated"` short-circuit |
+
+## Cross-cutting themes — re-audit
+
+- **A. Glass violations** — all three sites unchanged: `mobile-menu.tsx:260, 290` (raw `backdrop-blur-2xl` / `backdrop-blur-md`), `dialog.tsx:34` (raw `bg-black/80 supports-backdrop-filter:backdrop-blur-xs`), `blog-card-featured.tsx:73` (`backdrop-blur-sm` on category chip).
+- **B. Zustand selector migration** — open across the same 4 files as item #6.
+- **C. `mounted` gating** — all three sites unchanged: `contact-form-section.tsx:153` (`MobileContactImage`), `theme-toggle.tsx:14` (`useSyncExternalStore` mounted-check), `scholarship-filters.tsx:54-66` (`if (isMobile === null)` JS branch).
+- **D. Per-segment loading/error boundaries** — `loading.tsx` shipped for both blog and contact, but `blog/error.tsx` and `contact/error.tsx` are still missing.
+- **E. Untyped metadata** — open in `blog/page.tsx:6`, `contact/page.tsx:6`, `privacy/page.tsx:3`, `terms/page.tsx`, `cookies/page.tsx`. Home `app/page.tsx` still has no metadata export.
+- **F. Reading-progress perf + reduced-motion** — open: `reading-progress.tsx:32-36` (`["start start","end end"]` offset), 45-66 (3 React state setters per scroll frame + `getElementById` per heading), 90-94 / 117-129 (un-gated spring + scale celebration).
+- **G. Inverted lib ↔ hook dependency** — open: `scholarship-utils.ts:5-7` still imports `Month`/`MonthFilter` from `@/hooks/use-scholarship-filters`; `lib/constants.ts` still only contains `SITE_URL`.
+- **H. Reduced-motion coverage gaps** — see Theme F (reading-progress) and report 03 for `four-oh-four/not-found-client.tsx`.
+- **I. Duplicate / legacy structural-shape types** — open: stale `T08/T11/T14` migration comments and local structural-shape duplicates remain in `blog-card.tsx`, `blog-card-featured.tsx`, `blog-grid.tsx`, `blog-detail.tsx`, `related-posts.tsx`.
+
+## Quick-wins re-audit
+
+| # | Status | Note |
+|---|---|---|
+| 1 | Open | `global-error.tsx` |
+| 2 | Open | `start` vs `output: "export"` |
+| 3 | Open | dynamic MDX `import()` try/catch |
+| 4 | Open | focus-trap restore |
+| 5 | Open | Sheet overlay default |
+| 6 | Open | `CLSPrevention` story render |
+| 7 | Open | type the 5 untyped metadata exports |
+| 8 | Open | `metadata` export on home `page.tsx` |
+| 9 | **Partial / escalated** | `loading.tsx` shipped; `error.tsx` missing; skeleton CLS now live |
+| 10 | Open | sitemap privacy/terms/cookies + stable build dates |
+| 11 | **Done** | `match-badge.tsx` deleted |
+| 12 | Open | duplicate `src/components/ui/table.tsx` still exists alongside `table/table.tsx` |
+| 13 | Open | Zustand selectors |
+| 14 | Open | Spline `useMemo`-cached URL |
+| 15 | Open | `--font-geist-mono` dangling reference in `globals.css:12` (the Geist_Mono import remains commented out at `layout.tsx:28-31`) |
+| 16 | Open | `disableTransitionOnChange` + `enableColorScheme` on `ThemeProvider` |
+
+## Medium initiatives re-audit
+
+- Slider migration to `@base-ui/react/slider` — open (`@radix-ui/react-slider` still in `package.json:24` and imported at `slider.tsx:3`).
+- `remark-gfm` — open (not in `next.config.ts:21`, not in `package.json`).
+- `ExpandedScholarship` → `Sheet`/`Dialog` migration — open (`expanded-scholarship.tsx:8-9, 282-284` still use manual `useFocusTrap` + `useScrollLock`).
+- **`scholarships.ts` split — done.**
+- `reading-progress.tsx` rAF + `useMotionValue` refactor — open.
+- `contact-form-section.tsx` flatten into 4 sibling files — open.
+- `Month`/`MonthFilter` move to `lib/constants.ts` — open.
+- Replace structural blog-post types with `Pick<BlogPost, ...>` — open (Theme I).
+- Nested-interactive markup (`<a><button>` etc.) — open in `scholarship-card.tsx:81-83`, `scholarship-list-card.tsx:64-87`, `blog-card.tsx:61, 147-162`, `blog-card-featured.tsx:39, 117-128`.
+
+## Recommended next pass
+
+1. **Same-day** — items 1, 2, 4, 10, **plus #9's `error.tsx` siblings** (now actively a CLS risk because `loading.tsx` shipped without the skeleton fix).
+2. **This week** — items 5, 8; the metadata typing pass; the Zustand selector migration (theme B); delete duplicate `table.tsx`.
+3. **Validate now (no code change required)** — item #3: open `/scholarships` paginated, middle-click "2", confirm it opens in a new tab. If yes, that one's resolved.
+4. **Defer** — `--font-geist-mono` token (cosmetic), themes A and I (polish), theme G (refactor with no runtime impact).
+
+Roughly **8 of the original 10 critical/high issues remain**, but the corpus split is real progress on the Medium tier and the dead-code cleanup is done. Net delta from May-08: 2 items resolved, 1 item escalated.

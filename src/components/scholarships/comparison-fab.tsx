@@ -7,12 +7,14 @@ import { useHasMounted } from "@/hooks/use-has-mounted"
 import { Button } from "@/components/ui/button/button";
 
 export function ComparisonFab() {
-  const { selectedIds, openSheet } = useComparisonStore()
+  // Selector form: this FAB only needs the count + the sheet-open trigger.
+  const count = useComparisonStore((s) => s.selectedIds.length)
+  const openSheet = useComparisonStore((s) => s.openSheet)
   // FAB visibility depends on the persisted store; gate so the SSR-empty
   // selectedIds state matches the first client render and we don't get a
   // hydration mismatch the moment localStorage hydrates.
   const hasMounted = useHasMounted()
-  const visibleCount = hasMounted ? selectedIds.length : 0
+  const visibleCount = hasMounted ? count : 0
 
   return (
     <AnimatePresence>
@@ -29,8 +31,7 @@ export function ComparisonFab() {
             size="lg"
             onClick={openSheet}
             className="gap-2.5"
-            aria-label={`Compare ${visibleCount} scholarships`}
-            aria-live="polite"
+            aria-label="Open comparison sheet"
             animateIcon
           >
             <Icon
@@ -43,6 +44,12 @@ export function ComparisonFab() {
               {visibleCount}
             </span>
           </Button>
+          {/* Live region announces the count separately so the button's
+              accessible name stays static and SR users get a polite update
+              when membership changes. */}
+          <span className="sr-only" aria-live="polite">
+            {visibleCount} selected
+          </span>
         </motion.div>
       )}
     </AnimatePresence>

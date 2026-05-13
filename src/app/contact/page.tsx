@@ -1,9 +1,10 @@
+import type { Metadata } from "next"
 import { ContactHero } from "@/components/contact/contact-hero"
 import { ContactFormSection } from "@/components/contact/contact-form-section"
 import { ContactFAQ } from "@/components/contact/contact-faq"
 import { PageTransition } from "@/components/ui/page-transition"
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Contact Us | Modern Scholar",
   description:
     "Have questions or feedback? Get in touch with us at Modern Scholar.",

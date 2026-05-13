@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useSyncExternalStore } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
@@ -64,9 +64,29 @@ const indicatorScale = {
   },
 }
 
+// useSyncExternalStore-driven viewport height so the Curve path recomputes on
+// rotate/resize without a setState-inside-effect. The server snapshot uses
+// 900 as a deterministic fallback.
+function subscribeToResize(notify: () => void): () => void {
+  window.addEventListener("resize", notify)
+  return () => window.removeEventListener("resize", notify)
+}
+function getClientInnerHeight(): number {
+  return window.innerHeight
+}
+function getServerInnerHeight(): number {
+  return 900
+}
+
 function Curve() {
-  const initialPath = `M100 0 L100 ${typeof window !== "undefined" ? window.innerHeight : 900} Q-100 ${typeof window !== "undefined" ? window.innerHeight / 2 : 450} 100 0`
-  const targetPath = `M100 0 L100 ${typeof window !== "undefined" ? window.innerHeight : 900} Q100 ${typeof window !== "undefined" ? window.innerHeight / 2 : 450} 100 0`
+  const innerHeight = useSyncExternalStore(
+    subscribeToResize,
+    getClientInnerHeight,
+    getServerInnerHeight,
+  )
+
+  const initialPath = `M100 0 L100 ${innerHeight} Q-100 ${innerHeight / 2} 100 0`
+  const targetPath = `M100 0 L100 ${innerHeight} Q100 ${innerHeight / 2} 100 0`
 
   const curve = {
     initial: { d: initialPath },
@@ -255,11 +275,8 @@ export function MobileMenuButton() {
         aria-controls={MOBILE_DRAWER_ID}
         onClick={handleToggle}
         className={cn(
-          "relative z-60 flex size-11.5 cursor-pointer items-center justify-center rounded-full",
-          "border border-white/40 bg-white/25 shadow-[0_8px_32px_rgba(31,38,135,0.15)]",
-          "backdrop-blur-2xl transition-colors",
-          "dark:border-white/10 dark:bg-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]",
-          "lg:hidden"
+          glassPill,
+          "relative z-60 flex size-11.5 cursor-pointer items-center justify-center transition-colors lg:hidden"
         )}
       >
         <div className="flex w-5 flex-col items-center gap-1.25">
@@ -281,13 +298,15 @@ export function MobileMenuButton() {
       <AnimatePresence mode="wait">
         {isOpen && (
           <>
-            {/* Backdrop */}
+            {/* Backdrop — glass-heavy participates in the
+                prefers-reduced-transparency / prefers-contrast: more
+                fallbacks defined in globals.css. */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-md lg:hidden"
+              className="fixed inset-0 z-40 glass-heavy lg:hidden"
               aria-hidden="true"
               onClick={() => {
                 setIsOpen(false)

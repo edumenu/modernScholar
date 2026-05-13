@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
 import { PageTransition } from "@/components/ui/page-transition";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Terms of Service | Modern Scholar",
   description: "Terms of service for Modern Scholar.",
 };

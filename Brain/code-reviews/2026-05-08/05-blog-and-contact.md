@@ -1,5 +1,24 @@
 # Blog + Contact Features Review
 
+_Reviewed 2026-05-08. Re-audited 2026-05-10 — see "Status update" section below; original report content unchanged._
+
+---
+
+## Status update — 2026-05-10
+
+**Resolved:** none.
+
+**Escalated:**
+- **Critical — `blog-grid-skeleton.tsx:77-80`** — the original report flagged this as "currently dormant because `/blog` has no `loading.tsx`." Since then, `src/app/blog/loading.tsx` was added without fixing the skeleton-vs-grid mismatch. The CLS this finding warned about is now **live** on `/blog?page=2+` (skeleton shows 8 cards + featured hero placeholder; real grid shows 9 non-featured cards). Fix the skeleton (or detect the route) before treating the loading.tsx work as done.
+
+**Still open — every other finding in this report:**
+- Critical: `use-focus-trap.ts:26-60` still has no `previouslyFocused` capture/restore; `use-scroll-lock.ts:6-21` module-level `lockCount` unchanged; `contact-form-section.tsx:153-184` `MobileContactImage` still uses `mounted` flag (defeats `priority`); `blog-detail-hero-image.tsx:25-34` dual-overlay unchanged.
+- High: `blog-grid.tsx` doing-too-much; `blog-grid.tsx:101-105` `setPage` inside effect; **`contact-form-section.tsx` 371 lines / 4 sub-components — not split** (verified: still single file); `reading-progress.tsx:45-66` per-frame state setters + `getElementById`/`getBoundingClientRect` per heading unchanged; `reading-progress.tsx:32-36` `["start start","end end"]` offset unchanged; `blog-detail-content.tsx` `space-y-8` + MDX margin double-spacing; title and content column max-width gaps; **`related-posts.tsx` + `blog-card.tsx` + `blog-card-featured.tsx` + `blog-grid.tsx` + `blog-detail.tsx` structural-shape duplicates with stale "T08/T11/T14" comments** — all confirmed still present.
+- Medium: blog-card CVA over-engineering; `ReadingTimeBars` parsing; **nested-interactive markup `<Link><Button>` in `blog-card.tsx:147-162` and `blog-card-featured.tsx:117-128`** unchanged; `pull-quote.tsx` decorative quote marks not aria-hidden; `callout.tsx` double-labeling; `inline-scholarship-card.tsx` `not-prose` no-op; `blog-detail-hero-image.tsx` "use client" dependency; mdx-components img fallback Next/Image bypass; mdx-components h2 anchor gap; `blog-grid.tsx:108-112` setTimeout 100ms hack; `contact-form-section.tsx:259-266` `<CTAButton>` with `window.location.href` instead of `<Link href="mailto:...">`; nudge-arrow variants; `contact-faq.tsx` keyboard arrow nav.
+- Low: ID-stability in contact FAQ; commented-out FAQ items; reading-progress reduced-motion gating (lines 90-94 + 117-129) unchanged; pull-quote "use client" outlier; remaining nits.
+
+---
+
 ## Summary
 
 The blog stack is in good structural shape: an MDX pipeline driven by a single Zod-validated loader (`src/lib/blog.ts`), pages that hand server-rendered MDX bodies down through `BlogDetail` as `children`, and a sensibly tiered `getRelatedPosts` ranker (series → tag overlap → category → recency). MDX overrides include a sound h3-anchor strategy that mirrors `extractHeadings` so reading-progress dots resolve. However, several issues deserve attention: the blog-grid skeleton diverges from the real grid in noticeable ways (causes a guaranteed CLS on first paint), `MobileContactImage` and `ContactFormSection` have unnecessary `mounted` gating for `next-themes` that masks priority `<Image>` and Spline rendering, the `<PullQuote>` is a `figure` containing a `<blockquote>` rather than the semantically clean `<blockquote><footer>` pattern, the focus-trap hook never restores focus on deactivation (regression risk for accessibility), and `useScrollLock` uses a module-level lock counter that is unsafe across Strict Mode double-invokes. There's also a stale "T08/T11/T14" migration thicket of structural-shape interfaces that should be replaced now that `@/data/blog-posts` no longer exists. The blog detail content card and inline scholarship card correctly avoid glassmorphism (cards-not-glass rule respected).

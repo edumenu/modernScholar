@@ -92,29 +92,24 @@ export function ScholarshipGrid() {
     ? (corpus.find((s) => s.id === expandedId) ?? null)
     : null
 
-  // Normalize URL if requested page is out of range
+  // Normalize URL if requested page is out of range. Narrowed deps to the
+  // page identities — `useScholarshipFilters` returns a fresh object every
+  // render, so depending on `filters` would fire on every re-render.
   useEffect(() => {
     if (filters.page !== safePage) {
       filters.setPage(safePage)
     }
-  }, [filters, safePage])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters.page, safePage, filters.setPage])
 
-  // Recalculate Lenis scroll height whenever visible content changes
+  // Recalculate Lenis scroll height when the visible item *count* or layout
+  // actually changes. Filter setters are stable (useCallback) but the input
+  // values were causing this to fire on every keystroke.
   useEffect(() => {
     if (!lenis) return
     const timer = setTimeout(() => lenis.resize(), 100)
     return () => clearTimeout(timer)
-  }, [
-    safePage,
-    filters.activeFilter,
-    filters.layout,
-    lenis,
-    filters.searchQuery,
-    filters.sortBy,
-    filters.selectedTags,
-    filters.awardRange,
-    filters.month,
-  ])
+  }, [visibleItems.length, filters.layout, lenis])
 
   const goToPage = useCallback(
     (n: number) => {

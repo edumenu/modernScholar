@@ -24,14 +24,25 @@ import { cn } from "@/lib/utils"
 import { getExpiredBadge } from "@/lib/expired-status";
 import { SESSION_DATE } from "@/lib/session-date";
 
+// Module-scope index keyed by scholarship id. Built once at module load so
+// `selectedIds.map(id => find...)` collapses from O(n·m) over the full corpus
+// to O(n) lookups.
+const scholarshipById = new Map(scholarships.map((s) => [s.id, s] as const))
+
 export function ComparisonSheet() {
-  const { selectedIds, remove, clear, isSheetOpen, closeSheet } =
-    useComparisonStore()
+  // Selector form: subscribe to each slice individually so unrelated store
+  // updates don't re-render the sheet.
+  const selectedIds = useComparisonStore((s) => s.selectedIds)
+  const remove = useComparisonStore((s) => s.remove)
+  const clear = useComparisonStore((s) => s.clear)
+  const isSheetOpen = useComparisonStore((s) => s.isSheetOpen)
+  const openSheet = useComparisonStore((s) => s.openSheet)
+  const closeSheet = useComparisonStore((s) => s.closeSheet)
 
   const selected = useMemo(
     () =>
       selectedIds
-        .map((id) => scholarships.find((s) => s.id === id))
+        .map((id) => scholarshipById.get(id))
         .filter(Boolean) as Scholarship[],
     [selectedIds],
   )
@@ -41,9 +52,10 @@ export function ComparisonSheet() {
   return (
     <Sheet
       open={isSheetOpen}
-      onOpenChange={(open) => {
-        if (!open) closeSheet();
-      }}
+      // Symmetric handler so any controlled-open path stays in sync with the
+      // store. The previous form ignored the truthy branch, which would
+      // desync if a trigger pattern ever opened the sheet outside our store.
+      onOpenChange={(open) => (open ? openSheet() : closeSheet())}
     >
       <SheetContent
         side="right"

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, type RefObject } from "react"
+import { useEffect, useRef, type RefObject } from "react"
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -17,20 +17,36 @@ function getFocusable(container: HTMLElement): HTMLElement[] {
 
 /**
  * Traps keyboard focus inside the given container while `active` is true.
- * Autofocuses the first focusable element on activation.
+ *
+ * On activation: prefers `[data-autofocus]` inside the container; falls back
+ * to the first focusable element. The element that had focus before
+ * activation is captured and restored when the trap deactivates so users
+ * (especially screen-reader users) don't have focus dumped on `<body>`.
  */
 export function useFocusTrap(
   containerRef: RefObject<HTMLElement | null>,
   active: boolean,
 ) {
+  const previouslyFocused = useRef<HTMLElement | null>(null)
+
   useEffect(() => {
     if (!active) return
     const container = containerRef.current
     if (!container) return
 
-    const focusable = getFocusable(container)
-    if (focusable.length > 0) {
-      focusable[0].focus()
+    previouslyFocused.current =
+      typeof document !== "undefined"
+        ? (document.activeElement as HTMLElement | null)
+        : null
+
+    const preferred = container.querySelector<HTMLElement>("[data-autofocus]")
+    if (preferred) {
+      preferred.focus()
+    } else {
+      const focusable = getFocusable(container)
+      if (focusable.length > 0) {
+        focusable[0].focus()
+      }
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -56,6 +72,13 @@ export function useFocusTrap(
     }
 
     document.addEventListener("keydown", handleKeyDown)
-    return () => document.removeEventListener("keydown", handleKeyDown)
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+      const target = previouslyFocused.current
+      previouslyFocused.current = null
+      if (target && typeof target.focus === "function") {
+        target.focus({ preventScroll: true })
+      }
+    }
   }, [active, containerRef])
 }

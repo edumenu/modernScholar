@@ -1,5 +1,23 @@
 # Home + Scholarships Features Review
 
+_Reviewed 2026-05-08. Re-audited 2026-05-10 — see "Status update" section below; original report content unchanged._
+
+---
+
+## Status update — 2026-05-10
+
+**Resolved:**
+- **`src/data/scholarships.ts` corpus split — done.** File reduced from 5,360 → 135 lines. The "Medium-impact: home page's `featured-scholarships.tsx` pulls in the whole file" finding (Medium-impact section, last bullet) is now closed.
+- **`match-badge.tsx` — deleted** (Medium-impact section, first bullet). No remaining references in `src/`.
+
+**Still open — every other finding in this report:**
+- Critical: `hero-section.tsx:13` still uses `React.lazy` (not `next/dynamic`); line 48 still has `key={resolvedTheme}`; **all four** `useComparisonStore()` consumers (`scholarship-card.tsx:38`, `scholarship-list-card.tsx:56`, `comparison-fab.tsx:10`, `comparison-sheet.tsx:28`) still destructure the full store; `coverflow-carousel.tsx:340-342` `filter()` not memoized (verify against current line numbers); `use-scholarship-filters.ts:180-214` mount sanitization still doesn't reset `pageUrl`.
+- High: live-region announcer / autoplay tab-order / off-screen carousel rendering issues unchanged; `expanded-scholarship.tsx` autofocuses close button (because `useFocusTrap` autofocuses the first focusable); `comparison-fab.tsx` `aria-live` on the button itself; `comparison-sheet.tsx` O(n·m) lookup; `hero-section.tsx:22` `setMounted` instead of `useHasMounted`; `scholarship-grid.tsx` filter/lenis-resize effect deps; `coverflow-carousel.tsx` drag direction lock.
+- Medium: `comparison-sheet.tsx` open-state desync; `expanded-scholarship.tsx:285-292` manual ESC + focus-trap + scroll-lock instead of Sheet/Dialog primitive (`expanded-scholarship.tsx:8-9, 282-284` confirmed unchanged); `scholarship-list-card.tsx` + `scholarship-card.tsx` nested-interactive markup; `scholarship-filters.tsx:54-66` JS `isMobile` branch instead of CSS; FAQ accordion DIY; award-range cast; month-dropdown stale memo; comparison-sheet-audit-ledger `Date.now()` drift + grid overflow.
+- Low: coverflow autoplay deps, hero IIFE, `getPageNumbers` recompute, expanded-scholarship redundant motion wrapper, layoutId timing, `featured-scholarships.tsx` "Curated" labeling, scholarship-filters-mobile category-expansion / badge-count asymmetry, spline-scene wheel listener, deadline-format duplication, `use-parallax.ts` non-null assertion.
+
+---
+
 ## Summary
 
 Overall the feature surface is well-considered: nuqs filter sync is robust (validation + clamping on mount, route-replace not push, sensible default elision), the comparison store correctly defers hydration to avoid SSR mismatch, and most modal/sheet patterns lock scroll, trap focus, and restore focus on close. The biggest concrete risks are (1) Zustand store consumption — every card subscribes to the *entire* store, so a single `toggle()` re-renders all 12 cards on the page; (2) the home `CoverflowCarousel` swallows all scholarships into the DOM with `motion.div` per item plus measurement-driven re-runs; (3) the Spline hero isn't using `next/dynamic` (`React.lazy` is suboptimal in Next 16 App Router for SSR-skip semantics) and forces a `key={resolvedTheme}` re-mount on every theme toggle, downloading both `.splinecode` files in succession; (4) some accessibility/UX gaps around the carousel announcer, ESC handling, and focus trap autofocus picking the close button. There's also a dead `MatchBadge` component and unused `useRef` import patterns.

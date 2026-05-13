@@ -1,9 +1,10 @@
+import type { Metadata } from "next";
 import { BlogHero } from "@/components/blog/blog-hero";
 import { BlogGrid } from "@/components/blog/blog-grid";
 import { getAllPosts } from "@/lib/blog";
 import { PageTransition } from "@/components/ui/page-transition";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Blog | Modern Scholar",
   description:
     "Expert advice, success stories, and practical tips to help you navigate your scholarship journey and achieve your educational goals.",

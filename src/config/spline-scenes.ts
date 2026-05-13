@@ -10,12 +10,15 @@ const scenes = {
   notFoundDark: "https://prod.spline.design/LcP3yZzPVUXLn12V/scene.splinecode",
 } as const;
 
-// process.env.NODE_ENV is safe in client modules — Next.js replaces it at
-// build time via DefinePlugin (no NEXT_PUBLIC_ prefix needed).
+// Computed once per session/module-load. The previous `Date.now()` call inside
+// withCacheBust ran on *every* invocation, which caused the URL to change on
+// every render in dev — defeating the browser cache and forcing a full WebGL
+// re-fetch on each hot reload.
+const CACHE_BUST_TOKEN =
+  process.env.NODE_ENV === "development" ? String(Date.now()) : SPLINE_VERSION;
+
 function withCacheBust(url: string): string {
-  const v =
-    process.env.NODE_ENV === "development" ? Date.now() : SPLINE_VERSION;
-  return `${url}?v=${v}`;
+  return `${url}?v=${CACHE_BUST_TOKEN}`;
 }
 
 export const splineScenes = {

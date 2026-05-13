@@ -20,14 +20,6 @@ function FilterBarSkeleton() {
   )
 }
 
-function FeaturedCardSkeleton() {
-  return (
-    <div className="pt-2">
-      <Skeleton className="w-full aspect-21/9 rounded-2xl" />
-    </div>
-  )
-}
-
 function BlogCardSkeleton() {
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-low">
@@ -68,14 +60,20 @@ function BlogCardSkeleton() {
 }
 
 export function BlogGridSkeleton() {
+  // Render the worst-case grid layout (9 cards, no featured hero).
+  //
+  // The real grid renders a featured hero + 8 cards only on page 1 when a
+  // post is explicitly marked featured. On page 2+ — and on page 1 with no
+  // featured — it renders 9 plain cards. The previous skeleton always
+  // included a 21:9 hero placeholder, which briefly flashed and disappeared
+  // on page 2+. Matching the 9-card case eliminates that CLS at the cost of
+  // a one-frame mismatch on page 1 where the featured hero pops in.
   return (
     <div className="flex flex-col gap-8">
       <FilterBarSkeleton />
-      <FeaturedCardSkeleton />
 
-      {/* Standard grid — 8 cards (9 per page minus 1 featured) */}
       <div className="grid grid-cols-1 gap-6 pt-2 pb-10 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 8 }).map((_, i) => (
+        {Array.from({ length: 9 }).map((_, i) => (
           <BlogCardSkeleton key={i} />
         ))}
       </div>

@@ -31,18 +31,26 @@ function nodeToText(node: ReactNode): string {
  *
  * Consumed by server components — do NOT add "use client".
  */
-export function useMDXComponents(components: MDXComponents): MDXComponents {
+export function useMDXComponents(
+  components?: MDXComponents,
+): MDXComponents {
   return {
     ...components,
-    h2: ({ className, ...props }) => (
-      <h2
-        className={cn(
-          "mt-12 font-heading text-2xl font-bold text-on-surface md:text-3xl",
-          className,
-        )}
-        {...props}
-      />
-    ),
+    h2: ({ className, id, children, ...props }) => {
+      const headingId = id ?? slugify(nodeToText(children))
+      return (
+        <h2
+          id={headingId || undefined}
+          className={cn(
+            "mt-12 scroll-mt-32 font-heading text-2xl font-bold text-on-surface md:text-3xl",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </h2>
+      )
+    },
     h3: ({ className, id, children, ...props }) => {
       const headingId = id ?? slugify(nodeToText(children))
       return (
@@ -141,12 +149,23 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       // technically allows Blob, which we don't support here.
       const srcUrl = typeof src === "string" ? src : undefined
 
-      // If MDX omits a string src or dimensions, fall back to a plain <img>
-      // to avoid breaking inline flow. Project sets images.unoptimized: true
-      // so this is safe at build time.
+      // If MDX omits a string src or dimensions, fall back to a plain <img>.
+      // next/image *requires* explicit width/height (or fill + an
+      // aspect-ratio wrapper), neither of which we have in the missing-dims
+      // path. The project also sets `images: { unoptimized: true }` because
+      // of `output: "export"`, so swapping to next/image here would offer no
+      // optimization gain — only crash on missing props.
       if (!srcUrl || !width || !height) {
-        // eslint-disable-next-line @next/next/no-img-element
-        return <img src={srcUrl} alt={altText} className={imgClassName} />
+        return (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={srcUrl}
+            alt={altText}
+            className={imgClassName}
+            loading="lazy"
+            decoding="async"
+          />
+        )
       }
 
       const numericWidth =

@@ -9,7 +9,6 @@ import {
   Suspense,
   startTransition,
 } from "react";
-import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence, useReducedMotion } from "motion/react"
@@ -151,34 +150,27 @@ function QuestionRouting() {
 }
 
 function MobileContactImage() {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    startTransition(() => setMounted(true));
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div className="aspect-4/3 w-full animate-pulse rounded-3xl bg-surface-container" />
-    );
-  }
-
-  const src =
-    resolvedTheme === "dark"
-      ? "/darkContactPhone.png"
-      : "/lightContactPhone.png";
-
+  // <picture> + media="(prefers-color-scheme: dark)" lets the browser pick
+  // the right asset *before* JavaScript runs — preserving Next/Image's
+  // priority/eager decode and avoiding the post-mount placeholder flash that
+  // a `mounted` flag introduced.
   return (
     <div className="overflow-hidden rounded-3xl bg-surface-container">
-      <Image
-        src={src}
-        alt="Modern Scholar contact illustration"
-        width={800}
-        height={600}
-        className="h-auto w-full object-cover"
-        priority
-      />
+      <picture>
+        <source
+          media="(prefers-color-scheme: dark)"
+          srcSet="/darkContactPhone.png"
+        />
+        <img
+          src="/lightContactPhone.png"
+          alt="Modern Scholar contact illustration"
+          width={800}
+          height={600}
+          className="h-auto w-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
     </div>
   );
 }

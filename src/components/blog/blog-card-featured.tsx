@@ -3,30 +3,21 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Icon } from "@iconify/react"
 import { Button } from "@/components/ui/button/button"
+import type { BlogPost } from "@/lib/blog"
 
-/**
- * Structural shape of the post BlogCardFeatured renders.
- *
- * Defined locally (not imported) so this component accepts BOTH the legacy
- * `BlogPost` from `@/data/blog-posts` and the new `BlogPost` from `@/lib/blog`
- * during the T11 → T14 cascade. Lists ONLY the fields actually read.
- */
-export interface BlogCardFeaturedPost {
-  slug: string
-  title: string
-  excerpt: string
-  category: string
-  image: string
-  publishDate: string
-  readTime: string
-  author: {
-    name: string
-    role: string
-    avatar: string
-  }
-}
+/** Subset of BlogPost actually read by BlogCardFeatured. */
+export type BlogCardFeaturedPost = Pick<
+  BlogPost,
+  | "slug"
+  | "title"
+  | "excerpt"
+  | "category"
+  | "image"
+  | "publishDate"
+  | "readTime"
+  | "author"
+>
 
 interface BlogCardFeaturedProps {
   post: BlogCardFeaturedPost

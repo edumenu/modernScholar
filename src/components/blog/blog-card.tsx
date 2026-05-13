@@ -3,34 +3,24 @@
 import { useState } from "react";
 import Image from "next/image"
 import Link from "next/link";
-import { Icon } from "@iconify/react"
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button/button";
+import type { BlogPost } from "@/lib/blog"
 
-/**
- * Structural shape of the post BlogCard renders.
- *
- * Defined locally (not imported) so this component accepts BOTH the legacy
- * `BlogPost` from `@/data/blog-posts` (still used by BlogGrid until T12) and
- * the new `BlogPost` from `@/lib/blog` (used by RelatedPosts / blog page after
- * T10/T14). Lists ONLY the fields BlogCard actually reads.
- */
-export interface BlogCardPost {
-  slug: string
-  title: string
-  excerpt: string
-  category: string
-  image: string
-  publishDate: string
-  readTime: string
-  series?: { part: number; totalParts: number; name?: string }
-  author: {
-    name: string
-    role: string
-    avatar: string
-  }
-}
+/** Subset of BlogPost actually read by BlogCard. */
+export type BlogCardPost = Pick<
+  BlogPost,
+  | "slug"
+  | "title"
+  | "excerpt"
+  | "category"
+  | "image"
+  | "publishDate"
+  | "readTime"
+  | "series"
+  | "author"
+>
 
 const blogCardVariants = cva(
   "group relative flex h-full overflow-hidden cursor-pointer rounded-2xl shadow-md transition-shadow duration-300",

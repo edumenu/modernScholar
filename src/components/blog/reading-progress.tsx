@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, type RefObject } from "react"
+import { useEffect, useMemo, useRef, useState, type RefObject } from "react"
 import {
   motion,
   useScroll,
   useMotionValueEvent,
+  useReducedMotion,
   useSpring,
   useTransform,
 } from "motion/react"
@@ -28,10 +29,16 @@ export function ReadingProgress({
   const [activeIndex, setActiveIndex] = useState(-1)
   const [isComplete, setIsComplete] = useState(false)
   const lenis = useLenis()
+  const reduce = useReducedMotion()
 
+  // ["start start", "end start"]: 100% fires when the article *bottom* hits
+  // the viewport top — i.e. the user has actually scrolled past the
+  // conclusion. The previous "end end" reached 100% as soon as the bottom
+  // edge entered the viewport, which can be ~2 viewports too early on long
+  // articles.
   const { scrollYProgress } = useScroll({
     target: articleRef,
-    offset: ["start start", "end end"],
+    offset: ["start start", "end start"],
   })
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -42,28 +49,52 @@ export function ReadingProgress({
 
   const scaleX = useTransform(smoothProgress, [0, 1], [0, 1])
 
+  // Resolve heading elements once per `sections` change instead of calling
+  // getElementById for every heading on every scroll frame.
+  const sectionElements = useMemo(() => {
+    if (typeof document === "undefined") return [] as (HTMLElement | null)[]
+    return sections.map((s) => document.getElementById(s.id))
+    // sections is stable from the loader; re-resolve when it changes.
+  }, [sections])
+
+  // rAF-throttle the scroll handler so we don't run getBoundingClientRect
+  // and React state updates on every scroll tick.
+  const rafIdRef = useRef<number | null>(null)
+  const latestProgressRef = useRef(0)
+
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const pct = Math.round(latest * 100)
-    setPercentage(pct)
+    latestProgressRef.current = latest
+    if (rafIdRef.current !== null) return
+    rafIdRef.current = requestAnimationFrame(() => {
+      rafIdRef.current = null
+      const v = latestProgressRef.current
+      const pct = Math.round(v * 100)
+      setPercentage(pct)
+      // Threshold avoids floating-point jitter near 100%.
+      setIsComplete(pct >= 99)
 
-    // Threshold avoids floating-point jitter near 100%; reset when scrolling back up.
-    setIsComplete(pct >= 99)
-
-    // Active section detection using reading-zone offset (30% from top)
-    const readingZone = window.innerHeight * 0.3
-    let currentIndex = -1
-    for (let i = sections.length - 1; i >= 0; i--) {
-      const el = document.getElementById(sections[i].id)
-      if (el) {
+      // Active-section detection using a 30%-from-top reading zone.
+      const readingZone = window.innerHeight * 0.3
+      let currentIndex = -1
+      for (let i = sectionElements.length - 1; i >= 0; i--) {
+        const el = sectionElements[i]
+        if (!el) continue
         const rect = el.getBoundingClientRect()
         if (rect.top <= readingZone) {
           currentIndex = i
           break
         }
       }
-    }
-    setActiveIndex(currentIndex)
+      setActiveIndex(currentIndex)
+    })
   })
+
+  useEffect(
+    () => () => {
+      if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current)
+    },
+    [],
+  )
 
   const handleSectionClick = (sectionId: string) => {
     const el = document.getElementById(sectionId)
@@ -91,7 +122,11 @@ export function ReadingProgress({
                   height: isActive ? 10 : 6,
                   opacity: isComplete ? 1 : isActive ? 1 : 0.3,
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                transition={
+                  reduce
+                    ? { duration: 0 }
+                    : { type: "spring", stiffness: 300, damping: 25 }
+                }
               />
               <span
                 className={`truncate text-xs transition-colors duration-200 ${
@@ -122,7 +157,7 @@ export function ReadingProgress({
         </span>
         <motion.span
           className={`font-heading text-sm font-medium tabular-nums ${isComplete ? "text-secondary" : "text-on-surface"}`}
-          animate={isComplete ? { scale: [1, 1.3, 1] } : {}}
+          animate={isComplete && !reduce ? { scale: [1, 1.3, 1] } : {}}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
           {percentage}%

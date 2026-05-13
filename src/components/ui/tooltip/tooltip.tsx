@@ -5,7 +5,9 @@ import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
 import { cn } from "@/lib/utils"
 
 function TooltipProvider({
-  delay = 0,
+  // 200ms is the WCAG-friendly default — instant tooltips fire on every
+  // micro-hover and feel jumpy.
+  delay = 200,
   ...props
 }: TooltipPrimitive.Provider.Props) {
   return (

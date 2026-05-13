@@ -9,7 +9,6 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-heading);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -427,7 +426,7 @@
 
 /* Heavy Glass — Over Photography / Complex Backgrounds, Tooltips, Toasts */
 .glass-heavy {
-  background: rgba(249, 243, 242, 0.88);
+  background: rgba(249, 243, 242, 0.1);
   backdrop-filter: blur(48px) saturate(1.1);
   border: 1px solid rgba(219, 193, 188, 0.15);
   box-shadow: 0 12px 48px rgba(32, 26, 25, 0.06);

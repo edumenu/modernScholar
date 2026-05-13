@@ -16,6 +16,15 @@ import {
 } from "@/data/scholarships"
 import { ALL_TAGS, type Tag } from "@/lib/eligibility"
 import type { GridLayout } from "@/components/scholarships/scholarship-filters"
+import {
+  MONTHS,
+  MONTH_LABELS,
+  type Month,
+  type MonthFilter,
+} from "@/lib/constants"
+
+export { MONTHS, MONTH_LABELS }
+export type { Month, MonthFilter }
 
 const VALID_SORTS = ["deadline", "amount"] as const
 type SortValue = (typeof VALID_SORTS)[number]
@@ -23,39 +32,7 @@ type SortValue = (typeof VALID_SORTS)[number]
 const VALID_LAYOUTS = ["grid", "list"] as const
 type LayoutValue = (typeof VALID_LAYOUTS)[number]
 
-export const MONTHS = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-] as const
-export type Month = (typeof MONTHS)[number]
-export type MonthFilter = Month | "all"
 const VALID_MONTH_VALUES = [...MONTHS, "all"] as const
-
-export const MONTH_LABELS: Record<MonthFilter, string> = {
-  all: "All months",
-  january: "January",
-  february: "February",
-  march: "March",
-  april: "April",
-  may: "May",
-  june: "June",
-  july: "July",
-  august: "August",
-  september: "September",
-  october: "October",
-  november: "November",
-  december: "December",
-}
 
 export type ScholarshipFiltersValue = {
   activeFilter: EducationLevelFilter
@@ -178,19 +155,23 @@ export function useScholarshipFilters(args: {
   // shared links are rewritten without a navigation. Subsequent user input
   // flows through the typed setters so this only needs to fire once.
   useEffect(() => {
+    let didSanitize = false
     if (
       !(EDUCATION_LEVELS as readonly string[]).includes(activeFilterUrl)
     ) {
       setActiveFilterUrl(null)
+      didSanitize = true
     }
     if (!(VALID_SORTS as readonly string[]).includes(sortByUrl)) {
       setSortByUrl(null)
+      didSanitize = true
     }
     if (!(VALID_LAYOUTS as readonly string[]).includes(layoutUrl)) {
       setLayoutUrl(null)
     }
     if (!(VALID_MONTH_VALUES as readonly string[]).includes(monthUrl)) {
       setMonthUrl(null)
+      didSanitize = true
     }
     const cMin = Math.max(AWARD_MIN, Math.min(AWARD_MAX, minUrl))
     const cMax = Math.max(AWARD_MIN, Math.min(AWARD_MAX, maxUrl))
@@ -198,17 +179,36 @@ export function useScholarshipFilters(args: {
       // Inverted range (?min=99999&max=10): revert both to defaults rather
       // than silently swap-and-activate. A swap would misrepresent the
       // pasted URL's intent and leave a stale active-filter chip on screen.
-      if (minUrl !== AWARD_MIN) setMinUrl(null)
-      if (maxUrl !== AWARD_MAX) setMaxUrl(null)
+      if (minUrl !== AWARD_MIN) {
+        setMinUrl(null)
+        didSanitize = true
+      }
+      if (maxUrl !== AWARD_MAX) {
+        setMaxUrl(null)
+        didSanitize = true
+      }
     } else {
-      if (cMin !== minUrl) setMinUrl(cMin === AWARD_MIN ? null : cMin)
-      if (cMax !== maxUrl) setMaxUrl(cMax === AWARD_MAX ? null : cMax)
+      if (cMin !== minUrl) {
+        setMinUrl(cMin === AWARD_MIN ? null : cMin)
+        didSanitize = true
+      }
+      if (cMax !== maxUrl) {
+        setMaxUrl(cMax === AWARD_MAX ? null : cMax)
+        didSanitize = true
+      }
     }
     const validTags = tagsUrl.filter((t) =>
       (ALL_TAGS as readonly string[]).includes(t),
     )
     if (validTags.length !== tagsUrl.length) {
       setTagsUrl(validTags.length === 0 ? null : validTags)
+      didSanitize = true
+    }
+    // Any sanitization that changes the visible result set invalidates the
+    // current page index — reset to page 1 so a stale `?page=N` against a
+    // sanitized corpus doesn't render an empty page.
+    if (didSanitize) {
+      setPageUrl(null)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

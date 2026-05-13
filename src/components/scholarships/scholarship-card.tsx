@@ -35,11 +35,16 @@ export function ScholarshipCard({
   disableLayoutAnimation = false,
   onExpand,
 }: ScholarshipCardProps) {
-  const { toggle, isSelected } = useComparisonStore()
+  // Selector form: this card only re-renders when its own membership flips,
+  // not on every other card's toggle / sheet open.
+  const toggle = useComparisonStore((s) => s.toggle);
+  const isInComparison = useComparisonStore((s) =>
+    s.selectedIds.includes(scholarship.id),
+  );
   // Gate the persisted-state read so SSR HTML (empty store) matches the first
   // client render. After mount, the real selection state takes over.
-  const hasMounted = useHasMounted()
-  const compared = hasMounted && isSelected(scholarship.id)
+  const hasMounted = useHasMounted();
+  const compared = hasMounted && isInComparison;
   const tint = getClassificationTint(scholarship.classification);
   const expired = isExpired(scholarship, SESSION_DATE);
 
@@ -132,7 +137,7 @@ export function ScholarshipCard({
                     }}
                     className={cn(
                       "flex size-8 shrink-0 items-center justify-center rounded-full",
-                      "transition-all duration-200",
+                      "transition-all duration-200 cursor-pointer",
                       compared
                         ? "bg-on-surface text-surface shadow-sm"
                         : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",
@@ -153,7 +158,7 @@ export function ScholarshipCard({
                 }
               />
               <TooltipContent
-                side="bottom"
+                side="top"
                 sideOffset={8}
                 className="*:last:hidden"
               >

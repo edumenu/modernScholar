@@ -4,12 +4,13 @@ import { BlogDetail } from "@/components/blog/blog-detail"
 import { BlogDetailContent } from "@/components/blog/blog-detail-content"
 import { RelatedPosts } from "@/components/blog/related-posts"
 import { PageTransition } from "@/components/ui/page-transition"
-import { getAllPosts, getPostBySlug, getRelatedPosts } from "@/lib/blog"
+import {
+  getAllPosts,
+  getPostBySlug,
+  getRelatedPosts,
+  type BlogPost,
+} from "@/lib/blog"
 import { SITE_URL } from "@/lib/constants"
-
-// Local alias derived from the loader so the seriesPosts narrowing stays in
-// sync with whatever shape getAllPosts returns.
-type BlogPostType = Awaited<ReturnType<typeof getAllPosts>>[number]
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -63,7 +64,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const related = await getRelatedPosts(post)
 
-  let seriesPosts: BlogPostType[] | undefined
+  let seriesPosts: BlogPost[] | undefined
   if (post.series) {
     const seriesName = post.series.name
     const all = await getAllPosts()
@@ -75,29 +76,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // Dynamic import compiles the MDX file through @next/mdx and the
   // top-level mdx-components.tsx map. The variable form works with webpack —
   // it scans content/blog/ at build time and bundles every matching .mdx.
-  const Mdx = (await import(`../../../../content/blog/${slug}.mdx`)).default
+  // dynamicParams = false guards the happy path; the try/catch makes any
+  // resolution failure (missing file, build artifact divergence) explicit
+  // instead of bubbling as an unhandled server exception.
+  let Mdx: React.ComponentType
+  try {
+    Mdx = (await import(`../../../../content/blog/${slug}.mdx`)).default
+  } catch {
+    notFound()
+  }
 
-  // RelatedPosts expects a structural shape with `id`. Map slug → id since the
-  // new BlogPost uses slug as identity.
-  const relatedItems = related.map((p) => ({
-    id: p.slug,
-    slug: p.slug,
-    title: p.title,
-    excerpt: p.excerpt,
-    category: p.category,
-    image: p.image,
-    publishDate: p.publishDate,
-    readTime: p.readTime,
-    author: {
-      name: p.author.name,
-      role: p.author.role,
-      avatar: p.author.avatar,
-    },
-    featured: p.featured,
-    series: p.series
-      ? { part: p.series.part, totalParts: p.series.totalParts }
-      : undefined,
-  }))
+  // RelatedPosts now derives its prop shape via Pick<BlogPost, ...>, so we
+  // can pass the loader output directly.
+  const relatedItems = related
 
   return (
     <PageTransition>

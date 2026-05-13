@@ -53,12 +53,18 @@ export function ScholarshipListCardSpread({
   dimmed = false,
   onExpand,
 }: ScholarshipListCardSpreadProps) {
-  const { toggle, isSelected } = useComparisonStore()
+  // Selector form: subscribe only to the slices this row reads.
+  const toggle = useComparisonStore((s) => s.toggle);
+  const isInComparison = useComparisonStore((s) =>
+    s.selectedIds.includes(scholarship.id),
+  );
   // Same hydration gate as the grid card — see scholarship-card.tsx.
-  const hasMounted = useHasMounted()
-  const compared = hasMounted && isSelected(scholarship.id)
-  const primaryLevel = scholarship.classification[0]
-  const tint = CLASSIFICATION_TINT_MAP[primaryLevel] ?? CLASSIFICATION_TINT_MAP["High School"]
+  const hasMounted = useHasMounted();
+  const compared = hasMounted && isInComparison;
+  const primaryLevel = scholarship.classification[0];
+  const tint =
+    CLASSIFICATION_TINT_MAP[primaryLevel] ??
+    CLASSIFICATION_TINT_MAP["High School"];
   const expired = isExpired(scholarship, SESSION_DATE);
 
   return (
@@ -192,7 +198,7 @@ export function ScholarshipListCardSpread({
                       toggle(scholarship.id);
                     }}
                     className={cn(
-                      "flex size-8 items-center justify-center rounded-full transition-all duration-200",
+                      "flex size-8 items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
                       compared
                         ? "bg-on-surface text-surface shadow-sm"
                         : "bg-on-surface/10 text-on-surface hover:bg-on-surface/18",

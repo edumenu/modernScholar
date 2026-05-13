@@ -1,25 +1,55 @@
-"use client"
+"use client";
 
-import { Suspense, lazy, useState, useEffect, startTransition } from "react";
-import { useRouter } from "next/navigation"
-import { useTheme } from "next-themes"
-import { CTAButton } from "@/components/ui/button/cta-button"
+import { Suspense, useMemo } from "react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import { CTAButton } from "@/components/ui/button/cta-button";
 import { AnimatedSection } from "../ui/animatedSection/animated-section";
 import { AnimatedLines } from "@/components/ui/animatedLines/animated-lines";
-import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts"
-import { ParallaxLayer } from "@/components/ui/parallax-layer"
-import { splineScenes } from "@/config/spline-scenes"
+import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts";
+import { ParallaxLayer } from "@/components/ui/parallax-layer";
+import { splineScenes } from "@/config/spline-scenes";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 
-const SplineScene = lazy(() =>
-  import("./spline-scene").then((m) => ({ default: m.SplineScene })),
+// next/dynamic with ssr: false keeps the heavy Spline runtime out of the
+// initial server bundle and out of the parent client chunk until it's
+// actually rendered.
+const SplineScene = dynamic(
+  () => import("./spline-scene").then((m) => m.SplineScene),
+  { ssr: false },
+);
+
+const SplineFallback = () => (
+  <div className="flex size-full items-center justify-center">
+    <div className="size-12 animate-pulse rounded-full bg-surface-container" />
+  </div>
 );
 
 export function HeroSection() {
-  const router = useRouter()
-  const [mounted, setMounted] = useState(false)
-  const { resolvedTheme } = useTheme()
+  const router = useRouter();
+  const mounted = useHasMounted();
+  const { resolvedTheme } = useTheme();
 
-  useEffect(() => { startTransition(() => setMounted(true)) }, [])
+  // Memoize the scene URL so a re-render with the same theme reuses the same
+  // string identity — `<SplineScene>` swaps scenes via the runtime API
+  // without tearing down the WebGL context. The previous `key={resolvedTheme}`
+  // forced a full remount + fresh `.splinecode` download on every theme flip.
+  const splineUrl = useMemo(
+    () =>
+      mounted && resolvedTheme === "dark"
+        ? splineScenes.heroDark()
+        : splineScenes.heroLight(),
+    [mounted, resolvedTheme],
+  );
+
+  const splineNode = mounted ? (
+    <Suspense fallback={<SplineFallback />}>
+      <SplineScene scene={splineUrl} className="size-full" />
+    </Suspense>
+  ) : (
+    <SplineFallback />
+  );
 
   return (
     <section
@@ -31,30 +61,7 @@ export function HeroSection() {
         yRange={[0, 80]}
         className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2"
       >
-        {(() => {
-          const fallback = (
-            <div className="flex size-full items-center justify-center">
-              <div className="size-12 animate-pulse rounded-full bg-surface-container" />
-            </div>
-          );
-          const splineUrl =
-            mounted && resolvedTheme === "dark"
-              ? splineScenes.heroDark()
-              : splineScenes.heroLight();
-          return (
-            <Suspense fallback={fallback}>
-              {mounted ? (
-                <SplineScene
-                  key={resolvedTheme}
-                  scene={splineUrl}
-                  className="size-full"
-                />
-              ) : (
-                fallback
-              )}
-            </Suspense>
-          );
-        })()}
+        {splineNode}
       </ParallaxLayer>
 
       {/* Spacer — keeps bottom row pushed down */}
@@ -89,7 +96,6 @@ export function HeroSection() {
             variant="revealUp"
             aria-hidden="true"
           />
-          {/* </AnimatedSection> */}
         </div>
 
         {/* CTA — bottom right */}

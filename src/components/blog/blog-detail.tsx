@@ -8,47 +8,22 @@ import { AnimatedSection } from "@/components/ui/animatedSection/animated-sectio
 import { Button } from "@/components/ui/button/button"
 import { ReadingProgress } from "@/components/blog/reading-progress"
 
-// --- Structural types --------------------------------------------------------
-// Defined locally (not imported from @/lib/blog) so this component remains
-// type-compatible with both the legacy @/data/blog-posts BlogPost (still passed
-// by src/app/blog/[slug]/page.tsx until T14) and the new @/lib/blog BlogPost.
-// Mirrors the T08 pattern used by BlogDetailContent.
+import type { BlogPost } from "@/lib/blog"
 
-interface BlogDetailSeries {
-  name: string
-  part: number
-  totalParts?: number
-}
+// Subset of BlogPost the detail layout reads. Pick keeps the contract aligned
+// with the loader without ever requiring all of BlogPost's fields here.
+type BlogDetailPost = Pick<
+  BlogPost,
+  | "slug"
+  | "title"
+  | "category"
+  | "publishDate"
+  | "readTime"
+  | "series"
+  | "headings"
+>
 
-interface BlogDetailHeading {
-  id: string
-  title: string
-}
-
-interface BlogDetailPost {
-  // `id` is legacy-only; the new BlogPost uses `slug` as identity. Keep optional
-  // so both shapes satisfy the type.
-  id?: string
-  slug: string
-  title: string
-  category: string
-  publishDate: string
-  readTime: string
-  series?: BlogDetailSeries
-  /**
-   * Section headings for the ReadingProgress sidebar. Provided by the MDX
-   * loader (`src/lib/blog.ts`). When absent or empty, ReadingProgress simply
-   * renders no breadcrumb dots.
-   */
-  headings?: BlogDetailHeading[]
-}
-
-interface BlogDetailSeriesPost {
-  id?: string
-  slug: string
-  title: string
-  series?: BlogDetailSeries
-}
+type BlogDetailSeriesPost = Pick<BlogPost, "slug" | "title" | "series">
 
 interface BlogDetailProps {
   post: BlogDetailPost

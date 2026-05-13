@@ -1,7 +1,22 @@
 # App Routes & Data Layer Review
 
-_Reviewed 2026-05-08. Next.js 16.2.1 (webpack mode, `output: "export"`), React 19.2.4, nuqs 2.x, @next/mdx 16._
+_Reviewed 2026-05-08. Re-audited 2026-05-10 — see "Status update" section below; original report content unchanged._
+_Next.js 16.2.1 (webpack mode, `output: "export"`), React 19.2.4, nuqs 2.x, @next/mdx 16._
 _Docs consulted: `node_modules/next/dist/docs/01-app/01-getting-started/02-project-structure.md`, `01-app/03-api-reference/05-config/01-next-config-js/output.md`._
+
+---
+
+## Status update — 2026-05-10
+
+**Resolved (partial):**
+- `src/app/blog/loading.tsx` and `src/app/contact/loading.tsx` shipped (recommended action #5, partial — `error.tsx` siblings still missing).
+
+**Still open — every other finding in this report:**
+- Critical: `global-error.tsx` missing; `blog/[slug]/page.tsx:78` dynamic `import()` still has no try/catch.
+- High: untyped metadata (5 files unchanged); `app/page.tsx` still has no `metadata` export; sitemap still uses `new Date()` for static routes and still omits privacy/terms/cookies; triple `getAllPosts()` call pattern in `[slug]/page.tsx` unchanged; `blog/error.tsx` + `contact/error.tsx` still missing.
+- Medium: `--font-geist-mono` dangling reference in `globals.css:12` unchanged (the `Geist_Mono` import remains commented out at `layout.tsx:28-31`); `scholarship-utils.ts:5-7` still imports `Month`/`MonthFilter` from the hook layer; `not-found.tsx` still has no metadata.
+
+Recommended-actions list at the bottom remains valid except #5 is now "add `error.tsx` siblings + fix the skeleton-vs-grid mismatch flagged in report 05" — the `loading.tsx` half landed without the CLS fix, so the originally-dormant skeleton issue is now live.
 
 ---
 

@@ -11,30 +11,22 @@ import {
   CarouselNext,
   type CarouselApi,
 } from "@/components/ui/carousel"
+import type { BlogPost } from "@/lib/blog"
 
-// Structural minimum compatible with BlogCard's `post` prop.
-// Mirrors T08/T09: keeps RelatedPosts decoupled from any concrete BlogPost
-// type until BlogCard is migrated in T11.
-type RelatedPostItem = {
-  id: string | number
-  slug: string
-  title: string
-  excerpt: string
-  category: string
-  image: string
-  publishDate: string
-  readTime: string
-  author: {
-    name: string
-    role: string
-    avatar: string
-  }
-  featured?: boolean
-  series?: {
-    part: number
-    totalParts: number
-  }
-}
+/** Subset of BlogPost RelatedPosts forwards to BlogCard. */
+type RelatedPostItem = Pick<
+  BlogPost,
+  | "slug"
+  | "title"
+  | "excerpt"
+  | "category"
+  | "image"
+  | "publishDate"
+  | "readTime"
+  | "author"
+  | "featured"
+  | "series"
+>
 
 interface RelatedPostsProps {
   posts?: RelatedPostItem[]
@@ -108,7 +100,7 @@ export function RelatedPosts({ posts = [] }: RelatedPostsProps) {
           <CarouselContent className="-ml-4 px-8 pb-8">
             {posts.map((relatedPost) => (
               <CarouselItem
-                key={relatedPost.id}
+                key={relatedPost.slug}
                 className="basis-full pl-4 md:basis-1/2 lg:basis-1/3"
               >
                 <BlogCard post={relatedPost} variant="compact" />
