@@ -29,7 +29,7 @@ describe("Not Found page", () => {
 
     expect(screen.getByText(/error 404/i)).toBeInTheDocument()
     expect(
-      screen.getByRole("heading", { name: /turned the page/i }),
+      screen.getByRole("heading", { name: /couldn.t find that page/i }),
     ).toBeInTheDocument()
   })
 

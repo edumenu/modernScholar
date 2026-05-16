@@ -1,0 +1,12 @@
+# Ralph Progress — legal-pages
+Started: 2026-05-14T00:00:00Z
+MAX_ITER=12
+---
+[2026-05-14 00:01] T01 PASS — Added legal-constants + LegalLayout/Section/Subsection. Files: src/lib/legal-constants.ts, src/components/legal/legal-layout.tsx, src/components/legal/legal-section.tsx, src/components/legal/legal-subsection.tsx. Gotcha: page-padding-y already wraps article, do not double.
+[2026-05-14 00:01] T06 PASS — Appended PO Box + deletion runbook to Todos; added breach-runbook.md. Files: Brain/future/Todos.md, Brain/future/breach-runbook.md. Gotcha: homepage banner primitive does not exist yet.
+[2026-05-14 00:03] T02 PASS — Rewrote /privacy with 12 LegalSections, GDPR+CCPA rights, full data inventory. Files: src/app/privacy/page.tsx. Gotcha: HTML entities in title prop strings render literally.
+[2026-05-14 00:03] T03 PASS — Rewrote /terms with 17 LegalSections, warning Callout, NC venue, no arbitration. Files: src/app/terms/page.tsx. Gotcha: react/no-unescaped-entities strict on apostrophes in JSX text.
+[2026-05-14 00:03] T04 FAIL (attempt 1/3) — lint:touched. 13 react/no-unescaped-entities errors at lines 42, 51, 122-124, 160, 182-183, 191-193 in src/app/cookies/page.tsx.
+[2026-05-14 00:05] T04 PASS — Escaped 13 apostrophes/quotes in JSX text via &apos;/&quot;. Files: src/app/cookies/page.tsx. Gotcha: TS string literals in const arrays do not trigger the rule.
+[2026-05-14 00:07] T05 PASS — 4 component tests (LegalLayout + 3 routes), 16/16 assertions green. Files: src/components/legal/__tests__/legal-layout.component.test.tsx, src/app/{privacy,terms,cookies}/__tests__/*.component.test.tsx. Gotcha: Intl format is TZ-sensitive, assert via <time> dateTime attr.
+ALL TASKS COMPLETE
