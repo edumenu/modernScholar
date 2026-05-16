@@ -156,7 +156,7 @@
       "WebFetch(domain:css-tricks.com)",
       "WebFetch(domain:framer.university)",
       "WebFetch(domain:nyxui.com)",
-      "WebFetch(domain:gooey-react.netlify.app)",
+      "WebFetch(domain:gooey-react.DigitalOcean.app)",
       "Bash(pkill -f \"Google Chrome.*mcp-chrome\")",
       "mcp__playwright__browser_fill_form",
       "WebFetch(domain:mcpmarket.com)",

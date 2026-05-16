@@ -218,6 +218,14 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
+    "PRDs/05_13_2026/legal-pages/legal-pages-verification.md",
+    "future/breach-runbook.md",
+    "PRDs/05_13_2026/legal-pages/legal-pages-progress.txt",
+    "PRDs/05_13_2026/legal-pages/legal-pages-tasks.json",
+    "PRDs/05_13_2026/legal-pages/legal-pages.md",
+    "PRDs/05_13_2026/legal-pages/legal-pages-decisions.md",
+    "PRDs/05_13_2026/legal-pages",
+    "PRDs/05_13_2026",
     "code-reviews/2026-05-08/SUMMARY.md",
     "code-reviews/2026-05-08/01-app-routes-and-data.md",
     "code-reviews/2026-05-08/05-blog-and-contact.md",
@@ -234,13 +242,9 @@
     "PRDs/05_04_2026/scholarships-all-corpus/scholarships-all-corpus-review.md",
     "PRDs/05_04_2026/scholarships-all-corpus/scholarships-all-corpus-progress.txt",
     "PRDs/05_04_2026/scholarships-all-corpus",
-    "PRDs/05_04_2026",
     "PRDs/05_02_2026/blogContentSystem/blog-content-system-verification.md",
-    "PRDs/05_02_2026/blogContentSystem/blog-content-system-tasks.json",
-    "PRDs/05_02_2026/blogContentSystem/blog-content-system-progress.txt",
     "Screenshot 2026-05-03 at 9.16.55 AM.png",
     "PRDs/05_02_2026/architectureDeepening/expandedScholarshipOverlay/expanded-scholarship-overlay-verification.md",
-    "PRDs/05_02_2026/architectureDeepening/expandedScholarshipOverlay/expanded-scholarship-overlay-progress.txt",
     "PRDs/05_02_2026/architectureDeepening/scholarshipFiltersHook/scholarship-filters-hook-verification.md",
     "PRDs/05_02_2026/architectureDeepening/eligibilityClassifierCompletion/eligibility-classifier-completion-verification.md",
     "future/web-animation-best-practices.md",
@@ -250,10 +254,6 @@
     "PRDs/05_02_2026/blogContentSystem/blog-content-system.md",
     "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module-verification.md",
     "PRDs/05_02_2026/architectureDeepening/blogContentSystem/blog-content-system.md",
-    "PRDs/05_02_2026/architectureDeepeningOverview/architecture-deepening-overview.md",
-    "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module.md",
-    "PRDs/05_02_2026/architectureDeepening/scholarshipFiltersHook/scholarship-filters-hook.md",
-    "PRDs/05_02_2026/architectureDeepening/eligibilityClassifierCompletion/eligibility-classifier-completion.md",
-    "PRDs/05_02_2026/architectureDeepening/expandedScholarshipOverlay/expanded-scholarship-overlay.md"
+    "PRDs/05_02_2026/architectureDeepeningOverview/architecture-deepening-overview.md"
   ]
 }

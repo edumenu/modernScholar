@@ -1,0 +1,115 @@
+{
+  "module": "legal-pages",
+  "prd_path": "Brain/PRDs/05_13_2026/legal-pages/legal-pages.md",
+  "agent": "frontend-engineer",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Build legal infrastructure (constants + LegalLayout/Section/Subsection)",
+      "description": "Create `src/lib/legal-constants.ts` exporting CONTACT_EMAIL, CONTROLLERS, GOVERNING_LAW, DISPUTE_VENUE, RESPONSE_WINDOW_DAYS, BREACH_WINDOW_HOURS, and LAST_UPDATED ({privacy, terms, cookies} ISO dates set to 2026-05-14). Then create server components in `src/components/legal/`: `legal-layout.tsx` (wraps children in PageTransition, applies page-padding-y + max-w-3xl, renders last-updated label, H1, optional TL;DR card, children, contact footer), `legal-section.tsx` (H2 with id + scroll-mt-24), `legal-subsection.tsx` (H3). See PRD §Implementation Decisions / Modules and §Styling for tokens and typography.",
+      "files": [
+        "src/lib/legal-constants.ts",
+        "src/components/legal/legal-layout.tsx",
+        "src/components/legal/legal-section.tsx",
+        "src/components/legal/legal-subsection.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "LegalLayout owns chrome: last-updated label, H1, optional TL;DR, contact footer",
+        "Single edit to legal-constants.ts updates date across all three policies",
+        "No glassmorphism — Z-1 surfaces only; tokens are surface-container / on-surface"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "page-padding-y is 10rem top+bottom and already wraps the article — pages must not double-wrap it."
+    },
+    {
+      "id": "T02",
+      "title": "Rewrite Privacy Policy page with 12 sections",
+      "description": "Replace `src/app/privacy/page.tsx` body with <LegalLayout title='Privacy Policy' lastUpdated={LAST_UPDATED.privacy} tldr={...}> composing 12 <LegalSection> blocks per PRD §Privacy Policy structure (TL;DR, Who we are, What we collect, Why, Where data goes, Retention, Your rights [GDPR+CCPA as subsections], Children's privacy, International transfers, Changes, Contact, Last updated). Use Stripe/Vercel tone. Cite exact inventory: theme/ms-comparison/ms-settings localStorage, Spline+Iconify CDNs, Google Fonts self-hosted. Include <Callout type='tip'> for parental request line. Refresh metadata.description. Pull all constants from legal-constants. See PRD §Content authoring requirements + decisions Q5/Q7/Q9/Q11/Q13.",
+      "files": ["src/app/privacy/page.tsx"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "Plain-language summary of what we do with user data (GDPR + CCPA covered)",
+        "Cites exact data inventory: theme, ms-comparison, ms-settings, Spline, Iconify",
+        "Under-13 disclaimer + parental contact line present"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "HTML entities in title string props render literally — use real Unicode chars in titles, not &amp;rsquo; etc."
+    },
+    {
+      "id": "T03",
+      "title": "Rewrite Terms of Service page with 17 sections",
+      "description": "Replace `src/app/terms/page.tsx` body with <LegalLayout title='Terms of Service' lastUpdated={LAST_UPDATED.terms} tldr={...}> composing 17 <LegalSection> blocks per PRD §Terms of Service structure (acceptance, about service, eligibility, scholarship data disclaimer, editorial content, acceptable use, IP, third-party links, AS-IS disclaimers, limitation of liability, indemnification, termination, governing law NC, disputes, changes, contact, last updated). Use <Callout type='warning'> for the medium-strength scholarship disclaimer. Include light anti-scraping clause. NC governing law + venue, no arbitration. Refresh metadata.description. See PRD §Content authoring requirements + decisions Q14/Q15/Q16.",
+      "files": ["src/app/terms/page.tsx"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "Medium-strength scholarship disclaimer: AS-IS, user must verify, no liability for missed deadlines",
+        "Light anti-scraping clause prohibits systematic extraction without permission",
+        "Governing law = North Carolina; no arbitration clause; editorial content owned by Modern Scholar"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "react/no-unescaped-entities is strict on apostrophes/quotes in JSX text — use &apos; / &quot; or wrap in {`...`}."
+    },
+    {
+      "id": "T04",
+      "title": "Rewrite Cookie Policy page with 7 sections",
+      "description": "Replace `src/app/cookies/page.tsx` body with <LegalLayout title='Cookie Policy' lastUpdated={LAST_UPDATED.cookies} tldr={...}> composing the 7-section skeleton per PRD §Cookie Policy structure: TL;DR, table of localStorage keys (theme, ms-comparison, ms-settings — name/purpose/lifetime/category), explicit 'what we don't use' list (GA, Meta Pixel, ad cookies), third-party CDN note (Spline, Iconify see IP, set no first-party cookies), how to clear (browser-level), changes, contact. No banner or consent UI. Refresh metadata.description. See PRD §Content authoring requirements + decisions Q5/Q17/Q18.",
+      "files": ["src/app/cookies/page.tsx"],
+      "depends_on": ["T01"],
+      "acceptance": [
+        "Table of localStorage keys with names, purposes, lifetimes (theme, ms-comparison, ms-settings)",
+        "Explicit 'what we don't use' list: GA, Meta Pixel, advertising cookies",
+        "Third-party CDN note: Spline + Iconify see IP but set no first-party cookies"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 1,
+      "notes": "Attempt 1 failed lint with 13 react/no-unescaped-entities. Attempt 2 escaped apostrophes/quotes via &apos;/&quot;. TS string literals in const arrays don't trigger the rule."
+    },
+    {
+      "id": "T05",
+      "title": "Add LegalLayout render test + per-route page smoke tests",
+      "description": "Write four component tests (jsdom env, *.component.test.tsx pattern per `src/app/__tests__/not-found.component.test.tsx`). (1) `src/components/legal/__tests__/legal-layout.component.test.tsx` — pass title, lastUpdated, tldr, sample <LegalSection> child; assert H1 string, formatted last-updated label, TL;DR content, child H2 all rendered. (2-4) `src/app/{privacy,terms,cookies}/__tests__/{route}.component.test.tsx` — render page, assert single H1 with policy title, contact email present, 'Last updated' string present, and no skipped heading levels (H1→H2→optional H3). Mock PageTransition like existing tests if needed. See PRD §Testing Decisions.",
+      "files": [
+        "src/components/legal/__tests__/legal-layout.component.test.tsx",
+        "src/app/privacy/__tests__/privacy.component.test.tsx",
+        "src/app/terms/__tests__/terms.component.test.tsx",
+        "src/app/cookies/__tests__/cookies.component.test.tsx"
+      ],
+      "depends_on": ["T01", "T02", "T03", "T04"],
+      "acceptance": [
+        "LegalLayout test asserts H1, last-updated label, TL;DR content, and child section H2 render",
+        "Per-route tests assert single H1, contact email, 'Last updated' string",
+        "Heading hierarchy assertion: no skipped levels (H1→H2→optional H3) per route"
+      ],
+      "validation": ["lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Intl.DateTimeFormat is TZ-sensitive — tests assert <time> dateTime attr + month/year regex rather than exact day."
+    },
+    {
+      "id": "T06",
+      "title": "Add Brain side-artifacts (Todos update + breach runbook)",
+      "description": "Append to `Brain/future/Todos.md` two reminders: (a) 'When LLC formed → obtain PO Box or virtual mailbox → add physical address to /privacy, /terms, /cookies' (b) 'Manual deletion-request handling: respond within 30 days; locate-and-purge runbook lives here'. Add the deletion runbook inline under that heading (short bullet list: locate inbound emails by sender → confirm identity → purge from Gmail → reply with confirmation). Create new `Brain/future/breach-runbook.md` with sections: Detect, Contain (rotate creds, enable MFA), Assess scope, Notify within 72h (email + homepage banner), Post-mortem. Internal-only — do not link from any public page. See PRD §Further Notes / Authoring & operator workflow.",
+      "files": [
+        "Brain/future/Todos.md",
+        "Brain/future/breach-runbook.md"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "Todos.md captures PO Box deferred until LLC formation + deletion-request runbook",
+        "breach-runbook.md exists with 72-hour notification plan and internal-only scope"
+      ],
+      "validation": ["lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Homepage banner primitive doesn't exist yet — runbook flags build-inline if needed."
+    }
+  ]
+}

@@ -49,7 +49,7 @@
 
 **Not implemented — security headers:**
 - The project uses `output: "export"` (static site generation). The `headers()` config function is **not supported** with static exports — it requires a Node.js server.
-- Security headers (`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) must be configured at the hosting level (e.g., Vercel `vercel.json`, Netlify `_headers`, Cloudflare Pages `_headers`).
+- Security headers (`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) must be configured at the hosting level (e.g., Vercel `vercel.json`, DigitalOcean `_headers`, Cloudflare Pages `_headers`).
 
 **Not implemented — image remotePatterns:**
 - Already handled by `images.unoptimized: true` (disables image optimization entirely for static export, making `remotePatterns` irrelevant).

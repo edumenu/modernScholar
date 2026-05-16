@@ -1,0 +1,95 @@
+import type { ReactNode } from "react"
+
+import { PageTransition } from "@/components/ui/page-transition"
+import { CONTACT_EMAIL } from "@/lib/legal-constants"
+import { cn } from "@/lib/utils"
+
+interface LegalLayoutProps {
+  /** Page title rendered as the H1. */
+  title: string
+  /** ISO date string (`YYYY-MM-DD`) — typically `LAST_UPDATED.<policy>`. */
+  lastUpdated: string
+  /** Optional TL;DR summary rendered in a tinted card above the body. */
+  tldr?: ReactNode
+  /** Composed `<LegalSection>` (and any other) content. */
+  children: ReactNode
+  className?: string
+}
+
+const LAST_UPDATED_FORMATTER = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+})
+
+function formatLastUpdated(iso: string): string {
+  // Parse as a UTC date so the rendered day matches the ISO date regardless of
+  // server / build-time timezone. Falls back to the raw string if invalid.
+  const parsed = new Date(`${iso}T00:00:00Z`)
+  if (Number.isNaN(parsed.getTime())) {
+    return iso
+  }
+  return LAST_UPDATED_FORMATTER.format(parsed)
+}
+
+/**
+ * Shared chrome for every legal policy page: scoped page transition,
+ * vertical rhythm, a narrow readable column, the "Last Updated" label,
+ * the H1, an optional TL;DR card, the composed body, and a uniform
+ * contact footer.
+ *
+ * Pure server component — no client-side state. `PageTransition` is the
+ * only client boundary in the tree (already site-wide).
+ */
+export function LegalLayout({
+  title,
+  lastUpdated,
+  tldr,
+  children,
+  className,
+}: LegalLayoutProps) {
+  const formattedDate = formatLastUpdated(lastUpdated)
+
+  return (
+    <PageTransition>
+      <div className={cn("page-padding-y", className)}>
+        <article className="mx-auto flex max-w-3xl flex-col gap-10">
+          <header className="flex flex-col gap-3">
+            <p
+              className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary"
+              aria-label={`Last updated ${formattedDate}`}
+            >
+              Last updated{" "}
+              <time dateTime={lastUpdated}>{formattedDate}</time>
+            </p>
+            <h1 className="font-heading text-3xl font-bold tracking-tight text-on-surface md:text-4xl">
+              {title}
+            </h1>
+          </header>
+
+          {tldr ? (
+            <aside
+              aria-label="Summary"
+              className="rounded-lg border-l-4 border-primary bg-surface-container p-5 text-base leading-relaxed text-on-surface md:p-6"
+            >
+              {tldr}
+            </aside>
+          ) : null}
+
+          <div className="flex flex-col gap-10">{children}</div>
+
+          <footer className="border-t border-on-surface/10 pt-6 text-sm leading-relaxed text-on-surface-variant">
+            Have a question? Contact us at{" "}
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="text-primary underline underline-offset-2"
+            >
+              {CONTACT_EMAIL}
+            </a>
+            .
+          </footer>
+        </article>
+      </div>
+    </PageTransition>
+  )
+}
