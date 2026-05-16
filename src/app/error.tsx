@@ -1,10 +1,18 @@
 "use client"
 
-import { useEffect } from "react"
+import { Suspense, lazy, useEffect, useState, startTransition } from "react"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
+import { useTheme } from "next-themes"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
+import { splineScenes } from "@/config/spline-scenes"
+
+const SplineScene = lazy(() =>
+  import("@/components/home/spline-scene").then((m) => ({
+    default: m.SplineScene,
+  })),
+)
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -77,41 +85,69 @@ export default function Error({
 }) {
   const prefersReducedMotion = useReducedMotion()
   const reduced = !!prefersReducedMotion
+  const [mounted, setMounted] = useState(false)
+  const { resolvedTheme } = useTheme()
 
   useEffect(() => {
     console.error(error)
   }, [error])
 
+  useEffect(() => {
+    startTransition(() => setMounted(true))
+  }, [])
+
+  const splineUrl =
+    mounted && resolvedTheme === "dark"
+      ? splineScenes.notFoundDark()
+      : splineScenes.notFoundLight()
+
+  const splineFallback = (
+    <div className="flex size-full items-center justify-center">
+      <div className="size-12 animate-pulse rounded-full bg-surface-container" />
+    </div>
+  )
+
   return (
-    <main className="relative flex min-h-[calc(100vh-7rem)] flex-col items-center justify-center px-6 py-16 overflow-hidden">
+    <main className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden px-6 pt-28 pb-16">
       <FloatingElements />
 
-      {/* Giant background text */}
-      <motion.span
-        aria-hidden="true"
-        className="absolute font-heading text-[20vw] font-bold leading-none text-primary/20 sm:text-[16vw] lg:text-[12vw]"
-        initial={reduced ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.1, ease }}
-      >
-        Oops
-      </motion.span>
-
-      {/* Foreground content */}
-      <div className="relative z-10 flex flex-col items-center text-center">
-        {/* Eyebrow */}
-        <motion.p
-          className="text-xs font-medium uppercase tracking-[0.2em] text-tertiary"
-          initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15, ease }}
+      {/* Spline scene as backdrop — absolute, behind content, decorative. */}
+      {!reduced && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-start justify-center pt-20 lg:items-center lg:pt-0"
         >
-          Something went wrong
-        </motion.p>
+          <div className="aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
+            <Suspense fallback={splineFallback}>
+              {mounted ? (
+                <SplineScene
+                  key={resolvedTheme}
+                  scene={splineUrl}
+                  className="size-full"
+                />
+              ) : (
+                splineFallback
+              )}
+            </Suspense>
+          </div>
+        </div>
+      )}
 
+      {/* Top — Eyebrow */}
+      <motion.p
+        className="relative z-10 text-xs font-medium uppercase tracking-[0.2em] text-tertiary"
+        initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15, ease }}
+      >
+        Something went wrong
+      </motion.p>
+
+      {/* Bottom — content stack overlaying the Spline floor */}
+      <div className="relative z-10 flex flex-col items-center text-center">
         {/* Decorative rule */}
         <motion.div
-          className="mx-auto mt-6 h-px w-24 bg-secondary"
+          className="mx-auto h-px w-24 bg-secondary"
           initial={reduced ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3, ease }}

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { HeroSection } from "@/components/home/hero-section"
-import { FeaturedScholarships } from "@/components/home/featured-scholarships"
+import ReactDOM from "react-dom";
+import { HeroSection } from "@/components/home/hero-section";
+import { FeaturedScholarships } from "@/components/home/featured-scholarships";
 import { WhatsNext } from "@/components/home/whats-next";
-import { FAQSection } from "@/components/home/faq-section"
+import { FAQSection } from "@/components/home/faq-section";
 import { PageTransition } from "@/components/ui/page-transition";
+import { splineScenes } from "@/config/spline-scenes";
 
 export const metadata: Metadata = {
   title: "Modern Scholar — Discover Scholarships That Fit You",
@@ -18,6 +20,19 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+  // Kick off the .splinecode fetch during HTML parse so the bytes are already
+  // in cache when the client mounts <SplineScene>. We can't know the user's
+  // resolved theme on the server, so preload both — the runtime will reuse
+  // whichever the client ends up requesting.
+  ReactDOM.preload(splineScenes.heroLight(), {
+    as: "fetch",
+    crossOrigin: "anonymous",
+  });
+  ReactDOM.preload(splineScenes.heroDark(), {
+    as: "fetch",
+    crossOrigin: "anonymous",
+  });
+
   return (
     <PageTransition>
       <HeroSection />

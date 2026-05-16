@@ -11,6 +11,7 @@ import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts";
 import { ParallaxLayer } from "@/components/ui/parallax-layer";
 import { splineScenes } from "@/config/spline-scenes";
 import { useHasMounted } from "@/hooks/use-has-mounted";
+import { useHeroLoaderStore } from "@/stores/hero-loader-store";
 
 // next/dynamic with ssr: false keeps the heavy Spline runtime out of the
 // initial server bundle and out of the parent client chunk until it's
@@ -30,6 +31,7 @@ export function HeroSection() {
   const router = useRouter();
   const mounted = useHasMounted();
   const { resolvedTheme } = useTheme();
+  const setSplineReady = useHeroLoaderStore((s) => s.setSplineReady);
 
   // Memoize the scene URL so a re-render with the same theme reuses the same
   // string identity — `<SplineScene>` swaps scenes via the runtime API
@@ -37,15 +39,19 @@ export function HeroSection() {
   // forced a full remount + fresh `.splinecode` download on every theme flip.
   const splineUrl = useMemo(
     () =>
-      mounted && resolvedTheme === "dark"
+      resolvedTheme === "dark"
         ? splineScenes.heroDark()
         : splineScenes.heroLight(),
-    [mounted, resolvedTheme],
+    [resolvedTheme],
   );
 
   const splineNode = mounted ? (
     <Suspense fallback={<SplineFallback />}>
-      <SplineScene scene={splineUrl} className="size-full" />
+      <SplineScene
+        scene={splineUrl}
+        className="size-full"
+        onLoad={() => setSplineReady(true)}
+      />
     </Suspense>
   ) : (
     <SplineFallback />
@@ -79,11 +85,18 @@ export function HeroSection() {
             delay={0.4}
             className="w-full min-w-0 flex-col text-left md:flex-1"
           >
-            <h2 className="max-w-3xl text-xl leading-[1.05] tracking-tighter text-primary dark:text-primary-100">
-              Your scholarship Journey starts Here
+            <h2
+              id="hero-heading"
+              className="max-w-3xl text-xl leading-[1.05] tracking-tighter text-primary dark:text-primary-100"
+            >
+              Your scholarship journey starts here
             </h2>
           </AnimatedSection>
-          {/* Headline — bottom */}
+          {/* Headline — bottom. AnimatedLines splits the brand name into per-
+              character spans for the reveal animation; that markup is unreadable
+              to assistive tech, so we hide it from AT and expose a plain
+              equivalent via sr-only. */}
+          <span className="sr-only">Modern Scholar</span>
           <AnimatedLines
             text="Modern Scholar"
             font={PRETEXT_FONTS.heroHeadline}

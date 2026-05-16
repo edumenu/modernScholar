@@ -1,4 +1,7 @@
-// Bump SPLINE_VERSION after re-publishing any scene in Spline to bust the CDN cache.
+// Must be identical on the server (used by `<link rel="preload">`) and on the
+// client (used by Spline's runtime fetch) — otherwise the preloaded bytes
+// won't be matched and the runtime re-downloads the scene. Bump SPLINE_VERSION
+// to bust the CDN cache when a scene is republished.
 const SPLINE_VERSION = "1";
 
 const scenes = {
@@ -10,15 +13,8 @@ const scenes = {
   notFoundDark: "https://prod.spline.design/LcP3yZzPVUXLn12V/scene.splinecode",
 } as const;
 
-// Computed once per session/module-load. The previous `Date.now()` call inside
-// withCacheBust ran on *every* invocation, which caused the URL to change on
-// every render in dev — defeating the browser cache and forcing a full WebGL
-// re-fetch on each hot reload.
-const CACHE_BUST_TOKEN =
-  process.env.NODE_ENV === "development" ? String(Date.now()) : SPLINE_VERSION;
-
 function withCacheBust(url: string): string {
-  return `${url}?v=${CACHE_BUST_TOKEN}`;
+  return `${url}?v=${SPLINE_VERSION}`;
 }
 
 export const splineScenes = {

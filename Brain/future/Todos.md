@@ -6,12 +6,13 @@
 - Look into general performance especially with spline 3D
 - ~~Animation to extra filter sheet, remove ripple effect on filter options
 - Look into K to 12 categories
-- Update loading vector icon from top to bottom
-- Add delay loading to the home page
+- ~~Update loading vector icon from top to bottom
+- ~~Add delay loading to the home page
 - Look into strategies for getting user emails
+- Update dark theme material
 -  Clean up tablet and mobile views
 - Start thinking about unique tests on every single page. 
-- Add hover animations to the hero section image. 
+- ~~Add hover animations to the hero section image. 
 
 Future todos:
 - Spline performance testing: [[spline-3d-performance-testing]]

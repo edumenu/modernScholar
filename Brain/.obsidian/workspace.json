@@ -218,12 +218,12 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
-    "PRDs/05_13_2026/legal-pages/legal-pages-verification.md",
     "future/breach-runbook.md",
-    "PRDs/05_13_2026/legal-pages/legal-pages-progress.txt",
-    "PRDs/05_13_2026/legal-pages/legal-pages-tasks.json",
-    "PRDs/05_13_2026/legal-pages/legal-pages.md",
     "PRDs/05_13_2026/legal-pages/legal-pages-decisions.md",
+    "PRDs/05_13_2026/legal-pages/legal-pages.md",
+    "PRDs/05_13_2026/legal-pages/legal-pages-verification.md",
+    "PRDs/05_13_2026/legal-pages/legal-pages-tasks.json",
+    "PRDs/05_13_2026/legal-pages/legal-pages-progress.txt",
     "PRDs/05_13_2026/legal-pages",
     "PRDs/05_13_2026",
     "code-reviews/2026-05-08/SUMMARY.md",
@@ -253,7 +253,6 @@
     "Welcome.md",
     "PRDs/05_02_2026/blogContentSystem/blog-content-system.md",
     "PRDs/05_02_2026/architectureDeepening/seasonCalendarModule/season-calendar-module-verification.md",
-    "PRDs/05_02_2026/architectureDeepening/blogContentSystem/blog-content-system.md",
-    "PRDs/05_02_2026/architectureDeepeningOverview/architecture-deepening-overview.md"
+    "PRDs/05_02_2026/architectureDeepening/blogContentSystem/blog-content-system.md"
   ]
 }

@@ -535,6 +535,90 @@
 }
 
 /* ============================================
+   Logo Loader variants
+   ============================================
+   Two production loader animations. The variant is picked via the
+   LogoLoader `variant` prop ("mask-sweep" | "stroke-draw").
+
+   "mask-sweep": a feathered linear-gradient mask slides top-down across
+   the wordmark. The soft edge masks sub-pixel imprecision so there's no
+   hard boundary for the eye to fixate on. @property enables smooth
+   interpolation of the gradient stop.
+
+   "stroke-draw": the wordmark paths are rendered as strokes with
+   pathLength=1, and stroke-dashoffset animates from 1 → 0 (draw on)
+   then 0 → -1 (erase from start). Per-path animation-delay creates a
+   sequential reading order. Intrinsically kinetic — the line tip is
+   always in motion, which reads as active construction. */
+
+@property --logo-loader-mask-y {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: -15%;
+}
+
+@keyframes logo-loader-mask-sweep {
+  0% {
+    --logo-loader-mask-y: -10%;
+  }
+  100% {
+    --logo-loader-mask-y: 115%;
+  }
+}
+
+.logo-loader-mask-sweep {
+  --logo-loader-mask-y: -15%;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black calc(var(--logo-loader-mask-y) - 8%),
+    transparent var(--logo-loader-mask-y),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black calc(var(--logo-loader-mask-y) - 8%),
+    transparent var(--logo-loader-mask-y),
+    transparent 100%
+  );
+  animation: logo-loader-mask-sweep 2.4s ease-in-out infinite alternate;
+  will-change: --logo-loader-mask-y;
+}
+
+@keyframes logo-loader-stroke-draw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  45% {
+    stroke-dashoffset: 0;
+  }
+  55% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1;
+  }
+}
+
+.logo-loader-stroke-draw {
+  animation: logo-loader-stroke-draw 3s ease-in-out infinite;
+  will-change: stroke-dashoffset;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-loader-mask-sweep {
+    -webkit-mask-image: none;
+    mask-image: none;
+    animation: none;
+  }
+  .logo-loader-stroke-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ============================================
    Base Layer
    ============================================ */
 /* ============================================

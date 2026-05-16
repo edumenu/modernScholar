@@ -1,8 +1,6 @@
 "use client";
 
-import * as React from "react";
-import { motion, useReducedMotion } from "motion/react";
-
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 const BASE_PATH =
@@ -23,19 +21,61 @@ const COL_4_PATH =
 const CAP_PATH =
   "M1005.9 228.295C1009.89 227.912 1015.46 227.604 1019.28 228.312C1041.47 232.425 1068.68 250.077 1070.51 274.553C1070.61 275.848 1071.68 291.888 1072.43 292.744C1086.36 308.532 1144.45 320.007 1159.93 324.68C1189.34 333.564 1191.37 334.733 1217.33 343.773C1224.76 346.333 1230.44 346.722 1236.63 348.77L1516 439.942C1527.13 443.471 1536.65 444.22 1545.83 447.161C1584.57 459.573 1623.31 472.239 1662 484.794L1768.85 519.957C1787.58 526.103 1808.85 530.061 1826.63 538.567C1832.2 541.227 1837.05 545.058 1840.5 550.215C1847.05 560.01 1848.94 577.607 1846.11 589.072C1844.03 597.505 1838.2 604.791 1831.37 609.939C1818.24 619.84 1800.36 626.148 1785.56 633.552C1740.39 656.147 1694.38 676.935 1649.3 699.679C1634.98 706.907 1619.53 713.042 1605.92 721.487C1604.04 724.679 1603.04 728.046 1602.98 731.783C1602.34 775.647 1603.39 819.577 1603.05 863.454C1603 869.074 1602.19 876.083 1599.2 880.818C1594.22 888.702 1586.45 893.445 1577.06 893.376C1561.37 893.588 1545.87 893.247 1530.28 893.227L1430.4 892.917C1311.39 892.372 1192.39 891.102 1073.4 889.108C935.54 888.735 797.688 887.41 659.85 885.132L561.529 884.196C533.792 884.094 508.279 884.53 480.438 883.173C454.683 864.413 460.505 839.734 460.714 811.5C460.721 789.21 461.76 762.803 459.761 740.582C458.997 732.093 408.601 712.846 400.59 707.212C394.434 702.884 371.942 692.195 365.048 695.011C363.071 697.449 362.478 698.137 362.431 701.389C362.173 719.297 362.286 737.548 362.29 755.43L362.316 862.058L362.31 930.528C362.289 939.018 361.591 954.865 362.317 962.6C363.228 972.299 369.288 989.568 372.059 999.65L393.204 1077.29C398.029 1094.94 431.715 1190.75 419.636 1200.74C377.828 1235.32 295.266 1225.84 250.776 1198.57C242.839 1173.72 258.202 1143.68 265.232 1119.05L299.725 996.212C307.207 970.433 306.82 966.978 306.73 941.537L306.695 887.408L306.691 710.498C306.693 706.396 307.071 665.778 306.265 665.243C275.798 645.008 239.59 629.878 207.137 612.4C197.945 607.449 192.849 595.499 187.899 586.467C188.537 577.465 188.386 566.306 188.503 557.135C188.952 556.305 189.417 555.483 189.898 554.671C202.7 533.149 239.457 526.069 262.496 519.15L320.641 501.456C336.216 496.886 350.46 488.912 366.587 485.776C369.99 484.506 376.283 484.207 379.424 482.822C397.432 474.882 415.852 470.251 434.357 464.383L505.892 441.46L732.389 370.581C795.344 350.91 858.662 332.043 920.855 310.137C933.876 305.55 947.574 302.754 960.363 297.533C962.43 296.69 961.286 292.511 961.663 290.878C958.28 264.875 981.179 235.018 1005.9 228.295ZM1021.5 836.078C1155.56 838.637 1289.64 840.049 1423.72 840.313C1446.04 840.387 1468.35 840.671 1490.67 841.166C1501.7 841.404 1535.47 842.869 1544.55 840.641C1552.5 826.549 1542.9 727.555 1548.58 704.786C1555.5 677.066 1578.6 672.553 1602.03 661.244L1713.13 606.88C1720.67 603.129 1761.74 584.494 1764.4 579.465L1764.28 576.745C1750.43 569.579 1714.37 559.657 1698.5 554.677L1584.04 518.202L1163.51 385.7C1125.02 373.583 1087.06 360.768 1048.67 348.535C1040.36 345.887 1026 340.05 1018.07 339.458C1006.73 339.472 1002.03 339.352 991.136 342.795C966.313 350.636 941.442 358.865 916.697 366.952L774.485 413.374L375.736 540.404C361.5 544.835 353.032 548.147 339.442 553.491C320.006 561.134 292.469 560.77 275.27 574.387C272.859 576.157 272.071 576.012 269.472 576.437C265.692 584.719 294.252 595.476 300.209 598.384L352.956 624.01C376.756 635.397 397.193 648.314 422.47 658.405C447.123 668.246 478.287 686.011 501.416 700.275C523.827 714.096 514.515 785.516 516.308 807.535C516.906 814.885 515.131 822.327 516.836 829.884C521.937 831.198 552.267 830.743 559.563 830.766L642.466 831.495L1021.5 836.078Z";
 
-const LOGO_PATHS = [BASE_PATH, COL_1_PATH, COL_2_PATH, COL_3_PATH, COL_4_PATH, CAP_PATH];
+export const LOGO_PATHS = [
+  BASE_PATH,
+  COL_1_PATH,
+  COL_2_PATH,
+  COL_3_PATH,
+  COL_4_PATH,
+  CAP_PATH,
+];
+
+export type LogoLoaderVariant = "mask-sweep" | "stroke-draw";
 
 type LogoLoaderProps = Omit<React.SVGAttributes<SVGSVGElement>, "viewBox"> & {
   size?: number;
+  variant?: LogoLoaderVariant;
 };
+
+const STROKE_DRAW_DELAY_STEP = 0.18;
 
 export function LogoLoader({
   size = 80,
+  variant = "stroke-draw",
   className,
   ...props
 }: LogoLoaderProps) {
-  const reduced = useReducedMotion();
-  const clipId = `logo-loader-clip-${React.useId()}`;
+  if (variant === "stroke-draw") {
+    return (
+      <svg
+        data-slot="logo-loader"
+        role="img"
+        aria-label="Loading"
+        width={size}
+        height={size}
+        viewBox="0 0 2048 2048"
+        className={cn("text-primary dark:text-foreground", className)}
+        {...props}
+      >
+        {LOGO_PATHS.map((d, i) => (
+          <path
+            key={i}
+            d={d}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={20}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            pathLength={1}
+            strokeDasharray={1}
+            strokeDashoffset={1}
+            className="logo-loader-stroke-draw"
+            style={{ animationDelay: `${i * STROKE_DRAW_DELAY_STEP}s` }}
+          />
+        ))}
+      </svg>
+    );
+  }
 
   return (
     <svg
@@ -46,36 +86,15 @@ export function LogoLoader({
       height={size}
       viewBox="0 0 2048 2048"
       fill="currentColor"
-      className={cn("text-primary dark:text-foreground", className)}
+      className={cn(
+        "logo-loader-mask-sweep text-primary dark:text-foreground",
+        className,
+      )}
       {...props}
     >
-      <defs>
-        <clipPath id={clipId}>
-          <motion.rect
-            x={0}
-            width={2048}
-            height={2048}
-            initial={reduced ? false : { y: 2048 }}
-            animate={reduced ? { y: 0 } : { y: [2048, 0, 0, -2048] }}
-            transition={
-              reduced
-                ? { duration: 0 }
-                : {
-                    duration: 4.6,
-                    times: [0, 0.45, 0.55, 1],
-                    ease: [0.22, 1, 0.36, 1],
-                    repeat: Infinity,
-                    repeatType: "loop",
-                  }
-            }
-          />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${clipId})`}>
-        {LOGO_PATHS.map((d, i) => (
-          <path key={i} d={d} />
-        ))}
-      </g>
+      {LOGO_PATHS.map((d, i) => (
+        <path key={i} d={d} />
+      ))}
     </svg>
   );
 }
@@ -83,30 +102,42 @@ export function LogoLoader({
 type FullScreenLogoLoaderProps = {
   size?: number;
   className?: string;
+  variant?: LogoLoaderVariant;
 };
 
 export function FullScreenLogoLoader({
   size = 120,
+  variant,
   className,
 }: FullScreenLogoLoaderProps) {
+  // Capture initial focus inside the dialog on mount so keyboard users can't
+  // tab into the visually obscured content underneath. Paired with
+  // role="dialog" + aria-modal="true", screen readers treat siblings as inert.
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    ref.current?.focus({ preventScroll: true });
+  }, []);
+
   return (
     <div
+      ref={ref}
       data-slot="logo-loader-fullscreen"
-      role="status"
-      aria-live="polite"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Loading, please wait"
+      tabIndex={-1}
       className={cn(
-        "bg-background fixed inset-0 z-100 flex flex-col items-center justify-center gap-5",
+        "bg-background fixed inset-0 z-100 flex flex-col items-center justify-center gap-5 outline-none",
         className,
       )}
     >
-      <LogoLoader size={size} />
+      <LogoLoader size={size} variant={variant} />
       <span
         aria-hidden
         className="text-primary/50 dark:text-foreground/50 font-serif text-[13px] tracking-[0.15em]"
       >
         Modern Scholar
       </span>
-      <span className="sr-only">Loading</span>
     </div>
   );
 }

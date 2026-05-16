@@ -1,16 +1,25 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import Spline from "@splinetool/react-spline";
 import { useLenis } from "lenis/react";
 
-export function SplineScene({
-  className,
-  scene,
-}: {
-  className?: string;
+interface SplineSceneProps {
+  /** Spline CDN URL for the .splinecode scene file. */
   scene: string;
-}) {
+  className?: string;
+  /** Called after the Spline runtime reports the scene is loaded. */
+  onLoad?: () => void;
+}
+
+/**
+ * Thin wrapper around @splinetool/react-spline that:
+ * - Shows a pulse placeholder until the scene reports loaded
+ * - Calls lenis.resize() on load so Lenis recalculates scroll height after
+ *   the WebGL canvas inflates the layout
+ * Must be dynamically imported with ssr:false (Spline uses WebGL + window).
+ */
+export function SplineScene({ className, scene, onLoad }: SplineSceneProps) {
   const [loaded, setLoaded] = useState(false);
   const lenis = useLenis();
 
@@ -26,6 +35,7 @@ export function SplineScene({
         onLoad={() => {
           setLoaded(true);
           lenis?.resize();
+          onLoad?.();
         }}
         style={{
           width: "100%",
