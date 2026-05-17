@@ -272,7 +272,7 @@ export function ScholarshipGrid() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="grid w-full gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                className="grid w-full gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
               >
                 {visibleItems.map(({ scholarship, matches }) => (
                   <div key={scholarship.id} className="aspect-3/4 w-full">

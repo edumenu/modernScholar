@@ -6,3 +6,4 @@
 - [project_card_variants.md](project_card_variants.md) — Three scholarship card layout options (A: Editorial Ledger, B: Structured Data, C: Immersive Tonal) — design axes, file locations, tint mapping
 - [project_list_card_proposals.md](project_list_card_proposals.md) — Two horizontal list-row card proposals (A: Linear Ledger Row, B: Editorial Spread Row) for the scan-optimized list layout toggle
 - [project_filter_animation_patterns.md](project_filter_animation_patterns.md) — Motion specs for filter dropdowns (200ms ease-out, zoom-in-[0.97]) and filter sheet (expo-out cubic, 300ms, staggered content cascade)
+- [project_tablet_audit_findings.md](project_tablet_audit_findings.md) — P0/P1 ship-blockers from 2026-05-16 tablet audit: home dark crash, blog 404 routing, TZ date bug, touch targets, prose measure, focus ring

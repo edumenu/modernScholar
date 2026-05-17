@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest"
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 import { render, screen } from "@testing-library/react"
 
 vi.mock("@/components/ui/page-transition", () => ({
@@ -97,5 +97,31 @@ describe("LegalLayout", () => {
 
     const h2 = screen.getByRole("heading", { level: 2, name: "X-Section" })
     expect(h2).toBeInTheDocument()
+  })
+})
+
+describe("formatLastUpdated", () => {
+  // The formatter is pinned to `timeZone: "UTC"`, so the rendered day must
+  // match the ISO date regardless of the runtime's local timezone. We stub
+  // `TZ` to `America/New_York` (UTC-5/-4) to make the regression explicit —
+  // before the fix this assertion would have produced "May 13, 2026".
+  beforeEach(() => {
+    vi.stubEnv("TZ", "America/New_York")
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
+
+  it("formats a YYYY-MM-DD ISO date in UTC regardless of runtime TZ", async () => {
+    const { formatLastUpdated } = await import("../legal-layout")
+
+    expect(formatLastUpdated("2026-05-14")).toBe("May 14, 2026")
+  })
+
+  it("returns the raw input when the date string is invalid", async () => {
+    const { formatLastUpdated } = await import("../legal-layout")
+
+    expect(formatLastUpdated("not-a-date")).toBe("not-a-date")
   })
 })

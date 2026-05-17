@@ -149,28 +149,36 @@ function QuestionRouting() {
   );
 }
 
-function MobileContactImage() {
-  // <picture> + media="(prefers-color-scheme: dark)" lets the browser pick
-  // the right asset *before* JavaScript runs — preserving Next/Image's
-  // priority/eager decode and avoiding the post-mount placeholder flash that
-  // a `mounted` flag introduced.
+function MobileContactImage({
+  mounted,
+  resolvedTheme,
+}: {
+  mounted: boolean;
+  resolvedTheme: string | undefined;
+}) {
+  // Gate the dark variant behind `mounted` so SSR/initial render is
+  // deterministic (always the light variant) and we avoid a hydration
+  // mismatch. After mount, swap to the dark asset when the resolved
+  // theme is dark — this mirrors the same pattern used for the Spline
+  // scene above and keeps the mobile image in lockstep with the
+  // active theme toggle (which `prefers-color-scheme` alone cannot do).
+  const src =
+    mounted && resolvedTheme === "dark"
+      ? "/darkContactPhone.png"
+      : "/lightContactPhone.png";
+
   return (
     <div className="overflow-hidden rounded-3xl bg-surface-container">
-      <picture>
-        <source
-          media="(prefers-color-scheme: dark)"
-          srcSet="/darkContactPhone.png"
-        />
-        <img
-          src="/lightContactPhone.png"
-          alt="Modern Scholar contact illustration"
-          width={800}
-          height={600}
-          className="h-auto w-full object-cover"
-          loading="eager"
-          decoding="async"
-        />
-      </picture>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt="Modern Scholar contact illustration"
+        width={800}
+        height={600}
+        className="h-auto w-full object-cover"
+        loading="eager"
+        decoding="async"
+      />
     </div>
   );
 }
@@ -221,7 +229,10 @@ export function ContactFormSection() {
 
           {/* Mobile: theme-aware static image */}
           <div className="block lg:hidden w-full">
-            <MobileContactImage />
+            <MobileContactImage
+              mounted={mounted}
+              resolvedTheme={resolvedTheme}
+            />
           </div>
         </div>
 

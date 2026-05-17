@@ -656,4 +656,22 @@ html.custom-cursor-active * {
   html {
     @apply font-sans;
   }
+
+  /* ============================================
+     Global :focus-visible baseline (WCAG 2.4.7)
+     Sage-green outline on every interactive element for keyboard users.
+     Uses `outline` (not box-shadow) so it composes with component shadows
+     and neumorphic styles. Low specificity — component-level focus styles
+     can still override when they need a different treatment.
+     ============================================ */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+  }
 }

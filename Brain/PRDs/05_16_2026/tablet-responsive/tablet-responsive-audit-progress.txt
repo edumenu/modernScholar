@@ -1,0 +1,16 @@
+# Ralph Progress — tablet-responsive-audit
+Started: 2026-05-16
+MAX_ITER=16
+---
+[2026-05-16 17:59] T01 PASS — LogoLoader resumes mid-cycle via negative animation-delay; reactStrictMode=true. Files: src/components/ui/logo-loader/logo-loader.tsx, next.config.ts. useLayoutEffect gated by typeof window for SSR static export.
+[2026-05-16 17:59] T02 PASS — Section ErrorBoundary on home + dev-log hero Spline URL/theme/viewport. Files: src/components/ui/error-boundary/error-boundary.tsx, src/app/(home)/page.tsx, src/components/home/hero-section.tsx. Probable [P0] cause: scene-URL flip mid-load when next-themes resolves post-mount — see T02 notes.
+[2026-05-16 17:59] T03 PASS — Added timeZone:"UTC" to LAST_UPDATED_FORMATTER + exported formatLastUpdated + 6 tests. Files: src/components/legal/legal-layout.tsx, src/components/legal/__tests__/legal-layout.component.test.tsx.
+[2026-05-16 18:05] T04 PASS — Capped blog prose to max-w-[65ch] and legal prose to max-w-2xl. Files: src/components/blog/blog-detail-content.tsx, src/components/legal/legal-layout.tsx.
+[2026-05-16 18:05] T05 PASS — Added :focus-visible baseline using var(--secondary); grid → md:grid-cols-3 lg:grid-cols-4. Files: src/app/globals.css, src/components/scholarships/scholarship-grid.tsx. Component outline-none classes beat element-selector baseline — see T05 notes.
+[2026-05-16 18:05] T06 PASS — TOC buttons min-h-[44px] + py-2.5 + full-row tap target. Files: src/components/blog/reading-progress.tsx.
+[2026-05-16 18:12] T07 PASS — Replaced pulsing-dot fallback with static "404" + ZeroRing (reduced mode). Files: src/components/ui/four-oh-four/not-found-client.tsx.
+[2026-05-16 18:12] T08 PASS — MobileContactImage → useTheme/mounted-gated src; light on SSR. Files: src/components/contact/contact-form-section.tsx. Behavior: follows JS theme toggle, not OS prefers-color-scheme.
+[2026-05-16 22:46] T07 FIX-UP — Removed pre-existing inline `mounted ? SplineScene : splineFallback` branch causing double-404 flash. splineFallback now Suspense-only. Files: src/components/ui/four-oh-four/not-found-client.tsx.
+[2026-05-16 22:48] T07 FIX-UP-2 — Removed redundant "Error 404" eyebrow (giant 3D "404" already screams the status; eyebrow + Spline read as "two 404 messages"). Switched main flex from justify-between → justify-end so content stack stays anchored to bottom now that there is only one flex child. Files: src/components/ui/four-oh-four/not-found-client.tsx.
+[2026-05-16 22:51] T07 FIX-UP-3 — Calmed Suspense fallback to a bg-surface-container-low/30 block (no "404" text/ZeroRing) so users no longer see a static-404 blip before the 3D Spline 404 resolves. Applied same Suspense-only pattern to GlobalErrorClient (removed inline `mounted ? SplineScene : splineFallback` ternary). Files: src/components/ui/four-oh-four/not-found-client.tsx, src/components/ui/global-error/global-error-client.tsx.
+ALL TASKS COMPLETE

@@ -20,9 +20,20 @@ const LAST_UPDATED_FORMATTER = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
   day: "numeric",
+  // Pin the formatter to UTC so the rendered day matches the ISO date
+  // regardless of the runtime's local timezone. Without this, a build or
+  // request handler running west of UTC (e.g. EST = UTC-5) would render
+  // `2026-05-14` as "May 13, 2026".
+  timeZone: "UTC",
 })
 
-function formatLastUpdated(iso: string): string {
+/**
+ * Format a `YYYY-MM-DD` ISO date string as a human-readable label
+ * (e.g. `"May 14, 2026"`). Returns the input verbatim if it cannot be parsed.
+ *
+ * Exported for unit testing — see `__tests__/legal-layout.component.test.tsx`.
+ */
+export function formatLastUpdated(iso: string): string {
   // Parse as a UTC date so the rendered day matches the ISO date regardless of
   // server / build-time timezone. Falls back to the raw string if invalid.
   const parsed = new Date(`${iso}T00:00:00Z`)
@@ -53,7 +64,7 @@ export function LegalLayout({
   return (
     <PageTransition>
       <div className={cn("page-padding-y", className)}>
-        <article className="mx-auto flex max-w-3xl flex-col gap-10">
+        <article className="mx-auto flex max-w-2xl flex-col gap-10">
           <header className="flex flex-col gap-3">
             <p
               className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary"

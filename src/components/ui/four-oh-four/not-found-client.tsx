@@ -164,13 +164,14 @@ export function NotFoundClient() {
       : splineScenes.notFoundLight();
 
   const splineFallback = (
-    <div className="flex size-full items-center justify-center">
-      <div className="size-12 animate-pulse rounded-full bg-surface-container" />
-    </div>
+    <div
+      aria-hidden="true"
+      className="size-full bg-surface-container-low/30"
+    />
   );
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden px-6 pt-28 pb-16">
+    <main className="relative flex min-h-screen flex-col items-center justify-end overflow-hidden px-6 pt-28 pb-16">
       <FloatingElements />
 
       {/* Spline scene as backdrop — absolute, behind content, decorative */}
@@ -181,29 +182,15 @@ export function NotFoundClient() {
         >
           <div className="aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
             <Suspense fallback={splineFallback}>
-              {mounted ? (
-                <SplineScene
-                  key={resolvedTheme}
-                  scene={splineUrl}
-                  className="size-full"
-                />
-              ) : (
-                splineFallback
-              )}
+              <SplineScene
+                key={resolvedTheme}
+                scene={splineUrl}
+                className="size-full"
+              />
             </Suspense>
           </div>
         </div>
       )}
-
-      {/* Top — Eyebrow */}
-      <motion.p
-        className="relative z-10 text-xs font-medium uppercase tracking-[0.2em] text-tertiary"
-        initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0, ease }}
-      >
-        Error 404
-      </motion.p>
 
       {/* Reduced-motion: static 404 in middle (no Spline backdrop) */}
       {reduced && (

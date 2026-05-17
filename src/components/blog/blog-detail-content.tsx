@@ -50,9 +50,9 @@ export function BlogDetailContent({ post, body }: BlogDetailContentProps) {
 
       {/* MDX Body — element-level styling (mt-* on h2/h3/p/ul/ol) is owned by
           useMDXComponents. Don't add space-y-* here or the two stack and
-          throw the rhythm off. Capped to max-w-prose for measure. */}
+          throw the rhythm off. Capped to ~65ch for tablet-landscape measure. */}
       <AnimatedSection variant="fadeUp" delay={0.3}>
-        <div className="mt-10 max-w-prose">{body}</div>
+        <div className="mt-10 max-w-[65ch]">{body}</div>
       </AnimatedSection>
 
       {/* Author bio card */}

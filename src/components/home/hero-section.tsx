@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -37,6 +37,11 @@ export function HeroSection() {
   // string identity — `<SplineScene>` swaps scenes via the runtime API
   // without tearing down the WebGL context. The previous `key={resolvedTheme}`
   // forced a full remount + fresh `.splinecode` download on every theme flip.
+  //
+  // Defensive: `resolvedTheme` is `undefined` until next-themes resolves on
+  // the client. Treat anything that isn't an explicit "dark" as light so a
+  // momentarily-undefined value can't fall through to a `heroDark()` call
+  // gated by a falsy check elsewhere.
   const splineUrl = useMemo(
     () =>
       resolvedTheme === "dark"
@@ -44,6 +49,22 @@ export function HeroSection() {
         : splineScenes.heroLight(),
     [resolvedTheme],
   );
+
+  // Dev-only instrumentation for the [P0] home dark-landscape crash. Logs the
+  // selected scene URL each time the resolved theme changes so we can confirm
+  // which `.splinecode` is requested at 1024×768 dark.
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development") return;
+    if (!mounted) return;
+    console.info("[HeroSection] spline scene", {
+      resolvedTheme,
+      splineUrl,
+      viewport:
+        typeof window !== "undefined"
+          ? `${window.innerWidth}x${window.innerHeight}`
+          : "ssr",
+    });
+  }, [mounted, resolvedTheme, splineUrl]);
 
   const splineNode = mounted ? (
     <Suspense fallback={<SplineFallback />}>

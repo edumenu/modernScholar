@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 const BASE_PATH =
@@ -39,15 +39,61 @@ type LogoLoaderProps = Omit<React.SVGAttributes<SVGSVGElement>, "viewBox"> & {
 
 const STROKE_DRAW_DELAY_STEP = 0.18;
 
+// Module-scoped timestamp captured the first time a stroke-draw LogoLoader
+// commits on the client. The stroke-draw animation is `infinite` (loops while
+// the loader is visible), so on React Strict Mode's intentional
+// mount → unmount → remount, the freshly-mounted DOM nodes would otherwise
+// start their animation from t=0 — visibly restarting partway through the
+// first cycle ("tip shows, pauses, restarts" in the legacy TODO).
+//
+// We persist a single origin timestamp at module scope (survives the remount
+// because the module is not re-imported) and, in a layout effect after mount,
+// patch each path's `animation-delay` to a negative value equal to the elapsed
+// wall-clock time. CSS treats a negative delay as "the animation has already
+// been running for this long", so the remounted nodes resume in phase with
+// where they would have been had they never unmounted. Works for any number
+// of remounts, not just Strict Mode's one-shot.
+//
+// SSR-rendered markup keeps the original positive staggered delays so static
+// export output is unchanged and hydration matches byte-for-byte. The negative
+// delay is applied via useLayoutEffect (runs before paint) so a Strict Mode
+// remount never gets a chance to render the t=0 "tip" frame.
+let strokeDrawOriginMs: number | null = null;
+const now = () =>
+  typeof performance !== "undefined" ? performance.now() : Date.now();
+
+// useLayoutEffect emits a no-op warning when invoked during SSR. Falling back
+// to useEffect on the server keeps the build clean; the static-export render
+// pass never touches the DOM here, so the substitution is safe.
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 export function LogoLoader({
   size = 80,
   variant = "stroke-draw",
   className,
   ...props
 }: LogoLoaderProps) {
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
+  useIsomorphicLayoutEffect(() => {
+    if (variant !== "stroke-draw") return;
+    const svg = svgRef.current;
+    if (!svg) return;
+    if (strokeDrawOriginMs === null) strokeDrawOriginMs = now();
+    const elapsedSeconds = (now() - strokeDrawOriginMs) / 1000;
+    const paths = svg.querySelectorAll<SVGPathElement>(
+      ".logo-loader-stroke-draw",
+    );
+    paths.forEach((path, i) => {
+      path.style.animationDelay = `${i * STROKE_DRAW_DELAY_STEP - elapsedSeconds}s`;
+    });
+  }, [variant]);
+
   if (variant === "stroke-draw") {
     return (
       <svg
+        ref={svgRef}
         data-slot="logo-loader"
         role="img"
         aria-label="Loading"

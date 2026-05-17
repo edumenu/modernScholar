@@ -137,15 +137,11 @@ export function GlobalErrorClient({ error, reset }: GlobalErrorClientProps) {
         >
           <div className="aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
             <Suspense fallback={splineFallback}>
-              {mounted ? (
-                <SplineScene
-                  key={prefersDark ? "dark" : "light"}
-                  scene={splineUrl}
-                  className="size-full"
-                />
-              ) : (
-                splineFallback
-              )}
+              <SplineScene
+                key={prefersDark ? "dark" : "light"}
+                scene={splineUrl}
+                className="size-full"
+              />
             </Suspense>
           </div>
         </div>

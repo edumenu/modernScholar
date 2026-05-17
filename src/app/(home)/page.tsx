@@ -5,6 +5,7 @@ import { FeaturedScholarships } from "@/components/home/featured-scholarships";
 import { WhatsNext } from "@/components/home/whats-next";
 import { FAQSection } from "@/components/home/faq-section";
 import { PageTransition } from "@/components/ui/page-transition";
+import { ErrorBoundary } from "@/components/ui/error-boundary/error-boundary";
 import { splineScenes } from "@/config/spline-scenes";
 
 export const metadata: Metadata = {
@@ -33,12 +34,25 @@ export default function Home() {
     crossOrigin: "anonymous",
   });
 
+  // Each top-level home section is wrapped in its own ErrorBoundary so a
+  // render error stays scoped to that section instead of bubbling to
+  // src/app/error.tsx and replacing the whole page. This was prompted by a
+  // dark × landscape crash where the hero (Spline + theme resolution) took
+  // down the entire route.
   return (
     <PageTransition>
-      <HeroSection />
-      <FeaturedScholarships />
-      <WhatsNext />
-      <FAQSection />
+      <ErrorBoundary label="Hero">
+        <HeroSection />
+      </ErrorBoundary>
+      <ErrorBoundary label="Featured Scholarships">
+        <FeaturedScholarships />
+      </ErrorBoundary>
+      <ErrorBoundary label="What's Next">
+        <WhatsNext />
+      </ErrorBoundary>
+      <ErrorBoundary label="FAQ">
+        <FAQSection />
+      </ErrorBoundary>
     </PageTransition>
   );
 }

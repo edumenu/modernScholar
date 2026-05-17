@@ -106,14 +106,14 @@ export function ReadingProgress({
   return (
     <div className="overflow-hidden rounded-2xl flex flex-col gap-4 border border-outline-variant/40 bg-surface-container-low p-4 shadow-md dark:bg-surface-container-low dark:border-outline-variant/20">
       {/* Section breadcrumb dots */}
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col">
         {sections.map((section, i) => {
           const isActive = i === activeIndex
           return (
             <button
               key={section.id}
               onClick={() => handleSectionClick(section.id)}
-              className="flex items-center gap-2.5 text-left cursor-pointer hover:opacity-80 transition-opacity"
+              className="flex min-h-[44px] w-full items-center gap-2.5 px-1 py-2.5 text-left cursor-pointer rounded-md hover:opacity-80 transition-opacity"
             >
               <motion.div
                 className={`shrink-0 rounded-full ${isComplete ? "bg-secondary" : "bg-primary"}`}

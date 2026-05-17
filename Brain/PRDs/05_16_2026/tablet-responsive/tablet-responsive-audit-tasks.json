@@ -1,0 +1,143 @@
+{
+  "module": "tablet-responsive-audit",
+  "prd_path": "Brain/PRDs/05_16_2026/tablet-responsive-audit.md",
+  "agent": "frontend-engineer",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Make LogoLoader restart-tolerant, re-enable reactStrictMode",
+      "description": "Refactor src/components/ui/logo-loader/logo-loader.tsx so the staggered SVG stroke-draw animation tolerates the Strict Mode mount→unmount→remount cycle without visibly restarting. Use animation-fill-mode: forwards with a one-shot trigger (or a sessionStorage gate keyed on session) so the animation completes once and stays in its final state across remounts. Then flip reactStrictMode: false → true in next.config.ts and remove the obsolete TODO block (lines 9-15). See PRD §Open Questions Q3 and next.config.ts:9-16.",
+      "files": [
+        "src/components/ui/logo-loader/logo-loader.tsx",
+        "next.config.ts"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "Strict Mode re-enabled in next.config.ts with no visible LogoLoader animation restart"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Resume mid-cycle via module-scoped origin + negative animation-delay in useLayoutEffect; useLayoutEffect gated by typeof window for SSR static export."
+    },
+    {
+      "id": "T02",
+      "title": "Add section ErrorBoundary on home + instrument hero Spline URL",
+      "description": "Address [P0] Home dark-landscape crash. Create a small client-component ErrorBoundary at src/components/ui/error-boundary/error-boundary.tsx (React error boundary pattern, renders a tonal fallback with retry CTA). Wrap the home page sections in src/app/(home)/page.tsx so a render error stays scoped instead of bubbling to the global error boundary. In src/components/home/hero-section.tsx, add brief console-log instrumentation around Spline URL resolution to capture which scene URL is selected under dark × landscape; if a deterministic root cause surfaces, fix it and document in task notes. See PRD §Implementation Decisions / Modules and the companion decisions file §/ (home) [P0] block.",
+      "files": [
+        "src/components/ui/error-boundary/error-boundary.tsx",
+        "src/app/(home)/page.tsx",
+        "src/components/home/hero-section.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "Home page renders without crashing across viewport × theme combinations"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "ErrorBoundary wraps all 4 home sections individually (HeroSection, FeaturedScholarships, WhatsNext, FAQSection) with descriptive labels. Hero adds dev-only console.info logging resolvedTheme + splineUrl + viewport. Probable [P0] root cause (per agent investigation, NOT yet fixed): scene-URL identity flip when next-themes resolves post-mount — initial render uses heroLight() with resolvedTheme=undefined, then re-renders with heroDark(), forcing @splinetool/react-spline to swap scenes mid-load. ErrorBoundary contains blast radius until a follow-up addresses the race (options: gate Spline render on mounted flag, or use suspense/key strategy that doesn't fully teardown WebGL)."
+    },
+    {
+      "id": "T03",
+      "title": "Fix legal formatLastUpdated TZ + add Vitest test",
+      "description": "In src/components/legal/legal-layout.tsx, add timeZone: \"UTC\" to LAST_UPDATED_FORMATTER (around lines 19-23) so Intl.DateTimeFormat parses the YYYY-MM-DD ISO string in UTC instead of the runtime's local timezone (eliminates off-by-one for users west of UTC). Export the formatter (or extract a formatLastUpdated() helper) so it is unit-testable. Add a Vitest test asserting formatLastUpdated(\"2026-05-14\") returns \"May 14, 2026\" regardless of process.env.TZ — extend the existing src/components/legal/__tests__/legal-layout.component.test.tsx file or add a sibling. See PRD §Testing Decisions.",
+      "files": [
+        "src/components/legal/legal-layout.tsx",
+        "src/components/legal/__tests__/legal-layout.component.test.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "Visitor sees correct legal Last updated date in their timezone",
+        "Vitest test asserts \"May 14, 2026\" output in a TZ=America/New_York run"
+      ],
+      "validation": ["typecheck", "lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Added timeZone: \"UTC\" to LAST_UPDATED_FORMATTER; exported formatLastUpdated; 6 Vitest tests pass. Gotcha: module-level Intl.DateTimeFormat caches the formatter at import time so vi.stubEnv(\"TZ\", ...) cannot override it — the UTC pin is what makes tests TZ-independent."
+    },
+    {
+      "id": "T04",
+      "title": "Cap prose measure on blog detail + legal layout",
+      "description": "Constrain long-form prose to ≤75ch on tablet landscape. In src/components/blog/blog-detail-content.tsx change the article prose wrapper from max-w-prose to max-w-[65ch] (around line 55). In src/components/legal/legal-layout.tsx change the legal prose container from max-w-3xl to max-w-2xl (around line 56). Note: T03 also edits legal-layout.tsx — order this task after T03 to avoid hunks colliding. See PRD §User Story 4 and the companion decisions file §Cross-cutting Patterns / Prose measure.",
+      "files": [
+        "src/components/blog/blog-detail-content.tsx",
+        "src/components/legal/legal-layout.tsx"
+      ],
+      "depends_on": ["T03"],
+      "acceptance": [
+        "Reader sees long-form prose at ≤75 ch line length on tablet landscape"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "blog prose → max-w-[65ch]; legal prose → max-w-2xl (42rem, well under 75ch at 16px base)."
+    },
+    {
+      "id": "T05",
+      "title": "Global :focus-visible rule + scholarship grid breakpoints",
+      "description": "Two surgical fixes. (1) Add a low-specificity global :focus-visible rule in src/app/globals.css using var(--secondary) (sage green) as the outline color, so every interactive element gets a visible focus ring (WCAG 2.4.7). Audit and remove any blanket outline-none usages that defeat the new rule. (2) In src/components/scholarships/scholarship-grid.tsx, change the grid columns to md:grid-cols-3 lg:grid-cols-4 so tablet landscape (1024px) renders 3 columns instead of 4 (fixes title truncation). See PRD §User Stories 2/5 and §Implementation Decisions / scholarship grid.",
+      "files": [
+        "src/app/globals.css",
+        "src/components/scholarships/scholarship-grid.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "Keyboard user sees a visible focus ring on every interactive element (WCAG 2.4.7)",
+        "Scholarship grid renders 3 columns at tablet landscape with no title truncation"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Added :focus-visible baseline using var(--secondary) outline; grid now md:grid-cols-3 lg:grid-cols-4. Caveat: many components apply outline-none class which beats the element-selector baseline (class > tag specificity). Those components retain their own focus-visible:ring-* shadow rings, so accessible focus is preserved via component styles — the baseline only catches un-styled raw interactive elements. Follow-up: if WCAG audit flags missing rings on specific component-styled elements, add focus-visible:ring or focus-visible:outline to those components individually."
+    },
+    {
+      "id": "T06",
+      "title": "Reading-progress TOC buttons → min-h-[44px]",
+      "description": "Restructure TOC item buttons in src/components/blog/reading-progress.tsx so each item is a min-h-[44px] row button (WCAG 2.5.5). Add py-2.5 (or equivalent) vertical padding and ensure the entire row — not just the inner text — is the click target. Preserve current visual rhythm of the TOC list. See PRD §User Story 5 and companion decisions file §/blog/[slug] [P1] reading-progress block.",
+      "files": [
+        "src/components/blog/reading-progress.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "Touch user can tap TOC items at ≥44×44 px (WCAG 2.5.5)"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "TOC buttons now min-h-[44px] + py-2.5 with full-row tap target; removed wrapper gap-2.5 since per-row padding now provides spacing."
+    },
+    {
+      "id": "T07",
+      "title": "404 Suspense fallback — static ZeroRing replaces pulsing dot",
+      "description": "In src/components/ui/four-oh-four/not-found-client.tsx (around lines 166-170), replace the pulsing-dot Spline Suspense fallback with a static \"404\" ZeroRing visual that renders immediately while the Spline scene loads, so the literal 404 is visible within 1s on slow networks. Extract or inline a small ZeroRing component using existing OKLCH surface tokens — no new tokens. Keep the existing footer-aware container height behavior intact. See PRD §Implementation Decisions / not-found-client and companion decisions file §/not-found [P1] Spline loading state.",
+      "files": [
+        "src/components/ui/four-oh-four/not-found-client.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "404 page shows a 404 indicator within 1s, before Spline resolves"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Suspense fallback now renders static \"404\" + ZeroRing immediately using bg-surface-container-low/40 + text-on-surface/70 (no glass). ZeroRing passed `reduced` prop in fallback so static SVG paints without Motion entrance delay. Fix-up 2026-05-16: removed pre-existing `mounted ? SplineScene : splineFallback` inline branch — the giant 25vw static 404 was painting pre-mount AND again as Suspense fallback, producing a visible double-404 flash. splineFallback is now exclusively the Suspense fallback (consumed only by <Suspense fallback={splineFallback}>); SplineScene renders directly. `mounted` flag retained for splineUrl theme-deterministic selection."
+    },
+    {
+      "id": "T08",
+      "title": "Contact MobileContactImage → useTheme()",
+      "description": "In src/components/contact/contact-form-section.tsx (the MobileContactImage block around lines 152-176), use useTheme() from next-themes to pick the correct light vs dark variant of the static phone image at the md breakpoint. Today the dark theme shows the light-mode image. Gate the theme-dependent src on a mounted state (or use resolvedTheme after mount) to avoid SSR mismatch and hydration warnings. See PRD §Implementation Decisions / contact and companion decisions file §/contact [P1] MobileContactImage.",
+      "files": [
+        "src/components/contact/contact-form-section.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "Dark mode contact phone image matches the active theme variant"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Converted MobileContactImage from <picture> media-query swap to useTheme/mounted-gated src; light variant rendered on SSR for deterministic hydration. Behavior change: now follows the JS theme toggle (next-themes), not the OS prefers-color-scheme media query as before — this matches site-wide theming behavior."
+    }
+  ]
+}
