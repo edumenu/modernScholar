@@ -64,35 +64,39 @@ export function ScholarshipCard({
         opacity: { duration: isExpanded ? 0 : 0.15 },
         layout: { type: "tween", stiffness: 340, damping: 28 },
       }}
+      onClick={() => {
+        if (!dimmed) onExpand(scholarship.id);
+      }}
       className={cn(
         "group relative flex h-full w-full flex-col overflow-hidden rounded-2xl",
         tint.bg,
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)] hover:shadow-[0_12px_48px_rgba(32,26,25,0.12)]",
         "transition-shadow duration-300",
-        "outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "focus-within:ring-[3px] focus-within:ring-ring/50",
         dimmed ? "pointer-events-none saturate-50" : "cursor-pointer",
       )}
-      onClick={(e) => {
-        e.stopPropagation();
-        if (!dimmed) onExpand(scholarship.id);
-      }}
-      onKeyDown={(e) => {
-        if (dimmed) return;
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onExpand(scholarship.id);
-        }
-      }}
-      role="button"
-      tabIndex={dimmed ? -1 : 0}
-      aria-label={scholarship.name}
       inert={dimmed}
     >
+      {/* Hidden activation overlay — sits behind the visible icon-buttons so
+          keyboard users land on a real <button> (single Enter/Space activation)
+          while the inner controls stay clickable at a higher stacking layer.
+          Replaces the previous role="button" on the article. */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          if (!dimmed) onExpand(scholarship.id);
+        }}
+        tabIndex={dimmed ? -1 : 0}
+        aria-label={`View details for ${scholarship.name}`}
+        className="absolute inset-0 z-0 opacity-0 focus:outline-none"
+      />
+
       {expired && <ExpiredStamp size="lg" />}
 
       <div
         className={cn(
-          "flex h-full w-full flex-col",
+          "pointer-events-none relative z-10 flex h-full w-full flex-col",
           expired && !dimmed && "opacity-60 saturate-75",
         )}
       >
@@ -136,7 +140,7 @@ export function ScholarshipCard({
                       toggle(scholarship.id);
                     }}
                     className={cn(
-                      "flex size-8 shrink-0 items-center justify-center rounded-full",
+                      "pointer-events-auto relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full",
                       "transition-all duration-200 cursor-pointer",
                       compared
                         ? "bg-on-surface text-surface shadow-sm"
@@ -251,12 +255,14 @@ export function ScholarshipCard({
 
           <Button
             variant="ghost"
-            size="icon-sm"
+            size="icon"
             onClick={(e) => {
               e.stopPropagation();
               onExpand(scholarship.id);
             }}
-            aria-label={`View details for ${scholarship.name}`}
+            aria-hidden="true"
+            tabIndex={-1}
+            className="pointer-events-auto relative z-10"
           >
             <Icon icon="solar:arrow-right-linear" />
           </Button>

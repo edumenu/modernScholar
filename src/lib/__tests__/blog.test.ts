@@ -285,23 +285,23 @@ describe("getRelatedPosts ranking", () => {
     expect(related.map((p) => p.slug)).toEqual(["two-overlap", "one-overlap"])
   })
 
-  it("extracts h3 headings from the MDX body with slugified ids", async () => {
+  it("extracts h2 headings from the MDX body with slugified ids", async () => {
     const body = [
       "Intro paragraph.",
       "",
-      "### The Power of a Personal Story",
+      "## The Power of a Personal Story",
       "",
       "Body.",
       "",
-      "### Tailoring to the Scholarship's Mission",
+      "## Tailoring to the Scholarship's Mission",
       "",
       "More body.",
       "",
       "```ts",
-      "### Not a heading inside code",
+      "## Not a heading inside code",
       "```",
       "",
-      "### The Power of a Personal Story",
+      "## The Power of a Personal Story",
       "",
       "Duplicate title — id should disambiguate.",
     ].join("\n")

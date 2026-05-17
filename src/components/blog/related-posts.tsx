@@ -87,12 +87,12 @@ export function RelatedPosts({ posts = [] }: RelatedPostsProps) {
               <CarouselPrevious
                 className="static translate-y-0"
                 variant="outline"
-                size="icon-sm"
+                size="icon"
               />
               <CarouselNext
                 className="static translate-y-0"
                 variant="outline"
-                size="icon-sm"
+                size="icon"
               />
             </div>
           </div>

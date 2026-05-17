@@ -1,11 +1,11 @@
 "use client"
 
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import Link from "next/link"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
-import { Button } from "@/components/ui/button/button"
+import { ButtonLink } from "@/components/ui/button/button-link"
 import { ReadingProgress } from "@/components/blog/reading-progress"
 
 import type { BlogPost } from "@/lib/blog"
@@ -16,6 +16,7 @@ type BlogDetailPost = Pick<
   BlogPost,
   | "slug"
   | "title"
+  | "excerpt"
   | "category"
   | "publishDate"
   | "readTime"
@@ -44,15 +45,40 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
   const showSeriesNav =
     Boolean(post.series) && Array.isArray(seriesPosts) && seriesPosts.length > 0
 
+  // Defensive: the MDX-source-of-truth (`ScholarshipBlogs.md`) historically
+  // duplicates the excerpt as the first body paragraph because the converter
+  // derives the excerpt from that sentence without removing it. We render the
+  // excerpt explicitly above the body, so the duplicate appears twice on the
+  // page. We can't pass `components` to the MDX from this file (it's already
+  // composed into `children` by the page), so we trim the second occurrence
+  // here at the DOM layer. No-op when the MDX body doesn't lead with the
+  // excerpt sentence.
+  useEffect(() => {
+    const root = articleRef.current
+    if (!root) return
+    const target = post.excerpt?.trim()
+    if (!target) return
+
+    const paragraphs = root.querySelectorAll<HTMLParagraphElement>("p")
+    let firstMatchSeen = false
+    for (const p of paragraphs) {
+      if (p.textContent?.trim() !== target) continue
+      if (!firstMatchSeen) {
+        firstMatchSeen = true
+        continue
+      }
+      p.remove()
+      break
+    }
+  }, [post.excerpt, post.slug])
+
   return (
     <div>
       <AnimatedSection variant="fadeUp">
-        <Link href="/blog">
-          <Button variant="ghost" size="sm" data-icon="inline-start">
-            <Icon icon="solar:arrow-left-linear" data-icon="inline-start" />
-            Back to Blog
-          </Button>
-        </Link>
+        <ButtonLink href="/blog" variant="ghost" size="default" data-icon="inline-start">
+          <Icon icon="solar:arrow-left-linear" data-icon="inline-start" />
+          Back to Blog
+        </ButtonLink>
       </AnimatedSection>
 
       <article

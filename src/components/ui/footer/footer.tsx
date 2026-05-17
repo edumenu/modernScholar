@@ -52,12 +52,12 @@ function FooterContent() {
             Quick Links
           </h3>
           <nav aria-label="Footer quick links">
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-1">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-on-surface-variant transition-colors hover:text-on-surface"
+                    className="inline-block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
                   >
                     {link.title}
                   </Link>
@@ -73,12 +73,12 @@ function FooterContent() {
             Legal
           </h3>
           <nav aria-label="Footer legal links">
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-1">
               {legalLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-on-surface-variant transition-colors hover:text-on-surface"
+                    className="inline-block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
                   >
                     {link.title}
                   </Link>

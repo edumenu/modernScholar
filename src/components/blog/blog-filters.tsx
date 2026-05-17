@@ -66,7 +66,7 @@ export function BlogFilters({
     return (
       <div className="flex flex-col gap-3">
         {/* Full-width search */}
-        <div className="flex items-center gap-2 rounded-full border border-outline-variant/30 bg-white/20 px-3 py-2 dark:bg-white/5">
+        <div className="flex items-center gap-2 rounded-full border border-outline-variant/30 bg-white/20 px-3 py-2.5 dark:bg-white/5">
           <Icon
             icon="solar:magnifer-linear"
             className="size-4.5 shrink-0 text-on-surface/50 dark:text-white/50"
@@ -150,7 +150,7 @@ export function BlogFilters({
                             size="sm"
                             onClick={() => onCategoryChange(category)}
                             className={cn(
-                              "rounded-full",
+                              "min-h-11 rounded-full",
                               isActive
                                 ? "bg-primary/30 shadow-none dark:bg-primary"
                                 : "bg-white/20 text-on-surface/60 dark:bg-white/10",

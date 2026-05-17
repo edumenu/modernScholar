@@ -33,11 +33,21 @@ const STORAGE_ROWS = [
   },
 ] as const;
 
+const SECTIONS = [
+  { id: "what-we-store", title: "What we store" },
+  { id: "what-we-dont-use", title: "What we don't use" },
+  { id: "third-party-cdns", title: "Third-party CDNs and fonts" },
+  { id: "how-to-clear", title: "How to clear what we store" },
+  { id: "changes", title: "Changes to this policy" },
+  { id: "contact", title: "Contact" },
+] as const;
+
 export default function CookiesPage() {
   return (
     <LegalLayout
       title="Cookie Policy"
       lastUpdated={LAST_UPDATED.cookies}
+      sections={SECTIONS}
       tldr={
         <p>
           Modern Scholar does not use cookies. We store a few small values in
@@ -56,7 +66,11 @@ export default function CookiesPage() {
           device. None of these values are sent to a server. They stay in your
           browser until you clear them.
         </p>
-        <div className="overflow-x-auto">
+        <div
+          role="region"
+          aria-label="Storage values stored in your browser"
+          className="relative overflow-x-auto after:pointer-events-none after:absolute after:inset-y-0 after:right-0 after:w-8 after:bg-linear-to-l after:from-surface after:to-transparent"
+        >
           <table className="w-full border-collapse text-left text-sm">
             <thead className="bg-surface-container text-on-surface">
               <tr>

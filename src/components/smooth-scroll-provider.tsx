@@ -35,6 +35,7 @@ export function SmoothScrollProvider({
         smoothWheel: true,
         touchMultiplier: 2,
         autoResize: true,
+        anchors: true,
       }}
     >
       <LenisRouteResizer />

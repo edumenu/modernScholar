@@ -17,11 +17,31 @@ export const metadata: Metadata = {
     "Terms of service for Modern Scholar — how to use the site and what to verify.",
 };
 
+const SECTIONS = [
+  { id: "acceptance", title: "1. Acceptance of these terms" },
+  { id: "about-service", title: "2. About the Service" },
+  { id: "eligibility", title: "3. Eligibility" },
+  { id: "scholarship-data", title: "4. Scholarship data disclaimer" },
+  { id: "editorial-content", title: "5. Editorial content" },
+  { id: "acceptable-use", title: "6. Acceptable use" },
+  { id: "intellectual-property", title: "7. Intellectual property" },
+  { id: "third-party-links", title: "8. Third-party links" },
+  { id: "disclaimers", title: "9. Disclaimers" },
+  { id: "limitation-of-liability", title: "10. Limitation of liability" },
+  { id: "indemnification", title: "11. Indemnification" },
+  { id: "termination", title: "12. Termination" },
+  { id: "governing-law", title: "13. Governing law" },
+  { id: "disputes", title: "14. Disputes" },
+  { id: "changes", title: "15. Changes to these terms" },
+  { id: "contact", title: "16. Contact" },
+] as const;
+
 export default function TermsPage() {
   return (
     <LegalLayout
       title="Terms of Service"
       lastUpdated={LAST_UPDATED.terms}
+      sections={SECTIONS}
       tldr={
         <>
           <p>
@@ -304,12 +324,6 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="last-updated" title="17. Last updated">
-        <p>
-          These Terms of Service were last updated on the date shown at the
-          top of this page.
-        </p>
-      </LegalSection>
     </LegalLayout>
   );
 }

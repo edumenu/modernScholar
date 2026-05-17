@@ -71,7 +71,7 @@ function FloatingElements() {
               ease: "easeInOut",
             }}
           >
-            <Icon icon={item.icon} width={item.size} height={item.size} />
+            <Icon icon={item.icon} width={item.size} height={item.size} aria-hidden="true" />
           </motion.div>
         </motion.div>
       ))}
@@ -216,7 +216,7 @@ export function NotFoundClient() {
 
         {/* Headline */}
         <motion.h1
-          className="mt-4 font-heading text-2xl font-medium tracking-tight text-on-surface md:text-3xl"
+          className="mt-4 font-heading text-3xl font-medium tracking-tight text-on-surface md:text-4xl"
           initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55, ease }}
@@ -264,7 +264,7 @@ export function NotFoundClient() {
           >
             <ButtonLink href="/blog" variant="link" size="default">
               Read the Blog
-              <Icon icon="solar:arrow-right-linear" data-icon="inline-end" />
+              <Icon icon="solar:arrow-right-linear" data-icon="inline-end" aria-hidden="true" />
             </ButtonLink>
           </motion.div>
         </div>

@@ -218,6 +218,8 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
+    "PRDs/05_17_2026/mobile-fixes-phase-3-per-page/mobile-fixes-phase-3-per-page-verification.md",
+    "PRDs/05_17_2026/mobile-fixes-phase-2-cross-cutting/mobile-fixes-phase-2-cross-cutting-verification.md",
     "PRDs/05_17_2026/mobile-fixes-phase-1-critical/mobile-fixes-phase-1-critical-verification.md",
     "PRDs/05_17_2026/mobile-fixes-phase-1-critical/mobile-fixes-phase-1-critical-progress.txt",
     "PRDs/05_17_2026/mobile-fixes-phase-1-critical/mobile-fixes-phase-1-critical-tasks.json",
@@ -261,8 +263,6 @@
     "PRDs/05_16_2026/findings/group-2-content.md",
     "PRDs/05_16_2026/findings/scholarships-contact-supplement.md",
     "future/breach-runbook.md",
-    "PRDs/05_13_2026/legal-pages/legal-pages-decisions.md",
-    "PRDs/05_13_2026/legal-pages/legal-pages.md",
-    "PRDs/05_13_2026/legal-pages/legal-pages-verification.md"
+    "PRDs/05_13_2026/legal-pages/legal-pages-decisions.md"
   ]
 }

@@ -18,6 +18,19 @@ export const metadata: Metadata = {
     "Learn how Modern Scholar handles your data — what we collect, why, and the rights you have under GDPR and CCPA.",
 };
 
+const SECTIONS = [
+  { id: "who-we-are", title: "Who we are" },
+  { id: "what-we-collect", title: "What we collect" },
+  { id: "why-we-collect-it", title: "Why we collect it" },
+  { id: "where-data-goes", title: "Where data goes" },
+  { id: "how-long-we-keep-it", title: "How long we keep it" },
+  { id: "your-rights", title: "Your rights" },
+  { id: "childrens-privacy", title: "Children's privacy" },
+  { id: "international-transfers", title: "International transfers" },
+  { id: "changes", title: "Changes to this policy" },
+  { id: "contact", title: "Contact" },
+] as const;
+
 export default function PrivacyPage() {
   const tldr = (
     <>
@@ -47,6 +60,7 @@ export default function PrivacyPage() {
     <LegalLayout
       title="Privacy Policy"
       lastUpdated={LAST_UPDATED.privacy}
+      sections={SECTIONS}
       tldr={tldr}
     >
       <LegalSection id="who-we-are" title="Who we are">
@@ -247,7 +261,10 @@ export default function PrivacyPage() {
           very little, so most requests resolve quickly.
         </p>
 
-        <LegalSubsection title="If you’re in the EU or UK (GDPR)">
+        <LegalSubsection
+          id="gdpr-rights"
+          title="If you’re in the EU or UK (GDPR)"
+        >
           <p>You have the right to:</p>
           <ul className="list-disc space-y-2 pl-6">
             <li>access the data we hold about you;</li>
@@ -271,7 +288,10 @@ export default function PrivacyPage() {
           </p>
         </LegalSubsection>
 
-        <LegalSubsection title="If you’re in California (CCPA / CPRA)">
+        <LegalSubsection
+          id="ccpa-rights"
+          title="If you’re in California (CCPA / CPRA)"
+        >
           <p>You have the right to:</p>
           <ul className="list-disc space-y-2 pl-6">
             <li>know what categories of personal information we collect;</li>
@@ -365,13 +385,6 @@ export default function PrivacyPage() {
           </a>
           . One inbox handles general, privacy, deletion, and breach
           correspondence.
-        </p>
-      </LegalSection>
-
-      <LegalSection id="last-updated" title="Last updated">
-        <p>
-          This policy was last updated on{" "}
-          <time dateTime={LAST_UPDATED.privacy}>{LAST_UPDATED.privacy}</time>.
         </p>
       </LegalSection>
     </LegalLayout>
