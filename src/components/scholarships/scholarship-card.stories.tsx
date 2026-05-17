@@ -65,18 +65,6 @@ export const Graduate: Story = {
   },
 }
 
-export const K8: Story = {
-  name: "K-8",
-  args: {
-    scholarship: {
-      ...baseScholarship,
-      id: "k8-demo",
-      name: "Young Scholars Program",
-      classification: ["K-8"],
-    },
-  },
-}
-
 export const K12: Story = {
   name: "K-12",
   args: {

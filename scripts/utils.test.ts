@@ -120,8 +120,17 @@ describe("normalizeClassification", () => {
     expect(normalizeClassification("High school")).toEqual(["High School"])
     expect(normalizeClassification("Undergraduate")).toEqual(["Undergraduate"])
     expect(normalizeClassification("Graduate")).toEqual(["Graduate"])
-    expect(normalizeClassification("K-8")).toEqual(["K-8"])
     expect(normalizeClassification("K-12")).toEqual(["K-12"])
+  })
+
+  it("coerces legacy K-8 to K-12", () => {
+    expect(normalizeClassification("K-8")).toEqual(["K-12"])
+    // Combined cells dedupe when the K-8 coercion collides with an explicit K-12.
+    expect(normalizeClassification("K-8, K-12")).toEqual(["K-12"])
+    expect(normalizeClassification("K-8, High school")).toEqual([
+      "K-12",
+      "High School",
+    ])
   })
 
   it("splits on &", () => {

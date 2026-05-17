@@ -68,7 +68,7 @@ describe("parseAwardAmount", () => {
 })
 
 describe("CLASSIFICATION_COLORS", () => {
-  const levels: EducationLevel[] = ["High School", "Undergraduate", "Graduate", "K-8", "K-12"]
+  const levels: EducationLevel[] = ["High School", "Undergraduate", "Graduate", "K-12"]
 
   it.each(levels)("returns bg and text for %s", (level) => {
     const colors = CLASSIFICATION_COLORS[level]
@@ -78,7 +78,7 @@ describe("CLASSIFICATION_COLORS", () => {
 })
 
 describe("CLASSIFICATION_TINTS", () => {
-  const levels: EducationLevel[] = ["High School", "Undergraduate", "Graduate", "K-8", "K-12"]
+  const levels: EducationLevel[] = ["High School", "Undergraduate", "Graduate", "K-12"]
 
   it.each(levels)("returns bg, border, accent, text, and muted for %s", (level) => {
     const tint = CLASSIFICATION_TINTS[level]

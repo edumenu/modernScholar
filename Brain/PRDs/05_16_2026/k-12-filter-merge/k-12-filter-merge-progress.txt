@@ -1,0 +1,10 @@
+# Ralph Progress — k-12-filter-merge
+Started: 2026-05-17T01:32:45Z
+MAX_ITER=6
+---
+[2026-05-16 21:39] T01 PASS — re-classified K-8 → K-12 in CSV (26 cells) and enriched JSON (1 record). Files: MasterScholarshipList.csv, src/data/scholarships-enriched.json.
+[2026-05-16 21:39] T02 PASS — dropped K-8 from EducationLevel union, VALID_LEVELS, and utils test. Files: scripts/utils.ts, scripts/utils.test.ts. Existing "skips invalid" test absorbs K-8 as unknown.
+[2026-05-16 21:39] T03 FAIL (attempt 1/3) — typecheck. Error excerpt: src/components/scholarships/scholarship-list-card.tsx(39,3): error TS2353: Object literal may only specify known properties, and '"K-8"' does not exist in type 'Record<EducationLevel, ...>'. Decompose missed this consumer; T04 added to clean it up.
+[2026-05-16 21:40] T04 PASS — removed K-8 row from scholarship-list-card row-tint table. Files: src/components/scholarships/scholarship-list-card.tsx.
+[2026-05-16 21:40] T03 PASS (retry) — all in-scope edits applied on attempt 1; typecheck now clean after T04 cleared the missed consumer. Files: src/data/scholarships.ts, src/data/__tests__/scholarships.test.ts, src/components/scholarships/__tests__/sort-by-filter.test.ts, src/components/scholarships/scholarship-card.stories.tsx, src/components/scholarships/scholarship-list-card.stories.tsx.
+ALL TASKS COMPLETE

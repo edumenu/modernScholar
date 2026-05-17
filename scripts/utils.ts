@@ -12,14 +12,13 @@ export type EducationLevel =
   | "High School"
   | "Undergraduate"
   | "Graduate"
-  | "K-8"
   | "K-12"
 
 export interface CsvRow {
   Deadline: string
   "Scholarship Name": string
   "Award amount": string
-  Classification: string
+  "Education Level": string
   Link: string
   "Open date": string
   Eligibility: string
@@ -93,8 +92,9 @@ const VALID_LEVELS: Record<string, EducationLevel> = {
   "high school": "High School",
   undergraduate: "Undergraduate",
   graduate: "Graduate",
-  "k-8": "K-8",
   "k-12": "K-12",
+  // Legacy CSV rows can still say "K-8"; coerce to the merged K-12 label.
+  "k-8": "K-12",
 }
 
 // --- Pure utility functions ---
