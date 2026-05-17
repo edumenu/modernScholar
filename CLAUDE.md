@@ -107,7 +107,7 @@ The full design system is documented in `SystemDesign.md`. Key essentials:
 # Personal notes on scripts to run:
   1. npm run check-links — Reads MasterScholarshipList.csv, checks every URL, writes scripts/output/link-report.json
   2. npm run scrape-scholarships — Reads link-report.json (exits with error if missing), scrapes alive URLs, writes src/data/scholarships-enriched.json
-  3. npm run tag-eligibilities — Reads scholarships-enriched.json, adds eligibilityTags via keyword matching, writes back in-place
+  3. npm run tag-eligibilities — Reads scholarships-enriched.json, adds eligibilityTags via keyword matching, writes back in-place (only run this when you want to retag)
   4. npm run convert:blogs — Reads ScholarshipBlogs.md (single source of truth for all blog posts), splits on `## **Title**`, generates one MDX file per post in content/blog/. Refuses to overwrite existing files; pass `--force` to overwrite.
 
 ## Adding a new blog post

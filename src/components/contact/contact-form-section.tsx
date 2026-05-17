@@ -342,10 +342,13 @@ export function ContactFormSection() {
               </div>
 
               {/* Email address + copy */}
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-on-surface-variant tracking-wide">
+              <div className="flex min-w-0 items-center gap-3">
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="min-w-0 truncate text-sm text-on-surface-variant tracking-wide"
+                >
                   {CONTACT_EMAIL}
-                </span>
+                </a>
                 <CopyEmailButton />
               </div>
 
