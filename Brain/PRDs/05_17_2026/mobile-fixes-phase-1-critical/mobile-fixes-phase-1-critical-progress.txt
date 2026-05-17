@@ -1,0 +1,6 @@
+# Ralph Progress — mobile-fixes-phase-1-critical
+Started: 2026-05-17T00:00:00Z
+MAX_ITER=2
+---
+[2026-05-17 00:01] T01 PASS — added min-w-0/overflow-wrap to callout, min-w-0 on contact email row, span→<a mailto:>. Files: src/components/blog/callout.tsx, src/components/contact/contact-form-section.tsx. typecheck+lint clean.
+ALL TASKS COMPLETE

@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { Icon } from "@iconify/react"
 
 
 const quickLinks = [
@@ -52,12 +53,12 @@ function FooterContent() {
             Quick Links
           </h3>
           <nav aria-label="Footer quick links">
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-1">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-on-surface-variant transition-colors hover:text-on-surface"
+                    className="inline-block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
                   >
                     {link.title}
                   </Link>
@@ -73,12 +74,12 @@ function FooterContent() {
             Legal
           </h3>
           <nav aria-label="Footer legal links">
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-1">
               {legalLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-on-surface-variant transition-colors hover:text-on-surface"
+                    className="inline-block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
                   >
                     {link.title}
                   </Link>
@@ -94,6 +95,15 @@ function FooterContent() {
         <p className="text-sm text-on-surface-variant">
           &copy; {new Date().getFullYear()} Modern Scholar. All rights reserved.
         </p>
+        <a
+          href="https://www.instagram.com/dearmodernscholar/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex size-11 items-center justify-center rounded-full bg-on-surface/10 text-on-surface-variant transition-colors hover:bg-on-surface/15 hover:text-on-surface focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        >
+          <span className="sr-only">Instagram</span>
+          <Icon icon="mdi:instagram" aria-hidden="true" className="size-4.5" />
+        </a>
       </div>
 
       {/* Large decorative brand text */}

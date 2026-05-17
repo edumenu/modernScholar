@@ -82,9 +82,11 @@ export function ScholarshipGrid() {
     ],
   )
 
-  // totalPages counts all items (matching + dimmed) intentionally — users can
-  // page through non-matching scholarships rather than having them disappear.
-  const totalPages = Math.max(1, Math.ceil(sortedItems.length / PAGE_SIZE))
+  // totalPages reflects only matching items so the page count agrees with the
+  // result count surfaced in the hero/strip — dimmed non-matches still render
+  // within the active slice, but they no longer extend the pager.
+  const matchingCount = sortedItems.filter((i) => i.matches).length
+  const totalPages = Math.max(1, Math.ceil(matchingCount / PAGE_SIZE))
   const safePage = Math.min(Math.max(1, filters.page), totalPages)
   const start = (safePage - 1) * PAGE_SIZE
   const visibleItems = sortedItems.slice(start, start + PAGE_SIZE)

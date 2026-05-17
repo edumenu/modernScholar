@@ -106,12 +106,12 @@ export function HeroSection() {
             delay={0.4}
             className="w-full min-w-0 flex-col text-left md:flex-1"
           >
-            <h2
+            <h1
               id="hero-heading"
-              className="max-w-3xl text-xl leading-[1.05] tracking-tighter text-primary dark:text-primary-100"
+              className="font-heading max-w-3xl text-xl leading-[1.05] tracking-tighter text-primary dark:text-primary-100"
             >
               Your scholarship journey starts here
-            </h2>
+            </h1>
           </AnimatedSection>
           {/* Headline — bottom. AnimatedLines splits the brand name into per-
               character spans for the reveal animation; that markup is unreadable

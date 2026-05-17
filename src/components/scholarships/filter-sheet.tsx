@@ -163,7 +163,7 @@ export function FilterSheet({
                 {ELIGIBILITY_FLAT_TAGS.map((tag) => (
                   <div
                     key={tag}
-                    className="flex items-center justify-between rounded-lg px-1 py-1.5 transition-colors hover:bg-surface-container-low/60"
+                    className="flex items-center justify-between rounded-lg px-1 py-1.5 pointer-coarse:py-3 transition-colors hover:bg-surface-container-low/60"
                   >
                     <Checkbox
                       checked={selectedTags.includes(tag)}
@@ -220,7 +220,7 @@ export function FilterSheet({
                           )
                         }
                         className={cn(
-                          "flex w-full items-center gap-2.5 rounded-lg px-1 py-2 text-sm font-medium text-on-surface/80 outline-none transition-colors",
+                          "flex w-full items-center gap-2.5 rounded-lg px-1 py-2 pointer-coarse:py-2.5 text-sm font-medium text-on-surface/80 outline-none transition-colors",
                           "hover:bg-surface-container-low/60 focus-visible:ring-[3px] focus-visible:ring-ring/50",
                         )}
                       >
@@ -260,7 +260,7 @@ export function FilterSheet({
                                 return (
                                   <div
                                     key={fullTag}
-                                    className="flex items-center justify-between rounded-lg px-1 py-1.5 transition-colors hover:bg-surface-container-low/60"
+                                    className="flex items-center justify-between rounded-lg px-1 py-1.5 pointer-coarse:py-3 transition-colors hover:bg-surface-container-low/60"
                                   >
                                     <Checkbox
                                       checked={selectedTags.includes(fullTag)}

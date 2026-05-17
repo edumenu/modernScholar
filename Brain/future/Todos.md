@@ -5,11 +5,12 @@
 - ~~Fix QA issues
 - Look into general performance especially with spline 3D
 - ~~Animation to extra filter sheet, remove ripple effect on filter options
-- Look into K to 12 categories
+- ~~Look into K to 12 categories
 - ~~Update loading vector icon from top to bottom
 - ~~Add delay loading to the home page
 - Look into strategies for getting user emails
 - Update dark theme material
+- Update social media links
 -  Clean up tablet and mobile views
 -  Tablet:
 	- Home:
@@ -18,7 +19,8 @@
 	- Scholarship:
 		- No scroll on text in modal view on website
 		- Scholarship list view opens modal. Enter view is fine but exist view choppy
-		- 
+	- Privacy page:
+		- The expanded content prevents me from navigating to the bottom of the page
 - Start thinking about unique tests on every single page. 
 - ~~Add hover animations to the hero section image. 
 

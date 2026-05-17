@@ -1,18 +1,11 @@
 "use client"
 
-import { Suspense, lazy, useEffect, useState, startTransition } from "react"
+import { useEffect } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
-import { useTheme } from "next-themes"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
-import { splineScenes } from "@/config/spline-scenes"
-
-const SplineScene = lazy(() =>
-  import("@/components/home/spline-scene").then((m) => ({
-    default: m.SplineScene,
-  })),
-)
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -85,50 +78,41 @@ export default function Error({
 }) {
   const prefersReducedMotion = useReducedMotion()
   const reduced = !!prefersReducedMotion
-  const [mounted, setMounted] = useState(false)
-  const { resolvedTheme } = useTheme()
 
   useEffect(() => {
     console.error(error)
   }, [error])
 
-  useEffect(() => {
-    startTransition(() => setMounted(true))
-  }, [])
-
-  const splineUrl =
-    mounted && resolvedTheme === "dark"
-      ? splineScenes.notFoundDark()
-      : splineScenes.notFoundLight()
-
-  const splineFallback = (
-    <div className="flex size-full items-center justify-center">
-      <div className="size-12 animate-pulse rounded-full bg-surface-container" />
-    </div>
-  )
-
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-between overflow-hidden px-6 pt-28 pb-16">
       <FloatingElements />
 
-      {/* Spline scene as backdrop — absolute, behind content, decorative. */}
+      {/* Static theme-aware backdrop — decorative; toggled via dark: variant
+          so SSR/CSR render the right asset without a client mount gate. */}
       {!reduced && (
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 flex items-start justify-center pt-20 lg:items-center lg:pt-0"
         >
-          <div className="aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
-            <Suspense fallback={splineFallback}>
-              {mounted ? (
-                <SplineScene
-                  key={resolvedTheme}
-                  scene={splineUrl}
-                  className="size-full"
-                />
-              ) : (
-                splineFallback
-              )}
-            </Suspense>
+          <div className="relative aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
+            <Image
+              src="/404_Light.jpg"
+              alt=""
+              aria-hidden
+              fill
+              priority
+              sizes="100vw"
+              className="object-contain dark:hidden"
+            />
+            <Image
+              src="/404_Dark.jpg"
+              alt=""
+              aria-hidden
+              fill
+              priority
+              sizes="100vw"
+              className="hidden object-contain dark:block"
+            />
           </div>
         </div>
       )}
@@ -143,7 +127,7 @@ export default function Error({
         Something went wrong
       </motion.p>
 
-      {/* Bottom — content stack overlaying the Spline floor */}
+      {/* Bottom — content stack overlaying the backdrop */}
       <div className="relative z-10 flex flex-col items-center text-center">
         {/* Decorative rule */}
         <motion.div

@@ -4,6 +4,7 @@ import { useRef, useState, useSyncExternalStore } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import Image from "next/image";
 import { ThemeToggle } from "./theme-toggle";
@@ -154,7 +155,15 @@ function NavLink({
   )
 }
 
-function MobileNav() {
+const SOCIAL_LINKS = [
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/dearmodernscholar/",
+    icon: "mdi:instagram",
+  },
+] as const
+
+function MobileNav({ onClose }: { onClose: () => void }) {
   const pathname = usePathname()
   const [selectedIndicator, setSelectedIndicator] = useState(pathname)
   const drawerRef = useRef<HTMLDivElement>(null)
@@ -168,6 +177,14 @@ function MobileNav() {
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation"
+      tabIndex={-1}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          e.preventDefault()
+          e.stopPropagation()
+          onClose()
+        }
+      }}
       variants={menuSlide}
       initial="initial"
       animate="enter"
@@ -203,40 +220,30 @@ function MobileNav() {
               height={36}
               className="size-10 object-contain"
             />
-            <div
-              className={cn(
-                glassPill,
-                "flex h-8 w-fit items-center justify-center lg:px-2.5",
-              )}
-            >
-              <ThemeToggle />
+            <div className="flex min-h-11 items-center">
+              <div
+                className={cn(
+                  glassPill,
+                  "flex h-8 w-fit items-center justify-center lg:px-2.5",
+                )}
+              >
+                <ThemeToggle />
+              </div>
             </div>
           </div>
-          <div className="flex gap-6">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-on-surface-variant transition-colors hover:text-on-surface"
-            >
-              Instagram
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-on-surface-variant transition-colors hover:text-on-surface"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-on-surface-variant transition-colors hover:text-on-surface"
-            >
-              Twitter
-            </a>
+          <div className="flex gap-3">
+            {SOCIAL_LINKS.map(({ label, href, icon }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex size-11 items-center justify-center rounded-full bg-on-surface/10 text-on-surface-variant transition-colors hover:bg-on-surface/15 hover:text-on-surface focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              >
+                <span className="sr-only">{label}</span>
+                <Icon icon={icon} aria-hidden="true" className="size-4.5" />
+              </a>
+            ))}
           </div>
         </div>
       </div>
@@ -263,6 +270,11 @@ export function MobileMenuButton() {
       }
       return !prev
     })
+  }
+
+  const handleClose = () => {
+    setIsOpen(false)
+    requestAnimationFrame(() => buttonRef.current?.focus())
   }
 
   return (
@@ -308,12 +320,9 @@ export function MobileMenuButton() {
               transition={{ duration: 0.5 }}
               className="fixed inset-0 z-40 glass-heavy lg:hidden"
               aria-hidden="true"
-              onClick={() => {
-                setIsOpen(false)
-                requestAnimationFrame(() => buttonRef.current?.focus())
-              }}
+              onClick={handleClose}
             />
-            <MobileNav />
+            <MobileNav onClose={handleClose} />
           </>
         )}
       </AnimatePresence>

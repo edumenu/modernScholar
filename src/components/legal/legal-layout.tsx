@@ -11,6 +11,13 @@ interface LegalLayoutProps {
   lastUpdated: string
   /** Optional TL;DR summary rendered in a tinted card above the body. */
   tldr?: ReactNode
+  /**
+   * Optional table-of-contents entries. When non-empty, renders a
+   * collapsed `<details>` disclosure between the header and the TL;DR
+   * with anchor links to each section. The `id` values must match the
+   * `id` props on the corresponding `<LegalSection>` elements.
+   */
+  sections?: ReadonlyArray<{ id: string; title: string }>
   /** Composed `<LegalSection>` (and any other) content. */
   children: ReactNode
   className?: string
@@ -56,6 +63,7 @@ export function LegalLayout({
   title,
   lastUpdated,
   tldr,
+  sections,
   children,
   className,
 }: LegalLayoutProps) {
@@ -64,7 +72,7 @@ export function LegalLayout({
   return (
     <PageTransition>
       <div className={cn("page-padding-y", className)}>
-        <article className="mx-auto flex max-w-2xl flex-col gap-10">
+        <article id="top" className="mx-auto flex max-w-2xl flex-col gap-10">
           <header className="flex flex-col gap-3">
             <p
               className="text-xs font-semibold uppercase tracking-[0.16em] text-secondary"
@@ -78,6 +86,28 @@ export function LegalLayout({
             </h1>
           </header>
 
+          {sections && sections.length > 0 && (
+            <nav aria-label="Page contents">
+              <details className="rounded-lg bg-surface-container-low p-4 md:p-5">
+                <summary className="cursor-pointer text-sm font-semibold text-on-surface">
+                  Contents — tap to expand
+                </summary>
+                <ul className="mt-2 flex flex-col">
+                  {sections.map((section) => (
+                    <li key={section.id}>
+                      <a
+                        href={`#${section.id}`}
+                        className="block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
+                      >
+                        {section.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </nav>
+          )}
+
           {tldr ? (
             <aside
               aria-label="Summary"
@@ -89,15 +119,25 @@ export function LegalLayout({
 
           <div className="flex flex-col gap-10">{children}</div>
 
-          <footer className="border-t border-on-surface/10 pt-6 text-sm leading-relaxed text-on-surface-variant">
-            Have a question? Contact us at{" "}
-            <a
-              href={`mailto:${CONTACT_EMAIL}`}
-              className="text-primary underline underline-offset-2"
-            >
-              {CONTACT_EMAIL}
-            </a>
-            .
+          <footer className="flex flex-col gap-3 border-t border-on-surface/10 pt-6 text-sm leading-relaxed text-on-surface-variant">
+            <p>
+              Have a question? Contact us at{" "}
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="text-primary underline underline-offset-2"
+              >
+                {CONTACT_EMAIL}
+              </a>
+              .
+            </p>
+            <p>
+              <a
+                href="#top"
+                className="inline-block py-1 pointer-coarse:py-3 text-primary underline underline-offset-2"
+              >
+                Back to top
+              </a>
+            </p>
           </footer>
         </article>
       </div>

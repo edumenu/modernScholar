@@ -3,6 +3,7 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant media-dark (@media (prefers-color-scheme: dark));
 
 @theme inline {
   /* Standard shadcn color mappings */
@@ -512,6 +513,31 @@
     background: var(--surface-container-highest);
     border: 1px solid rgba(255, 255, 255, 0.12);
   }
+}
+
+/* ============================================
+   Terms page — numbered section headings + TOC
+   ============================================
+   The H2 titles inside `LegalSection` no longer carry literal `N. ` prefixes
+   so screen readers announce only the section name. CSS counters supply the
+   visible numbers for both the section heading and the matching TOC link.
+   Two counters keep the section list and the TOC nav in lockstep without
+   relying on a shared DOM ancestor for the increment site. */
+.terms-numbered article {
+  counter-reset: terms-section;
+}
+.terms-numbered article > div > section[id] > h2::before {
+  counter-increment: terms-section;
+  content: counter(terms-section) ". ";
+}
+.terms-numbered nav ul {
+  counter-reset: terms-toc;
+}
+.terms-numbered nav ul > li {
+  counter-increment: terms-toc;
+}
+.terms-numbered nav ul > li > a::before {
+  content: counter(terms-toc) ". ";
 }
 
 /* ============================================

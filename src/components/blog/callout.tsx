@@ -69,7 +69,10 @@ export function Callout({ type = "note", children, className }: CalloutProps) {
         className={iconStyles({ type: variant })}
         aria-hidden="true"
       />
-      <div data-slot="callout-content" className="flex-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+      <div
+        data-slot="callout-content"
+        className="flex-1 min-w-0 wrap-anywhere [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+      >
         <p className="mb-1 font-heading text-sm font-bold uppercase tracking-wider text-current/80">
           {label}
         </p>
@@ -78,5 +81,5 @@ export function Callout({ type = "note", children, className }: CalloutProps) {
         </div>
       </div>
     </aside>
-  )
+  );
 }

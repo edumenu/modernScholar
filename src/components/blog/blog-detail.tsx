@@ -1,12 +1,13 @@
 "use client"
 
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import Link from "next/link"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
-import { Button } from "@/components/ui/button/button"
-import { ReadingProgress } from "@/components/blog/reading-progress"
+import { ButtonLink } from "@/components/ui/button/button-link"
+import { BlogDetailRail } from "@/components/blog/blog-detail-rail"
+import { ShareDock } from "@/components/blog/share-dock"
 
 import type { BlogPost } from "@/lib/blog"
 
@@ -16,6 +17,7 @@ type BlogDetailPost = Pick<
   BlogPost,
   | "slug"
   | "title"
+  | "excerpt"
   | "category"
   | "publishDate"
   | "readTime"
@@ -44,30 +46,63 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
   const showSeriesNav =
     Boolean(post.series) && Array.isArray(seriesPosts) && seriesPosts.length > 0
 
+  // Defensive: the MDX-source-of-truth (`ScholarshipBlogs.md`) historically
+  // duplicates the excerpt as the first body paragraph because the converter
+  // derives the excerpt from that sentence without removing it. We render the
+  // excerpt explicitly above the body, so the duplicate appears twice on the
+  // page. We can't pass `components` to the MDX from this file (it's already
+  // composed into `children` by the page), so we trim the second occurrence
+  // here at the DOM layer. No-op when the MDX body doesn't lead with the
+  // excerpt sentence.
+  useEffect(() => {
+    const root = articleRef.current
+    if (!root) return
+    const target = post.excerpt?.trim()
+    if (!target) return
+
+    const paragraphs = root.querySelectorAll<HTMLParagraphElement>("p")
+    let firstMatchSeen = false
+    for (const p of paragraphs) {
+      if (p.textContent?.trim() !== target) continue
+      if (!firstMatchSeen) {
+        firstMatchSeen = true
+        continue
+      }
+      p.remove()
+      break
+    }
+  }, [post.excerpt, post.slug])
+
   return (
     <div>
       <AnimatedSection variant="fadeUp">
-        <Link href="/blog">
-          <Button variant="ghost" size="sm" data-icon="inline-start">
-            <Icon icon="solar:arrow-left-linear" data-icon="inline-start" />
-            Back to Blog
-          </Button>
-        </Link>
+        <ButtonLink href="/blog" variant="ghost" size="default" data-icon="inline-start">
+          <Icon icon="solar:arrow-left-linear" data-icon="inline-start" />
+          Back to Blog
+        </ButtonLink>
       </AnimatedSection>
 
       <article
         ref={articleRef}
-        className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[260px_1fr]"
+        className="mt-8 grid grid-cols-1 gap-6 md:gap-8 lg:gap-10 lg:grid-cols-[260px_minmax(0,1fr)_240px]"
       >
         {/* Blog Content — server-rendered via children */}
-        <div className="relative order-first lg:order-last">
+        <div className="relative order-2 lg:order-2 lg:max-w-prose">
           {children}
+          {/* Mobile + tablet share row — desktop has the sticky rail */}
+          <div className="mt-10 lg:hidden">
+            <ShareDock
+              url={`/blog/${post.slug}`}
+              title={post.title}
+              excerpt={post.excerpt}
+            />
+          </div>
         </div>
 
-        {/* Sidebar — horizontal strip on md, vertical sidebar on lg */}
-        <aside className="order-last lg:order-first">
-          {/* On md (tablet): horizontal metadata strip above blog */}
-          <div className="hidden md:flex lg:hidden flex-wrap items-center gap-4 rounded-2xl bg-surface-container-low p-4 shadow-xs dark:bg-surface-container-low">
+        {/* Sidebar — horizontal strip below lg, vertical sticky card on lg */}
+        <aside className="order-1 lg:order-1 flex flex-col gap-4">
+          {/* Below lg: horizontal metadata strip above blog */}
+          <div className="flex lg:hidden flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl bg-surface-container-low p-4 shadow-xs dark:bg-surface-container-low">
             <div className="flex items-center gap-2 text-sm">
               <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
                 Category
@@ -84,6 +119,37 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
             <span className="text-outline-variant">·</span>
             <span className="text-sm text-on-surface">{post.readTime}</span>
           </div>
+
+          {/* Below lg: series nav (compact, non-sticky) */}
+          {showSeriesNav && post.series && (
+            <div className="flex flex-col gap-3 rounded-2xl bg-surface-container-low p-4 shadow-xs lg:hidden dark:bg-surface-container-low">
+              <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
+                {post.series.name}
+              </span>
+              <div className="flex flex-col gap-1.5">
+                {seriesPosts!.map((seriesPost) => {
+                  const isCurrent = seriesPost.slug === post.slug
+                  return (
+                    <Link
+                      key={seriesPost.slug}
+                      href={`/blog/${seriesPost.slug}`}
+                      className={cn(
+                        "flex items-center gap-2 rounded-lg px-3 py-2 text-xs transition-colors",
+                        isCurrent
+                          ? "bg-primary/10 font-medium text-primary"
+                          : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+                      )}
+                    >
+                      <span className="shrink-0 font-medium">
+                        {seriesPost.series?.part}.
+                      </span>
+                      <span className="truncate">{seriesPost.title}</span>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+          )}
 
           {/* On lg: sticky vertical sidebar */}
           <div className="sticky top-32 hidden lg:flex flex-col gap-6">
@@ -124,13 +190,6 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
               </div>
             </AnimatedSection>
 
-            <AnimatedSection variant="fadeUp" delay={0.3}>
-              <ReadingProgress
-                articleRef={articleRef}
-                sections={sections}
-              />
-            </AnimatedSection>
-
             {/* Series navigation */}
             {showSeriesNav && post.series && (
               <AnimatedSection variant="fadeUp" delay={0.4}>
@@ -165,6 +224,18 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
             )}
           </div>
         </aside>
+
+        <div className="order-3 hidden lg:block">
+          <BlogDetailRail
+            articleRef={articleRef}
+            sections={sections}
+            post={{
+              slug: post.slug,
+              title: post.title,
+              excerpt: post.excerpt,
+            }}
+          />
+        </div>
       </article>
     </div>
   )

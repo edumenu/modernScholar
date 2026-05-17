@@ -1,0 +1,26 @@
+{
+  "module": "mobile-fixes-phase-1-critical",
+  "prd_path": "Brain/PRDs/05_17_2026/mobile-fixes-phase-1-critical/mobile-fixes-phase-1-critical.md",
+  "agent": "frontend-engineer",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Fix 320px horizontal overflow on /privacy and /contact",
+      "description": "Two mechanical className additions to kill 320px overflow. (1) In src/components/blog/callout.tsx, on the data-slot=\"callout-content\" div, append `min-w-0 [overflow-wrap:anywhere]` to its existing className. (2) In src/components/contact/contact-form-section.tsx around the email row (`flex items-center gap-3` containing CONTACT_EMAIL + CopyEmailButton): add `min-w-0` to the outer flex; replace the plain `<span>{CONTACT_EMAIL}</span>` with `<a href={`mailto:${CONTACT_EMAIL}`} …>` that keeps the existing classes plus adds `min-w-0 truncate`. See PRD §Solution and §Implementation Decisions. Do not refactor anything else.",
+      "files": [
+        "src/components/blog/callout.tsx",
+        "src/components/contact/contact-form-section.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "/privacy fits 320px viewport with no horizontal scroll",
+        "/contact fits 320px viewport with no horizontal scroll",
+        "Contact email rendered as real <a href=\"mailto:…\"> for screen readers"
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "[overflow-wrap:anywhere] on callout content wraps mid-word only for unbreakable runs"
+    }
+  ]
+}

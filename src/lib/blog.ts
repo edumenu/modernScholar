@@ -51,9 +51,9 @@ export interface BlogPost {
   /** Computed via `reading-time`. Format: `"N min read"`. */
   readTime: string
   /**
-   * Section headings extracted from the MDX body (h3 / `### `). Used by the
+   * Section headings extracted from the MDX body (h2 / `## `). Used by the
    * blog detail sidebar to render the table-of-contents and drive the
-   * scroll-spy reading progress dots. Heading IDs match what the MDX h3
+   * scroll-spy reading progress dots. Heading IDs match what the MDX h2
    * renderer produces via `slugify(text)`.
    */
   headings: BlogHeading[]
@@ -109,8 +109,8 @@ export type Frontmatter = z.infer<typeof FrontmatterSchema>
 // --- Internals --------------------------------------------------------------
 
 /**
- * Extracts h3 (`### `) headings from a raw MDX body, skipping fenced code
- * blocks. The returned IDs use the same `slugify` rule as the MDX h3 renderer
+ * Extracts h2 (`## `) headings from a raw MDX body, skipping fenced code
+ * blocks. The returned IDs use the same `slugify` rule as the MDX h2 renderer
  * in `src/components/blog/mdx-components.tsx`, so client-side
  * `document.getElementById(headings[i].id)` resolves to the rendered DOM node.
  */
@@ -127,7 +127,7 @@ function extractHeadings(body: string): BlogHeading[] {
     }
     if (inCodeFence) continue
 
-    const match = line.match(/^###\s+(.+?)\s*$/)
+    const match = line.match(/^##\s+(.+?)\s*$/)
     if (!match) continue
 
     const title = match[1].replace(/\*\*/g, "").trim()
