@@ -86,7 +86,7 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
         className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[260px_1fr]"
       >
         {/* Blog Content — server-rendered via children */}
-        <div className="relative order-first lg:order-last">
+        <div className="relative order-first lg:order-last lg:max-w-prose">
           {children}
         </div>
 

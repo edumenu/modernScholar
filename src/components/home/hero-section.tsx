@@ -108,7 +108,7 @@ export function HeroSection() {
           >
             <h1
               id="hero-heading"
-              className="max-w-3xl text-xl leading-[1.05] tracking-tighter text-primary dark:text-primary-100"
+              className="font-heading max-w-3xl text-xl leading-[1.05] tracking-tighter text-primary dark:text-primary-100"
             >
               Your scholarship journey starts here
             </h1>

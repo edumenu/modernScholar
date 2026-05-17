@@ -1,19 +1,11 @@
 "use client"
 
-import { Suspense, lazy, useEffect, useSyncExternalStore } from "react"
+import { useEffect } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { motion, useReducedMotion } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
-import { useHasMounted } from "@/hooks/use-has-mounted"
-import { splineScenes } from "@/config/spline-scenes"
-
-// Spline is lazy-loaded so the global-error chunk stays small until needed.
-const SplineScene = lazy(() =>
-  import("@/components/home/spline-scene").then((m) => ({
-    default: m.SplineScene,
-  })),
-)
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -77,22 +69,6 @@ function FloatingElements() {
   )
 }
 
-// next-themes' ThemeProvider isn't mounted under the global-error boundary
-// (it replaces the root layout), so `useTheme()` returns undefined here.
-// Subscribe to `prefers-color-scheme` directly via matchMedia so the Spline
-// scene still matches the user's system theme.
-function subscribePrefersDark(notify: () => void): () => void {
-  const mql = window.matchMedia("(prefers-color-scheme: dark)")
-  mql.addEventListener("change", notify)
-  return () => mql.removeEventListener("change", notify)
-}
-function getPrefersDarkClient(): boolean {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-}
-function getPrefersDarkServer(): boolean {
-  return false
-}
-
 interface GlobalErrorClientProps {
   error: Error & { digest?: string }
   reset: () => void
@@ -101,48 +77,42 @@ interface GlobalErrorClientProps {
 export function GlobalErrorClient({ error, reset }: GlobalErrorClientProps) {
   const prefersReducedMotion = useReducedMotion()
   const reduced = !!prefersReducedMotion
-  const mounted = useHasMounted()
-  const prefersDark = useSyncExternalStore(
-    subscribePrefersDark,
-    getPrefersDarkClient,
-    getPrefersDarkServer,
-  )
 
   useEffect(() => {
     console.error(error)
   }, [error])
 
-  // Reuse the not-found Spline assets — the global-error treatment is a peer
-  // of the 404 experience (rare, full-page, editorial fallback).
-  const splineUrl =
-    mounted && prefersDark
-      ? splineScenes.notFoundDark()
-      : splineScenes.notFoundLight()
-
-  const splineFallback = (
-    <div className="flex size-full items-center justify-center">
-      <div className="size-12 animate-pulse rounded-full bg-surface-container" />
-    </div>
-  )
-
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center px-6 py-16 overflow-hidden">
       <FloatingElements />
 
-      {/* Spline scene as backdrop — absolute, behind content, decorative. */}
+      {/* Static theme-aware backdrop — decorative. `<ThemeProvider>` is not
+          mounted under the global-error boundary, so the toggle relies on
+          `prefers-color-scheme` via the `media-dark` Tailwind variant. */}
       {!reduced && (
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 flex items-start justify-center pt-20 lg:items-center lg:pt-0"
         >
-          <div className="aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
-            <Suspense fallback={splineFallback}>
-              <SplineScene
-                key={prefersDark ? "dark" : "light"}
-                scene={splineUrl}
-                className="size-full"
-              />
-            </Suspense>
+          <div className="relative aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
+            <Image
+              src="/404_Light.jpg"
+              alt=""
+              aria-hidden
+              fill
+              priority
+              sizes="100vw"
+              className="object-contain media-dark:hidden"
+            />
+            <Image
+              src="/404_Dark.jpg"
+              alt=""
+              aria-hidden
+              fill
+              priority
+              sizes="100vw"
+              className="hidden object-contain media-dark:block"
+            />
           </div>
         </div>
       )}

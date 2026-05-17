@@ -9,8 +9,6 @@ const scenes = {
   heroDark: "https://prod.spline.design/X5b6ec1AfF1VBtXh/scene.splinecode",
   contactLight: "https://prod.spline.design/uFuxypgV5-sHPfYG/scene.splinecode",
   contactDark: "https://prod.spline.design/TIEvLLUQbEXBkhx7/scene.splinecode",
-  notFoundLight: "https://prod.spline.design/p0mZprPwlZ2CJwpI/scene.splinecode",
-  notFoundDark: "https://prod.spline.design/LcP3yZzPVUXLn12V/scene.splinecode",
 } as const;
 
 function withCacheBust(url: string): string {
@@ -22,6 +20,4 @@ export const splineScenes = {
   heroDark: () => withCacheBust(scenes.heroDark),
   contactLight: () => withCacheBust(scenes.contactLight),
   contactDark: () => withCacheBust(scenes.contactDark),
-  notFoundLight: () => withCacheBust(scenes.notFoundLight),
-  notFoundDark: () => withCacheBust(scenes.notFoundDark),
 };

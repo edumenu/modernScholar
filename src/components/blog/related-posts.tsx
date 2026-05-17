@@ -98,14 +98,18 @@ export function RelatedPosts({ posts = [] }: RelatedPostsProps) {
           </div>
 
           <CarouselContent className="-ml-4 px-8 pb-8">
-            {posts.map((relatedPost) => (
-              <CarouselItem
-                key={relatedPost.slug}
-                className="basis-full pl-4 md:basis-1/2 lg:basis-1/3"
-              >
-                <BlogCard post={relatedPost} variant="compact" />
-              </CarouselItem>
-            ))}
+            {posts.map((relatedPost, index) => {
+              const isActive = index === current
+              return (
+                <CarouselItem
+                  key={relatedPost.slug}
+                  className="basis-full pl-4 md:basis-1/2 lg:basis-1/3"
+                  inert={!isActive}
+                >
+                  <BlogCard post={relatedPost} variant="compact" />
+                </CarouselItem>
+              )
+            })}
           </CarouselContent>
         </Carousel>
       </section>

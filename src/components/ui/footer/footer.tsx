@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { Icon } from "@iconify/react"
 
 
 const quickLinks = [
@@ -94,6 +95,15 @@ function FooterContent() {
         <p className="text-sm text-on-surface-variant">
           &copy; {new Date().getFullYear()} Modern Scholar. All rights reserved.
         </p>
+        <a
+          href="https://www.instagram.com/dearmodernscholar/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex size-11 items-center justify-center rounded-full bg-on-surface/10 text-on-surface-variant transition-colors hover:bg-on-surface/15 hover:text-on-surface focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+        >
+          <span className="sr-only">Instagram</span>
+          <Icon icon="mdi:instagram" aria-hidden="true" className="size-4.5" />
+        </a>
       </div>
 
       {/* Large decorative brand text */}

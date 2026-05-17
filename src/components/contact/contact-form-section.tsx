@@ -9,6 +9,7 @@ import {
   Suspense,
   startTransition,
 } from "react";
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react"
 import { motion, AnimatePresence, useReducedMotion } from "motion/react"
@@ -16,6 +17,7 @@ import { toast } from "sonner"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import { CTAButton } from "@/components/ui/button/cta-button"
 import { Button } from "@/components/ui/button/button"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 import { splineScenes } from "@/config/spline-scenes"
 
@@ -130,7 +132,7 @@ function CopyEmailButton() {
 
 function QuestionRouting() {
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-3">
       {QUESTION_ROUTES.map((route) => (
         <div
           key={route.label}
@@ -169,15 +171,14 @@ function MobileContactImage({
 
   return (
     <div className="overflow-hidden rounded-3xl bg-surface-container">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={src}
         alt="Modern Scholar contact illustration"
         width={800}
         height={600}
+        sizes="(max-width: 1023px) 100vw, 50vw"
+        priority
         className="h-auto w-full object-cover"
-        loading="eager"
-        decoding="async"
       />
     </div>
   );
@@ -188,6 +189,7 @@ export function ContactFormSection() {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useMediaQuery("(max-width: 1023px)");
 
   useEffect(() => {
     startTransition(() => setMounted(true));
@@ -214,17 +216,17 @@ export function ContactFormSection() {
         <div className="flex items-center justify-center">
           {/* Desktop: 3D scene in a styled container */}
           <div className="hidden lg:block w-full rounded-3xl overflow-hidden">
-            <Suspense fallback={splineFallback}>
-              {mounted ? (
+            {mounted && !isMobile ? (
+              <Suspense fallback={splineFallback}>
                 <SplineScene
                   key={resolvedTheme}
                   scene={splineUrl}
                   className="h-120 w-full"
                 />
-              ) : (
-                splineFallback
-              )}
-            </Suspense>
+              </Suspense>
+            ) : (
+              splineFallback
+            )}
           </div>
 
           {/* Mobile: theme-aware static image */}

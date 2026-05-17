@@ -158,18 +158,8 @@ function NavLink({
 const SOCIAL_LINKS = [
   {
     label: "Instagram",
-    href: "https://instagram.com",
+    href: "https://www.instagram.com/dearmodernscholar/",
     icon: "mdi:instagram",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com",
-    icon: "mdi:linkedin",
-  },
-  {
-    label: "Twitter",
-    href: "https://twitter.com",
-    icon: "mdi:twitter",
   },
 ] as const
 
@@ -230,13 +220,15 @@ function MobileNav({ onClose }: { onClose: () => void }) {
               height={36}
               className="size-10 object-contain"
             />
-            <div
-              className={cn(
-                glassPill,
-                "flex h-8 w-fit items-center justify-center lg:px-2.5",
-              )}
-            >
-              <ThemeToggle />
+            <div className="flex min-h-11 items-center">
+              <div
+                className={cn(
+                  glassPill,
+                  "flex h-8 w-fit items-center justify-center lg:px-2.5",
+                )}
+              >
+                <ThemeToggle />
+              </div>
             </div>
           </div>
           <div className="flex gap-3">

@@ -102,7 +102,7 @@ export function BlogFilters({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="shrink-0 rounded-full border border-outline-variant/30 bg-surface-container-low/50 text-on-surface hover:bg-surface-container dark:bg-surface-container-low dark:hover:bg-surface-container"
+                    className="min-h-11 shrink-0 rounded-full border border-outline-variant/30 bg-surface-container-low/50 text-on-surface hover:bg-surface-container dark:bg-surface-container-low dark:hover:bg-surface-container"
                   />
                 }
               >

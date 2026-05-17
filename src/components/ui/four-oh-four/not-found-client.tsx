@@ -1,17 +1,9 @@
 "use client"
 
-import { Suspense, lazy, useEffect, useState, startTransition } from "react";
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react"
-import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react"
 import { ButtonLink } from "@/components/ui/button/button-link"
-import { splineScenes } from "@/config/spline-scenes";
-
-const SplineScene = lazy(() =>
-  import("@/components/home/spline-scene").then((m) => ({
-    default: m.SplineScene,
-  })),
-);
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -151,48 +143,42 @@ function ZeroRing({ reduced }: { reduced: boolean }) {
 export function NotFoundClient() {
   const prefersReducedMotion = useReducedMotion()
   const reduced = !!prefersReducedMotion
-  const [mounted, setMounted] = useState(false);
-  const { resolvedTheme } = useTheme();
-
-  useEffect(() => {
-    startTransition(() => setMounted(true));
-  }, []);
-
-  const splineUrl =
-    mounted && resolvedTheme === "dark"
-      ? splineScenes.notFoundDark()
-      : splineScenes.notFoundLight();
-
-  const splineFallback = (
-    <div
-      aria-hidden="true"
-      className="size-full bg-surface-container-low/30"
-    />
-  );
 
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-end overflow-hidden px-6 pt-28 pb-16">
       <FloatingElements />
 
-      {/* Spline scene as backdrop — absolute, behind content, decorative */}
+      {/* Static theme-aware backdrop — decorative; toggled via dark: variant
+          so SSR/CSR render the right asset without a client mount gate. */}
       {!reduced && (
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 flex items-start justify-center pt-20 lg:items-center lg:pt-0"
         >
-          <div className="aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
-            <Suspense fallback={splineFallback}>
-              <SplineScene
-                key={resolvedTheme}
-                scene={splineUrl}
-                className="size-full"
-              />
-            </Suspense>
+          <div className="relative aspect-3/2 w-full max-w-5xl lg:-translate-y-16">
+            <Image
+              src="/404_Light.jpg"
+              alt=""
+              aria-hidden
+              fill
+              priority
+              sizes="100vw"
+              className="object-contain dark:hidden"
+            />
+            <Image
+              src="/404_Dark.jpg"
+              alt=""
+              aria-hidden
+              fill
+              priority
+              sizes="100vw"
+              className="hidden object-contain dark:block"
+            />
           </div>
         </div>
       )}
 
-      {/* Reduced-motion: static 404 in middle (no Spline backdrop) */}
+      {/* Reduced-motion: static 404 in middle (no backdrop) */}
       {reduced && (
         <div className="relative z-10 flex items-baseline justify-center text-[25vw] font-heading font-bold leading-none text-primary sm:text-[22vw] lg:text-[18vw]">
           <span>4</span>
@@ -201,7 +187,7 @@ export function NotFoundClient() {
         </div>
       )}
 
-      {/* Bottom — content stack overlaying the Spline floor */}
+      {/* Bottom — content stack overlaying the backdrop */}
       <div className="relative z-10 flex flex-col items-center text-center">
         {/* Decorative rule */}
         <motion.div

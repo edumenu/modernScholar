@@ -94,7 +94,7 @@ export default function CookiesPage() {
                 </th>
                 <th
                   scope="col"
-                  className="border border-outline-variant px-3 py-2 font-semibold"
+                  className="hidden border border-outline-variant px-3 py-2 font-semibold md:table-cell"
                 >
                   Category
                 </th>
@@ -112,7 +112,7 @@ export default function CookiesPage() {
                   <td className="border border-outline-variant px-3 py-2">
                     {row.lifetime}
                   </td>
-                  <td className="border border-outline-variant px-3 py-2">
+                  <td className="hidden border border-outline-variant px-3 py-2 md:table-cell">
                     {row.category}
                   </td>
                 </tr>

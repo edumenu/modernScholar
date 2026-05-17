@@ -18,22 +18,22 @@ export const metadata: Metadata = {
 };
 
 const SECTIONS = [
-  { id: "acceptance", title: "1. Acceptance of these terms" },
-  { id: "about-service", title: "2. About the Service" },
-  { id: "eligibility", title: "3. Eligibility" },
-  { id: "scholarship-data", title: "4. Scholarship data disclaimer" },
-  { id: "editorial-content", title: "5. Editorial content" },
-  { id: "acceptable-use", title: "6. Acceptable use" },
-  { id: "intellectual-property", title: "7. Intellectual property" },
-  { id: "third-party-links", title: "8. Third-party links" },
-  { id: "disclaimers", title: "9. Disclaimers" },
-  { id: "limitation-of-liability", title: "10. Limitation of liability" },
-  { id: "indemnification", title: "11. Indemnification" },
-  { id: "termination", title: "12. Termination" },
-  { id: "governing-law", title: "13. Governing law" },
-  { id: "disputes", title: "14. Disputes" },
-  { id: "changes", title: "15. Changes to these terms" },
-  { id: "contact", title: "16. Contact" },
+  { id: "acceptance", title: "Acceptance of these terms" },
+  { id: "about-service", title: "About the Service" },
+  { id: "eligibility", title: "Eligibility" },
+  { id: "scholarship-data", title: "Scholarship data disclaimer" },
+  { id: "editorial-content", title: "Editorial content" },
+  { id: "acceptable-use", title: "Acceptable use" },
+  { id: "intellectual-property", title: "Intellectual property" },
+  { id: "third-party-links", title: "Third-party links" },
+  { id: "disclaimers", title: "Disclaimers" },
+  { id: "limitation-of-liability", title: "Limitation of liability" },
+  { id: "indemnification", title: "Indemnification" },
+  { id: "termination", title: "Termination" },
+  { id: "governing-law", title: "Governing law" },
+  { id: "disputes", title: "Disputes" },
+  { id: "changes", title: "Changes to these terms" },
+  { id: "contact", title: "Contact" },
 ] as const;
 
 export default function TermsPage() {
@@ -42,6 +42,7 @@ export default function TermsPage() {
       title="Terms of Service"
       lastUpdated={LAST_UPDATED.terms}
       sections={SECTIONS}
+      className="terms-numbered"
       tldr={
         <>
           <p>
@@ -54,7 +55,7 @@ export default function TermsPage() {
         </>
       }
     >
-      <LegalSection id="acceptance" title="1. Acceptance of these terms">
+      <LegalSection id="acceptance" title="Acceptance of these terms">
         <p>
           By visiting or using Modern Scholar (the &ldquo;Service&rdquo;), you
           agree to these Terms of Service. If you don&apos;t agree, please
@@ -67,7 +68,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="about-service" title="2. About the Service">
+      <LegalSection id="about-service" title="About the Service">
         <p>
           Modern Scholar is an independent editorial project that curates and
           explains scholarship opportunities for students. It is operated by{" "}
@@ -81,7 +82,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="eligibility" title="3. Eligibility">
+      <LegalSection id="eligibility" title="Eligibility">
         <p>
           The Service is intended for general audiences and is not directed at
           children under 13. By using the site, you confirm that you can form
@@ -99,7 +100,7 @@ export default function TermsPage() {
 
       <LegalSection
         id="scholarship-data"
-        title="4. Scholarship data disclaimer"
+        title="Scholarship data disclaimer"
       >
         <p>
           We work hard to keep our scholarship listings accurate, current, and
@@ -129,7 +130,7 @@ export default function TermsPage() {
         </Callout>
       </LegalSection>
 
-      <LegalSection id="editorial-content" title="5. Editorial content">
+      <LegalSection id="editorial-content" title="Editorial content">
         <p>
           The articles, guides, essays, illustrations, design system, and
           other editorial content on Modern Scholar are written and produced
@@ -145,7 +146,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="acceptable-use" title="6. Acceptable use">
+      <LegalSection id="acceptable-use" title="Acceptable use">
         <p>By using the Service, you agree not to:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>
@@ -179,7 +180,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="intellectual-property" title="7. Intellectual property">
+      <LegalSection id="intellectual-property" title="Intellectual property">
         <p>
           The Modern Scholar name, wordmark, visual identity, layout, code,
           and editorial content are owned by Modern Scholar or its
@@ -194,7 +195,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="third-party-links" title="8. Third-party links">
+      <LegalSection id="third-party-links" title="Third-party links">
         <p>
           The site links out to scholarship providers, university pages,
           government resources, and other third-party websites. We don&apos;t
@@ -207,7 +208,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="disclaimers" title="9. Disclaimers">
+      <LegalSection id="disclaimers" title="Disclaimers">
         <p>
           The Service is provided <strong>&ldquo;as is&rdquo;</strong> and{" "}
           <strong>&ldquo;as available&rdquo;</strong>, without warranties of
@@ -226,7 +227,7 @@ export default function TermsPage() {
 
       <LegalSection
         id="limitation-of-liability"
-        title="10. Limitation of liability"
+        title="Limitation of liability"
       >
         <p>
           To the fullest extent permitted by law, Modern Scholar and its
@@ -243,7 +244,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="indemnification" title="11. Indemnification">
+      <LegalSection id="indemnification" title="Indemnification">
         <p>
           You agree to defend and indemnify Modern Scholar and its operators
           from any claims, damages, costs, and expenses (including reasonable
@@ -253,7 +254,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="termination" title="12. Termination">
+      <LegalSection id="termination" title="Termination">
         <p>
           You can stop using the Service at any time — just close the tab.
         </p>
@@ -267,7 +268,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="governing-law" title="13. Governing law">
+      <LegalSection id="governing-law" title="Governing law">
         <p>
           These terms and any dispute arising out of or relating to them or
           the Service are governed by {GOVERNING_LAW}, without regard to its
@@ -276,7 +277,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="disputes" title="14. Disputes">
+      <LegalSection id="disputes" title="Disputes">
         <p>
           You and Modern Scholar agree that any dispute arising out of or
           relating to these terms or the Service will be resolved exclusively
@@ -296,7 +297,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="changes" title="15. Changes to these terms">
+      <LegalSection id="changes" title="Changes to these terms">
         <p>
           We may update these terms as the Service evolves. When we do,
           we&apos;ll change the &ldquo;Last updated&rdquo; date at the top of
@@ -311,7 +312,7 @@ export default function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection id="contact" title="16. Contact">
+      <LegalSection id="contact" title="Contact">
         <p>
           Questions about these terms? Reach us at{" "}
           <a
