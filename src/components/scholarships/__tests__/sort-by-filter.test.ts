@@ -142,7 +142,9 @@ describe("filterAndSort", () => {
   })
 
   it("returns all dimmed when no items match education level", () => {
-    const result = filterAndSort(mockScholarships, "K-8", "", "deadline")
+    // Fixture has no K-12 records, so K-12 exercises the zero-match path
+    // generically — not a test of K-12 behavior specifically.
+    const result = filterAndSort(mockScholarships, "K-12", "", "deadline")
     expect(result.every((r) => !r.matches)).toBe(true)
   })
 

@@ -218,6 +218,11 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
+    "PRDs/05_16_2026/k-12-filter-merge/k-12-filter-merge-verification.md",
+    "PRDs/05_16_2026/k-12-filter-merge/k-12-filter-merge-progress.txt",
+    "PRDs/05_16_2026/k-12-filter-merge/k-12-filter-merge-tasks.json",
+    "PRDs/05_16_2026/k-12-filter-merge/k-12-filter-merge.md",
+    "PRDs/05_16_2026/k-12-filter-merge",
     "PRDs/05_16_2026/tablet-responsive/screenshots-verify",
     "PRDs/05_16_2026/tablet-responsive/screenshots",
     "PRDs/05_16_2026/tablet-responsive/findings/scholarships-contact-supplement.md",
@@ -240,8 +245,6 @@
     "PRDs/05_16_2026/tablet-responsive-audit-verification.md",
     "PRDs/05_16_2026/screenshots-verify/home-dark-landscape-1024.png",
     "PRDs/05_16_2026/screenshots-verify",
-    "PRDs/05_16_2026/tablet-responsive-audit-progress.txt",
-    "PRDs/05_16_2026/tablet-responsive-audit-tasks.json",
     "PRDs/05_16_2026/tablet-responsive-audit.md",
     "PRDs/05_16_2026/tablet-responsive-audit-decisions.md",
     "PRDs/05_16_2026/findings/group-3-legal.md",
@@ -249,8 +252,6 @@
     "PRDs/05_16_2026/findings/scholarships-contact-supplement.md",
     "PRDs/05_16_2026/screenshots/contact-tablet-landscape-dark.png",
     "PRDs/05_16_2026/screenshots/contact-tablet-landscape-light.png",
-    "PRDs/05_16_2026/screenshots",
-    "PRDs/05_16_2026/findings",
     "future/breach-runbook.md",
     "PRDs/05_13_2026/legal-pages/legal-pages-decisions.md",
     "PRDs/05_13_2026/legal-pages/legal-pages.md",
@@ -262,7 +263,6 @@
     "code-reviews/2026-05-08/04-home-and-scholarships.md",
     "code-reviews/2026-05-08/02-providers-and-mdx.md",
     "QA-Reports/scholarships-page-2026-05-07.md",
-    "PRDs/05_04_2026/scholarships-all-corpus/scholarships-all-corpus.md",
-    "PRDs/05_04_2026/scholarships-all-corpus/scholarships-all-corpus-verification.md"
+    "PRDs/05_04_2026/scholarships-all-corpus/scholarships-all-corpus.md"
   ]
 }

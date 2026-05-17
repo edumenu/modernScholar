@@ -36,7 +36,6 @@ const CLASSIFICATION_TINT_MAP: Record<
     idle: "bg-tertiary-50 dark:bg-tertiary/12",
     hover: "group-hover/row:bg-tertiary/12 dark:group-hover/row:bg-tertiary/18",
   },
-  "K-8": { idle: "bg-primary/8", hover: "group-hover/row:bg-primary/10" },
   "K-12": { idle: "bg-secondary/8", hover: "group-hover/row:bg-secondary/10" },
 };
 
@@ -62,6 +61,8 @@ export function ScholarshipListCardSpread({
   const hasMounted = useHasMounted();
   const compared = hasMounted && isInComparison;
   const primaryLevel = scholarship.classification[0];
+  // Defensive fallback: scraped JSON is cast `as unknown as Scholarship[]` at the
+  // boundary, so a malformed record could carry a level outside the union.
   const tint =
     CLASSIFICATION_TINT_MAP[primaryLevel] ??
     CLASSIFICATION_TINT_MAP["High School"];

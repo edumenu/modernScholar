@@ -11,7 +11,6 @@ export type EducationLevel =
   | "High School"
   | "Undergraduate"
   | "Graduate"
-  | "K-8"
   | "K-12"
 
 export const EDUCATION_LEVELS = [
@@ -19,7 +18,6 @@ export const EDUCATION_LEVELS = [
   "High School",
   "Undergraduate",
   "Graduate",
-  "K-8",
   "K-12",
 ] as const
 
@@ -30,7 +28,6 @@ export const CLASSIFICATION_COLORS: Record<EducationLevel, { bg: string; text: s
   "High School": { bg: "bg-primary-200", text: "text-primary-700" },
   Undergraduate: { bg: "bg-secondary-200", text: "text-secondary-700" },
   Graduate: { bg: "bg-tertiary-200", text: "text-tertiary-700" },
-  "K-8": { bg: "bg-primary-100", text: "text-primary-950" },
   "K-12": { bg: "bg-secondary-300", text: "text-secondary-950" },
 }
 
@@ -103,13 +100,6 @@ export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: 
     bg: "bg-white dark:bg-surface-container-low",
     border: "border-t-4 border-tertiary-600",
     accent: "from-tertiary/40",
-    text: "text-on-surface",
-    muted: "text-on-surface-variant",
-  },
-  "K-8": {
-    bg: "bg-white dark:bg-surface-container-low",
-    border: "border-t-4 border-primary-300",
-    accent: "from-primary/30",
     text: "text-on-surface",
     muted: "text-on-surface-variant",
   },

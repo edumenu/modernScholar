@@ -1,0 +1,81 @@
+{
+  "module": "k-12-filter-merge",
+  "prd_path": "Brain/PRDs/05_16_2026/k-12-filter-merge/k-12-filter-merge.md",
+  "agent": "frontend-engineer",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Re-classify K-8 records as K-12 in CSV + enriched JSON",
+      "description": "Replace every `K-8` token with `K-12` in MasterScholarshipList.csv (CSV cells; mind quoted multi-level cells like `\"K-8, High school\"` → `\"K-12, High school\"`). In src/data/scholarships-enriched.json, replace the single `\"K-8\"` literal with `\"K-12\"`; if the resulting classification array would contain duplicate `\"K-12\"` entries, de-duplicate. See PRD §Solution + §Implementation Decisions.",
+      "files": [
+        "MasterScholarshipList.csv",
+        "src/data/scholarships-enriched.json"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "All K-8 records in CSV and enriched JSON are re-classified as K-12.",
+        "No duplicate K-12 entries in any classification array."
+      ],
+      "validation": [],
+      "passes": true,
+      "attempts": 0,
+      "notes": "CSV 26 cells + JSON 1 record updated; no dupes."
+    },
+    {
+      "id": "T02",
+      "title": "Drop K-8 from pipeline scripts",
+      "description": "In scripts/utils.ts: remove `\"K-8\"` from the `EducationLevel` union (around L10–16) and remove the `\"k-8\": \"K-8\"` entry from the `VALID_LEVELS` map (around L92–98). In scripts/utils.test.ts: remove the `normalizeClassification(\"K-8\")` assertion (around L123). Future CSV rows containing `K-8` will be silently skipped by `normalizeClassification`. See PRD §Implementation Decisions / Modules.",
+      "files": [
+        "scripts/utils.ts",
+        "scripts/utils.test.ts"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "Pipeline scripts (scripts/utils.ts, scripts/utils.test.ts) reject K-8 going forward."
+      ],
+      "validation": ["lint:touched", "test:targeted"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Existing 'skips invalid' test already covers K-8 as unknown."
+    },
+    {
+      "id": "T03",
+      "title": "Drop K-8 from app union, color/tint maps, and consumer fixtures",
+      "description": "Cascade-closing task. In src/data/scholarships.ts: remove `\"K-8\"` from the `EducationLevel` union (L10–15), from `EDUCATION_LEVELS` (L17–24), from `CLASSIFICATION_COLORS` (L29–35), and from `CLASSIFICATION_TINTS` (L87–123). K-12 keeps its current secondary (sage) tint — do not retune. Then sweep the four consumer files in `files` and delete every `\"K-8\"` string literal (test fixtures + story records) so typecheck stays green. See PRD §Solution + §Implementation Decisions.",
+      "files": [
+        "src/data/scholarships.ts",
+        "src/data/__tests__/scholarships.test.ts",
+        "src/components/scholarships/__tests__/sort-by-filter.test.ts",
+        "src/components/scholarships/scholarship-card.stories.tsx",
+        "src/components/scholarships/scholarship-list-card.stories.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "K-8 is removed from the EducationLevel union and EDUCATION_LEVELS array.",
+        "CLASSIFICATION_COLORS and CLASSIFICATION_TINTS no longer contain a K-8 entry; K-12 keeps secondary tint.",
+        "All tests and stories referencing K-8 are updated; TS compile is clean (but blocked on T04 because scholarship-list-card.tsx was a missed consumer)."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 1,
+      "notes": "Attempt 1 halted at scope expansion (list-card.tsx had K-8 row in Record<EducationLevel,...> table; T03's files list missed it). All in-scope edits were correct; T03 passed after T04 cleared the unrelated consumer."
+    },
+    {
+      "id": "T04",
+      "title": "Drop K-8 row from scholarship-list-card row-tint table",
+      "description": "Decompose fix-up. Open `src/components/scholarships/scholarship-list-card.tsx` and delete the `\"K-8\"` row (around L39) from the `Record<EducationLevel, { idle, hover }>` table. K-12 row stays — only K-8 goes. Reason: T03 missed this consumer; project-wide typecheck fails until removed.",
+      "files": [
+        "src/components/scholarships/scholarship-list-card.tsx"
+      ],
+      "depends_on": [],
+      "acceptance": [
+        "scholarship-list-card.tsx no longer contains a K-8 entry in its row-tint table.",
+        "TS compile is clean."
+      ],
+      "validation": ["typecheck", "lint:touched"],
+      "passes": true,
+      "attempts": 0,
+      "notes": "Single-line removal; project-wide typecheck + lint clean."
+    }
+  ]
+}

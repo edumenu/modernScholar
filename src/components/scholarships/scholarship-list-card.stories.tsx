@@ -22,7 +22,6 @@ const allClassifications: Scholarship[] = [
   { ...baseScholarship, id: "list-hs", name: "National Merit Scholarship", classification: ["High School"], provider: "National Merit Corp", awardAmount: "$2,500" },
   { ...baseScholarship, id: "list-ug", name: "Tech Excellence Scholarship", classification: ["Undergraduate"], awardAmount: "$10,000" },
   { ...baseScholarship, id: "list-grad", name: "Fulbright Research Fellowship", classification: ["Graduate"], provider: "Fulbright Commission", awardAmount: "$25,000", deadline: "October 15" },
-  { ...baseScholarship, id: "list-k8", name: "Young Scholars Program", classification: ["K-8"], provider: "Education First", awardAmount: "$1,000", deadline: "June 30" },
   { ...baseScholarship, id: "list-k12", name: "All Ages Learning Award", classification: ["K-12"], provider: "Learning Alliance", awardAmount: "$5,000", deadline: "December 1" },
 ]
 
