@@ -43,7 +43,7 @@ function FooterContent() {
             />
           </Link>
           <p className="max-w-sm text-xs lg:text-sm leading-relaxed text-on-surface-variant">
-            Curated scholarship discovery for ambitious students.
+            Discover scholarships to streamline your search.
           </p>
         </div>
 
@@ -113,7 +113,7 @@ function FooterContent() {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
 export function Footer() {

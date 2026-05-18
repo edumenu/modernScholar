@@ -16,17 +16,17 @@ const faqs: FAQItem[] = [
   {
     question: "How does Modern Scholar help me find scholarships?",
     answer:
-      "Modern Scholar curates scholarships from thousands of providers and matches them to your academic profile, interests, and eligibility. Our platform makes it easy to browse, filter, and discover opportunities you might otherwise miss.",
+      "Modern Scholar gathers verified scholarships from thousands of providers into one searchable place. Search by keyword, filter by education level, eligibility, or deadline, and uncover opportunities you might otherwise miss.",
   },
   {
     question: "Is Modern Scholar free to use?",
     answer:
-      "Yes, Modern Scholar is completely free for students. We believe every student deserves access to scholarship opportunities without barriers. Our platform is funded through partnerships with educational institutions and scholarship providers.",
+      "Yes, Modern Scholar is completely free for students. We believe every student deserves access to scholarship opportunities without barriers.",
   },
   {
     question: "What types of scholarships are available?",
     answer:
-      "We feature a wide range of scholarships including merit-based, need-based, community service, STEM, arts, athletics, and identity-based awards. Scholarships range from $500 to full-tuition coverage across undergraduate and graduate programs.",
+      "We feature a wide range of scholarships including merit-based, need-based, STEM, and the arts. You'll find opportunities for high school, undergraduates, and graduate students. Scholarship amounts vary widely, from one-time awards to renewable, multi-year funding, so it's worth checking back as new listings roll in.",
   },
   {
     question: "Can I track my scholarship applications?",
@@ -42,7 +42,7 @@ const faqs: FAQItem[] = [
   {
     question: "How often is the scholarship list updated?",
     answer:
-      "We refresh the catalog regularly. Closed deadlines drop off automatically, new opportunities are added regularly throughout the year, and we re-check provider links so broken or outdated listings don't reach you.",
+      "We refresh the library regularly. Closed deadlines drop off automatically, new opportunities are added regularly throughout the year, and we re-check provider links so broken or outdated listings don't reach you.",
   },
 ];
 

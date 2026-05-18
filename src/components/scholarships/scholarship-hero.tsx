@@ -4,8 +4,8 @@ import { PRETEXT_FONTS } from "@/lib/pretext/fonts"
 import {
   scholarships,
   isScholarshipActive,
-  parseAwardAmount,
-} from "@/data/scholarships"
+  // parseAwardAmount,
+} from "@/data/scholarships";
 import { SESSION_DATE } from "@/lib/session-date"
 import { ScholarshipHeroStats } from "./scholarship-hero-stats"
 
@@ -13,20 +13,20 @@ const activeScholarships = scholarships.filter((s) =>
   isScholarshipActive(s, SESSION_DATE),
 )
 
-const totalScholarships = activeScholarships.length
+// const totalScholarships = activeScholarships.length
 
-const educationLevelsCount = new Set(
-  activeScholarships.flatMap((s) => s.classification),
-).size
+// const educationLevelsCount = new Set(
+//   activeScholarships.flatMap((s) => s.classification),
+// ).size
 
-const maxAmount = (() => {
-  let max = 0
-  for (const s of activeScholarships) {
-    const val = parseAwardAmount(s.awardAmount)
-    if (val > max) max = val
-  }
-  return max > 0 ? `$${max.toLocaleString()}` : null
-})()
+// const maxAmount = (() => {
+//   let max = 0
+//   for (const s of activeScholarships) {
+//     const val = parseAwardAmount(s.awardAmount)
+//     if (val > max) max = val
+//   }
+//   return max > 0 ? `$${max.toLocaleString()}` : null
+// })()
 
 const closingSoon = (() => {
   const nowMs = SESSION_DATE.getTime()
@@ -54,17 +54,17 @@ export function ScholarshipHero() {
         />
         <AnimatedSection delay={0.4}>
           <p className="max-w-2xl text-base text-on-surface-variant md:text-lg lg:text-xl">
-            Browse our full catalog of scholarships. Filter by education level,
+            Browse our full library of scholarships. Filter by education level,
             eligibility, and award amount to find what fits your journey.
           </p>
         </AnimatedSection>
         <ScholarshipHeroStats
-          totalScholarships={totalScholarships}
-          educationLevelsCount={educationLevelsCount}
-          maxAmount={maxAmount}
+          // totalScholarships={totalScholarships}
+          // educationLevelsCount={educationLevelsCount}
+          // maxAmount={maxAmount}
           closingSoon={closingSoon}
         />
       </div>
     </>
-  )
+  );
 }

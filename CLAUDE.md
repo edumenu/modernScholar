@@ -115,7 +115,7 @@ The full design system is documented in `SystemDesign.md`. Key essentials:
 1. Open `ScholarshipBlogs.md` and append a new section using the convention:
    ```
    ## **Your Post Title**
-   <!-- author: Catherine Dumenu; category: Tips & Guides; date: 2026-04-01; cover: scholarship-5.jpg -->
+   <!-- author: Cathy Dumenu; category: Tips & Guides; date: 2026-04-01; cover: scholarship-5.jpg -->
 
    First descriptive sentence becomes the excerpt.
 
@@ -126,7 +126,7 @@ The full design system is documented in `SystemDesign.md`. Key essentials:
    What to do instead:
    This paragraph auto-wraps in <Callout type="tip">.
    ```
-   - `author` must be one of: `Catherine Dumenu`.
+   - `author` must be one of: `Cathy Dumenu`.
    - `cover` filename must exist in `public/scholarships/`.
    - In-post sections use `## ` (h2). The post title uses `## **Bold**` — the bold asterisks are the parser's title marker, so plain `## ` lines pass through as h2 section headings.
    - "What to do instead:" auto-wraps the next paragraph in a tip Callout (the rule triggers on the literal phrase regardless of surrounding heading level).

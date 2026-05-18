@@ -13,7 +13,7 @@ const CONTENT_DIR = path.resolve(__dirname, "../content/blog")
  */
 
 const VALID_AUTHORS = new Set([
-  "Catherine Dumenu"
+  "Cathy Dumenu"
 ])
 
 type SectionMeta = {

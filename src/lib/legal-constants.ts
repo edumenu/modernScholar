@@ -12,7 +12,7 @@
 export const CONTACT_EMAIL = "dearmodernscholar@gmail.com" as const
 
 export const CONTROLLERS =
-  "Edem and Catherine Dumenu, North Carolina, USA" as const
+  "Edem and Cathy, North Carolina, USA" as const
 
 export const GOVERNING_LAW = "the laws of the State of North Carolina, USA" as const
 

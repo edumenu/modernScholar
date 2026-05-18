@@ -38,10 +38,18 @@ const ATTRIBUTE_ROWS: AttributeRow[] = [
   { label: "Amount", icon: "solar:money-bag-linear", key: "amount" },
   { label: "Days Left", icon: "solar:clock-circle-linear", key: "daysLeft" },
   { label: "Deadline", icon: "solar:calendar-linear", key: "deadline" },
-  { label: "Education Level", icon: "solar:square-academic-cap-linear", key: "classification" },
-  { label: "Eligibility", icon: "solar:checklist-minimalistic-linear", key: "eligibility" },
-  { label: "Description", icon: "solar:document-text-linear", key: "description" },
-]
+  {
+    label: "Education Level",
+    icon: "solar:square-academic-cap-linear",
+    key: "classification",
+  },
+  {
+    label: "Eligibility",
+    icon: "solar:checklist-minimalistic-linear",
+    key: "eligibility",
+  },
+  // { label: "Description", icon: "solar:document-text-linear", key: "description" },
+];
 
 export function ComparisonSheetAuditLedger({ items, onRemove }: AuditLedgerProps) {
   const amounts = items.map((s) => parseAwardAmount(s.awardAmount))
@@ -221,26 +229,31 @@ function renderCellValue(s: Scholarship, key: string, days: number) {
         <span className="font-heading text-lg font-bold text-on-surface">
           {s.awardAmount}
         </span>
-      )
+      );
     case "daysLeft": {
-      const pill = urgencyPill(days)
+      const pill = urgencyPill(days);
       return (
-        <span className={cn("inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium", pill.className)}>
+        <span
+          className={cn(
+            "inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium",
+            pill.className,
+          )}
+        >
           {pill.label}
         </span>
-      )
+      );
     }
     case "deadline":
       return (
         <span className="text-sm text-on-surface">
           {s.deadline}, {s.deadlineYear}
         </span>
-      )
+      );
     case "classification":
       return (
         <div className="flex flex-wrap justify-center gap-1">
           {s.classification.map((level) => {
-            const colors = CLASSIFICATION_COLORS[level]
+            const colors = CLASSIFICATION_COLORS[level];
             return (
               <span
                 key={level}
@@ -252,23 +265,23 @@ function renderCellValue(s: Scholarship, key: string, days: number) {
               >
                 {level}
               </span>
-            )
+            );
           })}
         </div>
-      )
+      );
     case "eligibility":
       return (
         <span className="text-xs leading-relaxed text-on-surface/70 line-clamp-3">
           {s.eligibility || "—"}
         </span>
-      )
-    case "description":
-      return (
-        <span className="text-xs leading-relaxed text-on-surface/70 line-clamp-4">
-          {s.description || "—"}
-        </span>
-      )
+      );
+    // case "description":
+    //   return (
+    //     <span className="text-xs leading-relaxed text-on-surface/70 line-clamp-4">
+    //       {s.description || "—"}
+    //     </span>
+    //   )
     default:
-      return <span className="text-sm text-on-surface">—</span>
+      return <span className="text-sm text-on-surface">—</span>;
   }
 }

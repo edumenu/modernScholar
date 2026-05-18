@@ -38,7 +38,7 @@ const QUESTION_ROUTES = [
   {
     icon: "solar:chat-round-dots-line-duotone",
     label: "Platform Feedback",
-    description: "Bugs & suggestions",
+    description: "Errors & suggestions",
   },
   {
     icon: "solar:diploma-line-duotone",
@@ -356,7 +356,7 @@ export function ContactFormSection() {
 
               {/* Response time expectation */}
               <p className="text-sm text-on-surface-variant">
-                We typically respond within 1&ndash;2 business days.
+                We will respond as soon as possible.
               </p>
 
               {/* Team description */}

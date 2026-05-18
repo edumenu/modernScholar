@@ -30,14 +30,14 @@ const faqs: FAQItem[] = [
   {
     question: "What kinds of questions can I ask?",
     answer:
-      "Anything related to scholarships, the platform, or your educational journey. Whether you need help narrowing down options, understanding eligibility, or navigating the application process — we're here to help.",
+      "Anything related to scholarships, the platform, or your educational journey. Whether you need help narrowing down your options, understanding eligibility, or navigating the application process — we're here to help.",
   },
   // {
   //   question: "Can I find you on social media?",
   //   answer:
   //     "We're building our social presence! For now, email is the best way to reach us. Stay tuned for updates on our social channels.",
   // },
-]
+];
 
 function AccordionItem({
   item,

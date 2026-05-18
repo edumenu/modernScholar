@@ -176,9 +176,9 @@ export function ScholarshipListCardSpread({
             </span>
           </div>
 
-          {scholarship.description && (
+          {scholarship.eligibility && (
             <p className="text-xs leading-relaxed text-on-surface-variant/70 line-clamp-1">
-              {scholarship.description}
+              {scholarship.eligibility}
             </p>
           )}
         </div>

@@ -54,7 +54,7 @@ const validBase = {
   excerpt: "Some excerpt.",
   category: "Guides",
   publishDate: "2025-06-01",
-  author: "Catherine Dumenu",
+  author: "Cathy Dumenu",
 }
 
 async function loadBlog() {
@@ -80,7 +80,7 @@ describe("frontmatter validation", () => {
         excerpt: "x",
         category: "Guides",
         publishDate: "2025-06-01",
-        author: "Catherine Dumenu",
+        author: "Cathy Dumenu",
       }),
     }
     const { getAllPosts } = await loadBlog()

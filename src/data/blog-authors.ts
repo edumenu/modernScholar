@@ -1,4 +1,4 @@
-export type AuthorKey = "Catherine Dumenu"
+export type AuthorKey = "Cathy Dumenu"
 
 export interface BlogAuthor {
   name: string
@@ -7,9 +7,9 @@ export interface BlogAuthor {
 }
 
 export const authors: Record<AuthorKey, BlogAuthor> = {
-  "Catherine Dumenu": {
-    name: "Catherine Dumenu",
+  "Cathy Dumenu": {
+    name: "Cathy Dumenu",
     role: "Scholarship Advisor",
-    avatar: "/CatherineDumenu.jpeg",
+    avatar: "/cathy.jpg",
   },
 }

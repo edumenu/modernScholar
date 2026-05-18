@@ -24,7 +24,7 @@ export const panels: WhatsNextPanel[] = [
     heading:
       "View your scholarship status and progress in one place. Track your applications, deadlines, and outcomes.",
     columns: {
-      left: "Overview to view scholarship status and progress. Track applications, deadlines, and outcomes in one place.",
+      left: "No more spreadsheets, sticky notes, or buried email threads. Every application lives in one calm, organized hub.",
       right:
         "Our platform understands the realities of scholarship applications. We plan every step carefully, stay in close contact with your goals, and adapt to the unexpected so you never miss a deadline.",
     },

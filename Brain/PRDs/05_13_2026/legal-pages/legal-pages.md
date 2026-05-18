@@ -143,7 +143,7 @@ already exist and remain unchanged.
 
 - Exports:
   - `CONTACT_EMAIL = "dearmodernscholar@gmail.com"`
-  - `CONTROLLERS = "Edem Dumenu and Catherine Dumenu, North Carolina, USA"`
+  - `CONTROLLERS = "Edem Dumenu and Cathy Dumenu, North Carolina, USA"`
   - `GOVERNING_LAW = "the laws of the State of North Carolina, USA"`
   - `DISPUTE_VENUE = "the state or federal courts located in North Carolina"`
   - `RESPONSE_WINDOW_DAYS = 30`

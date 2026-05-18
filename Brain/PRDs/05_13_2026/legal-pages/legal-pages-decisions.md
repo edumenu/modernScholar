@@ -27,7 +27,7 @@ will drive implementation.
 
 ### Legal entity behind site
 
-- **Decision**: Joint sole proprietors — Edem and Catherine Dumenu,
+- **Decision**: Joint sole proprietors — Edem and Cathy Dumenu,
   based in North Carolina. No LLC formed.
 - **Rationale**: Reflects current legal reality. Both individuals are joint
   data controllers under GDPR; liability sits on them personally.

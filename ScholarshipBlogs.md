@@ -12,7 +12,7 @@ npm run convert:blogs --force   # overwrites existing files (loses manual edits)
 - Each post starts with `## **Title**` (with bold).
 - Immediately under the title, a one-line HTML comment carries metadata:
   `<!-- author: <key>; category: <cat>; date: <YYYY-MM-DD>; cover: <filename> -->`
-  - `author`: one of `Catherine Dumenu`.
+  - `author`: one of `Cathy Dumenu`.
   - `category`: free-form string (e.g., "Tips & Guides").
   - `date`: ISO `YYYY-MM-DD`.
   - `cover`: filename inside `public/blog/` (e.g., `scholarship-1.jpg`).
@@ -23,7 +23,7 @@ npm run convert:blogs --force   # overwrites existing files (loses manual edits)
 ---
 
 ## **Common Scholarship Application Mistakes to Avoid**
-<!-- author: Catherine Dumenu; category: Tips & Guides; date: 2026-03-01; cover: libertyBuilding.png -->
+<!-- author: Cathy Dumenu; category: Tips & Guides; date: 2026-03-01; cover: libertyBuilding.png -->
 
 Learn common scholarship mistakes to ensure your application stands out from everyone else.
 
@@ -84,7 +84,7 @@ As you work on your next scholarship application, don't just focus on getting it
 That's the difference between applying and actually winning.
 
 ## **How to Write a Winning Scholarship Essay**
-<!-- author: Catherine Dumenu; category: Tips & Guides; date: 2026-03-08; cover: bookShelf.png -->
+<!-- author: Cathy Dumenu; category: Tips & Guides; date: 2026-03-08; cover: bookShelf.png -->
 
 Master the art of scholarship essay writing with these proven strategies that have helped thousands of students secure funding.
 
@@ -111,7 +111,7 @@ Quantify your achievements wherever possible: '50 students tutored' instead of '
 Remember, a winning scholarship essay is being able to answer the prompt in a relatable way that connects to your story and future goals. The goal is to be memorable which is exactly what scholarship judges are really looking for.
 
 ## **Navigating Scholarships as a First-Generation Student**
-<!-- author: Catherine Dumenu; category: First-Generation; date: 2026-03-15; cover: georgeTown.png -->
+<!-- author: Cathy Dumenu; category: First-Generation; date: 2026-03-15; cover: georgeTown.png -->
 
 A comprehensive guide for first-generation college students in search of scholarships to pay for college.
 
@@ -139,7 +139,7 @@ Applying to a few scholarships each week can build momentum over time. The more 
 To all my first generation students: just start, stay consistent, and be intentional about applying to scholarships. Good luck!
 
 ## **How to Get Strong Recommendation Letters**
-<!-- author: Catherine Dumenu; category: Tips & Guides; date: 2026-03-22; cover: default-cover.jpg -->
+<!-- author: Cathy Dumenu; category: Tips & Guides; date: 2026-03-22; cover: default-cover.jpg -->
 
 Tips on building relationships with mentors and requesting compelling recommendation letters for scholarships.
 

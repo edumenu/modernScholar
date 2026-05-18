@@ -62,7 +62,7 @@
 
 - [x] MDX support added; pageExtensions includes mdx; remark+rehype plugin chain configured (T01)
 - [x] Top-level mdx-components.tsx exists per Next 16 convention (T01)
-- [x] Frontmatter references author by short key (Catherine Dumenu) (T02)
+- [x] Frontmatter references author by short key (Cathy Dumenu) (T02)
 - [x] Author names, roles, avatar paths preserved verbatim (T02)
 - [x] getAllPosts loads, validates, sorts newest-first, filters drafts in prod, caches (T03)
 - [x] Build fails on duplicate slugs, unknown author key, missing required field, bad related scholarship (T03)
@@ -129,7 +129,7 @@ Refactoring shared types incrementally under a per-task typecheck gate caused ca
 ### Authoring workflow (Future-You)
 
 ```bash
-npm run new:blog "My Post Title" [--author Catherine Dumenu] [--category "Tips & Guides"]
+npm run new:blog "My Post Title" [--author Cathy Dumenu] [--category "Tips & Guides"]
 # writes content/blog/my-post-title.mdx with status: draft
 # edit frontmatter (publishDate, coverImage, tags, series, status: published)
 # write MDX body using PullQuote / Callout / InlineScholarshipCard freely

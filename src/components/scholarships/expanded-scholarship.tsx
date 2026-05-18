@@ -205,11 +205,11 @@ function ExpandedScholarshipContent({
         transition={{ delay: 0.2, duration: 0.3 }}
         className="flex shrink flex-col gap-4 overflow-y-auto bg-white p-4 dark:bg-surface-container-low md:px-12"
       >
-        {scholarship.description && (
+        {/* {scholarship.description && (
           <p className="text-sm leading-relaxed text-on-surface/70 md:text-base">
             {scholarship.description}
           </p>
-        )}
+        )} */}
 
         {/* Eligibility */}
         {scholarship.eligibility && (
