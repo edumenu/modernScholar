@@ -84,12 +84,12 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
 
       <article
         ref={articleRef}
-        className="mt-8 grid grid-cols-1 gap-6 md:gap-8 lg:gap-10 lg:grid-cols-[260px_minmax(0,1fr)_240px]"
+        className="mt-8 grid grid-cols-1 gap-6 md:gap-8 lg:gap-10 lg:grid-cols-[minmax(0,1fr)_200px] xl:grid-cols-[260px_minmax(0,1fr)_240px]"
       >
         {/* Blog Content — server-rendered via children */}
-        <div className="relative order-2 lg:order-2 lg:max-w-prose">
+        <div className="relative order-2 xl:max-w-prose">
           {children}
-          {/* Mobile + tablet share row — desktop has the sticky rail */}
+          {/* Mobile + tablet-portrait share row — lg+ has the sticky rail */}
           <div className="mt-10 lg:hidden">
             <ShareDock
               url={`/blog/${post.slug}`}
@@ -99,10 +99,13 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
           </div>
         </div>
 
-        {/* Sidebar — horizontal strip below lg, vertical sticky card on lg */}
-        <aside className="order-1 lg:order-1 flex flex-col gap-4">
-          {/* Below lg: horizontal metadata strip above blog */}
-          <div className="flex lg:hidden flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl bg-surface-container-low p-4 shadow-xs dark:bg-surface-container-low">
+        {/* Sidebar — horizontal strip below xl, vertical sticky card on xl.
+            At lg the aside dissolves via `lg:contents` so its children become
+            direct grid items: strip spans both cols on top, series spans both
+            cols at the bottom, and the sticky card is hidden until xl. */}
+        <aside className="order-1 flex flex-col gap-4 lg:contents xl:flex">
+          {/* Below xl: horizontal metadata strip above blog (spans full grid at lg) */}
+          <div className="flex xl:hidden flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl bg-surface-container-low p-4 shadow-xs dark:bg-surface-container-low lg:col-span-2 lg:order-first">
             <div className="flex items-center gap-2 text-sm">
               <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
                 Category
@@ -120,9 +123,10 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
             <span className="text-sm text-on-surface">{post.readTime}</span>
           </div>
 
-          {/* Below lg: series nav (compact, non-sticky) */}
+          {/* Below xl: series nav (compact, non-sticky). At lg it spans the
+              full grid and sits below the article + rail row. */}
           {showSeriesNav && post.series && (
-            <div className="flex flex-col gap-3 rounded-2xl bg-surface-container-low p-4 shadow-xs lg:hidden dark:bg-surface-container-low">
+            <div className="flex flex-col gap-3 rounded-2xl bg-surface-container-low p-4 shadow-xs xl:hidden dark:bg-surface-container-low lg:col-span-2 lg:order-last">
               <span className="text-xs font-medium uppercase tracking-wider text-on-surface-variant">
                 {post.series.name}
               </span>
@@ -151,8 +155,8 @@ export function BlogDetail({ post, seriesPosts, children }: BlogDetailProps) {
             </div>
           )}
 
-          {/* On lg: sticky vertical sidebar */}
-          <div className="sticky top-32 hidden lg:flex flex-col gap-6">
+          {/* On xl: sticky vertical sidebar */}
+          <div className="sticky top-32 hidden xl:flex flex-col gap-6">
             <AnimatedSection variant="fadeUp" delay={0.2}>
               <div className="flex flex-col gap-4 rounded-2xl bg-surface-container-low p-6 shadow-md dark:bg-surface-container-low">
                 {/* Category */}

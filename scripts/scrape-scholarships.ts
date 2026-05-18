@@ -243,6 +243,17 @@ async function main() {
   )
   console.log(`Found ${aliveEntries.length} alive/redirect URLs from link report`)
 
+  // Dedupe by slug — the CSV can list the same scholarship twice (same name +
+  // deadline → same slug), and each row turns into a link-report entry. Without
+  // this, both rows get pushed into the output JSON and React throws a
+  // duplicate-key error rendering the scholarships grid.
+  const seenSlugs = new Set<string>()
+  aliveEntries = aliveEntries.filter((e) => {
+    if (seenSlugs.has(e.slug)) return false
+    seenSlugs.add(e.slug)
+    return true
+  })
+
   // Filter by season
   if (season !== "all") {
     aliveEntries = aliveEntries.filter((entry) => {

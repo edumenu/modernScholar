@@ -16,6 +16,7 @@ import { ExpiredStamp } from "./expired-stamp";
 interface ScholarshipListCardSpreadProps {
   scholarship: Scholarship
   dimmed?: boolean
+  isExpanded?: boolean
   onExpand: (id: string) => void
 }
 
@@ -50,6 +51,7 @@ function formatDeadlineShort(deadline: string, year: number): string {
 export function ScholarshipListCardSpread({
   scholarship,
   dimmed = false,
+  isExpanded = false,
   onExpand,
 }: ScholarshipListCardSpreadProps) {
   // Selector form: subscribe only to the slices this row reads.
@@ -67,15 +69,19 @@ export function ScholarshipListCardSpread({
     CLASSIFICATION_TINT_MAP[primaryLevel] ??
     CLASSIFICATION_TINT_MAP["High School"];
   const expired = isExpired(scholarship, SESSION_DATE);
+  const idleOpacity = dimmed ? 0.4 : 1;
 
   return (
     <motion.article
+      layoutId={`card-${scholarship.id}`}
+      animate={{ opacity: isExpanded ? 0 : idleOpacity }}
+      transition={{ opacity: { duration: isExpanded ? 0 : 0.15 } }}
       className={cn(
         "group/row relative flex min-h-38 w-full items-stretch",
         "rounded-lg bg-white dark:bg-surface-container-low overflow-hidden",
         "transition-colors duration-200",
         "outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
-        dimmed ? "opacity-40 saturate-50" : "cursor-pointer",
+        dimmed ? "saturate-50" : "cursor-pointer",
       )}
       onClick={(e) => {
         e.stopPropagation();

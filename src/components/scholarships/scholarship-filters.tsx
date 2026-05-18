@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { motion, LayoutGroup } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
@@ -26,7 +26,7 @@ import { MonthDropdown } from "./month-dropdown";
 import {
   type ScholarshipFiltersValue,
 } from "@/hooks/use-scholarship-filters"
-import { computeMonthCounts } from "@/lib/scholarship-utils"
+// import { computeMonthCounts } from "@/lib/scholarship-utils"
 
 export type GridLayout = "grid" | "list"
 
@@ -46,10 +46,10 @@ export function ScholarshipFilters({
 
   const isMobile = useMediaQuery("(max-width: 1023px)");
 
-  const monthCounts = useMemo(
-    () => computeMonthCounts(seasonalScholarships),
-    [seasonalScholarships],
-  );
+  // const monthCounts = useMemo(
+  //   () => computeMonthCounts(seasonalScholarships),
+  //   [seasonalScholarships],
+  // );
 
   if (isMobile === null) {
     return <div className="min-h-24" />;
@@ -60,7 +60,7 @@ export function ScholarshipFilters({
       <ScholarshipFiltersMobile
         filters={filters}
         resultCount={resultCount}
-        seasonalScholarships={seasonalScholarships}
+        // seasonalScholarships={seasonalScholarships}
       />
     );
   }
@@ -79,7 +79,7 @@ export function ScholarshipFilters({
             >
               {EDUCATION_LEVELS.map((level) => {
                 const isActive = filters.activeFilter === level;
-                const count = filters.levelCounts[level];
+                // const count = filters.levelCounts[level];?\
                 return (
                   <div key={level} className="relative">
                     {isActive && (
@@ -107,7 +107,7 @@ export function ScholarshipFilters({
                       )}
                     >
                       {level}
-                      <span
+                      {/* <span
                         className={cn(
                           "ml-1 inline-flex size-6 items-center justify-center rounded-full text-[10px] font-medium",
                           isActive
@@ -116,7 +116,7 @@ export function ScholarshipFilters({
                         )}
                       >
                         {count}
-                      </span>
+                      </span> */}
                     </Button>
                   </div>
                 );
@@ -203,37 +203,45 @@ export function ScholarshipFilters({
       {/* Row 2: Layout toggle (left) + Month + Sort + Filters (right) */}
       <div className="flex items-center justify-between pt-3">
         {/* Left: Layout toggle */}
-        <div className="flex items-center gap-1 rounded-full bg-muted/80 p-1 dark:bg-white/10">
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Grid layout"
-            aria-pressed={filters.layout === "grid"}
-            onClick={() => filters.setLayout("grid")}
-            className={cn(
-              "rounded-full",
-              filters.layout === "grid"
-                ? "bg-white/60 text-on-surface dark:bg-white/20"
-                : "text-on-surface/60 hover:text-on-surface",
-            )}
-          >
-            <Icon icon="solar:widget-3-line-duotone" className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="List layout"
-            aria-pressed={filters.layout === "list"}
-            onClick={() => filters.setLayout("list")}
-            className={cn(
-              "rounded-full",
-              filters.layout === "list"
-                ? "bg-white/60 text-on-surface dark:bg-white/20"
-                : "text-on-surface/60 hover:text-on-surface",
-            )}
-          >
-            <Icon icon="solar:hamburger-menu-line-duotone" className="size-4" />
-          </Button>
+        <div className="flex items-center justify-center gap-1">
+          <div className="flex items-center gap-1 rounded-full bg-muted/80 p-1 dark:bg-white/10">
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              aria-label="Grid layout"
+              aria-pressed={filters.layout === "grid"}
+              onClick={() => filters.setLayout("grid")}
+              className={cn(
+                "rounded-full",
+                filters.layout === "grid"
+                  ? "bg-white/60 text-on-surface dark:bg-white/20"
+                  : "text-on-surface/60 hover:text-on-surface",
+              )}
+            >
+              <Icon icon="solar:widget-3-line-duotone" className="size-3" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              aria-label="List layout"
+              aria-pressed={filters.layout === "list"}
+              onClick={() => filters.setLayout("list")}
+              className={cn(
+                "rounded-full",
+                filters.layout === "list"
+                  ? "bg-white/60 text-on-surface dark:bg-white/20"
+                  : "text-on-surface/60 hover:text-on-surface",
+              )}
+            >
+              <Icon
+                icon="solar:hamburger-menu-line-duotone"
+                className="size-3"
+              />
+            </Button>
+          </div>
+          <span className="flex items-center text-sm justify-center text-primary-400/70">
+            Result: {resultCount}
+          </span>
         </div>
 
         {/* Right: Month + Sort + Filters */}
@@ -241,8 +249,8 @@ export function ScholarshipFilters({
           <MonthDropdown
             month={filters.month}
             onMonthChange={filters.setMonth}
-            monthCounts={monthCounts}
-            totalCount={seasonalScholarships.length}
+            // monthCounts={monthCounts}
+            // totalCount={seasonalScholarships.length}
             variant="outline"
             triggerClassName="shrink-0 rounded-full"
           />

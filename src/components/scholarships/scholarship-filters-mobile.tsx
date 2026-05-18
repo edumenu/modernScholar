@@ -34,7 +34,7 @@ import { MonthDropdown } from "./month-dropdown"
 import {
   type ScholarshipFiltersValue,
 } from "@/hooks/use-scholarship-filters"
-import { computeMonthCounts } from "@/lib/scholarship-utils"
+// import { computeMonthCounts } from "@/lib/scholarship-utils"
 
 const SORT_OPTIONS = [
   { value: "deadline", label: "Deadline" },
@@ -42,30 +42,31 @@ const SORT_OPTIONS = [
 ] as const
 
 interface ScholarshipFiltersMobileProps {
-  filters: ScholarshipFiltersValue
-  resultCount: number
-  seasonalScholarships: Scholarship[]
+  filters: ScholarshipFiltersValue;
+  resultCount: number;
+  // seasonalScholarships: Scholarship[]
 }
 
 export function ScholarshipFiltersMobile({
   filters,
   resultCount,
-  seasonalScholarships,
+  // seasonalScholarships,
 }: ScholarshipFiltersMobileProps) {
-  const [sheetOpen, setSheetOpen] = useState(false)
-  const [expandedCategory, setExpandedCategory] = useState<EligibilityCategory | null>(null)
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [expandedCategory, setExpandedCategory] =
+    useState<EligibilityCategory | null>(null);
 
-  useScrollLock(sheetOpen)
+  useScrollLock(sheetOpen);
 
-  const monthCounts = useMemo(
-    () => computeMonthCounts(seasonalScholarships),
-    [seasonalScholarships],
-  )
+  // const monthCounts = useMemo(
+  //   () => computeMonthCounts(seasonalScholarships),
+  //   [seasonalScholarships],
+  // )
 
   const isAwardRangeActive =
-    filters.awardRange[0] !== AWARD_MIN || filters.awardRange[1] !== AWARD_MAX
-  const hasSearch = filters.searchQuery.trim().length > 0
-  const hasMonth = filters.month !== "all"
+    filters.awardRange[0] !== AWARD_MIN || filters.awardRange[1] !== AWARD_MAX;
+  const hasSearch = filters.searchQuery.trim().length > 0;
+  const hasMonth = filters.month !== "all";
   // Includes month so the "Clear" link is reachable when month is the only
   // active filter. Filter sheet's badge stays month-exclusive on purpose —
   // month lives outside the sheet, alongside Sort/Filters.
@@ -75,29 +76,29 @@ export function ScholarshipFiltersMobile({
     filters.sortBy !== "deadline" ||
     filters.selectedTags.length > 0 ||
     isAwardRangeActive ||
-    hasMonth
+    hasMonth;
 
   const filterBadgeCount =
     (hasSearch ? 1 : 0) +
     (filters.activeFilter !== "All" ? 1 : 0) +
     (filters.sortBy !== "deadline" ? 1 : 0) +
     filters.selectedTags.length +
-    (isAwardRangeActive ? 1 : 0)
+    (isAwardRangeActive ? 1 : 0);
 
   const clearFilters = () => {
-    filters.clearAll()
-  }
+    filters.clearAll();
+  };
 
   const toggleTag = (tag: string) => {
     // Caller passes the constructed `${category}:${subOption}` literal — narrow
     // back to Tag at this boundary; ELIGIBILITY_CATEGORIES guarantees validity.
-    const t = tag as Tag
+    const t = tag as Tag;
     if (filters.selectedTags.includes(t)) {
-      filters.setSelectedTags(filters.selectedTags.filter((x) => x !== t))
+      filters.setSelectedTags(filters.selectedTags.filter((x) => x !== t));
     } else {
-      filters.setSelectedTags([...filters.selectedTags, t])
+      filters.setSelectedTags([...filters.selectedTags, t]);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-3">
@@ -112,7 +113,7 @@ export function ScholarshipFiltersMobile({
           value={filters.searchQuery}
           onChange={(e) => filters.setSearchQuery(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Escape") filters.setSearchQuery("")
+            if (e.key === "Escape") filters.setSearchQuery("");
           }}
           placeholder="Search scholarships"
           aria-label="Search scholarships"
@@ -159,8 +160,8 @@ export function ScholarshipFiltersMobile({
           <MonthDropdown
             month={filters.month}
             onMonthChange={filters.setMonth}
-            monthCounts={monthCounts}
-            totalCount={seasonalScholarships.length}
+            // monthCounts={monthCounts}
+            // totalCount={seasonalScholarships.length}
             variant="ghost"
             triggerClassName="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
           />
@@ -221,9 +222,13 @@ export function ScholarshipFiltersMobile({
                   <h3 className="mb-3 text-sm font-medium text-on-surface/70">
                     Education Level
                   </h3>
-                  <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by education level">
+                  <div
+                    className="flex flex-wrap gap-2"
+                    role="group"
+                    aria-label="Filter by education level"
+                  >
                     {EDUCATION_LEVELS.map((level) => {
-                      const isActive = filters.activeFilter === level
+                      const isActive = filters.activeFilter === level;
                       return (
                         <Button
                           key={level}
@@ -231,8 +236,8 @@ export function ScholarshipFiltersMobile({
                           size="sm"
                           aria-pressed={isActive}
                           onClick={() => {
-                            filters.setActiveFilter(level)
-                            setSheetOpen(false)
+                            filters.setActiveFilter(level);
+                            setSheetOpen(false);
                           }}
                           className={cn(
                             "rounded-full",
@@ -243,7 +248,7 @@ export function ScholarshipFiltersMobile({
                         >
                           {level}
                         </Button>
-                      )
+                      );
                     })}
                   </div>
                 </div>
@@ -260,7 +265,11 @@ export function ScholarshipFiltersMobile({
                     Eligibility
                   </h3>
                   {/* Flat tags as checkboxes */}
-                  <div className="flex flex-col gap-1" role="group" aria-label="Filter by eligibility">
+                  <div
+                    className="flex flex-col gap-1"
+                    role="group"
+                    aria-label="Filter by eligibility"
+                  >
                     {ELIGIBILITY_FLAT_TAGS.map((tag) => (
                       <div key={tag} className="rounded-lg px-1 py-1.5">
                         <Checkbox
@@ -275,79 +284,87 @@ export function ScholarshipFiltersMobile({
 
                   {/* Category accordions */}
                   <div className="mt-3 flex flex-col gap-1">
-                    {(Object.keys(ELIGIBILITY_CATEGORIES) as EligibilityCategory[]).map(
-                      (category) => {
-                        const subOptions = ELIGIBILITY_CATEGORIES[category]
-                        const isExpanded = expandedCategory === category
-                        const selectedInCategory = filters.selectedTags.filter(
-                          (t) => getEligibilityCategory(t) === category,
-                        ).length
+                    {(
+                      Object.keys(
+                        ELIGIBILITY_CATEGORIES,
+                      ) as EligibilityCategory[]
+                    ).map((category) => {
+                      const subOptions = ELIGIBILITY_CATEGORIES[category];
+                      const isExpanded = expandedCategory === category;
+                      const selectedInCategory = filters.selectedTags.filter(
+                        (t) => getEligibilityCategory(t) === category,
+                      ).length;
 
-                        return (
-                          <div key={category}>
-                            <button
-                              type="button"
-                              aria-expanded={isExpanded}
-                              aria-controls={`mobile-filter-category-${category.replace(/\//g, "-")}`}
-                              onClick={() =>
-                                setExpandedCategory((prev) =>
-                                  prev === category ? null : category,
-                                )
-                              }
-                              className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-on-surface/70 transition-colors hover:bg-white/10"
-                            >
-                              <Icon
-                                icon="solar:alt-arrow-right-line-duotone"
-                                className={cn(
-                                  "size-4 transition-transform duration-200",
-                                  isExpanded && "rotate-90",
-                                )}
-                              />
-                              <span className="flex-1 text-left">
-                                {category}
+                      return (
+                        <div key={category}>
+                          <button
+                            type="button"
+                            aria-expanded={isExpanded}
+                            aria-controls={`mobile-filter-category-${category.replace(/\//g, "-")}`}
+                            onClick={() =>
+                              setExpandedCategory((prev) =>
+                                prev === category ? null : category,
+                              )
+                            }
+                            className="flex w-full items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-on-surface/70 transition-colors hover:bg-white/10"
+                          >
+                            <Icon
+                              icon="solar:alt-arrow-right-line-duotone"
+                              className={cn(
+                                "size-4 transition-transform duration-200",
+                                isExpanded && "rotate-90",
+                              )}
+                            />
+                            <span className="flex-1 text-left">{category}</span>
+                            {selectedInCategory > 0 && (
+                              <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-on-primary">
+                                {selectedInCategory}
                               </span>
-                              {selectedInCategory > 0 && (
-                                <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-on-primary">
-                                  {selectedInCategory}
-                                </span>
-                              )}
-                            </button>
-                            <AnimatePresence initial={false}>
-                              {isExpanded && (
-                                <motion.div
-                                  id={`mobile-filter-category-${category.replace(/\//g, "-")}`}
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{
-                                    duration: 0.22,
-                                    ease: [0.4, 0, 0.2, 1],
-                                  }}
-                                  className="overflow-hidden"
-                                >
-                                  <div className="flex flex-col gap-1 px-6 pb-2 pt-1">
-                                    {subOptions.map((subOption) => {
-                                      // See toggleTag note: template-literal cast narrows to Tag.
-                                      const fullTag = `${category}:${subOption}` as Tag
-                                      return (
-                                        <div key={fullTag} className="rounded-lg py-1">
-                                          <Checkbox
-                                            checked={filters.selectedTags.includes(fullTag)}
-                                            onCheckedChange={() => toggleTag(fullTag)}
-                                          >
-                                            {subOption}
-                                          </Checkbox>
-                                        </div>
-                                      )
-                                    })}
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        )
-                      },
-                    )}
+                            )}
+                          </button>
+                          <AnimatePresence initial={false}>
+                            {isExpanded && (
+                              <motion.div
+                                id={`mobile-filter-category-${category.replace(/\//g, "-")}`}
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{
+                                  duration: 0.22,
+                                  ease: [0.4, 0, 0.2, 1],
+                                }}
+                                className="overflow-hidden"
+                              >
+                                <div className="flex flex-col gap-1 px-6 pb-2 pt-1">
+                                  {subOptions.map((subOption) => {
+                                    // See toggleTag note: template-literal cast narrows to Tag.
+                                    const fullTag =
+                                      `${category}:${subOption}` as Tag;
+                                    return (
+                                      <div
+                                        key={fullTag}
+                                        className="rounded-lg py-1"
+                                      >
+                                        <Checkbox
+                                          checked={filters.selectedTags.includes(
+                                            fullTag,
+                                          )}
+                                          onCheckedChange={() =>
+                                            toggleTag(fullTag)
+                                          }
+                                        >
+                                          {subOption}
+                                        </Checkbox>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -358,7 +375,7 @@ export function ScholarshipFiltersMobile({
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {SORT_OPTIONS.map(({ value, label }) => {
-                      const isActive = filters.sortBy === value
+                      const isActive = filters.sortBy === value;
                       return (
                         <button
                           key={value}
@@ -373,7 +390,7 @@ export function ScholarshipFiltersMobile({
                         >
                           {label}
                         </button>
-                      )
+                      );
                     })}
                   </div>
                 </div>
@@ -404,5 +421,5 @@ export function ScholarshipFiltersMobile({
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }

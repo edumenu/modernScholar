@@ -203,6 +203,7 @@ function ExpandedScholarshipContent({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.3 }}
+        data-lenis-prevent
         className="flex shrink flex-col gap-4 overflow-y-auto bg-white p-4 dark:bg-surface-container-low md:px-12"
       >
         {/* {scholarship.description && (
@@ -217,7 +218,10 @@ function ExpandedScholarshipContent({
             <h3 className="text-sm font-medium text-on-surface/90">
               Eligibility
             </h3>
-            <p className="max-h-40 overflow-y-auto text-sm leading-relaxed text-on-surface/70 whitespace-pre-line">
+            <p
+              data-lenis-prevent
+              className="max-h-40 overflow-y-auto text-sm leading-relaxed text-on-surface/70 whitespace-pre-line"
+            >
               {scholarship.eligibility}
             </p>
           </div>

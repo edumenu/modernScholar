@@ -72,7 +72,7 @@ export function ScholarshipCard({
         tint.bg,
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)] hover:shadow-[0_12px_48px_rgba(32,26,25,0.12)]",
         "transition-shadow duration-300",
-        "focus-within:ring-[3px] focus-within:ring-ring/50",
+        "focus-within:ring-2 focus-within:ring-ring/50",
         dimmed ? "pointer-events-none saturate-50" : "cursor-pointer",
       )}
       inert={dimmed}

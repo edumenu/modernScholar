@@ -25,48 +25,48 @@ import {
 const VISIBLE_COUNT = 6
 
 interface MonthDropdownProps {
-  month: MonthFilter
-  onMonthChange: (next: MonthFilter) => void
-  monthCounts: Record<Month, number>
-  totalCount: number
-  variant?: "outline" | "ghost"
-  triggerClassName?: string
+  month: MonthFilter;
+  onMonthChange: (next: MonthFilter) => void;
+  // monthCounts: Record<Month, number>
+  // totalCount: number;
+  variant?: "outline" | "ghost";
+  triggerClassName?: string;
 }
 
 export function MonthDropdown({
   month,
   onMonthChange,
-  monthCounts,
-  totalCount,
+  // monthCounts,
+  // totalCount,
   variant = "outline",
   triggerClassName,
 }: MonthDropdownProps) {
   const { visibleMonths, hiddenMonths } = useMemo(() => {
-    const todayIdx = new Date().getMonth()
-    const visible: Month[] = []
-    const hidden: Month[] = []
+    const todayIdx = new Date().getMonth();
+    const visible: Month[] = [];
+    const hidden: Month[] = [];
     for (let i = 0; i < 12; i++) {
-      const m = MONTHS[(todayIdx + i) % 12]
-      ;(i < VISIBLE_COUNT ? visible : hidden).push(m)
+      const m = MONTHS[(todayIdx + i) % 12];
+      (i < VISIBLE_COUNT ? visible : hidden).push(m);
     }
-    return { visibleMonths: visible, hiddenMonths: hidden }
-  }, [])
+    return { visibleMonths: visible, hiddenMonths: hidden };
+  }, []);
 
   const isSelectedHidden =
-    month !== "all" && hiddenMonths.includes(month as Month)
+    month !== "all" && hiddenMonths.includes(month as Month);
 
-  const [expanded, setExpanded] = useState(isSelectedHidden)
+  const [expanded, setExpanded] = useState(isSelectedHidden);
 
   // Keep `expanded` in sync when the selected month changes from outside this
   // dropdown (e.g. picked in the mobile filter sheet) so the user lands on a
   // view that already reveals the active month.
   useEffect(() => {
-    setExpanded(isSelectedHidden)
-  }, [isSelectedHidden])
+    setExpanded(isSelectedHidden);
+  }, [isSelectedHidden]);
 
   const handleOpenChange = (open: boolean) => {
-    if (open) setExpanded(isSelectedHidden)
-  }
+    if (open) setExpanded(isSelectedHidden);
+  };
 
   return (
     <DropdownMenu onOpenChange={handleOpenChange}>
@@ -101,17 +101,17 @@ export function MonthDropdown({
           >
             <DropdownMenuRadioItem value="all">
               <span className="flex-1">All months</span>
-              <span className="ml-3 text-xs tabular-nums text-on-surface/40">
+              {/* <span className="ml-3 text-xs tabular-nums text-on-surface/40">
                 {totalCount}
-              </span>
+              </span> */}
             </DropdownMenuRadioItem>
 
             {visibleMonths.map((m) => (
               <DropdownMenuRadioItem key={m} value={m}>
                 <span className="flex-1">{MONTH_LABELS[m]}</span>
-                <span className="ml-3 text-xs tabular-nums text-on-surface/40">
+                {/* <span className="ml-3 text-xs tabular-nums text-on-surface/40">
                   {monthCounts[m]}
-                </span>
+                </span> */}
               </DropdownMenuRadioItem>
             ))}
 
@@ -127,9 +127,9 @@ export function MonthDropdown({
                   {hiddenMonths.map((m) => (
                     <DropdownMenuRadioItem key={m} value={m}>
                       <span className="flex-1">{MONTH_LABELS[m]}</span>
-                      <span className="ml-3 text-xs tabular-nums text-on-surface/40">
+                      {/* <span className="ml-3 text-xs tabular-nums text-on-surface/40">
                         {monthCounts[m]}
-                      </span>
+                      </span> */}
                     </DropdownMenuRadioItem>
                   ))}
                 </motion.div>
