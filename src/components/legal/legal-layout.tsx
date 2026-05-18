@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { PageTransition } from "@/components/ui/page-transition"
 import { CONTACT_EMAIL } from "@/lib/legal-constants"
 import { cn } from "@/lib/utils"
+import { LegalTOC } from "./legal-toc"
 
 interface LegalLayoutProps {
   /** Page title rendered as the H1. */
@@ -86,27 +87,7 @@ export function LegalLayout({
             </h1>
           </header>
 
-          {sections && sections.length > 0 && (
-            <nav aria-label="Page contents">
-              <details className="rounded-lg bg-surface-container-low p-4 md:p-5">
-                <summary className="cursor-pointer text-sm font-semibold text-on-surface">
-                  Contents — tap to expand
-                </summary>
-                <ul className="mt-2 flex flex-col">
-                  {sections.map((section) => (
-                    <li key={section.id}>
-                      <a
-                        href={`#${section.id}`}
-                        className="block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
-                      >
-                        {section.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            </nav>
-          )}
+          {sections && sections.length > 0 && <LegalTOC sections={sections} />}
 
           {tldr ? (
             <aside

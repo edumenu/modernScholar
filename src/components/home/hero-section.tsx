@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { CTAButton } from "@/components/ui/button/cta-button";
@@ -11,6 +12,7 @@ import { PRETEXT_FONTS, PRETEXT_FALLBACK_FONTS } from "@/lib/pretext/fonts";
 import { ParallaxLayer } from "@/components/ui/parallax-layer";
 import { splineScenes } from "@/config/spline-scenes";
 import { useHasMounted } from "@/hooks/use-has-mounted";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { useHeroLoaderStore } from "@/stores/hero-loader-store";
 
 // next/dynamic with ssr: false keeps the heavy Spline runtime out of the
@@ -27,11 +29,38 @@ const SplineFallback = () => (
   </div>
 );
 
+function HeroStaticImage() {
+  const { resolvedTheme } = useTheme();
+  const mounted = useHasMounted();
+  const setSplineReady = useHeroLoaderStore((s) => s.setSplineReady);
+
+  const src =
+    mounted && resolvedTheme === "dark"
+      ? "/darkHomeHero.jpg"
+      : "/lightHomeHero.jpg";
+
+  useEffect(() => {
+    setSplineReady(true);
+  }, [setSplineReady]);
+
+  return (
+    <Image
+      src={src}
+      alt="Modern Scholar hero illustration"
+      fill
+      sizes="100vw"
+      priority
+      className="object-cover"
+    />
+  );
+}
+
 export function HeroSection() {
   const router = useRouter();
   const mounted = useHasMounted();
   const { resolvedTheme } = useTheme();
   const setSplineReady = useHeroLoaderStore((s) => s.setSplineReady);
+  const isMobile = useMediaQuery("(max-width: 1023px)");
 
   // Memoize the scene URL so a re-render with the same theme reuses the same
   // string identity — `<SplineScene>` swaps scenes via the runtime API
@@ -66,29 +95,36 @@ export function HeroSection() {
     });
   }, [mounted, resolvedTheme, splineUrl]);
 
-  const splineNode = mounted ? (
-    <Suspense fallback={<SplineFallback />}>
-      <SplineScene
-        scene={splineUrl}
-        className="size-full"
-        onLoad={() => setSplineReady(true)}
-      />
-    </Suspense>
-  ) : (
-    <SplineFallback />
-  );
+  let heroMedia;
+  if (isMobile === null) {
+    heroMedia = <SplineFallback />;
+  } else if (isMobile === true) {
+    heroMedia = <HeroStaticImage />;
+  } else {
+    heroMedia = mounted ? (
+      <Suspense fallback={<SplineFallback />}>
+        <SplineScene
+          scene={splineUrl}
+          className="size-full"
+          onLoad={() => setSplineReady(true)}
+        />
+      </Suspense>
+    ) : (
+      <SplineFallback />
+    );
+  }
 
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative flex min-h-dvh flex-col justify-between pt-20 pb-16 md:pb-28"
+      className="relative flex min-h-dvh flex-col justify-between pt-20 pb-28"
     >
       {/* Spline 3D Model — full viewport width, breaks out of PageShell */}
       <ParallaxLayer
         yRange={[0, 80]}
         className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2"
       >
-        {splineNode}
+        {heroMedia}
       </ParallaxLayer>
 
       {/* Spacer — keeps bottom row pushed down */}

@@ -8,7 +8,8 @@ import { ThemeToggle } from "./theme-toggle"
 import { SettingsDropdown } from "./settings-dropdown"
 import { MobileMenuButton } from "./mobile-menu"
 import { glassPill } from "../styles";
-import { useScroll, useMotionValueEvent, motion } from "motion/react";
+import { motion } from "motion/react";
+import { useLenis } from "lenis/react";
 
 const HEADER_HEIGHT = 112; // 28 * 4 (h-28 in Tailwind = 112px)
 
@@ -21,7 +22,6 @@ function ScrollAnimatedHeader({ children }: { children: React.ReactNode }) {
   const headerRef = useRef<HTMLDivElement>(null);
   const headerOffset = useRef(0);
   const lastScrollY = useRef(0);
-  const { scrollY } = useScroll();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -32,7 +32,8 @@ function ScrollAnimatedHeader({ children }: { children: React.ReactNode }) {
     }
   }, [pathname]);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
+  useLenis((lenis) => {
+    const latest = lenis.scroll;
     const difference = latest - lastScrollY.current;
     if (latest < 600) {
       headerOffset.current = 0;
@@ -101,7 +102,7 @@ export function Header() {
         Skip to content
       </a>
       <ScrollAnimatedHeader>
-        <header className="fixed inset-x-0 top-0 z-50 flex justify-between px-4 pt-4 lg:justify-center">
+        <header className="flex justify-between px-4 pt-4 lg:justify-center">
           <nav
             className="flex w-full items-center justify-between gap-4 lg:w-auto lg:justify-start"
             aria-label="Main navigation"

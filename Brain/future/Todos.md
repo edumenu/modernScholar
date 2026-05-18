@@ -21,6 +21,9 @@
 		- Scholarship list view opens modal. Enter view is fine but exist view choppy
 	- Privacy page:
 		- The expanded content prevents me from navigating to the bottom of the page
+- Mobile:
+	- Home page:
+	- Scholarship page
 - Start thinking about unique tests on every single page. 
 - ~~Add hover animations to the hero section image. 
 

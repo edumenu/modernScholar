@@ -301,6 +301,7 @@ export function ScholarshipGrid() {
                     key={scholarship.id}
                     scholarship={scholarship}
                     dimmed={!matches}
+                    isExpanded={expandedId === scholarship.id}
                     onExpand={handleExpand}
                   />
                 ))}
