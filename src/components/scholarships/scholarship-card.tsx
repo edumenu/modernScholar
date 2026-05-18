@@ -228,14 +228,14 @@ export function ScholarshipCard({
         </div>
 
         {/* Description */}
-        {scholarship.description && (
+        {scholarship.eligibility && (
           <p
             className={cn(
               "line-clamp-2 px-6 pt-4 text-xs leading-relaxed",
               tint.muted,
             )}
           >
-            {scholarship.description}
+            {scholarship.eligibility}
           </p>
         )}
 
