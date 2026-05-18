@@ -76,6 +76,20 @@ function buildCsvLookup(rows: CsvRow[]): Map<string, CsvRow> {
   for (const row of rows) {
     if (!row["Scholarship Name"] || !row.Link) continue
     const slug = generateSlug(row["Scholarship Name"], row.Deadline)
+    const prev = map.get(slug)
+    if (prev) {
+      const fieldsDiffer =
+        (prev.Link || "").trim() !== (row.Link || "").trim() ||
+        (prev["Award amount"] || "").trim() !== (row["Award amount"] || "").trim() ||
+        (prev.Eligibility || "").trim() !== (row.Eligibility || "").trim()
+      if (fieldsDiffer) {
+        console.warn(
+          `  WARN: CSV slug collision "${slug}" — keeping later row, dropping earlier with different content`
+        )
+        console.warn(`    dropped: link=${prev.Link} | award=${prev["Award amount"]}`)
+        console.warn(`    kept:    link=${row.Link} | award=${row["Award amount"]}`)
+      }
+    }
     map.set(slug, row)
   }
   return map
@@ -247,10 +261,20 @@ async function main() {
   // deadline → same slug), and each row turns into a link-report entry. Without
   // this, both rows get pushed into the output JSON and React throws a
   // duplicate-key error rendering the scholarships grid.
-  const seenSlugs = new Set<string>()
+  const seenByslug = new Map<string, LinkReport>()
   aliveEntries = aliveEntries.filter((e) => {
-    if (seenSlugs.has(e.slug)) return false
-    seenSlugs.add(e.slug)
+    const prev = seenByslug.get(e.slug)
+    if (prev) {
+      if ((prev.url || "").trim() !== (e.url || "").trim()) {
+        console.warn(
+          `  WARN: link-report slug collision "${e.slug}" — keeping first entry, dropping later with different URL`
+        )
+        console.warn(`    kept:    ${prev.url}`)
+        console.warn(`    dropped: ${e.url}`)
+      }
+      return false
+    }
+    seenByslug.set(e.slug, e)
     return true
   })
 
