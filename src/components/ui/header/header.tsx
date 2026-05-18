@@ -8,8 +8,7 @@ import { ThemeToggle } from "./theme-toggle"
 import { SettingsDropdown } from "./settings-dropdown"
 import { MobileMenuButton } from "./mobile-menu"
 import { glassPill } from "../styles";
-import { motion } from "motion/react";
-import { useLenis } from "lenis/react";
+import { useScroll, useMotionValueEvent, motion } from "motion/react";
 
 const HEADER_HEIGHT = 112; // 28 * 4 (h-28 in Tailwind = 112px)
 
@@ -22,6 +21,7 @@ function ScrollAnimatedHeader({ children }: { children: React.ReactNode }) {
   const headerRef = useRef<HTMLDivElement>(null);
   const headerOffset = useRef(0);
   const lastScrollY = useRef(0);
+  const { scrollY } = useScroll();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -32,8 +32,7 @@ function ScrollAnimatedHeader({ children }: { children: React.ReactNode }) {
     }
   }, [pathname]);
 
-  useLenis((lenis) => {
-    const latest = lenis.scroll;
+  useMotionValueEvent(scrollY, "change", (latest) => {
     const difference = latest - lastScrollY.current;
     if (latest < 600) {
       headerOffset.current = 0;
