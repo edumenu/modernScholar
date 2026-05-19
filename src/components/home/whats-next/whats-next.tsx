@@ -10,6 +10,7 @@ import {
 import { panels } from "./types"
 import { SlideContent } from "./slide-content"
 import { ScrollIndicator } from "./scroll-indicator"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 interface WhatsNextProps {
   enableColorTransition?: boolean
@@ -17,6 +18,7 @@ interface WhatsNextProps {
 
 export function WhatsNext({ enableColorTransition = true }: WhatsNextProps) {
   const prefersReduced = useReducedMotion()
+  const isMobile = useMediaQuery("(max-width: 1023px)")
   const targetRef = useRef<HTMLElement>(null)
   const stickyRef = useRef<HTMLDivElement>(null)
 
@@ -65,8 +67,10 @@ export function WhatsNext({ enableColorTransition = true }: WhatsNextProps) {
     [scrollYProgress],
   )
 
-  // Reduced motion fallback
-  if (prefersReduced) {
+  // Reduced motion + mobile: render panels as vertically stacked sections so
+  // each one gets its own breathing room instead of being crammed into a
+  // single 100vh horizontal-scroll viewport.
+  if (prefersReduced || isMobile) {
     return (
       <section
         aria-label="What's Next"
@@ -75,7 +79,7 @@ export function WhatsNext({ enableColorTransition = true }: WhatsNextProps) {
         {panels.map((panel, index) => (
           <div
             key={panel.id}
-            className="relative px-6 py-20 md:px-8"
+            className="relative px-6 py-24 md:px-8 md:py-28"
             style={{ backgroundColor: panel.bgColor }}
           >
             <div className="mx-auto w-full max-w-7xl">

@@ -29,8 +29,8 @@ export function BlogCardFeatured({ post }: BlogCardFeaturedProps) {
   return (
     <Link href={`/blog/${post.slug}`} className="block">
       <div className="group relative w-full overflow-hidden rounded-2xl shadow-lg transition-shadow duration-300 hover:shadow-xl">
-        {/* Full-bleed image with 21:9 aspect ratio */}
-        <div className="relative w-full aspect-21/9">
+        {/* Full-bleed image — taller on mobile, wide-cinematic on desktop. */}
+        <div className="relative w-full aspect-4/5 sm:aspect-video lg:aspect-21/9">
           <Image
             src={imgError ? "/mountain.png" : post.image}
             alt={post.title}

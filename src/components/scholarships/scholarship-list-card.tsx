@@ -109,7 +109,7 @@ export function ScholarshipListCardSpread({
         {/* Left zone — tinted panel with classification + amount */}
         <div
           className={cn(
-            "flex w-40 shrink-0 flex-col items-start justify-center gap-2 px-4 py-3 transition-colors duration-200 sm:w-56 sm:px-6",
+            "flex w-32 shrink-0 flex-col items-start justify-center gap-2 px-3 py-3 transition-colors duration-200 sm:w-56 sm:px-6",
             tint.idle,
             tint.hover,
           )}
@@ -155,7 +155,7 @@ export function ScholarshipListCardSpread({
         />
 
         {/* Right zone — name, provider + deadline, description */}
-        <div className="flex min-w-0 flex-1 flex-col justify-center gap-1 px-4 py-3 sm:px-6">
+        <div className="flex min-w-0 flex-1 flex-col justify-center gap-1 px-3 py-3 sm:px-6">
           <h3
             id={`list-card-title-${scholarship.id}`}
             className="font-heading text-base font-bold leading-snug text-on-surface line-clamp-1 sm:text-lg"
@@ -163,11 +163,14 @@ export function ScholarshipListCardSpread({
             {scholarship.name}
           </h3>
 
-          <div className="flex items-center gap-2 text-xs text-on-surface-variant">
-            <span className="font-medium uppercase tracking-wider">
+          <div className="flex flex-col gap-0.5 text-xs text-on-surface-variant sm:flex-row sm:items-center sm:gap-2">
+            <span className="line-clamp-1 font-medium uppercase tracking-wider">
               {scholarship.provider}
             </span>
-            <span className="text-outline-variant/40" aria-hidden="true">
+            <span
+              className="hidden text-outline-variant/40 sm:inline"
+              aria-hidden="true"
+            >
               ·
             </span>
             <span className="flex items-center gap-1">
@@ -192,7 +195,7 @@ export function ScholarshipListCardSpread({
         {/* Actions — compare toggle + arrow CTA.
           The compare toggle is hidden when expired since the ExpiredStamp tag
           already communicates that comparison isn't available. */}
-        <div className="flex shrink-0 items-center gap-1.5 pr-4 sm:gap-2 sm:pr-6">
+        <div className="flex shrink-0 items-center gap-1 pr-2 sm:gap-2 sm:pr-6">
           {!expired && (
             <Tooltip>
               <TooltipTrigger

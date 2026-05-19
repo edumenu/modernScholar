@@ -165,7 +165,7 @@ function CoverflowCard({
       data-cursor="text"
       data-cursor-text={isCenter ? "View" : "Focus"}
       className={cn(
-        "relative flex h-full w-80 shrink-0 cursor-pointer flex-col overflow-hidden rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50",
+        "relative flex h-full w-64 shrink-0 cursor-pointer flex-col overflow-hidden rounded-2xl outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:w-80",
         "shadow-[0_6px_32px_rgba(32,26,25,0.07)]",
         "group",
         tint.bg,
@@ -279,7 +279,7 @@ function CoverflowCard({
         />
         <h2
           className={cn(
-            "line-clamp-2 font-heading text-xl font-bold leading-tight",
+            "line-clamp-2 font-heading text-base font-bold leading-tight sm:text-xl",
             tint.text,
           )}
         >
@@ -312,7 +312,7 @@ function ReducedMotionFallback({
       className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4"
     >
       {scholarships.map((s) => (
-        <div key={s.id} className="h-120 w-80 shrink-0 snap-center">
+        <div key={s.id} className="h-100 w-64 shrink-0 snap-center sm:h-120 sm:w-80">
           <CoverflowCard
             scholarship={s}
             isCenter={false}
@@ -458,7 +458,7 @@ export function CoverflowCarousel({
         dragDirectionLock
         onDragStart={() => setIsDragging(true)}
         onDragEnd={handleDragEnd}
-        className="pointer-events-none relative flex h-120 items-center justify-center"
+        className="pointer-events-none relative flex h-100 items-center justify-center sm:h-120"
         style={{ perspective: 1200 }}
       >
         {scholarships.map((scholarship, i) => {
@@ -471,7 +471,7 @@ export function CoverflowCarousel({
               key={scholarship.id}
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${total}: ${scholarship.name}`}
-              className="pointer-events-auto absolute h-120"
+              className="pointer-events-auto absolute h-100 sm:h-120"
               animate={{
                 x: t.x,
                 rotateY: t.rotateY,

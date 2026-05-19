@@ -50,7 +50,7 @@ function HeroStaticImage() {
       fill
       sizes="100vw"
       priority
-      className="object-cover"
+      className="object-cover object-[73%_center]"
     />
   );
 }
@@ -60,6 +60,7 @@ export function HeroSection() {
   const mounted = useHasMounted();
   const { resolvedTheme } = useTheme();
   const setSplineReady = useHeroLoaderStore((s) => s.setSplineReady);
+  // Static image on mobile/tablet (<1024px); Spline 3D scene at lg and above.
   const isMobile = useMediaQuery("(max-width: 1023px)");
 
   // Memoize the scene URL so a re-render with the same theme reuses the same
@@ -117,9 +118,10 @@ export function HeroSection() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative flex min-h-dvh flex-col justify-between pt-20 pb-28"
+      className="relative flex min-h-dvh flex-col justify-between pt-20 pb-12 md:pb-28"
     >
-      {/* Spline 3D Model — full viewport width, breaks out of PageShell */}
+      {/* Spline 3D Model (lg+) or static image (mobile/tablet) — full
+          viewport width, breaks out of PageShell. */}
       <ParallaxLayer
         yRange={[0, 80]}
         className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2"
@@ -168,8 +170,11 @@ export function HeroSection() {
           />
         </div>
 
-        {/* CTA — bottom right */}
-        <AnimatedSection delay={0.45} className="shrink-0">
+        {/* CTA — centered on mobile, bottom-right on desktop */}
+        <AnimatedSection
+          delay={0.45}
+          className="mt-6 shrink-0 self-center md:mt-0 md:self-auto"
+        >
           <CTAButton
             label="Explore"
             onClick={() => router.push("/scholarships")}

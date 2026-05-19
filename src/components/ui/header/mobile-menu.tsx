@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState, useSyncExternalStore } from "react"
+import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "motion/react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
@@ -10,6 +11,7 @@ import Image from "next/image";
 import { ThemeToggle } from "./theme-toggle";
 import { glassPill } from "../styles";
 import { useFocusTrap } from "@/hooks/use-focus-trap";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 
 const MOBILE_DRAWER_ID = "mobile-nav-drawer"
 
@@ -256,6 +258,12 @@ export function MobileMenuButton() {
   const pathname = usePathname()
   const [prevPathname, setPrevPathname] = useState(pathname)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  // The header wrapper writes an inline `transform` to drive its scroll-hide
+  // animation, which establishes a containing block and traps any
+  // `position: fixed` descendants inside the header's box. Portal the
+  // backdrop + drawer to <body> so they escape that containing block and
+  // resolve their `inset-0` against the viewport instead.
+  const hasMounted = useHasMounted()
 
   if (prevPathname !== pathname) {
     setPrevPathname(pathname)
@@ -307,25 +315,29 @@ export function MobileMenuButton() {
         </div>
       </button>
 
-      <AnimatePresence mode="wait">
-        {isOpen && (
-          <>
-            {/* Backdrop — glass-heavy participates in the
-                prefers-reduced-transparency / prefers-contrast: more
-                fallbacks defined in globals.css. */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="fixed inset-0 z-40 glass-heavy lg:hidden"
-              aria-hidden="true"
-              onClick={handleClose}
-            />
-            <MobileNav onClose={handleClose} />
-          </>
+      {hasMounted &&
+        createPortal(
+          <AnimatePresence mode="wait">
+            {isOpen && (
+              <>
+                {/* Backdrop — glass-heavy participates in the
+                    prefers-reduced-transparency / prefers-contrast: more
+                    fallbacks defined in globals.css. */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="fixed inset-0 z-40 bg-on-surface/40 glass-heavy lg:hidden"
+                  aria-hidden="true"
+                  onClick={handleClose}
+                />
+                <MobileNav onClose={handleClose} />
+              </>
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </>
   )
 }

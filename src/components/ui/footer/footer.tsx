@@ -47,46 +47,51 @@ function FooterContent() {
           </p>
         </div>
 
-        {/* Quick Links column */}
-        <div className="flex flex-col gap-4">
-          <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-on-surface-variant">
-            Quick Links
-          </h3>
-          <nav aria-label="Footer quick links">
-            <ul className="flex flex-col gap-1">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="inline-block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
-                  >
-                    {link.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+        {/* Quick + Legal — share a 2-col sub-grid on mobile so both stay
+            visible without a long scroll. `lg:contents` collapses the wrapper
+            on desktop, restoring the outer 3-col layout. */}
+        <div className="grid grid-cols-2 gap-8 lg:contents">
+          {/* Quick Links column */}
+          <div className="flex flex-col gap-4">
+            <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-on-surface-variant">
+              Quick Links
+            </h3>
+            <nav aria-label="Footer quick links">
+              <ul className="flex flex-col gap-1">
+                {quickLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="inline-block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
+                    >
+                      {link.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
 
-        {/* Legal column */}
-        <div className="flex flex-col gap-4">
-          <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-on-surface-variant">
-            Legal
-          </h3>
-          <nav aria-label="Footer legal links">
-            <ul className="flex flex-col gap-1">
-              {legalLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="inline-block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
-                  >
-                    {link.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {/* Legal column */}
+          <div className="flex flex-col gap-4">
+            <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-on-surface-variant">
+              Legal
+            </h3>
+            <nav aria-label="Footer legal links">
+              <ul className="flex flex-col gap-1">
+                {legalLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="inline-block py-3 text-sm text-on-surface-variant transition-colors hover:text-on-surface"
+                    >
+                      {link.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
 

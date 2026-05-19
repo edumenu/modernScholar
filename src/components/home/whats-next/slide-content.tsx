@@ -79,7 +79,7 @@ export function SlideContent({
     <div className="grid h-full grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-16">
       {/* ---- Left column: side heading + visual ---- */}
       <motion.div
-        className="flex flex-col h-110 gap-6 lg:gap-8"
+        className="flex flex-col gap-6 lg:gap-8"
         style={{ x: leftX, willChange: "transform" }}
       >
         <h2
@@ -92,7 +92,7 @@ export function SlideContent({
         </h2>
 
         {/* Visual component */}
-        <div className="flex aspect-video w-full py-6 items-center justify-center overflow-hidden rounded-xl">
+        <div className="flex w-full items-center justify-center rounded-xl py-16 md:py-20">
           <PanelVisual visual={panel.visual} />
         </div>
       </motion.div>

@@ -122,7 +122,7 @@ export function ScholarshipFiltersMobile({
       </div>
 
       {/* Layout toggle + Month dropdown + Filters button */}
-      <div className="flex w-full items-center justify-between pt-2">
+      <div className="flex w-full flex-wrap items-center justify-between gap-y-2 pt-2">
         <div className="flex items-center gap-1 rounded-full bg-white/30 p-1 dark:bg-white/10">
           <Button
             variant="ghost"
@@ -156,7 +156,7 @@ export function ScholarshipFiltersMobile({
           </Button>
         </div>
 
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex min-w-0 items-center gap-1 sm:gap-1.5">
           <MonthDropdown
             month={filters.month}
             onMonthChange={filters.setMonth}
@@ -169,7 +169,7 @@ export function ScholarshipFiltersMobile({
             <button
               type="button"
               onClick={clearFilters}
-              className="text-sm text-on-surface/50 underline-offset-2 hover:text-on-surface hover:underline"
+              className="shrink-0 text-xs text-on-surface/50 underline-offset-2 hover:text-on-surface hover:underline sm:text-sm"
             >
               Clear
             </button>
@@ -179,17 +179,26 @@ export function ScholarshipFiltersMobile({
               render={
                 <Button
                   variant="ghost"
-                  size="default"
+                  size="sm"
                   aria-label="Filters"
                   className="shrink-0 rounded-full bg-surface-container-low/80 text-on-surface hover:bg-surface-container dark:bg-surface-container-low/80 dark:hover:bg-surface-container"
                 />
               }
             >
-              {/* Word hides below 360px so the row fits a 320px viewport without
-                  overflow. Icon + count badge keep the trigger discoverable. */}
-              <span className="max-[359px]:hidden">Filters</span>
+              {/* Word hides below 400px when an active-filter badge is shown,
+                  so the trigger + badge fit alongside Month/Clear on narrow
+                  phones. Icon + badge keep the trigger discoverable. */}
+              <span
+                className={cn(
+                  hasActiveFilters
+                    ? "max-[399px]:hidden"
+                    : "max-[359px]:hidden",
+                )}
+              >
+                Filters
+              </span>
               {hasActiveFilters && (
-                <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-on-primary">
+                <span className="flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-white">
                   {filterBadgeCount}
                 </span>
               )}
@@ -232,19 +241,13 @@ export function ScholarshipFiltersMobile({
                       return (
                         <Button
                           key={level}
-                          variant={isActive ? "default" : "ghost"}
-                          size="sm"
+                          variant={isActive ? "tertiary" : "ghost"}
+                          size="xs"
                           aria-pressed={isActive}
                           onClick={() => {
                             filters.setActiveFilter(level);
                             setSheetOpen(false);
                           }}
-                          className={cn(
-                            "rounded-full",
-                            isActive
-                              ? "bg-primary/30 shadow-none dark:bg-primary"
-                              : "bg-white/20 text-on-surface/60 dark:bg-white/10",
-                          )}
                         >
                           {level}
                         </Button>
