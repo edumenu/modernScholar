@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 import { render, screen } from "@testing-library/react"
 
 const setSplineReady = vi.fn()
-let mockIsMobile: boolean | null = false
+let mockIsDesktop: boolean | null = true
 
 vi.mock("next/dynamic", () => ({
   __esModule: true,
@@ -28,7 +28,7 @@ vi.mock("next-themes", () => ({
 }))
 
 vi.mock("@/hooks/use-media-query", () => ({
-  useMediaQuery: () => mockIsMobile,
+  useMediaQuery: () => mockIsDesktop,
 }))
 
 vi.mock("@/hooks/use-has-mounted", () => ({
@@ -77,8 +77,8 @@ describe("HeroSection", () => {
     setSplineReady.mockClear()
   })
 
-  it("renders the static image and calls setSplineReady(true) below lg:", async () => {
-    mockIsMobile = true
+  it("renders the static image and calls setSplineReady(true) when not desktop", async () => {
+    mockIsDesktop = false
     const { HeroSection } = await import("../hero-section")
 
     render(<HeroSection />)
@@ -88,8 +88,8 @@ describe("HeroSection", () => {
     expect(setSplineReady).toHaveBeenCalledWith(true)
   })
 
-  it("renders the Spline scene at lg: and above", async () => {
-    mockIsMobile = false
+  it("renders the Spline scene on desktop (lg+ with fine pointer and hover)", async () => {
+    mockIsDesktop = true
     const { HeroSection } = await import("../hero-section")
 
     render(<HeroSection />)
@@ -98,13 +98,13 @@ describe("HeroSection", () => {
     expect(screen.queryByTestId("hero-static-image")).not.toBeInTheDocument()
   })
 
-  it("renders neither static image nor Spline before media query resolves", async () => {
-    mockIsMobile = null
+  it("renders the static image before the media query resolves", async () => {
+    mockIsDesktop = null
     const { HeroSection } = await import("../hero-section")
 
     render(<HeroSection />)
 
-    expect(screen.queryByTestId("hero-static-image")).not.toBeInTheDocument()
+    expect(screen.getByTestId("hero-static-image")).toBeInTheDocument()
     expect(screen.queryByTestId("spline-scene")).not.toBeInTheDocument()
   })
 })

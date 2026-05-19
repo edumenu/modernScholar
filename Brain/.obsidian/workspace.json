@@ -218,8 +218,10 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
-    "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-followup-verification.md",
+    "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-followup-v2-verification.md",
+    "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-followup-v2.md",
     "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-followup.md",
+    "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-followup-verification.md",
     "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-verification.md",
     "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes.md",
     "PRDs/05_18_2026/tablet-scroll-fixes",
@@ -261,8 +263,6 @@
     "PRDs/05_16_2026/tablet-responsive/findings/group-3-legal.md",
     "PRDs/05_16_2026/tablet-responsive/findings/group-2-content.md",
     "PRDs/05_16_2026/tablet-responsive/tablet-responsive-audit.md",
-    "PRDs/05_16_2026/tablet-responsive/tablet-responsive-audit-verification.md",
-    "PRDs/05_16_2026/tablet-responsive/tablet-responsive-audit-decisions.md",
-    "PRDs/05_16_2026/tablet-responsive-audit-verification.md"
+    "PRDs/05_16_2026/tablet-responsive/tablet-responsive-audit-verification.md"
   ]
 }

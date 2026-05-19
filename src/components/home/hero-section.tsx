@@ -60,8 +60,12 @@ export function HeroSection() {
   const mounted = useHasMounted();
   const { resolvedTheme } = useTheme();
   const setSplineReady = useHeroLoaderStore((s) => s.setSplineReady);
-  // Static image on mobile/tablet (<1024px); Spline 3D scene at lg and above.
-  const isMobile = useMediaQuery("(max-width: 1023px)");
+  // Spline only when viewport is lg+ AND primary input is a fine pointer with
+  // hover. Excludes iPad / tablet-mode hybrids, which report coarse/no-hover
+  // even at 1024px+ and where Spline's WebGL canvas captures vertical touch.
+  const isDesktop = useMediaQuery(
+    "(min-width: 1024px) and (hover: hover) and (pointer: fine)",
+  );
 
   // Memoize the scene URL so a re-render with the same theme reuses the same
   // string identity — `<SplineScene>` swaps scenes via the runtime API
@@ -96,13 +100,13 @@ export function HeroSection() {
     });
   }, [mounted, resolvedTheme, splineUrl]);
 
+  // SSR / pre-hydration (`null`) and non-desktop (`false`) both render the
+  // image. Only `true` qualifies for Spline. Image-as-SSR-default minimizes
+  // flicker on the iPad path (its final state) and is a single-frame swap on
+  // qualifying desktops (image asset is already on disk).
   let heroMedia;
-  if (isMobile === null) {
-    heroMedia = <SplineFallback />;
-  } else if (isMobile === true) {
-    heroMedia = <HeroStaticImage />;
-  } else {
-    heroMedia = mounted ? (
+  if (isDesktop === true) {
+    heroMedia = (
       <Suspense fallback={<SplineFallback />}>
         <SplineScene
           scene={splineUrl}
@@ -110,9 +114,9 @@ export function HeroSection() {
           onLoad={() => setSplineReady(true)}
         />
       </Suspense>
-    ) : (
-      <SplineFallback />
     );
+  } else {
+    heroMedia = <HeroStaticImage />;
   }
 
   return (
