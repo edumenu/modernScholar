@@ -62,11 +62,11 @@ function AccordionItem({
       <button
         id={`faq-btn-${index}`}
         onClick={onToggle}
-        className="flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left focus-visible:rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+        className="flex w-full cursor-pointer items-center justify-between gap-4 px-5 py-4 text-left focus-visible:rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
         aria-expanded={isOpen}
         aria-controls={`faq-panel-${index}`}
       >
-        <span className="text-base font-medium text-on-surface">
+        <span className="text-sm font-medium text-on-surface">
           {item.question}
         </span>
         <motion.span
@@ -91,7 +91,7 @@ function AccordionItem({
         )}
       >
         <div className="overflow-hidden">
-          <p className="px-6 pb-5 text-sm leading-relaxed text-on-surface-variant">
+          <p className="px-5 pb-4 text-xs leading-relaxed text-on-surface-variant">
             {item.answer}
           </p>
         </div>

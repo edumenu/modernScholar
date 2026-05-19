@@ -14,7 +14,7 @@ export function FeaturedScholarships() {
   return (
     <section
       aria-labelledby="featured-heading"
-      className="flex h-dvh flex-col justify-center"
+      className="flex min-h-dvh flex-col justify-center py-16 md:py-0"
     >
       <ParallaxLayer yRange={[-20, 20]}>
         <AnimatedSection>
@@ -46,10 +46,15 @@ export function FeaturedScholarships() {
         </AnimatedSection>
       </ParallaxLayer>
 
-      {/* Coverflow Carousel — break out of PageShell to full viewport width */}
+      {/* Coverflow Carousel — break out of PageShell to full viewport width.
+          `overflow-x-clip` traps the transform-driven horizontal overflow from
+          the coverflow stage (each card is `absolute` and translated far
+          beyond the stage edges); without it, scrollWidth on <html> grows
+          past the viewport at tablet/phone widths and the page becomes
+          horizontally scrollable. */}
       <ParallaxLayer
         yRange={[30, -30]}
-        className="relative left-1/2 mt-16 w-dvw -translate-x-1/2 py-16"
+        className="relative left-1/2 mt-16 w-dvw -translate-x-1/2 overflow-x-clip py-16"
         style={{
           maskImage:
             "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",

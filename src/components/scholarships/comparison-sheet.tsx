@@ -59,7 +59,7 @@ export function ComparisonSheet() {
     >
       <SheetContent
         side="right"
-        className="data-[side=right]:sm:max-w-xl data-[side=right]:lg:max-w-4xl"
+        className="data-[side=right]:w-full data-[side=right]:sm:w-3/4 data-[side=right]:sm:max-w-xl data-[side=right]:lg:max-w-4xl"
       >
         <SheetHeader>
           <SheetTitle className="font-heading text-lg">

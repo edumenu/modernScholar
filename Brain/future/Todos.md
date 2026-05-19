@@ -37,4 +37,11 @@ Future todos:
 -  Remove the total number of scholarships from the scholarship header as well as the filter bar 
 -  the description and eligibility do not allow me to scroll to the bottom of the module card  which hide the Apply button on this color surplus page 
 
+Privacy:
+- Update children policy (possibly remove it)
+- Look into add/removing personal information
+- Remove gmail info part
+- Let AI change the tone of the privacy pages
+- Get ideas from several competitors, to rewrite all our privacy policy 
+
 

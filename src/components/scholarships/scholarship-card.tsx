@@ -231,7 +231,7 @@ export function ScholarshipCard({
         {scholarship.eligibility && (
           <p
             className={cn(
-              "line-clamp-2 px-6 pt-4 text-xs leading-relaxed",
+              "line-clamp-4 px-6 pt-4 text-xs leading-relaxed md:line-clamp-3",
               tint.muted,
             )}
           >
