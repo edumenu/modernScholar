@@ -24,7 +24,7 @@ export function SplineScene({ className, scene, onLoad }: SplineSceneProps) {
   const lenis = useLenis();
 
   return (
-    <div className={className} style={{ position: "relative", touchAction: "pan-y" }}>
+    <div className={className} style={{ position: "relative" }}>
       {!loaded && (
         <div className="flex size-full items-center justify-center">
           <div className="size-12 animate-pulse rounded-full bg-surface-container" />
