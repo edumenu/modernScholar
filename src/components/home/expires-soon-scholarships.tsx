@@ -6,14 +6,49 @@ import { ParallaxLayer } from "@/components/ui/parallax-layer";
 import { ButtonLink } from "@/components/ui/button/button-link";
 import { CoverflowCarousel } from "./coverflow-carousel";
 import { scholarships as allScholarships } from "@/data/scholarships";
+import { SESSION_DATE } from "@/lib/session-date";
 
-/** First 10 scholarships for the coverflow */
-const carouselItems = allScholarships.slice(0, 10);
+function filterForMonth(year: number, month: number, since?: Date) {
+  const sinceMs = since?.getTime();
+  return allScholarships
+    .map((s) => ({
+      s,
+      ms: new Date(`${s.deadline}, ${s.deadlineYear}`).getTime(),
+    }))
+    .filter(({ ms }) => {
+      if (!Number.isFinite(ms) || ms === 0) return false;
+      const d = new Date(ms);
+      if (d.getFullYear() !== year || d.getMonth() !== month) return false;
+      return sinceMs === undefined || ms >= sinceMs;
+    })
+    .sort((a, b) => a.ms - b.ms)
+    .slice(0, 10)
+    .map(({ s }) => s);
+}
 
-export function FeaturedScholarships() {
+export function ExpiresSoonScholarships() {
+  const currentYear = SESSION_DATE.getFullYear();
+  const currentMonth = SESSION_DATE.getMonth();
+
+  let carouselItems = filterForMonth(currentYear, currentMonth, SESSION_DATE);
+  let targetDate = SESSION_DATE;
+
+  if (carouselItems.length === 0) {
+    // Empty-month fallback: roll forward to next calendar month so the home
+    // section never renders without a list.
+    const nextMonthDate = new Date(currentYear, currentMonth + 1, 1);
+    carouselItems = filterForMonth(
+      nextMonthDate.getFullYear(),
+      nextMonthDate.getMonth(),
+    );
+    targetDate = nextMonthDate;
+  }
+
+  const monthName = targetDate.toLocaleString("default", { month: "long" });
+
   return (
     <section
-      aria-labelledby="featured-heading"
+      aria-labelledby="expires-soon-heading"
       className="flex min-h-dvh flex-col justify-center py-16 md:py-0"
     >
       <ParallaxLayer yRange={[-20, 20]}>
@@ -25,14 +60,13 @@ export function FeaturedScholarships() {
                 Curated for you
               </p>
               <h2
-                id="featured-heading"
+                id="expires-soon-heading"
                 className="font-heading text-3xl font-medium tracking-tight text-on-surface md:text-[3rem] md:leading-none"
               >
-                Featured Scholarships
+                Expires in {monthName}
               </h2>
               <p className="mt-2 text-lg text-on-surface-variant md:text-xl">
-                Discover a world of educational possibilities and scholarship
-                programs.
+                These scholarships close soon — apply before the month ends.
               </p>
             </div>
             <ButtonLink href="/scholarships" variant="tertiary" animateIcon>

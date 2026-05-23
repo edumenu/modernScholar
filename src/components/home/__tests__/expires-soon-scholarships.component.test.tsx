@@ -88,17 +88,19 @@ vi.mock("@/lib/pretext/fonts", () => ({
   },
 }));
 
-// Freeze "now" so the active-scholarship slice stays stable as the corpus
-// ages. Both the carousel (calls `new Date()` at render) and the test helper
-// below see the same instant.
+// Freeze "now" so the in-month slice stays stable as the corpus ages. The
+// component reads `SESSION_DATE` (captured at module load via `new Date()`),
+// so `vi.resetModules()` in beforeEach ensures session-date re-evaluates with
+// the faked system time.
 const FROZEN_NOW = new Date("2026-05-07T12:00:00Z");
 
-describe("FeaturedScholarships with CoverflowCarousel", () => {
+describe("ExpiresSoonScholarships with CoverflowCarousel", () => {
   beforeEach(() => {
     mockReducedMotion = false;
     mockPush.mockClear();
     vi.useFakeTimers();
     vi.setSystemTime(FROZEN_NOW);
+    vi.resetModules();
   });
 
   afterEach(() => {
@@ -109,9 +111,32 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     return container.querySelector('[aria-roledescription="carousel"]') as HTMLElement;
   }
 
+  // Mirror the component's in-month + ascending sort + cap-10 logic so the
+  // assertions don't break when the underlying data changes.
+  async function getActiveCarouselNames(): Promise<string[]> {
+    const { scholarships } = await import("@/data/scholarships");
+    return scholarships
+      .map((s) => ({
+        s,
+        ms: new Date(`${s.deadline}, ${s.deadlineYear}`).getTime(),
+      }))
+      .filter(({ ms }) => {
+        if (!Number.isFinite(ms) || ms === 0) return false;
+        const d = new Date(ms);
+        return (
+          d.getFullYear() === FROZEN_NOW.getFullYear() &&
+          d.getMonth() === FROZEN_NOW.getMonth() &&
+          ms >= FROZEN_NOW.getTime()
+        );
+      })
+      .sort((a, b) => a.ms - b.ms)
+      .slice(0, 10)
+      .map(({ s }) => s.name);
+  }
+
   it("renders carousel with aria-roledescription", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    const { container } = render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
 
     const carousel = getCarousel(container);
     expect(carousel).not.toBeNull();
@@ -119,28 +144,16 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
   });
 
   it("renders 10 slides with aria-roledescription='slide'", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    const { container } = render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
 
     const slides = container.querySelectorAll('[aria-roledescription="slide"]');
     expect(slides.length).toBe(10);
   });
 
-  // The carousel filters its source feed to active-only at runtime, then takes
-  // the first 10. We compute the same slice in the tests so the assertions
-  // don't break when the underlying data changes.
-  async function getActiveCarouselNames(): Promise<string[]> {
-    const { scholarships } = await import("@/data/scholarships");
-    const { isScholarshipActive } = await import("@/data/scholarships");
-    return scholarships
-      .slice(0, 10)
-      .filter((s) => isScholarshipActive(s, FROZEN_NOW))
-      .map((s) => s.name);
-  }
-
   it("has a live region announcing the active scholarship", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    const { container } = render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
 
     const liveRegion = container.querySelector('[aria-live="polite"]');
     expect(liveRegion).not.toBeNull();
@@ -149,8 +162,8 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
   });
 
   it("advances to next card on ArrowRight key", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    const { container } = render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
 
     const carousel = getCarousel(container);
     carousel.focus();
@@ -162,8 +175,8 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
   });
 
   it("goes to previous card on ArrowLeft key", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    const { container } = render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
 
     const carousel = getCarousel(container);
     carousel.focus();
@@ -176,8 +189,8 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
   });
 
   it("navigates to /scholarships?q={id} when clicking center card", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    render(<ExpiresSoonScholarships />);
 
     // First active scholarship in the carousel slice is the center card by default.
     const names = await getActiveCarouselNames();
@@ -197,8 +210,8 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
   });
 
   it("rotates side card to center on click instead of navigating", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    const { container } = render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
 
     // Find a side card (data-cursor-text="Focus")
     const sideButtons = container.querySelectorAll<HTMLButtonElement>(
@@ -212,16 +225,16 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
   });
 
   it("renders arrow buttons with correct aria-labels", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    render(<ExpiresSoonScholarships />);
 
     expect(screen.getByLabelText("Previous scholarship")).toBeDefined();
     expect(screen.getByLabelText("Next scholarship")).toBeDefined();
   });
 
   it("advances on next arrow click", async () => {
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    const { container } = render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
 
     const nextBtn = screen.getByLabelText("Next scholarship");
     fireEvent.click(nextBtn);
@@ -233,8 +246,8 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
 
   it("renders reduced motion fallback as scrollable list without 3D", async () => {
     mockReducedMotion = true;
-    const { FeaturedScholarships } = await import("../featured-scholarships");
-    const { container } = render(<FeaturedScholarships />);
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
 
     const carousel = getCarousel(container);
     expect(carousel).not.toBeNull();
@@ -244,5 +257,68 @@ describe("FeaturedScholarships with CoverflowCarousel", () => {
     // Should NOT have arrow buttons
     expect(screen.queryByLabelText("Previous scholarship")).toBeNull();
     expect(screen.queryByLabelText("Next scholarship")).toBeNull();
+  });
+
+  it("renders heading with current month name", async () => {
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
+
+    const heading = container.querySelector("#expires-soon-heading");
+    expect(heading).not.toBeNull();
+    expect(heading!.textContent).toBe("Expires in May");
+  });
+});
+
+// Rollover path: when the current calendar month has zero remaining deadlines,
+// the section advances to the next calendar month.
+const FROZEN_NOW_ROLLOVER = new Date("2026-11-30T12:00:00Z");
+
+describe("ExpiresSoonScholarships rollover to next month", () => {
+  beforeEach(() => {
+    mockReducedMotion = false;
+    mockPush.mockClear();
+    vi.useFakeTimers();
+    vi.setSystemTime(FROZEN_NOW_ROLLOVER);
+    vi.resetModules();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("renders heading with next month name when current month has no remaining deadlines", async () => {
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
+
+    const heading = container.querySelector("#expires-soon-heading");
+    expect(heading).not.toBeNull();
+    expect(heading!.textContent).toBe("Expires in December");
+  });
+
+  it("renders carousel with next-month items", async () => {
+    const { ExpiresSoonScholarships } = await import("../expires-soon-scholarships");
+    const { container } = render(<ExpiresSoonScholarships />);
+
+    const slides = container.querySelectorAll('[aria-roledescription="slide"]');
+    expect(slides.length).toBeGreaterThan(0);
+
+    // Expected first slide name: earliest December 2026 deadline.
+    const { scholarships } = await import("@/data/scholarships");
+    const decItems = scholarships
+      .map((s) => ({
+        s,
+        ms: new Date(`${s.deadline}, ${s.deadlineYear}`).getTime(),
+      }))
+      .filter(({ ms }) => {
+        if (!Number.isFinite(ms) || ms === 0) return false;
+        const d = new Date(ms);
+        return d.getFullYear() === 2026 && d.getMonth() === 11;
+      })
+      .sort((a, b) => a.ms - b.ms);
+
+    expect(decItems.length).toBeGreaterThan(0);
+
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion!.textContent).toContain(decItems[0].s.name);
   });
 });

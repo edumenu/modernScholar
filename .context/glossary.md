@@ -23,6 +23,7 @@ Domain and code terminology specific to Modern Scholar. Alphabetical.
 - **AnimatedLines** — Per-line stagger primitive for headings.
 - **AnimatedSection** — Scroll-triggered entrance wrapper (`fadeUp` / `fadeDown` / `scaleIn`).
 - **Callout** — MDX boxed insert (`<Callout type="tip|note|warning">`). Auto-generated from `What to do instead:` lines in source markdown.
+- **Expires Soon Carousel** — Home-page section surfacing up to 10 scholarships with deadlines in the current calendar month (or next month when the current one has none remaining), sorted by deadline ascending. Replaces the former Featured Scholarships section.
 - **Comparison Sheet** — Side-drawer that compares 2–3 selected scholarships. State lives in `stores/comparison.ts`. Rehydrated on load by `ComparisonRehydrator`.
 - **Coverflow Carousel** — 3D-tilted horizontal carousel on the home page (`coverflow-carousel.tsx`).
 - **Glass Elevated / Glass Panel / Glass Heavy** — Three glassmorphism tiers. See `.claude/rules/design-system.md`.

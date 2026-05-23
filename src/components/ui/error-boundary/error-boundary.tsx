@@ -88,8 +88,8 @@ function ErrorBoundaryFallback({
  * exposes error-boundary lifecycle on class components.
  *
  * Usage:
- *   <ErrorBoundary label="Featured Scholarships">
- *     <FeaturedScholarships />
+ *   <ErrorBoundary label="Expires Soon">
+ *     <ExpiresSoonScholarships />
  *   </ErrorBoundary>
  */
 export class ErrorBoundary extends Component<

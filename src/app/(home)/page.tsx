@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ReactDOM from "react-dom";
 import { HeroSection } from "@/components/home/hero-section";
-import { FeaturedScholarships } from "@/components/home/featured-scholarships";
+import { ExpiresSoonScholarships } from "@/components/home/expires-soon-scholarships";
 import { WhatsNext } from "@/components/home/whats-next";
 import { FAQSection } from "@/components/home/faq-section";
 import { PageTransition } from "@/components/ui/page-transition";
@@ -44,8 +44,8 @@ export default function Home() {
       <ErrorBoundary label="Hero">
         <HeroSection />
       </ErrorBoundary>
-      <ErrorBoundary label="Featured Scholarships">
-        <FeaturedScholarships />
+      <ErrorBoundary label="Expires Soon">
+        <ExpiresSoonScholarships />
       </ErrorBoundary>
       <ErrorBoundary label="What's Next">
         <WhatsNext />
