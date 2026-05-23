@@ -13,9 +13,19 @@ import {
 } from "@/lib/legal-constants";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Modern Scholar",
+  title: "Privacy Policy",
   description:
     "Learn how Modern Scholar handles your data — what we collect, why, and the rights you have under GDPR and CCPA.",
+  alternates: {
+    canonical: "/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy",
+    description:
+      "Learn how Modern Scholar handles your data — what we collect, why, and the rights you have under GDPR and CCPA.",
+    type: "website",
+    url: "/privacy",
+  },
 };
 
 const SECTIONS = [

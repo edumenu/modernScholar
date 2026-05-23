@@ -5,9 +5,16 @@ import { ContactFAQ } from "@/components/contact/contact-faq"
 import { PageTransition } from "@/components/ui/page-transition"
 
 export const metadata: Metadata = {
-  title: "Contact Us | Modern Scholar",
+  title: "Contact Us",
   description:
     "Have questions or feedback? Get in touch with us at Modern Scholar.",
+  openGraph: {
+    title: "Contact Us",
+    description:
+      "Have questions or feedback? Get in touch with us at Modern Scholar.",
+    type: "website",
+    url: "/contact",
+  },
 }
 
 export default function ContactUsPage() {

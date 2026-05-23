@@ -12,9 +12,19 @@ import {
 } from "@/lib/legal-constants";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Modern Scholar",
+  title: "Terms of Service",
   description:
     "Terms of service for Modern Scholar — how to use the site and what to verify.",
+  alternates: {
+    canonical: "/terms",
+  },
+  openGraph: {
+    title: "Terms of Service",
+    description:
+      "Terms of service for Modern Scholar — how to use the site and what to verify.",
+    type: "website",
+    url: "/terms",
+  },
 };
 
 const SECTIONS = [

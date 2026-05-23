@@ -4,13 +4,15 @@ import { BlogDetail } from "@/components/blog/blog-detail"
 import { BlogDetailContent } from "@/components/blog/blog-detail-content"
 import { RelatedPosts } from "@/components/blog/related-posts"
 import { PageTransition } from "@/components/ui/page-transition"
+import { JsonLd } from "@/components/ui/json-ld"
 import {
   getAllPosts,
   getPostBySlug,
   getRelatedPosts,
   type BlogPost,
 } from "@/lib/blog"
-import { SITE_URL } from "@/lib/constants"
+import { toAbsoluteUrl } from "@/lib/url"
+import { blogPostJsonLd } from "@/lib/structured-data"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -23,11 +25,6 @@ export async function generateStaticParams() {
 
 export const dynamicParams = false
 
-function toAbsoluteUrl(maybeRelative: string): string {
-  if (/^https?:\/\//i.test(maybeRelative)) return maybeRelative
-  return `${SITE_URL}${maybeRelative.startsWith("/") ? "" : "/"}${maybeRelative}`
-}
-
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
@@ -36,20 +33,42 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Post Not Found | Modern Scholar",
+      title: { absolute: "Post Not Found | Modern Scholar" },
     }
   }
 
   const description = post.seoDescription || post.excerpt
   const ogImage = toAbsoluteUrl(post.ogImage || post.image)
+  const canonical = `/blog/${slug}`
 
   return {
-    title: `${post.title} | Modern Scholar`,
+    title: post.title,
     description,
+    alternates: {
+      canonical,
+    },
     openGraph: {
       title: post.title,
       description,
-      images: [{ url: ogImage }],
+      type: "article",
+      url: canonical,
+      publishedTime: post.publishDate,
+      modifiedTime: post.updatedDate ?? post.publishDate,
+      authors: [post.author.name],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description,
+      images: [ogImage],
     },
   }
 }
@@ -92,6 +111,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <PageTransition>
+      <JsonLd data={blogPostJsonLd(post)} />
       <div className="page-padding-y flex gap-20 flex-col">
         <BlogDetail post={post} seriesPosts={seriesPosts}>
           <BlogDetailContent post={post} body={<Mdx />} />

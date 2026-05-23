@@ -5,9 +5,16 @@ import { getAllPosts } from "@/lib/blog";
 import { PageTransition } from "@/components/ui/page-transition";
 
 export const metadata: Metadata = {
-  title: "Blog | Modern Scholar",
+  title: "Blog",
   description:
     "Expert advice, success stories, and practical tips to help you navigate your scholarship journey and achieve your educational goals.",
+  openGraph: {
+    title: "Blog",
+    description:
+      "Expert advice, success stories, and practical tips to help you navigate your scholarship journey and achieve your educational goals.",
+    type: "website",
+    url: "/blog",
+  },
 };
 
 export default async function BlogPage() {

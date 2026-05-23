@@ -6,10 +6,14 @@ import { WhatsNext } from "@/components/home/whats-next";
 import { FAQSection } from "@/components/home/faq-section";
 import { PageTransition } from "@/components/ui/page-transition";
 import { ErrorBoundary } from "@/components/ui/error-boundary/error-boundary";
+import { JsonLd } from "@/components/ui/json-ld";
 import { splineScenes } from "@/config/spline-scenes";
+import { siteJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
-  title: "Modern Scholar — Discover Scholarships That Fit You",
+  title: {
+    absolute: "Modern Scholar — Discover Scholarships That Fit You",
+  },
   description:
     "A curated catalogue of scholarships for high school, undergraduate, and graduate students. Find, compare, and apply with editorial guidance.",
   openGraph: {
@@ -17,6 +21,8 @@ export const metadata: Metadata = {
     description:
       "A curated catalogue of scholarships for high school, undergraduate, and graduate students.",
     type: "website",
+    url: "/",
+    images: ["/opengraph-image.png"],
   },
 };
 
@@ -41,6 +47,7 @@ export default function Home() {
   // down the entire route.
   return (
     <PageTransition>
+      <JsonLd data={siteJsonLd()} />
       <ErrorBoundary label="Hero">
         <HeroSection />
       </ErrorBoundary>

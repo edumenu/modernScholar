@@ -5,9 +5,19 @@ import { LegalSection } from "@/components/legal/legal-section";
 import { CONTACT_EMAIL, LAST_UPDATED } from "@/lib/legal-constants";
 
 export const metadata: Metadata = {
-  title: "Cookie Policy | Modern Scholar",
+  title: "Cookie Policy",
   description:
     "What Modern Scholar stores in your browser, what we don't track, and how to clear it.",
+  alternates: {
+    canonical: "/cookies",
+  },
+  openGraph: {
+    title: "Cookie Policy",
+    description:
+      "What Modern Scholar stores in your browser, what we don't track, and how to clear it.",
+    type: "website",
+    url: "/cookies",
+  },
 };
 
 const STORAGE_ROWS = [

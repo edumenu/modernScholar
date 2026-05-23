@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Noto_Serif } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { SITE_URL } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
@@ -26,8 +27,24 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Modern Scholar",
+  metadataBase: new URL(SITE_URL),
+  // `template` applies to child segments — every page sets its own unique
+  // title and Next.js appends "| Modern Scholar". Do NOT include the suffix
+  // in page titles after this lands.
+  title: {
+    default: "Modern Scholar",
+    template: "%s | Modern Scholar",
+  },
   description: "Empowering students to discover and secure scholarships.",
+  openGraph: {
+    siteName: "Modern Scholar",
+    type: "website",
+    locale: "en_US",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

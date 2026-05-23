@@ -4,9 +4,19 @@ import { ScholarshipGrid } from "@/components/scholarships/scholarship-grid";
 import { PageTransition } from "@/components/ui/page-transition";
 
 export const metadata: Metadata = {
-  title: "Explore Scholarships | Modern Scholar",
+  title: "Explore Scholarships",
   description:
     "Discover scholarships tailored to your goals. Filter by education level and find the perfect scholarship for your academic journey.",
+  alternates: {
+    canonical: "/scholarships",
+  },
+  openGraph: {
+    title: "Explore Scholarships",
+    description:
+      "Discover scholarships tailored to your goals. Filter by education level and find the perfect scholarship for your academic journey.",
+    type: "website",
+    url: "/scholarships",
+  },
 };
 
 export default function ScholarshipsPage() {
