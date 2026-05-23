@@ -71,7 +71,7 @@ export default function TermsPage() {
       <LegalSection id="about-service" title="About the Service">
         <p>
           Modern Scholar is an independent editorial project that curates and
-          explains scholarship opportunities for students. It is operated by{" "}
+          explains scholarship opportunities for students. It is operated from{" "}
           {CONTROLLERS}.
         </p>
         <p>

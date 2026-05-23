@@ -11,8 +11,7 @@
 
 export const CONTACT_EMAIL = "dearmodernscholar@gmail.com" as const
 
-export const CONTROLLERS =
-  "Edem and Cathy, North Carolina, USA" as const
+export const CONTROLLERS = "North Carolina, USA" as const
 
 export const GOVERNING_LAW = "the laws of the State of North Carolina, USA" as const
 
@@ -28,9 +27,9 @@ export const BREACH_WINDOW_HOURS = 72 as const
  * Bump the relevant key in the same change-set that edits a policy's prose.
  */
 export const LAST_UPDATED = {
-  privacy: "2026-05-14",
-  terms: "2026-05-14",
-  cookies: "2026-05-14",
+  privacy: "2026-05-23",
+  terms: "2026-05-23",
+  cookies: "2026-05-23",
 } as const
 
 export type LegalPolicy = keyof typeof LAST_UPDATED

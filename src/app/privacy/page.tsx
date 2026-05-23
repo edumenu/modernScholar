@@ -38,8 +38,8 @@ export default function PrivacyPage() {
         Modern Scholar is a free scholarship discovery site with no accounts, no
         analytics, and no advertising. We don&apos;t sell or share your personal
         information. The only data we touch is what your browser sends to our
-        host (Digital Ocean) so the site can load, plus a few small preferences
-        your browser saves locally so the site remembers your theme and saved
+        hosting provider so the site can load, plus a few small preferences your
+        browser saves locally so the site remembers your theme and saved
         scholarships.
       </p>
       <p className="mt-3">
@@ -65,9 +65,9 @@ export default function PrivacyPage() {
     >
       <LegalSection id="who-we-are" title="Who we are">
         <p>
-          Modern Scholar is operated by {CONTROLLERS}. We run the site as joint
-          sole proprietors and act as joint data controllers under the GDPR.
-          Questions, requests, and notices should go to{" "}
+          Modern Scholar is operated from {CONTROLLERS}. We act as the data
+          controller under the GDPR. Questions, requests, and notices should go
+          to{" "}
           <a
             href={`mailto:${CONTACT_EMAIL}`}
             className="text-primary underline underline-offset-2"
@@ -77,9 +77,9 @@ export default function PrivacyPage() {
           .
         </p>
         <p>
-          We have not formed an LLC and do not yet publish a postal address. If
-          that changes, we&apos;ll add the address here and update the
-          &quot;Last updated&quot; date at the top of this page.
+          We do not yet publish a postal address. If that changes, we&apos;ll
+          add the address here and update the &quot;Last updated&quot; date at
+          the top of this page.
         </p>
       </LegalSection>
 
@@ -92,11 +92,12 @@ export default function PrivacyPage() {
         <ul className="list-disc space-y-2 pl-6">
           <li>
             <strong className="font-semibold text-on-surface">
-              Server logs from DigitalOcean, our hosting provider.
+              Server logs from our hosting provider.
             </strong>{" "}
-            When your browser requests a page, DigitalOcean automatically
-            records your IP address, user-agent string, the URL you requested,
-            and a timestamp. We use these only for security and debugging.
+            When your browser requests a page, our hosting provider
+            automatically records your IP address, user-agent string, the URL
+            you requested, and a timestamp. We use these only for security and
+            debugging.
           </li>
           <li>
             <strong className="font-semibold text-on-surface">
@@ -183,36 +184,11 @@ export default function PrivacyPage() {
         <ul className="list-disc space-y-2 pl-6">
           <li>
             <strong className="font-semibold text-on-surface">
-              DigitalOcean
+              Our hosting provider
             </strong>{" "}
-            hosts the site in the United States. DigitalOcean sees the request
-            data described above.
+            hosts the site in the United States and sees the request data
+            described above.
           </li>
-          <li>
-            <strong className="font-semibold text-on-surface">
-              Spline (<code>prod.spline.design</code>)
-            </strong>{" "}
-            is a CDN that serves the 3D scene assets used in a few decorative
-            illustrations. When your browser fetches a scene file, Spline sees
-            your IP address. Spline does not set first-party cookies on Modern
-            Scholar.
-          </li>
-          {/* <li>
-            <strong className="font-semibold text-on-surface">
-              Iconify (<code>api.iconify.design</code>)
-            </strong>{" "}
-            is a CDN that serves the icon set used across the interface. Each
-            icon request shows Iconify your IP address. Iconify does not set
-            first-party cookies on Modern Scholar.
-          </li> */}
-          {/* <li>
-            <strong className="font-semibold text-on-surface">
-              Google Fonts
-            </strong>{" "}
-            is <em>not</em> a runtime third party for us. Next.js downloads the
-            Noto Serif and Poppins font files at build time and self-hosts them
-            from our own domain. Google does not see your visits.
-          </li> */}
         </ul>
         <p>
           We don&apos;t sell or share your personal information with anyone for
@@ -226,7 +202,7 @@ export default function PrivacyPage() {
         <ul className="list-disc space-y-2 pl-6">
           <li>
             <strong className="font-semibold text-on-surface">
-              DigitalOcean server logs:
+              Hosting provider server logs:
             </strong>{" "}
             approximately 30 days. We don&apos;t extend this window.
           </li>
@@ -342,10 +318,10 @@ export default function PrivacyPage() {
         title="International transfers"
       >
         <p>
-          Modern Scholar is hosted in the United States via DigitalOcean. If
-          you&apos;re visiting from the EU, UK, or another region with data
-          protection rules, your request data is processed in the US. We rely on
-          DigitalOcean&apos;s Data Processing Addendum and Standard Contractual
+          Modern Scholar is hosted in the United States. If you&apos;re visiting
+          from the EU, UK, or another region with data protection rules, your
+          request data is processed in the US. We rely on our hosting
+          provider&apos;s Data Processing Addendum and Standard Contractual
           Clauses as the legal mechanism for these transfers.
         </p>
         <p>

@@ -36,7 +36,6 @@ const STORAGE_ROWS = [
 const SECTIONS = [
   { id: "what-we-store", title: "What we store" },
   { id: "what-we-dont-use", title: "What we don't use" },
-  { id: "third-party-cdns", title: "Third-party CDNs and fonts" },
   { id: "how-to-clear", title: "How to clear what we store" },
   { id: "changes", title: "Changes to this policy" },
   { id: "contact", title: "Contact" },
@@ -142,31 +141,6 @@ export default function CookiesPage() {
           or another non-essential tracker, we&apos;ll update this policy and
           put a proper consent flow in place first.
         </p>
-      </LegalSection>
-
-      <LegalSection id="third-party-cdns" title="Third-party CDNs and fonts">
-        <p>
-          A few parts of the site are delivered from third-party content
-          delivery networks (CDNs). These providers can see your IP address and
-          basic request metadata when your browser fetches assets from them, but
-          they do <strong>not</strong> set any first-party cookies on the Modern
-          Scholar domain:
-        </p>
-        <ul className="list-disc space-y-2 pl-6">
-          <li>
-            <strong>Spline</strong> (<code>prod.spline.design</code>) — serves
-            the 3D scenes on pages like the contact and 404 pages.
-          </li>
-          {/* <li>
-            <strong>Iconify</strong> (<code>api.iconify.design</code>) — serves
-            the icon set used throughout the interface.
-          </li> */}
-        </ul>
-        {/* <p>
-          Google Fonts are <strong>self-hosted at build time</strong> by
-          Next.js. Your browser does not contact Google when loading our
-          typefaces; the font files are served from our own domain.
-        </p> */}
       </LegalSection>
 
       <LegalSection id="how-to-clear" title="How to clear what we store">
