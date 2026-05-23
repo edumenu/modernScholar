@@ -12,6 +12,7 @@ deep_ref: ".context/architecture/overview.md"
 2. **Use Motion (`motion/react`), not Framer Motion**. The package is `motion` (v12). `framer-motion` is not installed.
 3. **Respect `prefers-reduced-motion`.** `MotionConfigProvider` in the root layout already sets `reducedMotion="user"` — but never animate transform/opacity below 200ms or stagger >150ms when reduced-motion is on.
 4. **Lenis smooth scrolling is global.** Do not call `window.scrollTo` directly — it fights Lenis. Use Lenis's scroll API via the `SmoothScrollProvider` if you need programmatic scroll.
+5. **When `AnimatePresence` wraps content that changes page height** (layout swaps, conditional sections), call `lenis.resize()` from the entering `motion.div`'s `onAnimationComplete` — not from a `setTimeout`. A timer races the exit animation and snapshots stale dimensions; `onAnimationComplete` fires once the new DOM is settled. Lenis's `autoResize` does not reliably observe these swaps.
 
 ## Standard primitives
 

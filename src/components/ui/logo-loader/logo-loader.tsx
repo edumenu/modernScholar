@@ -81,7 +81,7 @@ export function LogoLoader({
     const svg = svgRef.current;
     if (!svg) return;
     if (strokeDrawOriginMs === null) strokeDrawOriginMs = now();
-    const elapsedSeconds = (now() - strokeDrawOriginMs) / 1000;
+    const elapsedSeconds = now() - strokeDrawOriginMs;
     const paths = svg.querySelectorAll<SVGPathElement>(
       ".logo-loader-stroke-draw",
     );

@@ -19,6 +19,14 @@ function LenisRouteResizer() {
     return () => clearTimeout(timer)
   }, [lenis, pathname])
 
+  // Expose the Lenis instance on `window.__lenis` in non-production builds so
+  // e2e tests can assert on `lenis.limit` / `lenis.dimensions.scrollHeight`
+  // without walking the React fiber.
+  useEffect(() => {
+    if (!lenis || process.env.NODE_ENV === "production") return
+    ;(window as Window & { __lenis?: typeof lenis }).__lenis = lenis
+  }, [lenis])
+
   return null
 }
 

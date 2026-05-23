@@ -51,7 +51,7 @@ Translate vague tasks into verifiable goals before writing code:
 - "Fix the bug" → write a test that reproduces it, then make it pass.
 - "Refactor X" → ensure the relevant `npm test` / `npm run lint` / `npm run build` passes before and after.
 
-For UI/visual changes (which don't have a unit test), the verification is running the dev server and using the feature in a browser — say so explicitly instead of claiming success from a type-check alone.
+For UI/visual changes (which don't have a unit test), the verification is checking if the server is already running, if it is use the existing server, if not, run the dev server and using the feature in a browser — say so explicitly instead of claiming success from a type-check alone.
 
 For multi-step work, state a brief plan inline:
 

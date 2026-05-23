@@ -12,3 +12,4 @@
 - [Mobile menu Escape key](project_mobile_menu_escape.md) — Base UI dialog did not dismiss on Escape during 2026-05-17 audit
 - [Blog post rendering quirks](project_blog_post_rendering.md) — /blog/[slug] duplicates excerpt + H1→H3 heading skip in article body
 - [Callout overflows at 320 with email](project_callout_email_overflow.md) — Tip/Warning Callout flex-1 child missing min-w-0; long email pushes /privacy past viewport
+- [Lenis resize after layout swap](project_lenis_resize_layout_swap.md) — AnimatePresence mode="wait" + 100ms resize timer leaves Lenis with stale scrollHeight after grid↔list swap

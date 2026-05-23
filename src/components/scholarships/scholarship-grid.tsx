@@ -104,14 +104,15 @@ export function ScholarshipGrid() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters.page, safePage, filters.setPage])
 
-  // Recalculate Lenis scroll height when the visible item *count* or layout
-  // actually changes. Filter setters are stable (useCallback) but the input
-  // values were causing this to fire on every keystroke.
+  // Recalculate Lenis scroll height when the visible item *count* changes
+  // (pagination, filter narrowing). Layout-toggle resizes are handled by the
+  // motion.div's onAnimationComplete below — the 100 ms timer was racing the
+  // 250 ms AnimatePresence exit and snapshotting stale grid dimensions.
   useEffect(() => {
     if (!lenis) return
     const timer = setTimeout(() => lenis.resize(), 100)
     return () => clearTimeout(timer)
-  }, [visibleItems.length, filters.layout, lenis])
+  }, [visibleItems.length, lenis])
 
   const goToPage = useCallback(
     (n: number) => {
@@ -274,6 +275,7 @@ export function ScholarshipGrid() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
+                onAnimationComplete={() => lenis?.resize()}
                 className="grid w-full gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
               >
                 {visibleItems.map(({ scholarship, matches }) => (
@@ -294,6 +296,7 @@ export function ScholarshipGrid() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
+                onAnimationComplete={() => lenis?.resize()}
                 className="flex w-full flex-col gap-1 pb-10 pt-2"
               >
                 {visibleItems.map(({ scholarship, matches }) => (
