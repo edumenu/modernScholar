@@ -106,7 +106,7 @@ function Curve() {
   return (
     <svg
       aria-hidden="true"
-      className="absolute -left-24.75 top-0 h-full w-25 fill-surface stroke-none"
+      className="pointer-events-none absolute -left-24.75 top-0 h-full w-25 fill-surface stroke-none"
     >
       <motion.path
         variants={curve}
@@ -122,10 +122,12 @@ function NavLink({
   data,
   isActive,
   setSelectedIndicator,
+  onSelect,
 }: {
   data: { title: string; href: string; index: number }
   isActive: boolean
   setSelectedIndicator: (href: string) => void
+  onSelect: () => void
 }) {
   const { title, href, index } = data
 
@@ -146,6 +148,7 @@ function NavLink({
       />
       <Link
         href={href}
+        onClick={onSelect}
         className={cn(
           "font-heading text-[2.75rem] font-normal text-on-surface transition-colors hover:text-primary",
           isActive && "text-primary"
@@ -209,6 +212,7 @@ function MobileNav({ onClose }: { onClose: () => void }) {
               data={{ ...item, index }}
               isActive={selectedIndicator === item.href}
               setSelectedIndicator={setSelectedIndicator}
+              onSelect={onClose}
             />
           ))}
         </div>

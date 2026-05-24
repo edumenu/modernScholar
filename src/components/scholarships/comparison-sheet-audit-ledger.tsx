@@ -10,13 +10,13 @@ import {
 } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 
-function parseDeadlineDays(deadline: string, deadlineYear: number): number {
+export function parseDeadlineDays(deadline: string, deadlineYear: number): number {
   const target = new Date(`${deadline}, ${deadlineYear}`).getTime()
   const now = Date.now()
   return Math.max(0, Math.ceil((target - now) / (1000 * 60 * 60 * 24)))
 }
 
-function urgencyPill(days: number): { label: string; className: string } {
+export function urgencyPill(days: number): { label: string; className: string } {
   if (days === 0) return { label: "Expired", className: "bg-urgency-danger-bg text-urgency-danger-text" }
   if (days <= 30) return { label: `${days}d left`, className: "bg-urgency-danger-bg text-urgency-danger-text" }
   if (days <= 60) return { label: `${days}d left`, className: "bg-urgency-warning-bg text-urgency-warning-text" }

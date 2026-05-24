@@ -19,6 +19,48 @@ interface WhatsNextProps {
 export function WhatsNext({ enableColorTransition = true }: WhatsNextProps) {
   const prefersReduced = useReducedMotion()
   const isMobile = useMediaQuery("(max-width: 1023px)")
+
+  if (prefersReduced || isMobile) {
+    return <WhatsNextStack />
+  }
+
+  return <WhatsNextHorizontal enableColorTransition={enableColorTransition} />
+}
+
+// Reduced motion + mobile: render panels as vertically stacked sections so
+// each one gets its own breathing room instead of being crammed into a
+// single 100vh horizontal-scroll viewport.
+function WhatsNextStack() {
+  return (
+    <section
+      aria-label="What's Next"
+      className="relative left-1/2 w-dvw -translate-x-1/2"
+    >
+      {panels.map((panel, index) => (
+        <div
+          key={panel.id}
+          className="relative px-6 py-24 md:px-8 md:py-28"
+          style={{ backgroundColor: panel.bgColor }}
+        >
+          <div className="mx-auto w-full max-w-7xl">
+            <SlideContent panel={panel} />
+          </div>
+          <div className="absolute bottom-6 right-6 flex items-end gap-3 font-heading text-white md:bottom-8 md:right-8">
+            <span className="text-lg leading-none">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="h-px w-4 bg-white/40" />
+            <span className="text-xs leading-none text-white/50">
+              {String(panels.length).padStart(2, "0")}
+            </span>
+          </div>
+        </div>
+      ))}
+    </section>
+  )
+}
+
+function WhatsNextHorizontal({ enableColorTransition }: WhatsNextProps) {
   const targetRef = useRef<HTMLElement>(null)
   const stickyRef = useRef<HTMLDivElement>(null)
 
@@ -67,40 +109,6 @@ export function WhatsNext({ enableColorTransition = true }: WhatsNextProps) {
     [scrollYProgress],
   )
 
-  // Reduced motion + mobile: render panels as vertically stacked sections so
-  // each one gets its own breathing room instead of being crammed into a
-  // single 100vh horizontal-scroll viewport.
-  if (prefersReduced || isMobile) {
-    return (
-      <section
-        aria-label="What's Next"
-        className="relative left-1/2 w-dvw -translate-x-1/2"
-      >
-        {panels.map((panel, index) => (
-          <div
-            key={panel.id}
-            className="relative px-6 py-24 md:px-8 md:py-28"
-            style={{ backgroundColor: panel.bgColor }}
-          >
-            <div className="mx-auto w-full max-w-7xl">
-              <SlideContent panel={panel} />
-            </div>
-            <div className="absolute bottom-6 right-6 flex items-end gap-3 font-heading text-white md:bottom-8 md:right-8">
-              <span className="text-lg leading-none">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="h-px w-4 bg-white/40" />
-              <span className="text-xs leading-none text-white/50">
-                {String(panels.length).padStart(2, "0")}
-              </span>
-            </div>
-          </div>
-        ))}
-      </section>
-    )
-  }
-
-  // Horizontal scroll
   return (
     <section
       ref={targetRef}

@@ -20,6 +20,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet/sheet"
 import { ComparisonSheetAuditLedger } from "./comparison-sheet-audit-ledger"
+import { ComparisonSheetStack } from "./comparison-sheet-stack"
 import { cn } from "@/lib/utils"
 import { getExpiredBadge } from "@/lib/expired-status";
 import { SESSION_DATE } from "@/lib/session-date";
@@ -73,7 +74,7 @@ export function ComparisonSheet() {
           </SheetDescription>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto px-6 pb-6">
+        <div className="flex-1 overflow-y-auto px-6 pb-6" data-lenis-prevent>
           {/* Selected scholarships row */}
           <div className="flex flex-wrap items-start gap-3 pb-6">
             {selected.map((s) => {
@@ -124,7 +125,14 @@ export function ComparisonSheet() {
 
           {/* Comparison content */}
           {selected.length >= 2 ? (
-            <ComparisonSheetAuditLedger items={selected} onRemove={remove} />
+            <>
+              <div className="lg:hidden">
+                <ComparisonSheetStack items={selected} onRemove={remove} />
+              </div>
+              <div className="hidden lg:block">
+                <ComparisonSheetAuditLedger items={selected} onRemove={remove} />
+              </div>
+            </>
           ) : (
             <div className="flex flex-col items-center gap-4 py-12 text-center">
               <div className="flex size-16 items-center justify-center rounded-2xl bg-surface-container">
