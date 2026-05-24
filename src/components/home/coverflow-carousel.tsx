@@ -192,14 +192,14 @@ function CoverflowCard({
             );
           })}
         </div>
-        <span
+        {/* <span
           className={cn(
             "shrink-0 pt-0.5 font-heading text-[10px] italic tracking-wide",
             tint.muted,
           )}
         >
           {seasonLabel}
-        </span>
+        </span> */}
       </div>
 
       {/* Hero amount */}

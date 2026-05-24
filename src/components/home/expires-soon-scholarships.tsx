@@ -88,7 +88,7 @@ export function ExpiresSoonScholarships() {
           horizontally scrollable. */}
       <ParallaxLayer
         yRange={[30, -30]}
-        className="relative left-1/2 mt-16 w-dvw -translate-x-1/2 overflow-x-clip py-16"
+        className="relative left-1/2 w-dvw -translate-x-1/2 overflow-x-clip py-8"
         style={{
           maskImage:
             "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
