@@ -368,7 +368,7 @@ export function ContactFormSection() {
               {/* Location */}
               <div className="flex items-center gap-2 text-sm text-on-surface-variant">
                 <Icon icon="solar:map-point-line-duotone" className="size-5" />
-                <span>Raleigh-Durham, North Carolina &middot; EST</span>
+                <span>North Carolina &middot; EST</span>
               </div>
             </div>
           </div>

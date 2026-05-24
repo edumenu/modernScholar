@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/logo-loader/logo-loader";
 import { useHeroLoaderStore } from "@/stores/hero-loader-store";
 
-const MIN_LOADER_MS = 1500;
+const MIN_LOADER_MS = 1000;
 const SAFETY_TIMEOUT_MS = 8000;
 const FADE_MS = 850;
 

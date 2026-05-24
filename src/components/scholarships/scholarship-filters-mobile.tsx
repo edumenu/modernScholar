@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { Icon } from "@iconify/react"
 import { cn } from "@/lib/utils"
@@ -12,10 +12,7 @@ import {
   type EligibilityCategory,
   type Tag,
 } from "@/lib/eligibility"
-import {
-  EDUCATION_LEVELS,
-  type Scholarship,
-} from "@/data/scholarships"
+import { EDUCATION_LEVELS } from "@/data/scholarships"
 import { Button } from "@/components/ui/button/button"
 import { Checkbox } from "@/components/ui/checkbox/checkbox"
 import {

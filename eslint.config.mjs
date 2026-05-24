@@ -19,6 +19,19 @@ const eslintConfig = defineConfig([
     "storybook-static/**",
     ".claude/**",
   ]),
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
   ...storybook.configs["flat/recommended"]
 ]);
 

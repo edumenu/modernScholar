@@ -218,6 +218,9 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
+    "Ideas.md",
+    "Welcome.md",
+    "future/Todos.md",
     "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-followup-v2.md",
     "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-followup-v2-verification.md",
     "PRDs/05_18_2026/tablet-scroll-fixes/tablet-scroll-fixes-followup.md",
@@ -260,9 +263,6 @@
     "PRDs/05_16_2026/k-12-filter-merge/k-12-filter-merge.md",
     "PRDs/05_16_2026/k-12-filter-merge/k-12-filter-merge-verification.md",
     "PRDs/05_16_2026/tablet-responsive/findings/scholarships-contact-supplement.md",
-    "PRDs/05_16_2026/tablet-responsive/findings/group-3-legal.md",
-    "PRDs/05_16_2026/tablet-responsive/findings/group-2-content.md",
-    "PRDs/05_16_2026/tablet-responsive/tablet-responsive-audit.md",
-    "PRDs/05_16_2026/tablet-responsive/tablet-responsive-audit-verification.md"
+    "PRDs/05_16_2026/tablet-responsive/findings/group-3-legal.md"
   ]
 }

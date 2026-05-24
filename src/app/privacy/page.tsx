@@ -87,16 +87,16 @@ export default function PrivacyPage() {
           .
         </p>
         <p>
-          We do not yet publish a postal address. If that changes, we&apos;ll
-          add the address here and update the &quot;Last updated&quot; date at
-          the top of this page.
+          We do not yet have a postal address. If that changes, we&apos;ll add
+          the address here and update the &quot;Last updated&quot; date at the
+          top of this page.
         </p>
       </LegalSection>
 
       <LegalSection id="what-we-collect" title="What we collect">
         <p>
-          We want to be exact about this, because most of what privacy policies
-          claim to collect isn&apos;t something we ever touch. Here is the
+          We want to be precise about this, as most of what privacy policies
+          claim to collect is not something we ever interact with. Here is the
           complete list:
         </p>
         <ul className="list-disc space-y-2 pl-6">
@@ -142,8 +142,8 @@ export default function PrivacyPage() {
             >
               {CONTACT_EMAIL}
             </a>
-            , the message is delivered to a Gmail inbox we read. We keep it as
-            long as we need to respond and will delete it on request.
+            , the message is delivered to our inbox. We keep it as long as we
+            need to respond and will delete it on request.
           </li>
         </ul>
         <p>
@@ -235,8 +235,9 @@ export default function PrivacyPage() {
 
       <LegalSection id="your-rights" title="Your rights">
         <p>
-          Depending on where you live, privacy law gives you certain rights over
-          the data we hold about you. To exercise any of them, email{" "}
+          Depending on your location, privacy laws grant you specific rights
+          regarding the data we collect about you. To exercise any of these
+          rights, please send an email.
           <a
             href={`mailto:${CONTACT_EMAIL}`}
             className="text-primary underline underline-offset-2"

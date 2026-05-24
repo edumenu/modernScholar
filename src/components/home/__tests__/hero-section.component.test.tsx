@@ -15,6 +15,7 @@ vi.mock("next/dynamic", () => ({
 vi.mock("next/image", () => ({
   __esModule: true,
   default: ({ alt, src }: { alt: string; src: string }) => (
+    // eslint-disable-next-line @next/next/no-img-element
     <img data-testid="hero-static-image" alt={alt} src={src} />
   ),
 }))
