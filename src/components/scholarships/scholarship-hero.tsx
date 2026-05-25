@@ -8,6 +8,7 @@ import {
 } from "@/data/scholarships";
 import { SESSION_DATE } from "@/lib/session-date"
 import { ScholarshipHeroStats } from "./scholarship-hero-stats"
+import { ScholarshipHeroCoda } from "./scholarship-hero-coda"
 
 const activeScholarships = scholarships.filter((s) =>
   isScholarshipActive(s, SESSION_DATE),
@@ -58,6 +59,7 @@ export function ScholarshipHero() {
             eligibility, and award amount to find what fits your journey.
           </p>
         </AnimatedSection>
+        <ScholarshipHeroCoda />
         <ScholarshipHeroStats
           // totalScholarships={totalScholarships}
           // educationLevelsCount={educationLevelsCount}
