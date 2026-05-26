@@ -154,8 +154,7 @@
     "awardAmount": "$25,000",
     "classification": [
       "High School",
-      "Undergraduate",
-      "Graduate"
+      "Undergraduate"
     ],
     "link": "https://www.tacobellfoundation.org/live-mas-scholarship/",
     "openDate": "November 1",
@@ -669,25 +668,6 @@
     "image": "gradient",
     "description": "The Flavorful Futures Scholarship 2025 - 2026 Calling all high school seniors! The Sparkling Ice® Flavorful Futures Scholarship program is now accepting applications. Follow your dreams and fund your flavorful future with a $5,000 scholarship that can be applied to any trade, vocational, or academic 2-year or 4-year program. The Flavorful Futures Scholarship is open to high school seniors who are pursuing higher education and using their passion to add flavor in their communities and beyond.",
     "provider": "Apply Mykaleidoscope"
-  },
-  {
-    "id": "harvey-simon-memorial-scholarship-january-31",
-    "name": "Harvey Simon Memorial Scholarship",
-    "deadline": "January 31",
-    "deadlineYear": 2027,
-    "awardAmount": "Varies",
-    "classification": [
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "http://www.thescf.org/Scholarships.html",
-    "openDate": null,
-    "eligibility": "Enrolled in a 4 year University or College in Fall 2026\nMust be a U.S. University \nG.P.A. > 3.5\nStudent who will be Freshman-Senior in Fall 2026 are eligible to apply\nGraduate students are eligible",
-    "eligibilityTags": [],
-    "season": "winter",
-    "image": "gradient",
-    "description": "Scholarship deadline has passed and applications are under review. We anticipate notifying only scholarship recipients in June. Enrolled in a 4 year University or College in Fall 2026 Student who will be Freshman-Senior in Fall 2026 are eligible to apply Past scholarship recipients of The Simon Cancer Foundation are not eligible to reapply The Simon Cancer Foundation has distributed over $150,000 in scholarships to students since 2004, who have attended the following colleges and universities:...",
-    "provider": "Thescf"
   },
   {
     "id": "return-2-college-scholarship-january-31",
@@ -1276,8 +1256,7 @@
     "deadlineYear": 2027,
     "awardAmount": "$20,000",
     "classification": [
-      "High School",
-      "Undergraduate"
+      "High School"
     ],
     "link": "https://www.dellscholars.org/scholarship/",
     "openDate": "December 15",
@@ -1302,7 +1281,7 @@
     ],
     "link": "https://www.atllaw.com/scholarship/",
     "openDate": null,
-    "eligibility": "Hold a minimum 3.0 GPA\nThe recipient is a U.S. citizen or otherwise authorized to work in the United States\nThe recipient is accepted and will either be attending school as a pre-law undergraduate or entering law school in the fall of 2026",
+    "eligibility": "Hold a minimum 3.0 GPA\nThe recipient is a U.S. citizen or otherwise authorized to work in the United States\nThe recipient is accepted and will either be attending school as a pre-law undergraduate or entering law school in the fall of 2027",
     "eligibilityTags": [
       "Merit-Based",
       "Major-Specific:Law"
@@ -1401,7 +1380,10 @@
     "deadline": "February 18",
     "deadlineYear": 2027,
     "awardAmount": "$100,000, $50,000, $25,000",
-    "classification": [],
+    "classification": [
+      "K-12",
+      "High School"
+    ],
     "link": "https://www.davidsongifted.org/gifted-programs/fellows-scholarship/",
     "openDate": null,
     "eligibility": "Be 18 or younger as of the application deadline to be eligible.\nBe a U.S. citizen residing in the United States, or a Permanent Resident of the United States residing in the United States, or be stationed overseas due to active U.S. military duty.\nThere is no minimum age for eligibility.",
@@ -2162,7 +2144,7 @@
     ],
     "link": "https://www.ncaa.org/sports/2013/11/21/ncaa-postgraduate-scholarship-program.aspx",
     "openDate": "January 12",
-    "eligibility": "Must be in final season of NCAA athletics eligibility or must have completed athletic eligibility,\nMust be in final year of undergraduate academic work or received an undergraduate degree.\nHave an overall undergraduate minimum cumulative grade-point average of 3.200 (based on a 4.000 scale)\nMust enroll in a graduate degree granting program on a part- or full-time basis at an academically accredited graduate or degree-granting professional school.\nThe scholarship cannot be used to fund any undergraduate work.",
+    "eligibility": "Must be in final season of NCAA athletics eligibility or must have completed athletic eligibility,\nMust be in final year of undergraduate academic work or received an undergraduate degree.\nHave an overall undergraduate minimum cumulative grade-point average of 3.200 (based on a 4.000 scale) or its equivalent, including all undergraduate hours earned at all undergraduate institutions attended\nMust enroll in a graduate degree granting program on a part- or full-time basis at an academically accredited graduate or degree-granting professional school.",
     "eligibilityTags": [
       "Merit-Based",
       "Athletic"
@@ -3292,7 +3274,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Error 429 Too Many Requests: Please try again later. Details: cache-iad-kiad7000091-IAD 1779676940 4270802774",
+    "description": "Error 429 Too Many Requests: Please try again later. Details: cache-iad-kiad7000049-IAD 1779756876 3366957118",
     "provider": "Houzz"
   },
   {
@@ -5009,7 +4991,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Free Consultations | Calls Answered 24/7  1-855-NICOLET Home >> Community Involvement >> Nicolet Law Scholarship",
+    "description": "Free Consultations | Calls Answered 24/7  1-855-NICOLET Home >> Community Involvement >> Nicolet Law Scholarship Nicolet Law believes in the value of a post-secondary education and that when hard work meets opportunity, great things can happen. We also understand the financial strain that can come with an undergraduate and graduate education. Since 2020, our firm has been offering a biannual scholarship, awarding $5,000 to a chosen recipient in the Spring and another in the Fall.",
     "provider": "Nicolet Law Accident & Injury Lawyers"
   },
   {
@@ -5252,25 +5234,6 @@
     "image": "gradient",
     "description": "The Maude and Alexander Hadden Scholarship The Hadden Scholarship application is open from Established in 1968, the Maude and Alexander Hadden Scholarship is awarded to exceptionally worthy high school seniors with demonstrated financial need, for up to four years of college undergraduate study. Hadden Scholars must be U. citizens matriculating at a four-year accredited college or university established in the United States.",
     "provider": "Youth-foundation"
-  },
-  {
-    "id": "mometrix-college-scholarships-contest-may-15",
-    "name": "Mometrix College Scholarships Contest",
-    "deadline": "May 15",
-    "deadlineYear": 2027,
-    "awardAmount": "$500-$1,000",
-    "classification": [
-      "High School",
-      "Undergraduate"
-    ],
-    "link": "https://www.mometrix.com/collegescholarships/",
-    "openDate": "February 10",
-    "eligibility": "Anyone who will be a full-time student (enrolled in at least 12 credit hours) at a college or university in the United States between the dates of August 1, 2026, and July 31, 2027, is encouraged to apply\nThis usually includes everyone from current high-school seniors to college juniors. Note that students from outside the United States are eligible to apply, as long as their college/university of choice is in the US.",
-    "eligibilityTags": [],
-    "season": "spring",
-    "image": "gradient",
-    "description": "2026 Mometrix College Scholarships Contest We are no longer accepting scholarship contest entries. If you applied, be sure to check back here on Friday, May 29th to see if you won! Mometrix Test Preparation is proud to have hosted our 12th straight year of scholarship contests, where anyone from high school seniors to graduate students was given a chance to win hundreds of dol lars in scholarship prizes. Mometrix provides unofficial test preparation products for a variety of examinations.",
-    "provider": "Mometrix"
   },
   {
     "id": "lucas-law-legal-leaders-scholarship-may-18",
@@ -7104,25 +7067,6 @@
     "provider": "Probo Medical Foundation"
   },
   {
-    "id": "injury-scholarship-august-28",
-    "name": "Injury Scholarship",
-    "deadline": "August 28",
-    "deadlineYear": 2026,
-    "awardAmount": "$1,000",
-    "classification": [
-      "High School",
-      "Undergraduate"
-    ],
-    "link": "https://harrispersonalinjury.com/injury-scholarship/",
-    "openDate": null,
-    "eligibility": "Applicant must be currently enrolled in an accredited high school, college, or university in the US.\nApplicant must be enrolled as either an undergraduate or in their final year of high school.\nApplicant must be at least 17 years of age.",
-    "eligibilityTags": [],
-    "season": "summer",
-    "image": "gradient",
-    "description": "We offer free consultations over the phone or in person. If you cannot make it to us, we can come to you. At Harris Personal Injury Lawyers, we value higher education and believe all students should have the opportunity to attend college and achieve their goals. Our team understands the difficult process of recovery after sustaining a serious injury.",
-    "provider": "Harris Personal Injury Lawyers, Inc"
-  },
-  {
     "id": "driver-education-initiative-award-annual-scholarship-opportunity-august-31",
     "name": "Driver Education Initiative Award – Annual Scholarship Opportunity",
     "deadline": "August 31",
@@ -7986,28 +7930,6 @@
     "provider": "Lounge Lizard"
   },
   {
-    "id": "2024-youngarts-competition-october-9",
-    "name": "2024 YoungArts Competition",
-    "deadline": "October 9",
-    "deadlineYear": 2026,
-    "awardAmount": "$250-$10,000",
-    "classification": [
-      "K-12",
-      "High School"
-    ],
-    "link": "https://youngarts.org/apply/",
-    "openDate": "June 12",
-    "eligibility": "A citizen of the United States, a permanent resident/green card recipient, or can demonstrate that I am legally able to receive taxable income in the United States\nGrades 10–12 or 15–18 years of age on December 1 of the application year\nAccepting applications in 10 disciplines: Classical Music, Dance, Design, Film, Jazz, Photography, Theater, Visual Arts, Voice, Writing",
-    "eligibilityTags": [
-      "Creative/Arts",
-      "Major-Specific:Arts/Theater"
-    ],
-    "season": "fall",
-    "image": "gradient",
-    "description": "Founded in 1981, YoungArts identifies exceptional young artists, amplifies their potential, and invests in their lifelong creative freedom. All award winners go on to receive critical, ongoing support. The 2027 YoungArts application opens in Summer 2026. To be eligible, you must be able to answer ”Yes“ to these statements: I am either a citizen of the United States, a permanent resident or legally able to receive taxable income in the U. , have a social security number).",
-    "provider": "YoungArts"
-  },
-  {
     "id": "ruth-abernathy-presidential-scholarship-october-15",
     "name": "Ruth Abernathy Presidential Scholarship",
     "deadline": "October 15",
@@ -8402,7 +8324,7 @@
     ],
     "link": "https://www.coloradolaw.net/scholarship/",
     "openDate": null,
-    "eligibility": "Any high school senior accepted to attend a four-year university by the time of the award, or full time student attending a four-year university in the United States who carries a 3.0 cumulative GPA may apply",
+    "eligibility": "Any high school senior accepted to attend a four-year university by the time of the award, or full time student attending a four-year university in the United States who carries a 3.0 cumulative GPA may apply.",
     "eligibilityTags": [
       "Merit-Based"
     ],
@@ -8560,11 +8482,15 @@
     "deadline": "December 3",
     "deadlineYear": 2026,
     "awardAmount": "$5,000",
-    "classification": [],
+    "classification": [
+      "High School"
+    ],
     "link": "https://greenhousescholars.org/our-scholars/become-a-scholar/",
     "openDate": "September 8",
-    "eligibility": "Be a U.S. citizen or permanent resident and a legal resident of Colorado, Georgia, Illinois, New York, North Carolina, Utah, or select counties in California (Los Angeles County, Riverside County, or Orange County)",
+    "eligibility": "Be a graduating high school senior planning to attend a four-year accredited academic institution\nBe a U.S. citizen or permanent resident and a legal resident of Colorado, Georgia, Illinois, New York, North Carolina, Utah, or select counties in California (Los Angeles County, Riverside County, or Orange County)\nHave a cumulative, unweighted GPA of 3.5 or above\nDemonstrate financial need (annual household income no greater than $80,000)",
     "eligibilityTags": [
+      "Need-Based",
+      "Merit-Based",
       "State-Specific"
     ],
     "season": "winter",
@@ -8673,26 +8599,6 @@
     "provider": "Highschoolpoetrycontest"
   },
   {
-    "id": "youth-essay-contest-december-31",
-    "name": "Youth Essay Contest",
-    "deadline": "December 31",
-    "deadlineYear": 2026,
-    "awardAmount": "$100-$1,000",
-    "classification": [
-      "K-12",
-      "High School",
-      "Undergraduate"
-    ],
-    "link": "https://www.nradefensefund.org/essay-contest/",
-    "openDate": null,
-    "eligibility": "The contest is open to all students enrolled, or who will be enrolled, in an elementary, junior high, or high school during that academic year, including homeschooled students in an equivalent grade level,",
-    "eligibilityTags": [],
-    "season": "winter",
-    "image": "gradient",
-    "description": "The NRA Civil Rights Defense Fund continues its yearly Youth Essay Contest celebrating the Second Amendment as an integral part of the Constitution and the Bill of Rights. The NRA Civil Rights Defense Fund sponsors a scholarly writing contest for grades K-12. The theme for the essay is \"What Does The Second Amendment Mean to You? Write an essay that is about 1,000 words, neat, and legible (double spaced, typed preferred). Entries must be postmarked on or before the entry deadline of December 31.",
-    "provider": "Nradefensefund"
-  },
-  {
     "id": "kitchen-cabinet-kings-entrepreneur-scholarship-december-31",
     "name": "Kitchen Cabinet Kings' Entrepreneur Scholarship",
     "deadline": "December 31",
@@ -8705,7 +8611,7 @@
     ],
     "link": "https://kitchencabinetkings.com/scholarship",
     "openDate": null,
-    "eligibility": "Open to all US students",
+    "eligibility": "Any U.S. citizen currently enrolled or planning to enroll in an accredited U.S. college, university, or trade school during the upcoming academic year. This includes undergraduate, graduate, and trade school students.",
     "eligibilityTags": [],
     "season": "winter",
     "image": "gradient",
@@ -8962,6 +8868,50 @@
     "provider": "J&Y Law"
   },
   {
+    "id": "innovation-in-education-scholarship-january-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "January 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "winter",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
+    "id": "innovation-in-education-scholarship-february-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "February 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "winter",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
     "id": "create-a-greeting-card-scholarship-march-9",
     "name": "Create-a-Greeting-Card Scholarship",
     "deadline": "March 9",
@@ -8980,6 +8930,28 @@
     "image": "gradient",
     "description": "",
     "provider": "Gallerycollection"
+  },
+  {
+    "id": "innovation-in-education-scholarship-march-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "March 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
   },
   {
     "id": "hbcu-bound-scholarship-april-1",
@@ -9003,6 +8975,72 @@
     "provider": "Thehbcualum"
   },
   {
+    "id": "innovation-in-education-scholarship-april-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "April 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
+    "id": "innovation-in-education-scholarship-may-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "May 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
+    "id": "innovation-in-education-scholarship-june-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "June 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
     "id": "adam-ferrari-health-science-scholarship-june-30",
     "name": "Adam Ferrari Health Science Scholarship",
     "deadline": "June 30",
@@ -9020,6 +9058,200 @@
     "image": "gradient",
     "description": "",
     "provider": "Theferrarifoundation"
+  },
+  {
+    "id": "innovation-in-education-scholarship-july-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "July 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
+    "id": "innovation-in-education-scholarship-august-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "August 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
+    "id": "injury-scholarship-august-21",
+    "name": "Injury Scholarship",
+    "deadline": "August 21",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate"
+    ],
+    "link": "https://harrispersonalinjury.com/injury-scholarship/",
+    "openDate": null,
+    "eligibility": "Applicant must be currently enrolled in an accredited high school, college, or university in the US.\nApplicant must be enrolled as either an undergraduate or in their final year of high school.\nApplicant must be at least 17 years of age.",
+    "eligibilityTags": [],
+    "season": "summer",
+    "image": "gradient",
+    "description": "",
+    "provider": "Harrispersonalinjury"
+  },
+  {
+    "id": "the-devadoss-law-firm-civil-rights-scholarship-august-31",
+    "name": "The Devadoss Law Firm Civil Rights Scholarship",
+    "deadline": "August 31",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.fedemploymentlaw.com/the-devadoss-law-firm-civil-rights-scholarship/",
+    "openDate": null,
+    "eligibility": "Must be a current or aspiring law student\nMust be a citizen or permanent resident of the United States\nMust be enrolled at an accredited college or university within the United States as an undergraduate or graduate student\nMust be at least 17 years of age",
+    "eligibilityTags": [
+      "Major-Specific:Law"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "",
+    "provider": "Fedemploymentlaw"
+  },
+  {
+    "id": "innovation-in-education-scholarship-september-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "September 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
+    "id": "youngarts-competition-october-9",
+    "name": "YoungArts Competition",
+    "deadline": "October 9",
+    "deadlineYear": 2026,
+    "awardAmount": "$250-$10,000",
+    "classification": [
+      "K-12",
+      "High School"
+    ],
+    "link": "https://youngarts.org/apply/",
+    "openDate": "June 12",
+    "eligibility": "A citizen of the United States, a permanent resident/green card recipient, or can demonstrate that I am legally able to receive taxable income in the United States\nGrades 10–12 or 15–18 years of age on December 1 of the application year\nAccepting applications in 10 disciplines: Classical Music, Dance, Design, Film, Jazz, Photography, Theater, Visual Arts, Voice, Writing",
+    "eligibilityTags": [
+      "Creative/Arts",
+      "Major-Specific:Arts/Theater"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "",
+    "provider": "Youngarts"
+  },
+  {
+    "id": "innovation-in-education-scholarship-october-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "October 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
+  },
+  {
+    "id": "lucas-law-legal-leaders-scholarship-november-11",
+    "name": "Lucas Law Legal Leaders Scholarship",
+    "deadline": "November 11",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.lucaslaw.com/scholarship",
+    "openDate": null,
+    "eligibility": "The student is pursuing a career in the legal field.\nThe student maintains a 3.5 grade point average or higher (if you do not currently have a GPA, you may provide your GPA from your most recently completed academic semester).\nThe student is enrolled (or planning to enroll) in an accredited undergraduate or graduate program within the United States through the Fall 2026 semester.\nThe student is at least 17 years old.",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "",
+    "provider": "Lucaslaw"
+  },
+  {
+    "id": "innovation-in-education-scholarship-november-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "November 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
   },
   {
     "id": "avacare-medical-scholarship-december-15",
@@ -9043,6 +9275,28 @@
     "image": "gradient",
     "description": "",
     "provider": "Avacaremedical"
+  },
+  {
+    "id": "innovation-in-education-scholarship-december-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "December 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "winter",
+    "image": "gradient",
+    "description": "",
+    "provider": "Latutors123"
   },
   {
     "id": "micklin-law-group-educational-scholarship-december-31",

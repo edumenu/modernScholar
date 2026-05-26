@@ -11,7 +11,6 @@ const SITE_NAME = "Modern Scholar"
 const LOGO_PATH = "/iconBurgundy.png"
 
 interface OrganizationNode {
-  "@context": string
   "@type": "Organization"
   "@id": string
   name: string
@@ -20,12 +19,16 @@ interface OrganizationNode {
 }
 
 interface WebSiteNode {
-  "@context": string
   "@type": "WebSite"
   "@id": string
   name: string
   url: string
   publisher: { "@id": string }
+}
+
+interface SiteGraph {
+  "@context": string
+  "@graph": [OrganizationNode, WebSiteNode]
 }
 
 interface BlogPostingNode {
@@ -59,29 +62,34 @@ interface BlogPostingNode {
  * `Organization` (so Google can attach the brand panel + logo) and a
  * `WebSite` (so Google can attach sitelinks). No `SearchAction` — the
  * scholarship filter UI is not URL-addressable as a `/search?q=` endpoint.
+ *
+ * Wrapped in a single `@graph` root because naive consumers (Safari built-ins,
+ * SEO extensions) call `data["@context"].toLowerCase()` on the parsed payload
+ * and crash when the top level is an array instead of an object.
  */
-export function siteJsonLd(): [OrganizationNode, WebSiteNode] {
+export function siteJsonLd(): SiteGraph {
   const orgId = `${toAbsoluteUrl("/")}#organization`
   const siteId = `${toAbsoluteUrl("/")}#website`
 
-  return [
-    {
-      "@context": SCHEMA_CONTEXT,
-      "@type": "Organization",
-      "@id": orgId,
-      name: SITE_NAME,
-      url: toAbsoluteUrl("/"),
-      logo: toAbsoluteUrl(LOGO_PATH),
-    },
-    {
-      "@context": SCHEMA_CONTEXT,
-      "@type": "WebSite",
-      "@id": siteId,
-      name: SITE_NAME,
-      url: toAbsoluteUrl("/"),
-      publisher: { "@id": orgId },
-    },
-  ]
+  return {
+    "@context": SCHEMA_CONTEXT,
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": orgId,
+        name: SITE_NAME,
+        url: toAbsoluteUrl("/"),
+        logo: toAbsoluteUrl(LOGO_PATH),
+      },
+      {
+        "@type": "WebSite",
+        "@id": siteId,
+        name: SITE_NAME,
+        url: toAbsoluteUrl("/"),
+        publisher: { "@id": orgId },
+      },
+    ],
+  }
 }
 
 /**

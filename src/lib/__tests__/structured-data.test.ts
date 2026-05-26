@@ -31,14 +31,14 @@ const samplePost: BlogPost = {
 describe("siteJsonLd", () => {
   const graph = siteJsonLd()
 
-  it("returns exactly two nodes (Organization + WebSite)", () => {
-    expect(graph).toHaveLength(2)
+  it("wraps both entities under a single @context + @graph root", () => {
+    expect(graph["@context"]).toBe("https://schema.org")
+    expect(graph["@graph"]).toHaveLength(2)
   })
 
   it("first node is an Organization with absolute url and logo", () => {
-    const org = graph[0]
+    const org = graph["@graph"][0]
     expect(org["@type"]).toBe("Organization")
-    expect(org["@context"]).toBe("https://schema.org")
     expect(org.name).toBe("Modern Scholar")
     expect(org.url).toBe(`${SITE_URL}/`)
     expect(org.logo).toMatch(/^https?:\/\//)
@@ -46,8 +46,8 @@ describe("siteJsonLd", () => {
   })
 
   it("second node is a WebSite that references the Organization @id", () => {
-    const org = graph[0]
-    const site = graph[1]
+    const org = graph["@graph"][0]
+    const site = graph["@graph"][1]
     expect(site["@type"]).toBe("WebSite")
     expect(site.name).toBe("Modern Scholar")
     expect(site.url).toBe(`${SITE_URL}/`)
