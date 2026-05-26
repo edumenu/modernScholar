@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { BlogCard } from "@/components/blog/blog-card"
 import { AnimatedSection } from "@/components/ui/animatedSection/animated-section"
 import {
@@ -36,7 +36,7 @@ export function RelatedPosts({ posts = [] }: RelatedPostsProps) {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
-  const initialized = useRef(false)
+  const [inView, setInView] = useState<number[]>([])
 
   useEffect(() => {
     if (!api) return
@@ -44,19 +44,18 @@ export function RelatedPosts({ posts = [] }: RelatedPostsProps) {
     const sync = () => {
       setCurrent(api.selectedScrollSnap())
       setCount(api.scrollSnapList().length)
+      setInView(api.slidesInView())
     }
 
-    // Initialize once on mount
-    if (!initialized.current) {
-      initialized.current = true
-      sync()
-    }
+    sync()
 
     api.on("select", sync)
     api.on("reInit", sync)
+    api.on("slidesInView", sync)
     return () => {
       api.off("select", sync)
       api.off("reInit", sync)
+      api.off("slidesInView", sync)
     }
   }, [api])
 
@@ -99,12 +98,12 @@ export function RelatedPosts({ posts = [] }: RelatedPostsProps) {
 
           <CarouselContent className="-ml-4 px-8 pb-8">
             {posts.map((relatedPost, index) => {
-              const isActive = index === current
+              const isVisible = inView.length === 0 || inView.includes(index)
               return (
                 <CarouselItem
                   key={relatedPost.slug}
                   className="basis-full pl-4 md:basis-1/2 lg:basis-1/3"
-                  inert={!isActive}
+                  inert={!isVisible}
                 >
                   <BlogCard post={relatedPost} variant="compact" />
                 </CarouselItem>

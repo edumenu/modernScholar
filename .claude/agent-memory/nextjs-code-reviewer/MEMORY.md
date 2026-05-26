@@ -9,3 +9,4 @@
 - [project_scholarships_all_corpus.md](project_scholarships_all_corpus.md) — Full-corpus refactor: expired-status module, Month type duplication, monthCounts duplication, filterStrip gate fragility, SESSION_DATE snapshot intent
 - [project_providers_mdx_build.md](project_providers_mdx_build.md) — Providers/MDX/build config: output:export vs next start mismatch, --webpack pin, missing remark-gfm, hooks-in-story violation, ThemeProvider gaps, no typecheck script
 - [project_hero_spline_loader.md](project_hero_spline_loader.md) — Hero loader refactor: route group strategy, ReactDOM.preload in SC, dangling aria-labelledby, AnimatedLines aria-hidden gap, inert missing on overlay
+- [project_related_posts_carousel.md](project_related_posts_carousel.md) — Related-posts carousel inert/slidesInView fix: Embla IO timing, initialized.current race, event-listener leak in carousel.tsx, counter semantics
