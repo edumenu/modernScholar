@@ -663,8 +663,11 @@ html.custom-cursor-active * {
 }
 
 @utility page-padding-y {
-  padding-top: 10rem;
+  padding-top: 6rem;
   padding-bottom: 10rem;
+  @media (min-width: 768px) {
+    padding-top: 10rem;
+  }
 }
 @layer base {
   html {

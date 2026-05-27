@@ -51,14 +51,21 @@ const STROKE_DRAW_DELAY_STEP = 0.18;
 // patch each path's `animation-delay` to a negative value equal to the elapsed
 // wall-clock time. CSS treats a negative delay as "the animation has already
 // been running for this long", so the remounted nodes resume in phase with
-// where they would have been had they never unmounted. Works for any number
-// of remounts, not just Strict Mode's one-shot.
+// where they would have been had they never unmounted.
+//
+// A separate `strokeDrawLastUnmountMs` tracks the most recent cleanup; if the
+// gap since unmount exceeds the Strict Mode remount window, the next mount is
+// treated as a fresh visit (origin reset). Without this, the origin would
+// also persist across SPA route transitions, causing a later loader to spawn
+// mid-fade-out rather than playing the staggered tip-by-tip intro.
 //
 // SSR-rendered markup keeps the original positive staggered delays so static
 // export output is unchanged and hydration matches byte-for-byte. The negative
 // delay is applied via useLayoutEffect (runs before paint) so a Strict Mode
 // remount never gets a chance to render the t=0 "tip" frame.
 let strokeDrawOriginMs: number | null = null;
+let strokeDrawLastUnmountMs: number | null = null;
+const STRICT_MODE_REMOUNT_GRACE_MS = 100;
 const now = () =>
   typeof performance !== "undefined" ? performance.now() : Date.now();
 
@@ -80,14 +87,27 @@ export function LogoLoader({
     if (variant !== "stroke-draw") return;
     const svg = svgRef.current;
     if (!svg) return;
-    if (strokeDrawOriginMs === null) strokeDrawOriginMs = now();
-    const elapsedSeconds = now() - strokeDrawOriginMs;
+    const tNow = now();
+    const gapSinceUnmount =
+      strokeDrawLastUnmountMs === null
+        ? Infinity
+        : tNow - strokeDrawLastUnmountMs;
+    if (
+      strokeDrawOriginMs === null ||
+      gapSinceUnmount > STRICT_MODE_REMOUNT_GRACE_MS
+    ) {
+      strokeDrawOriginMs = tNow;
+    }
+    const elapsedSeconds = (tNow - strokeDrawOriginMs) / 1000;
     const paths = svg.querySelectorAll<SVGPathElement>(
       ".logo-loader-stroke-draw",
     );
     paths.forEach((path, i) => {
       path.style.animationDelay = `${i * STROKE_DRAW_DELAY_STEP - elapsedSeconds}s`;
     });
+    return () => {
+      strokeDrawLastUnmountMs = now();
+    };
   }, [variant]);
 
   if (variant === "stroke-draw") {

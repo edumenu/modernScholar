@@ -7,9 +7,14 @@ import {
 } from "@/components/ui/logo-loader/logo-loader";
 import { useHeroLoaderStore } from "@/stores/hero-loader-store";
 
-const MIN_LOADER_MS = 1000;
+const MIN_LOADER_MS = 0;
 const SAFETY_TIMEOUT_MS = 8000;
-const FADE_MS = 850;
+const FADE_MS = 150;
+
+// Set by Header on any in-app pathname change. Presence means the user has
+// already navigated within the tab session, so a subsequent visit to `/`
+// doesn't need the splash — they're not seeing the brand for the first time.
+export const SPA_SESSION_FLAG = "ms-spa-session";
 
 // Swap between the two production loader animations. "stroke-draw" renders
 // the wordmark as outlines that draw on tip-by-tip (intrinsically kinetic);
@@ -35,12 +40,22 @@ const LOADER_VARIANT: LogoLoaderVariant = "stroke-draw";
 export function HomeSplineLoader({ children }: { children: ReactNode }) {
   const splineReady = useHeroLoaderStore((s) => s.splineReady);
   const setSplineReady = useHeroLoaderStore((s) => s.setSplineReady);
+  // First render must match SSR (loader visible). We read the SPA-session flag
+  // in the post-mount effect instead, then collapse the loader immediately.
   const [minElapsed, setMinElapsed] = useState(false);
   const [unmountAfterFade, setUnmountAfterFade] = useState(false);
 
   // Reset on mount so that re-entering the home route always shows the loader
   // (a previous visit may have left `splineReady` true in the global store).
+  // On SPA nav (session flag present) we short-circuit: mark Spline ready,
+  // flush the floor timer, and unmount the overlay on the very next render.
   useEffect(() => {
+    if (window.sessionStorage.getItem(SPA_SESSION_FLAG) === "true") {
+      setSplineReady(true);
+      setMinElapsed(true);
+      setUnmountAfterFade(true);
+      return;
+    }
     setSplineReady(false);
     const t = window.setTimeout(() => setMinElapsed(true), MIN_LOADER_MS);
     return () => window.clearTimeout(t);

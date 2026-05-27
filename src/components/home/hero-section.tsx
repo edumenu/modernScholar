@@ -50,7 +50,7 @@ function HeroStaticImage() {
       fill
       sizes="100vw"
       priority
-      className="object-cover object-[73%_center]"
+      className="object-cover object-[83%_top] md:object-[73%_center]"
     />
   );
 }
@@ -128,7 +128,7 @@ export function HeroSection() {
           viewport width, breaks out of PageShell. */}
       <ParallaxLayer
         yRange={[0, 80]}
-        className="absolute inset-y-0 left-1/2 w-dvw -translate-x-1/2"
+        className="absolute top-0 h-[78dvh] left-1/2 w-dvw -translate-x-1/2 md:inset-y-0 md:h-auto"
       >
         {heroMedia}
       </ParallaxLayer>

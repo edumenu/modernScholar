@@ -9,6 +9,8 @@ import { SettingsDropdown } from "./settings-dropdown"
 import { MobileMenuButton } from "./mobile-menu"
 import { glassPill } from "../styles";
 import { useScroll, useMotionValueEvent, motion } from "motion/react";
+import { useSplinePrefetch } from "@/hooks/use-spline-prefetch";
+import { SPA_SESSION_FLAG } from "@/components/home/home-spline-loader";
 
 const HEADER_HEIGHT = 112; // 28 * 4 (h-28 in Tailwind = 112px)
 
@@ -67,6 +69,7 @@ export function Header() {
   const isHome = pathname === "/";
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
+  const prefetchSpline = useSplinePrefetch();
 
   const measureActive = useCallback(() => {
     const activeItem = navItems.find(
@@ -92,6 +95,18 @@ export function Header() {
     return () => observer.disconnect();
   }, [measureActive]);
 
+  // Marker: skip the home splash once the user has navigated in-app at least
+  // once during this tab session. The first render (initial page load) is
+  // ignored so a fresh hit on `/` still gets the brand splash.
+  const isFirstPathnameRender = useRef(true);
+  useEffect(() => {
+    if (isFirstPathnameRender.current) {
+      isFirstPathnameRender.current = false;
+      return;
+    }
+    window.sessionStorage.setItem(SPA_SESSION_FLAG, "true");
+  }, [pathname]);
+
   return (
     <>
       <a
@@ -109,6 +124,8 @@ export function Header() {
             {/* Logo pill */}
             <Link
               href="/"
+              onPointerEnter={prefetchSpline}
+              onFocus={prefetchSpline}
               className={cn(
                 glassPill,
                 "lg:flex hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",
@@ -185,6 +202,8 @@ export function Header() {
             {/* Mobile logo + menu button */}
             <Link
               href="/"
+              onPointerEnter={prefetchSpline}
+              onFocus={prefetchSpline}
               className={cn(
                 glassPill,
                 "flex lg:hidden size-11.5 items-center justify-center transition-shadow hover:shadow-[0_8px_40px_rgba(31,38,135,0.22)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none",

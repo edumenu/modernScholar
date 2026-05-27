@@ -140,9 +140,9 @@ export function ScholarshipListCardSpread({
           >
             <Icon
               icon="solar:wallet-money-linear"
-              className="size-5 shrink-0 text-on-surface-variant"
+              className="size-2 sm:size-5 shrink-0 text-on-surface-variant"
             />
-            <span className="font-heading text-xl font-bold leading-none tracking-tight text-on-surface sm:text-2xl">
+            <span className="font-heading text-base font-bold leading-none tracking-tight text-on-surface sm:text-2xl">
               {scholarship.awardAmount}
             </span>
           </motion.div>

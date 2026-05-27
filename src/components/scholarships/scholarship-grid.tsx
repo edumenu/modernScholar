@@ -279,7 +279,7 @@ export function ScholarshipGrid() {
                 className="grid w-full gap-4 pb-10 pt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
               >
                 {visibleItems.map(({ scholarship, matches }) => (
-                  <div key={scholarship.id} className="aspect-3/4 w-full">
+                  <div key={scholarship.id} className="w-full sm:aspect-3/4">
                     <ScholarshipCard
                       scholarship={scholarship}
                       dimmed={!matches}
