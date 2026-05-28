@@ -99,7 +99,7 @@ function ExpandedScholarshipContent({
 
         <div className="flex flex-col gap-4">
           {/* Education level badges */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 pr-12">
             {scholarship.classification.map((level) => {
               const colors = CLASSIFICATION_COLORS[level];
               return (
