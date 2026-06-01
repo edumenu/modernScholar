@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Poppins, Noto_Serif } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -59,6 +60,19 @@ export default function RootLayout({
       className={cn("relative h-full", poppins.variable, notoSerif.variable)}
     >
       <body className="min-h-full flex flex-col overflow-x-hidden">
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <Script
+              defer
+              src="https://cloud.umami.is/script.js"
+              data-website-id="8a041372-1cb8-4271-958e-d79dd2bb4f9b"
+              strategy="afterInteractive"
+            />
+            <Script id="ms-clarity" strategy="afterInteractive">
+              {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "x0f31uaqun");`}
+            </Script>
+          </>
+        )}
         <NuqsAdapter>
           <ThemeProvider
             attribute="class"
