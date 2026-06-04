@@ -64,8 +64,9 @@ export default function RootLayout({
           <>
             <Script
               defer
-              src="https://cloud.umami.is/script.js"
+              src="/u/script.js"
               data-website-id="8a041372-1cb8-4271-958e-d79dd2bb4f9b"
+              data-host-url="/u"
               strategy="afterInteractive"
             />
             <Script id="ms-clarity" strategy="afterInteractive">
