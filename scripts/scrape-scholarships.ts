@@ -395,4 +395,6 @@ main().catch(async (err) => {
   npm run scrape-scholarships -- --force         # Re-scrape everything
   npm run scrape-scholarships -- --all           # All seasons (explicit)
   npm run scrape-scholarships -- --season winter # Specific season (dev override)
+  -------------------------------------------------------------------------------
+  Run the full data pipeline (`npm run check-links && npm run scrape-scholarships && npm run tag-eligibilities`) to refresh `scholarships-enriched.json` to the full catalog now that the scrape default flipped.
  */

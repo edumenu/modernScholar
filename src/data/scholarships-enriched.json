@@ -41,7 +41,7 @@
     "season": "winter",
     "image": "gradient",
     "description": "Welcome to the ‘Shape The Future’ Scholarship Program! Campervan Finder is offering a $2,500 scholarship award Campervan Finder has proudly serviced travelers in the USA, New Zealand and Australia for the last nine years, and we understand that our younger customer base, will be the ones that go and do great things. Many of these young individuals will become business owners, entrepreneurs, and leaders of the future, and, this is our way of giving back.",
-    "provider": "Campervanfinder"
+    "provider": "Campervan Finder"
   },
   {
     "id": "iaap-education-foundation-scholarship-january-4",
@@ -245,7 +245,7 @@
     ],
     "season": "winter",
     "image": "gradient",
-    "description": "",
+    "description": "You are unable to access dillerteenawards.",
     "provider": "Dillerteenawards"
   },
   {
@@ -331,7 +331,7 @@
     ],
     "season": "winter",
     "image": "gradient",
-    "description": "",
+    "description": "You are unable to access jfklibrary. This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page.",
     "provider": "Jfklibrary"
   },
   {
@@ -467,24 +467,26 @@
     "provider": "Liveoutloud"
   },
   {
-    "id": "joy-cappel-scholarship-january-20",
-    "name": "Joy Cappel Scholarship",
+    "id": "innovation-in-education-scholarship-january-20",
+    "name": "Innovation in Education Scholarship",
     "deadline": "January 20",
     "deadlineYear": 2027,
-    "awardAmount": "$2,500",
+    "awardAmount": "$500",
     "classification": [
       "High School",
       "Undergraduate",
       "Graduate"
     ],
-    "link": "https://www.rockland.com/joy-cappel-scholarship/?srsltid=AfmBOoqBGrWtGb0S2aZ9VXuVxHh4o3BPuEwCVg8uSYSEhnlfTU6hrvzu",
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
     "openDate": null,
-    "eligibility": "Must be a high school senior, undergraduate, or graduate student currently accepted or enrolled at a college or university in the United States for the upcoming fall or spring term\nIntended major must be in Life Sciences or a related field",
-    "eligibilityTags": [],
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
     "season": "winter",
     "image": "gradient",
-    "description": "Each year, the Joy Cappel Innovation Scholarship will award two collegiate life science students with $2,500 each. The scholarship supports emerging researchers in their scientific training and encourages bold, creative thinking in the life sciences. Established in honor of Joy Cappel’s leadership and legacy at Rockland, this scholarship is part of the broader Joy Cappel Scholars Network, which celebrates scientific curiosity, perseverance, and discovery.",
-    "provider": "Rockland"
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
   },
   {
     "id": "c-spans-studentcam-documentary-competition-january-20",
@@ -504,7 +506,7 @@
     ],
     "season": "winter",
     "image": "gradient",
-    "description": "Each day through the end of this school year, we’re pleased to highlight one of this year’s top prize-winning student documentaries. As the United States commemorates its historic 250th anniversary this year, C-SPAN proudly announced the winners of the 2026 StudentCam documentary competition — a nationwide civic education initiative that empowers young Americans to examine the nation’s founding principles and their continuing impact.",
+    "description": "As the United States commemorates its historic 250th anniversary this year, C-SPAN proudly announced the winners of the 2026 StudentCam documentary competition — a nationwide civic education initiative that empowers young Americans to examine the nation’s founding principles and their continuing impact. This year, nearly 4,000 students from across the country participated, with 150 cash prizes totaling $100,000 awarded to students and teachers.",
     "provider": "Studentcam"
   },
   {
@@ -604,30 +606,8 @@
     "eligibilityTags": [],
     "season": "winter",
     "image": "gradient",
-    "description": "Car Accidents and Other Injury Cases in Washington State’s University District Here at The Advocates, we are committed to improving ourselves and our communities. One of the best ways to do this is through continuing education. We understand that school can place a tremendous financial strain on both students and their families. To help with the costs of attending college, we are offering the Advocates Law Scholarship.",
+    "description": "Here at The Advocates, we are committed to improving ourselves and our communities. One of the best ways to do this is through continuing education. We understand that school can place a tremendous financial strain on both students and their families. To help with the costs of attending college, we are offering the Advocates Law Scholarship. Notice: Phone, chat, and form services with The Advocates are reserved for people in need of legal advice.",
     "provider": "The Advocates"
-  },
-  {
-    "id": "baer-reintegration-scholarship-january-31",
-    "name": "Baer Reintegration Scholarship",
-    "deadline": "January 31",
-    "deadlineYear": 2027,
-    "awardAmount": "Varies",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.reintegration.com/2023-application-process",
-    "openDate": null,
-    "eligibility": "Be diagnosed with bipolar disorder, schizophrenia or schizoaffective disorder\nBe currently receiving medical treatment for the disease, including medications and psychiatric follow-up\nBe actively involved in rehabilitative or reintegration efforts, such as clubhouse membership, part-or full-time employment, volunteer efforts or\nschool enrollment.\nBe a U.S. citizen or legal resident and plan to attend a school in the United States\nBe age 18 years or older",
-    "eligibilityTags": [
-      "Major-Specific:Healthcare/Nursing"
-    ],
-    "season": "winter",
-    "image": "gradient",
-    "description": "We couldn't find the page you were looking for. There is an error in the URL entered into your web browser. Please check the URL and try again. The page you are looking for has been moved or deleted. You can return to our homepage by clicking here, or you can try searching for the content you are seeking by clicking here.",
-    "provider": "The Center for Reintegration"
   },
   {
     "id": "flavorful-futures-go-green-scholarship-january-31",
@@ -711,26 +691,6 @@
     "provider": "The Morgan Law Group, P.A."
   },
   {
-    "id": "car-covers-factory-scholarship-january-31",
-    "name": "Car Covers Factory Scholarship",
-    "deadline": "January 31",
-    "deadlineYear": 2027,
-    "awardAmount": "$1,000",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.carcoversfactory.com/scholarship?srsltid=AfmBOoqbH6WddVgVYTTbHjsLM6VPZNqUIetpgG4yMKStumKSXB6uaFZ5",
-    "openDate": null,
-    "eligibility": "Must be 18 years or older\nMust be a legal resident of the United States or hold a valid student visa\nMust be currently enrolled in or accepted to a full-time undergraduate or graduate program in an accredited U.S. college or university\nHigh school seniors who have been accepted into a university program for the spring 2025 semester are also eligible to apply",
-    "eligibilityTags": [],
-    "season": "winter",
-    "image": "gradient",
-    "description": "Buy excellent-quality and durable car covers only from carcoversfactory.com- an elite online retailer in the USA. Choose from a wide range of options. Free shipping, discount, warranty, freebies & more on each purchase. Buy car covers now!",
-    "provider": "Carcoversfactory"
-  },
-  {
     "id": "greene-and-phillips-scholarship-program-january-31",
     "name": "Greene & Phillips Scholarship Program",
     "deadline": "January 31",
@@ -767,7 +727,7 @@
     "eligibilityTags": [],
     "season": "winter",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
@@ -1031,30 +991,8 @@
     ],
     "season": "winter",
     "image": "gradient",
-    "description": "AMS First-Year Undergraduate Scholarship Serving as a unique example of various sectors of our field joining together to support young, talented minds, the scholarships are being sponsored by partners in industry, as well as through named scholarships either established by an AMS member or in memory of someone. The Society encourages applications from women, minorities, and disabled students, traditionally underrepresented in the atmospheric and related oceanic and hydrologic sciences.",
-    "provider": "American Meteorological Society"
-  },
-  {
-    "id": "personal-injury-law-and-vulnerable-populations-scholarship-february-26",
-    "name": "Personal Injury Law and Vulnerable Populations – Scholarship",
-    "deadline": "February 26",
-    "deadlineYear": 2027,
-    "awardAmount": "$1,000",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.knightlawfirm.net/scholarship/",
-    "openDate": null,
-    "eligibility": "Applicants must have a Grade Point Average (GPA) of at least 3.0 on a 4.0 scale\nPlanning to enroll in an accredited undergraduate or graduate program or community college in the United States\nHigh school students are also welcome to apply if they have been accepted to an accredited college or university.",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "winter",
-    "image": "gradient",
-    "description": "Personal Injury Law and Vulnerable Populations – Scholarship Personal injury law plays a critical role in ensuring justice and compensation for individuals who have suffered harm due to negligence or wrongdoing. However, vulnerable populations—such as the elderly, disabled, or economically disadvantaged—often encounter unique obstacles when navigating the legal system.",
-    "provider": "Knight Injury & Car Accident Lawyers Tulsa"
+    "description": "You are unable to access ametsoc. This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page.",
+    "provider": "Ametsoc"
   },
   {
     "id": "scholarships-for-military-children-february-11",
@@ -1224,8 +1162,8 @@
     ],
     "season": "winter",
     "image": "gradient",
-    "description": "AMS First-Year Undergraduate Scholarship Serving as a unique example of various sectors of our field joining together to support young, talented minds, the scholarships are being sponsored by partners in industry, as well as through named scholarships either established by an AMS member or in memory of someone. The Society encourages applications from women, minorities, and disabled students, traditionally underrepresented in the atmospheric and related oceanic and hydrologic sciences.",
-    "provider": "American Meteorological Society"
+    "description": "You are unable to access ametsoc. This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page.",
+    "provider": "Ametsoc"
   },
   {
     "id": "acb-scholarships-february-14",
@@ -1411,7 +1349,7 @@
     ],
     "season": "winter",
     "image": "gradient",
-    "description": "HOME   \t\tABOUT   \t\tREQUIREMENTS   \t\tRECIPIENTS   \t\tAPPLY   \t\tCONTRIBUTE   \t\tCONTACT Applications on paper will no longer be accepted. Complete and submit the Scholarship Application form and all required supplemental materials. Applications will be accepted beginning September 18, 2025 and must be submitted no later than February 19, 2026. Any student who has limited computer access may contact info@gordonrich. org before February 5, 2026 for help.",
+    "description": "HOME   \t\tABOUT   \t\tREQUIREMENTS   \t\tRECIPIENTS   \t\tAPPLY   \t\tCONTRIBUTE   \t\tCONTACT Applications on paper will no longer be accepted. Complete and submit the Scholarship Application form and all required supplemental materials. Applications will be accepted beginning September 18, 2026 and must be submitted no later than February 12, 2027. Any student who has limited computer access may contact info@gordonrich. org before February 5, 2027 for help.",
     "provider": "Gordonrich"
   },
   {
@@ -1431,6 +1369,50 @@
     "image": "gradient",
     "description": "THE VEGETARIAN RESOURCE GROUP OFFERS FIVE $5,000 SCHOLARSHIPS PLUS ONE $10,000 SCHOLARSHIP Due to the generosity of anonymous donors, The Vegetarian Resource Group each year will award college scholarship money to graduating U. high school students who have promoted veganism in their schools and/or communities. Vegetarians do not eat meat, fish, or fowl. Vegans are vegetarians who do not use other animal products such as dairy or eggs.",
     "provider": "Vrg"
+  },
+  {
+    "id": "innovation-in-education-scholarship-february-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "February 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "winter",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
+  },
+  {
+    "id": "personal-injury-law-and-vulnerable-populations-scholarship-february-26",
+    "name": "Personal Injury Law and Vulnerable Populations – Scholarship",
+    "deadline": "February 26",
+    "deadlineYear": 2027,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.knightlawfirm.net/scholarship/",
+    "openDate": null,
+    "eligibility": "Applicants must have a Grade Point Average (GPA) of at least 3.0 on a 4.0 scale\nPlanning to enroll in an accredited undergraduate or graduate program or community college in the United States\nHigh school students are also welcome to apply if they have been accepted to an accredited college or university.",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "winter",
+    "image": "gradient",
+    "description": "Personal Injury Law and Vulnerable Populations – Scholarship Personal injury law plays a critical role in ensuring justice and compensation for individuals who have suffered harm due to negligence or wrongdoing. However, vulnerable populations—such as the elderly, disabled, or economically disadvantaged—often encounter unique obstacles when navigating the legal system.",
+    "provider": "Knight Injury & Car Accident Lawyers Tulsa"
   },
   {
     "id": "bmwsae-engineering-scholarship-february-28",
@@ -1471,7 +1453,7 @@
     ],
     "season": "winter",
     "image": "gradient",
-    "description": "Scholarships: Trial Pro P.A. Thousands of Clients Served, Hundreds of Millions Won. Available 24/7.",
+    "description": ", we recognize the essential role that higher education plays in securing a prosperous future. We are committed to supporting deserving students through our scholarship program. OPEN TO ELIGIBLE STUDENTS PURSUING HIGHER EDUCATION.",
     "provider": "Trial Pro P.A."
   },
   {
@@ -1538,7 +1520,7 @@
   },
   {
     "id": "action-for-natures-international-youth-eco-hero-award-february-28",
-    "name": "Action For Nature's International Youth Eco-Hero award",
+    "name": "Action For Nature's International Youth Eco-Hero Award",
     "deadline": "February 28",
     "deadlineYear": 2027,
     "awardAmount": "Up to $1,000",
@@ -1633,7 +1615,7 @@
     "eligibilityTags": [],
     "season": "winter",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
@@ -1674,8 +1656,8 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Horatio Alger Association administers over 70 scholarship programs, offering opportunities for students in various stages of their academic careers to achieve their educational goals and realize their potential. Scroll down to learn how to apply and keep scrolling for a list of all of the available scholarships. Review the section below to determine the scholarships for which you are eligible.",
-    "provider": "Horatio Alger"
+    "description": "",
+    "provider": "Horatioalger"
   },
   {
     "id": "netfloor-usa-access-flooring-college-scholarship-march-1",
@@ -1799,11 +1781,10 @@
     ],
     "link": "https://elcscholarships.elcinfo.com/",
     "openDate": "January 22",
-    "eligibility": "Pursue excellence in management or business-related fields\nRising Sophomore, Junior, Senior college student or Graduate Student\nMinimum of 3.0 GPA\nOpen to all majors. Business, Engineering and Technology preferred.",
+    "eligibility": "Be a U.S. citizen\nEnrolled full-time at a four-year accredited higher education institution or HBCU in good standing\nStudent with a demonstrated commitment to the principles of inclusion throughout their education and within the community\nDemonstrate financial need\nMinimum grade point average of 2.8",
     "eligibilityTags": [
-      "Merit-Based",
-      "Major-Specific:STEM/Engineering",
-      "Major-Specific:Business/Accounting"
+      "Need-Based",
+      "Merit-Based"
     ],
     "season": "spring",
     "image": "gradient",
@@ -1854,6 +1835,49 @@
     "provider": "Elrod Pope Accident & Injury Attorneys"
   },
   {
+    "id": "twf-scholar-athlete-scholarship-march-1",
+    "name": "TWF Scholar Athlete Scholarship",
+    "deadline": "March 1",
+    "deadlineYear": 2027,
+    "awardAmount": "Varies",
+    "classification": [
+      "High School"
+    ],
+    "link": "https://thewallsfoundation.com/about-the-twf-scholarship",
+    "openDate": "January 1",
+    "eligibility": "Be a graduating honor student equivalent to the senior year of high school (Scholar Athlete Award)\nBe competitive in one or more sports at their academic school or a private sports club (Scholar Athlete Award). \nBe involved in a volunteer organization or charity.\nHave demonstrated a need for financial assistance.\nHave a minimum GPA of 3.5.\nBe a U.S. citizen or permanent legal resident (you will be asked to prove citizenship and age if you win)",
+    "eligibilityTags": [
+      "Merit-Based",
+      "Athletic"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "The Walls Family Scholar Athlete Foundation Our primary goal is to celebrate and support the MVP’s in the classroom and in the locker room who are defining their future and creating a powerful and positive impact on the lives of others in their community.",
+    "provider": "Thewallsfoundation"
+  },
+  {
+    "id": "larry-d-walls-legal-scholar-award-march-1",
+    "name": "Larry D. Walls Legal Scholar Award",
+    "deadline": "March 1",
+    "deadlineYear": 2027,
+    "awardAmount": "Varies",
+    "classification": [
+      "Undergraduate"
+    ],
+    "link": "https://thewallsfoundation.com/about-the-twf-scholarship",
+    "openDate": "January 1",
+    "eligibility": "Be a graduating female undergraduate student matriculating to an accredited law school in the fall of 2026\nBe involved in a volunteer organization or charity\nHave demonstrated a need for financial assistance\nHave a minimum GPA of 3.5\nBe a U.S. citizen or permanent legal resident (you will be asked to prove citizenship and age if you win)",
+    "eligibilityTags": [
+      "Merit-Based",
+      "Gender-Specific:Women",
+      "Major-Specific:Law"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "The Walls Family Scholar Athlete Foundation Our primary goal is to celebrate and support the MVP’s in the classroom and in the locker room who are defining their future and creating a powerful and positive impact on the lives of others in their community.",
+    "provider": "Thewallsfoundation"
+  },
+  {
     "id": "science-without-bordersr-challenge-march-2",
     "name": "Science without Borders® Challenge",
     "deadline": "March 2",
@@ -1890,8 +1914,8 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Attorney Bobby Devadoss and the team at The Devadoss Law Firm, P. offer legal representation to clients facing complex and unique federal labor and employment law cases. The Devadoss Law Firm believes in standing up for what is right, and we will fight vigorously to defend our clients’ constitutional and civil rights. This upcoming semester, the Dallas law firm is offering The Devadoss Law Firm Civil Rights Scholarship.",
-    "provider": "The Devadoss Law Firm, P.L.L.C. | FindLaw IM Template"
+    "description": "",
+    "provider": "Fedemploymentlaw"
   },
   {
     "id": "uspaacc-dennys-hungry-for-education-scholarship-march-2",
@@ -1912,7 +1936,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "CLICK ON THE SCHOOL LEVEL YOU ARE CURRENTLY ATTENDING TO SEE SCHOLARSHIPS AVAILABLE TO YOU. Go to scholarships page and select the appropriate link to the category that applies to you (current K-12 or college student). Select the partner organization through which you wish to apply for the scholarship. When the partner page opens, click “Apply Now. Enroll as a Denny’s Rewards member and automatically receive exclusive offers throughout the year.",
+    "description": "",
     "provider": "Dennys"
   },
   {
@@ -1991,7 +2015,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Patient Advocate Foundation will be closed on Monday, May 25th in observance of the Memorial Day Holiday. Patient Advocate Foundation (PAF) is a national 501 (c)(3) non-profit organization which provides case management services and financial aid to Americans with chronic, life threatening and debilitating illnesses. of patients with over 958 distinct diagnoses. Donate today and help Patient Advocate Foundation continue to help patients get access to the prescribed healthcare that they need.",
+    "description": "Patient Advocate Foundation (PAF) is a national 501 (c)(3) non-profit organization which provides case management services and financial aid to Americans with chronic, life threatening and debilitating illnesses. of patients with over 958 distinct diagnoses. Donate today and help Patient Advocate Foundation continue to help patients get access to the prescribed healthcare that they need.",
     "provider": "Patient Advocate Foundation"
   },
   {
@@ -2011,7 +2035,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Patient Advocate Foundation will be closed on Monday, May 25th in observance of the Memorial Day Holiday. Patient Advocate Foundation (PAF) is a national 501 (c)(3) non-profit organization which provides case management services and financial aid to Americans with chronic, life threatening and debilitating illnesses. of patients with over 958 distinct diagnoses. Donate today and help Patient Advocate Foundation continue to help patients get access to the prescribed healthcare that they need.",
+    "description": "Patient Advocate Foundation (PAF) is a national 501 (c)(3) non-profit organization which provides case management services and financial aid to Americans with chronic, life threatening and debilitating illnesses. of patients with over 958 distinct diagnoses. Donate today and help Patient Advocate Foundation continue to help patients get access to the prescribed healthcare that they need.",
     "provider": "Patient Advocate Foundation"
   },
   {
@@ -2213,7 +2237,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "We believe that education is the key to understanding, supporting, and generating awareness of the mental health challenges that millions of people face today. We offer four awards to spread our message further. Thank you to the hundreds of students who applied to our prestigious scholarship program for the 2026-2027 academic year. Thank you to all who courageously shared their stories and are actively dedicated to eradicating the stigma of mental illness in your own communities.",
+    "description": "We believe that education is the key to understanding, supporting, and generating awareness of the mental health challenges that millions of people face today. We offer four awards to spread our message further. Thank you to the hundreds of students who applied to our prestigious scholarship program for the 2026-2027 academic year! We express our gratitude to all who courageously shared their stories and are actively dedicated to eradicating the stigma of mental illness in your own communities.",
     "provider": "Thequellfoundation"
   },
   {
@@ -2233,7 +2257,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "We believe that education is the key to understanding, supporting, and generating awareness of the mental health challenges that millions of people face today. We offer four awards to spread our message further. Thank you to the hundreds of students who applied to our prestigious scholarship program for the 2026-2027 academic year. Thank you to all who courageously shared their stories and are actively dedicated to eradicating the stigma of mental illness in your own communities.",
+    "description": "We believe that education is the key to understanding, supporting, and generating awareness of the mental health challenges that millions of people face today. We offer four awards to spread our message further. Thank you to the hundreds of students who applied to our prestigious scholarship program for the 2026-2027 academic year! We express our gratitude to all who courageously shared their stories and are actively dedicated to eradicating the stigma of mental illness in your own communities.",
     "provider": "Thequellfoundation"
   },
   {
@@ -2255,7 +2279,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "We believe that education is the key to understanding, supporting, and generating awareness of the mental health challenges that millions of people face today. We offer four awards to spread our message further. Thank you to the hundreds of students who applied to our prestigious scholarship program for the 2026-2027 academic year. Thank you to all who courageously shared their stories and are actively dedicated to eradicating the stigma of mental illness in your own communities.",
+    "description": "We believe that education is the key to understanding, supporting, and generating awareness of the mental health challenges that millions of people face today. We offer four awards to spread our message further. Thank you to the hundreds of students who applied to our prestigious scholarship program for the 2026-2027 academic year! We express our gratitude to all who courageously shared their stories and are actively dedicated to eradicating the stigma of mental illness in your own communities.",
     "provider": "Thequellfoundation"
   },
   {
@@ -2295,7 +2319,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "We believe that education is the key to understanding, supporting, and generating awareness of the mental health challenges that millions of people face today. We offer four awards to spread our message further. Thank you to the hundreds of students who applied to our prestigious scholarship program for the 2026-2027 academic year. Thank you to all who courageously shared their stories and are actively dedicated to eradicating the stigma of mental illness in your own communities.",
+    "description": "We believe that education is the key to understanding, supporting, and generating awareness of the mental health challenges that millions of people face today. We offer four awards to spread our message further. Thank you to the hundreds of students who applied to our prestigious scholarship program for the 2026-2027 academic year! We express our gratitude to all who courageously shared their stories and are actively dedicated to eradicating the stigma of mental illness in your own communities.",
     "provider": "Thequellfoundation"
   },
   {
@@ -2395,7 +2419,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "We offer scholarships to selected students pursuing college degrees in certain engineering or geosciences disciplines.",
+    "description": "Discover the benefits of the Shell Graduate Programme. Learn more about applying and the opportunities that await you.",
     "provider": "Shell"
   },
   {
@@ -2416,7 +2440,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "We offer scholarships to selected students pursuing college degrees in certain engineering or geosciences disciplines.",
+    "description": "Discover the benefits of the Shell Graduate Programme. Learn more about applying and the opportunities that await you.",
     "provider": "Shell"
   },
   {
@@ -2501,7 +2525,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "",
+    "description": "Center for Cyber Safety and Education - Home",
     "provider": "Iamcybersafe"
   },
   {
@@ -2578,7 +2602,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "The UCT Charities Scholarship Program, funded by UCT Charities, provides scholarships to students and teachers seeking college degrees or certification to work with people with intellectual and developmental disabilities. UCT Charities Scholarship Program Guidelines & Application  (PDF) UCT Charities Heaston Scholarship Program The UCT Charities Heaston Scholarship helps students achieve their dreams of a college education.",
+    "description": "",
     "provider": "Uctna Clubexpress"
   },
   {
@@ -2596,7 +2620,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "The UCT Charities Scholarship Program, funded by UCT Charities, provides scholarships to students and teachers seeking college degrees or certification to work with people with intellectual and developmental disabilities. UCT Charities Scholarship Program Guidelines & Application  (PDF) UCT Charities Heaston Scholarship Program The UCT Charities Heaston Scholarship helps students achieve their dreams of a college education.",
+    "description": "",
     "provider": "Uctna Clubexpress"
   },
   {
@@ -2614,7 +2638,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "The UCT Charities Scholarship Program, funded by UCT Charities, provides scholarships to students and teachers seeking college degrees or certification to work with people with intellectual and developmental disabilities. UCT Charities Scholarship Program Guidelines & Application  (PDF) UCT Charities Heaston Scholarship Program The UCT Charities Heaston Scholarship helps students achieve their dreams of a college education.",
+    "description": "",
     "provider": "Uctna Clubexpress"
   },
   {
@@ -2719,7 +2743,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "The 2026 – 2027 Undergraduate and Graduate Scholarship Applications are now open, and will close on March 15, 2026 Note: if you are a current 2025 JVS SoCal Scholarship recipient please do not complete this application. Instead, please email Julia Furer to get the renewal link. New Undergraduate Scholarship Application Must be planning to attend or are currently attending an accredited public or private college, university, or vocational school in the U. Must be enrolled as a full-time student.",
+    "description": "The 2026 – 2027 Undergraduate and Graduate Scholarship Applications are now closed. Must be planning to attend or are currently attending an accredited public or private college, university, or vocational school in the U. Must be enrolled as a full-time student. Must maintain a minimum 2. 7 GPA (per term) for Undergraduate Students or a minimum 3. Must have a demonstrated and verifiable financial need Julia Furer Scholarship Program Director Joyce Cele Scholarship Program Coordinator",
     "provider": "JVS SoCal"
   },
   {
@@ -2761,8 +2785,8 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "2025-26 T-SHIRT DESIGN CONTEST IS CLOSED ⚠️ Contest is Closed for New Entries. Design entries must include the following: – Prominently display Print and Graphics Scholarship Foundation name and logo as part of your design. – Bright and highly visible colors are great! Assume your design will be printed on basic colors such as black or white, so utilize a full color design. PGSF reserves right to adjust any element of the design to ensure printability.",
-    "provider": "The Gr"
+    "description": "Home / Students / Student Design Contests / T-Shirt Design Contest Our goal is to drive interest in Graphic Communications job pathways and inspire thought around design reproduction that jumps off the screen! T-Shirt design entries must include the following elements:",
+    "provider": "The FGCE"
   },
   {
     "id": "voyager-scholarship-march-17",
@@ -2830,6 +2854,28 @@
     "provider": "AIA New York"
   },
   {
+    "id": "innovation-in-education-scholarship-march-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "March 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
+  },
+  {
     "id": "drive2life-psa-contest-march-23",
     "name": "Drive2Life PSA Contest",
     "deadline": "March 23",
@@ -2845,7 +2891,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Drive2Life The Dangers of Speeding Student Activity Sheet Students must write a script for a 30-second public service announcement (PSA) video about The Dangers of Speeding One Grand Prize student winner will receive $2,000, and get to produce his or her PSA with an Emmy Award-winning producer. Plus, the winner and his or her PSA will be featured on Teen Kids News! See the Prizes section below for more details.",
+    "description": "Drive2Life The Dangers of Speeding Student Activity Sheet Click here to read the press release about the Drive2Life 2026 Winner Students must write a script for a 30-second public service announcement (PSA) video about The Dangers of Speeding One Grand Prize student winner will receive $2,000, and get to produce his or her PSA with an Emmy Award-winning producer. Plus, the winner and his or her PSA will be featured on Teen Kids News! See the Prizes section below for more details.",
     "provider": "Nrsf"
   },
   {
@@ -2936,7 +2982,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Courageous Persuaders  Other Scholarships Create a 30-second video to promote safe driving for a chance to win scholarship awards. Presented by General Motors Corporate Giving. Available to students nationwide. Presented by National Road Safety Foundation. Two students will win $1000 each. Don’t Engage N Road Rage is a Michigan based company committed to promoting Road Rage Awareness. Two students will win $500 each. Presented to a special teacher for his or her extraordinary efforts.",
+    "description": "Courageous Persuaders  Other Scholarships Create a 30-second video to promote safe driving for a chance to win scholarship awards. Presented by National Road Safety Foundation. Available to students nationwide. Two students will win $1000 each. Don’t Engage N Road Rage is a Michigan based company committed to promoting Road Rage Awareness. Two students will win $500 each. Presented to a special teacher for his or her extraordinary efforts. Nominate a teacher for the Courageous Leader Award.",
     "provider": "Courageouspersuaders"
   },
   {
@@ -3003,6 +3049,29 @@
     "provider": "Efwa"
   },
   {
+    "id": "rural-gone-urban-foundation-scholarship-march-31",
+    "name": "Rural Gone Urban Foundation Scholarship",
+    "deadline": "March 31",
+    "deadlineYear": 2027,
+    "awardAmount": "$10,000",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://ruralgoneurban.org/scholarships",
+    "openDate": "March 24",
+    "eligibility": "Open to rural female students across the United States who are pursuing post-secondary education\nEligible applicants may attend public, private, or homeschool institutions and must plan to enroll in, or currently be enrolled in, an accredited college or university, trade school, or professional training program.\nApplicants may be high school seniors, undergraduate students, or graduate students who have been accepted to or are actively enrolled in a reputable post-secondary institution.\nThere is no minimum GPA requirement for this scholarship.",
+    "eligibilityTags": [
+      "Merit-Based",
+      "Gender-Specific:Women"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "Scholarships for Gritty, Hardworking Rural Women The Rural Gone Urban Foundation Scholarship Program is open to rural female students across the United States who are pursuing post-secondary education. Eligible applicants may attend public, private, or homeschool institutions and must plan to enroll in, or currently be enrolled in, an accredited college or university, trade school, or professional training program.",
+    "provider": "The Rural Gone Urban Foundation"
+  },
+  {
     "id": "shell-associate-scholarship-program-march-31",
     "name": "Shell Associate Scholarship Program",
     "deadline": "March 31",
@@ -3020,7 +3089,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "We offer scholarships to selected students pursuing college degrees in certain engineering or geosciences disciplines.",
+    "description": "Discover the benefits of the Shell Graduate Programme. Learn more about applying and the opportunities that await you.",
     "provider": "Shell"
   },
   {
@@ -3080,7 +3149,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Blindness Experience Teaching Internship Application Scholarship Program Application Checklist Distinguished Educator of Blind Students Award Kenneth Jernigan Leadership-In-Service Program Every year, we award more than $300,000 in cash and prizes to blind scholars in recognition of their achievements and professional aspirations. \"The NFB didn’t just change my life—it gave me the confidence to shape my own future. Before, I saw blindness as something to manage.",
+    "description": "",
     "provider": "Nfb"
   },
   {
@@ -3157,7 +3226,7 @@
     ],
     "link": "https://www.drkezian.com/science-scholarship/",
     "openDate": null,
-    "eligibility": "Applicants are required to be high school seniors to graduate students in university, majoring in a science field and pursuing advanced education\nMust be at least 18 years of age\nMust be attending a College or University in the Fall of 2025\nMust be a resident of the United States or Canada",
+    "eligibility": "Applicants are required to be high school seniors to graduate students in university, majoring in a science field and pursuing advanced education\nMust be at least 18 years of age\nMust be attending a College or University\nMust be a resident of the United States or Canada",
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
@@ -3274,7 +3343,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Error 429 Too Many Requests: Please try again later. Details: cache-iad-kiad7000049-IAD 1779756876 3366957118",
+    "description": "Error 429 Too Many Requests: Please try again later. Details: cache-iad-kiad7000072-IAD 1782350673 3544456715",
     "provider": "Houzz"
   },
   {
@@ -3357,7 +3426,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Homepage / Legal Blog / Scholarship offered for distracted driving deterrents KNR announced the availability of a new Don’t Text and Drive Scholarship, which will award $5,000 to the student who develops the best proposal to persuade young adults to avoid texting while driving. Kisling, Nestico & Redick, LLC is one of Ohio’s largest personal injury law firms, serving clients statewide in car accidents, wrongful death, and other injury cases.",
+    "description": "Homepage / Robert Redick Memorial Scholarship The Robert Redick Memorial Scholarship will award $5,000 to the creative student who develops a new and engaging KNR billboard design for a campaign against distracted driving. To be eligible for The Robert Redick Memorial Scholarship, applicants must: Be accepted to or currently enrolled in an accredited college, university, or graduate program within the United States.",
     "provider": "Kisling, Nestico & Redick"
   },
   {
@@ -3397,24 +3466,6 @@
     "image": "gradient",
     "description": "Are you passionate about advancing metrication in the United States? Advocates who promote the use, understanding, and proper application of metric units in education, industry, and everyday life should apply. Whether through outreach, innovation, or education, your efforts can help shape a more globally aligned future. Share your contributions—apply and be recognized for your commitment to metric awareness.",
     "provider": "Usma"
-  },
-  {
-    "id": "gold-award-girl-scouts-march-31",
-    "name": "Gold Award Girl Scouts",
-    "deadline": "March 31",
-    "deadlineYear": 2027,
-    "awardAmount": "$5,000",
-    "classification": [
-      "High School"
-    ],
-    "link": "https://www.girlscouts.org/en/members/for-girl-scouts/badges-journeys-awards/highest-awards/gold-award/gold-award-scholarship.html",
-    "openDate": null,
-    "eligibility": "Current high school seniors who earned or will earn anytime before April 1, 2026\nRecent high school graduates who earned in their senior year after March 31, 2025",
-    "eligibilityTags": [],
-    "season": "spring",
-    "image": "gradient",
-    "description": "Gold Award Girl Scouts can earn a $5,000 scholarship. Congratulations on becoming a Gold Award Girl Scout! You have created lasting change in the world while earning the highest award in Girl Scouting. Now that you’ve earned a Gold Award, did you know that you can apply for a national scholarship for your post-secondary education? The GSUSA Gold Award Scholarship recognizes and provides financial support to one Gold Award Girl Scout per council and one from USA Girl Scouts Overseas.",
-    "provider": "Girl Scouts of the USA"
   },
   {
     "id": "ron-hubbard-writers-of-the-future-contest-march-31",
@@ -3498,7 +3549,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
@@ -3600,8 +3651,27 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "The Home Depot Foundation Path to Pro Scholarship $2,500 Construction Careers Scholarships SkillPointe Foundation is now SKILLED Nation. Same trusted scholarships. Email: scholarships@skilled-nation. Plan to enroll, or be enrolled within 1 year, in an approved trade-related program at an accredited two-year school or institution (i. technical/vocational school, community college or training center) in the United States. Not be an employee or dependent of an employee of the The Home Depot.",
+    "description": "The Home Depot Foundation Path to Pro Scholarship $2,500 Construction Careers Scholarships SkillPointe Foundation is now SKILLED Nation. Same trusted scholarships. Plan to enroll, or be enrolled within 1 year, in an approved trade-related program at an accredited two-year school or institution (i. technical/vocational school, community college or training center) in the United States. Not be an employee or dependent of an employee of the The Home Depot.",
     "provider": "Webportalapp"
+  },
+  {
+    "id": "flora-marie-jenkins-memorial-disability-scholarship-april-30",
+    "name": "Flora Marie Jenkins Memorial Disability Scholarship",
+    "deadline": "April 30",
+    "deadlineYear": 2027,
+    "awardAmount": "$5,000",
+    "classification": [
+      "High School",
+      "Undergraduate"
+    ],
+    "link": "https://disabilitydenials.com/scholarships/disability-scholarship/",
+    "openDate": "November 1",
+    "eligibility": "Be a U.S. citizen or legal permanent U.S. resident with a documented disability\nBe accepted to an institution of higher learning (two- or four-year undergraduate program) – or –\nBe enrolled in a two- or four-year undergraduate program currently",
+    "eligibilityTags": [],
+    "season": "spring",
+    "image": "gradient",
+    "description": "Disability & Elder Law - Fighting For Your Benefits, Protecting Your Future Doctors & Medical Professional Disability National College Scholarship Competition For Students With Disabilities Disability Scholarship Award Amount: $5000 Thank you for your interest in our college scholarship program. We truly appreciate your application; however, the submission deadline has now passed and we are no longer accepting new entries at this time.",
+    "provider": "Disability Denials"
   },
   {
     "id": "debtcom-scholarship-for-aggressive-scholarship-applicants-april-1",
@@ -3659,8 +3729,8 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "The American Meteorological Society (AMS) administers senior undergraduate scholarships established in memory of a loved one or to honor an individual’s contributions to the sciences. These scholarships are intended to help further the education of outstanding students who are pursuing  degrees in the atmospheric and related oceanic or hydrologic sciences. Current Juniors should apply now for the school year beginning in the fall of 2026. Scholarship awards will range from $2000 to $10,000.",
-    "provider": "American Meteorological Society"
+    "description": "You are unable to access ametsoc. This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page.",
+    "provider": "Ametsoc"
   },
   {
     "id": "teens-for-alzheimers-awareness-college-scholarship-essay-contest-april-1",
@@ -3821,8 +3891,8 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "The American Meteorological Society (AMS) administers senior undergraduate scholarships established in memory of a loved one or to honor an individual’s contributions to the sciences. These scholarships are intended to help further the education of outstanding students who are pursuing  degrees in the atmospheric and related oceanic or hydrologic sciences. Current Juniors should apply now for the school year beginning in the fall of 2026. Scholarship awards will range from $2000 to $10,000.",
-    "provider": "American Meteorological Society"
+    "description": "You are unable to access ametsoc. This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page.",
+    "provider": "Ametsoc"
   },
   {
     "id": "stephen-phillips-memorial-scholarship-april-2",
@@ -3861,6 +3931,27 @@
     "image": "gradient",
     "description": "The International College Counselors Scholarship Essay Contest provides two (2) $250 scholarships. All high school freshmen, sophomores, or juniors can participate. Students from public and private schools, homeschool, and international students are eligible. All entrants must write an essay of 500 words or fewer that addresses the following topic: Describe an extracurricular activity that is most meaningful to you and why.",
     "provider": "International College Counselors"
+  },
+  {
+    "id": "surety-bond-authority-scholarship-program-april-6",
+    "name": "Surety Bond Authority Scholarship Program",
+    "deadline": "April 6",
+    "deadlineYear": 2027,
+    "awardAmount": "$1,500",
+    "classification": [
+      "High School",
+      "Undergraduate"
+    ],
+    "link": "https://suretybondauthority.com/surety-bond-authority-scholarship-2026/",
+    "openDate": null,
+    "eligibility": "Must be a high school or college undergraduate student.\nPreference is given to students pursuing Accounting, Banking, Finance, or related business fields.",
+    "eligibilityTags": [
+      "Major-Specific:Business/Accounting"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "Surety Bond Authority Scholarship Program 2026 We believe in empowering youth to achieve their academic aspirations as a means of contributing to their communities. To support this, Surety Bond Authority Inc. is launching a scholarship competition designed to provide financial assistance to exceptional high school and college students, helping them pursue their dreams. $1,500 to a deserving student pursuing a degree in Accounting, Banking, Finance, or a related business field.",
+    "provider": "Surety Bond Authority"
   },
   {
     "id": "bmo-capital-markets-equity-through-education-scholarship-april-7",
@@ -3987,24 +4078,6 @@
     "provider": "National Center for Learning Disabilities"
   },
   {
-    "id": "gold-award-girl-scouts-april-14",
-    "name": "Gold Award Girl Scouts",
-    "deadline": "April 14",
-    "deadlineYear": 2027,
-    "awardAmount": "$5,000",
-    "classification": [
-      "High School"
-    ],
-    "link": "https://www.girlscouts.org/en/members/for-girl-scouts/badges-journeys-awards/highest-awards/gold-award/gold-award-scholarship.html",
-    "openDate": "March 13",
-    "eligibility": "Current high school seniors who earned or will earn anytime before April 1, 2026 or recent high school graduates who earned in their senior year after March 31, 2025",
-    "eligibilityTags": [],
-    "season": "spring",
-    "image": "gradient",
-    "description": "Gold Award Girl Scouts can earn a $5,000 scholarship. Congratulations on becoming a Gold Award Girl Scout! You have created lasting change in the world while earning the highest award in Girl Scouting. Now that you’ve earned a Gold Award, did you know that you can apply for a national scholarship for your post-secondary education? The GSUSA Gold Award Scholarship recognizes and provides financial support to one Gold Award Girl Scout per council and one from USA Girl Scouts Overseas.",
-    "provider": "Girl Scouts of the USA"
-  },
-  {
     "id": "williams-franklin-foundation-scholarship-april-15",
     "name": "Williams-Franklin Foundation Scholarship",
     "deadline": "April 15",
@@ -4042,8 +4115,8 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "The Tzu Chi USA Scholarship, funded by the Buddhist Tzu Chi Foundation, provides financial assistance to outstanding college-bound high school graduates and returning undergraduate scholars within selected regions of the United States. Scholars are selected based on financial need, academic pursuit(Commitment to continuing education at a college or university), and a strong commitment to community involvement. Applications are now open!",
-    "provider": "Tzu Chi USA"
+    "description": "",
+    "provider": "Tzuchi"
   },
   {
     "id": "pretty-preset-for-lightroom-scholarship-april-15",
@@ -4207,7 +4280,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Skip Content/dom10997/wp-content/themes/rosen-ohr/core/blade/storage/views/20b4e0db11565d510e6538a1faddb230 Because an Accident Shouldn’t Get in the Way of Your Education Pursuing a college education is a costly endeavor for most students, especially those who are coping with the financial fallout from a serious accident.",
+    "description": "Skip Content/dom10997/wp-content/themes/rosen-ohr/core/blade/storage/views/20b4e0db11565d510e6538a1faddb230. Because an Accident Shouldn’t Get in the Way of Your Education Pursuing a college education is a costly endeavor for most students, especially those who are coping with the financial fallout from a serious accident.",
     "provider": "Rosen & Ohr Law Hollywood FL Personal Injury Law Firm"
   },
   {
@@ -4257,6 +4330,28 @@
     "image": "gradient",
     "description": "2026 Dragon Hearts College Scholarship Fund - Women in Business and STEM Ten $5,000 Scholarships Available for Female High School Seniors/1st Year College Students Planning to Attend College as a Full-Time, Degree-Seeking Student in the Fall of 2026 The Dragon Hearts Foundation College Scholarship Fund is committed to supporting exceptional female students facing financial challenges, in particular those pursuing Business or STEM degrees. Female student who plans to attend a U.",
     "provider": "Asian Pacific Community Fund"
+  },
+  {
+    "id": "innovation-in-education-scholarship-april-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "April 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
   },
   {
     "id": "kreative-solutions-hbcu-scholarship-april-20",
@@ -4445,7 +4540,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
@@ -4655,26 +4750,6 @@
     "provider": "Renthop"
   },
   {
-    "id": "moolahspot-scholarship-april-30",
-    "name": "MoolahSPOT Scholarship",
-    "deadline": "April 30",
-    "deadlineYear": 2027,
-    "awardAmount": "$1,000",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "http://www.moolahspot.com/scholarship/index.cfm",
-    "openDate": null,
-    "eligibility": "Any student at least 16 years or older who plans to attend, or is currently attending, college or graduate school. Students may be of any nationality and reside in any country. Students may study any major or plan to enter any career field at any accredited college or graduate school. Although applicants can be from any country, all applications must be completed in English.",
-    "eligibilityTags": [],
-    "season": "spring",
-    "image": "gradient",
-    "description": "The $1,000 MoolahSPOT Scholarship is sponsored by MoolahSPOT. com and helps students of any age pay for higher education. The scholarship is a competition based on a short essay. Family income, grades and test scores are not used in selecting a winner. The award must be used for any education-related expenses such as tuition, fees, books and room and board. Who is Eligible: Any student at least 16 years or older who plans to attend, or is currently attending, college or graduate school.",
-    "provider": "Moolahspot"
-  },
-  {
     "id": "e-waste-scholarship-april-30",
     "name": "E-waste Scholarship",
     "deadline": "April 30",
@@ -4687,7 +4762,7 @@
     ],
     "link": "http://www.digitalresponsibility.org/ewaste-scholarship",
     "openDate": null,
-    "eligibility": "Must be a high school freshman, sophomore, junior, or senior or a current or entering college or graduate school student of any level. Home schooled students are also eligible. There is no age limit.",
+    "eligibility": "Must be a high school freshman, sophomore, junior, or senior or a current or entering college or graduate school student of any level. Home schooled students are also eligible. There is no age limit. You must also be a U.S. citizen or legal resident.",
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
@@ -4728,11 +4803,11 @@
     ],
     "link": "https://www.andrewflusche.com/scholarship/",
     "openDate": null,
-    "eligibility": "Accepted into a U.S. college, university, graduate school, or trade school.\nEnrolled in a U.S. college, university, or trade school.",
+    "eligibility": "United States citizens or lawful residents who are:\nAccepted into a U.S. college, university, graduate school, or trade school.\nEnrolled in a U.S. college, university, or trade school.",
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Home » The Flusche & Fitzgerald Undergrad Scholarship Contest THE FLUSCHE & FITZGERALD UNDERGRAD SCHOLARSHIP CONTEST Flusche & Fitzgerald, Attorneys at Law is excited to announce the winner of the Fall 2025 scholarship contest is Alyssa Williams! Check out her awesome video here. The Flusche & Fitzgerald Scholarship Contest requires students to raise awareness about different legal issues.",
+    "description": "Home » The Flusche & Fitzgerald Undergrad Scholarship Contest THE FLUSCHE & FITZGERALD UNDERGRAD SCHOLARSHIP CONTEST Flusche & Fitzgerald, Attorneys at Law is excited to announce the winner of the Spring 2026 undergraduate scholarship contest is Jason Greer! Check out his fantasic video here. The Flusche & Fitzgerald Scholarship Contest requires students to raise awareness about different legal issues.",
     "provider": "Andrew Flusche"
   },
   {
@@ -4832,8 +4907,8 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Higher education: that magical time when deadlines are tight and budgets are tighter. We'd like to help fund this education. Just write a 400-500 word essay for your chance to win $2500! com connects pet parents with the nation’s largest network of loving and trustworthy pet sitters and dog walkers. Discover, book, and manage personalized care for your dogs including pet sitting, dog walking, in-home dog boarding, and doggy day care.",
-    "provider": "Rover.com"
+    "description": "",
+    "provider": "Rover"
   },
   {
     "id": "bryan-cameron-education-foundation-may-1",
@@ -4852,7 +4927,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "The Cameron Impact Scholarship is a four-year, full-tuition, impact-driven undergraduate scholarship awarded annually to 15 exceptional high school students who have demonstrated excellence in leadership, community service, extracurricular activities, and academics. The Cameron Impact Scholar is unique among their peers in their desire to directly impact  their communities and in the world at large.",
+    "description": "",
     "provider": "Bryancameroneducationfoundation"
   },
   {
@@ -4872,24 +4947,6 @@
     "image": "gradient",
     "description": "We appreciate the time and care that you are investing in applying for scholarships. Applicants report spending over 4 hours on average to complete our application. Learn about the qualifications necessary for financial eligibility. Stay in touch with The Stephen Phillips Memorial Scholarship Fund Scholar community! Sign up for our email updates here. ©  THE STEPHEN PHILLIPS MEMORIAL SCHOLARSHIP FUND, INC.",
     "provider": "Stephen Phillips Memorial Scholarship Fund"
-  },
-  {
-    "id": "pureland-supply-vocational-and-skilled-trade-scholarship-may-1",
-    "name": "Pureland Supply Vocational and Skilled Trade Scholarship",
-    "deadline": "May 1",
-    "deadlineYear": 2027,
-    "awardAmount": "$250",
-    "classification": [
-      "Undergraduate"
-    ],
-    "link": "https://www.purelandsupply.com/t-scholarship.aspx",
-    "openDate": null,
-    "eligibility": "Designed to support students who are enrolled in accredited trade schools, vocational colleges, technical schools, or community colleges pursuing careers in trade, craft, or labor-related fields.",
-    "eligibilityTags": [],
-    "season": "spring",
-    "image": "gradient",
-    "description": "Pureland Supply Vocational and Skilled Trade Scholarship At Pureland Supply, we recognize the critical importance of skilled trades in shaping our society and economy. Since 1997, we have been committed to providing high-quality replacement projector lamps, and we proudly extend that commitment to support the next generation of tradespeople.",
-    "provider": "Purelandsupply"
   },
   {
     "id": "the-ashoori-law-good-deeds-scholarship-may-1",
@@ -5013,7 +5070,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "To be eligible for the Arctic Chiropractic \"Got a Spine Scholarship\" a student must: 1) Be attending college or university no later than October of 2026. 2) Be attending college or university on a full-time basis by October of 2026.",
+    "description": "To be eligible for the Arctic Chiropractic \"Got a Spine Scholarship\" a student must: 1) Be attending college or university no later than October of 2027. 2) Be attending college or university on a full-time basis by October of 2027.",
     "provider": "Arcticchiropracticfairbanks"
   },
   {
@@ -5034,6 +5091,24 @@
     "image": "gradient",
     "description": "MyImpact Challenge is a civic engagement contest hosted by the Bill of Rights Institute. Our civic engagement contest highlights students actively engaged in service, volunteerism, or entrepreneurship in their communities. Submission is open to students ages 13-19 in all U. states, territories, and Armed Forces Schools Abroad. Submission must be received by 11:59 p. PT on Sunday, May 3, 2026. Only submissions entered through MyImpact Challenge’s online portal will be accepted for the contest.",
     "provider": "National Leader in Civic Education Resources | Bill of Rights Institute"
+  },
+  {
+    "id": "valuing-diversity-phd-scholarship-may-3",
+    "name": "Valuing Diversity PhD Scholarship",
+    "deadline": "May 3",
+    "deadlineYear": 2027,
+    "awardAmount": "$1,000-$2,500",
+    "classification": [
+      "Graduate"
+    ],
+    "link": "https://www.ama.org/valuing-diversity-phd-scholarship/",
+    "openDate": null,
+    "eligibility": "Must be a U.S. citizen or a permanent U.S. resident.\nMust be enrolled in a full-time AACSB accredited marketing doctoral program, or an advertising doctoral program, and have successfully completed at least one year.",
+    "eligibilityTags": [],
+    "season": "spring",
+    "image": "gradient",
+    "description": "In partnership with the PhD Project and the AMA Academic Council, the Valuing Diversity PhD Scholarship seeks to empower doctoral students from various backgrounds to earn PhDs so they can inspire and educate the next generation of business leaders. The AMA Foundation (AMAF) is proud to recognize 2025 scholarship recipients, Vannesia Darby and Donovan Gordon! Click here to read more about Vannesia and Donovan. Applications for the 2026 scholarships are open through May 3.",
+    "provider": "American Marketing Association"
   },
   {
     "id": "ncaa-postgraduate-scholarship-program-may-4",
@@ -5057,6 +5132,28 @@
     "provider": "NCAA.org"
   },
   {
+    "id": "gmis-stem-scholarship-may-8",
+    "name": "GMiS STEM Scholarship",
+    "deadline": "May 8",
+    "deadlineYear": 2027,
+    "awardAmount": "$500-$5,000",
+    "classification": [
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://greatmindsinstem.org/gmis-scholarship-application/gmis-scholarships/gmis-scholarship-guidelines/",
+    "openDate": null,
+    "eligibility": "Applicants must be pursuing a science, technology, engineering or math degree\nApplicants must have an overall minimum GPA of 3.0 or higher on a 4.0 scale for merit-based scholarships.  Applicants may have a minimum 2.5 GPA for non-merit-based donor scholarships (at individual donors’ discretion).\nApplicants may be enrolled full-time or part-time at the time of application and the time of the scholarship award\nApplicants must be enrolled in a STEM or health-related undergraduate or graduate program for the upcoming fall semester, at an accredited 2-yr or 4-yr college/university in the U.S. or its territories.",
+    "eligibilityTags": [
+      "Merit-Based",
+      "Major-Specific:STEM/Engineering"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "GMiS STEM Scholarship Application Guidelines Please read through all the information below, before you complete the online GMiS STEM Scholarship Application. Applicants must demonstrate STEM academic merit and service with campus and/or community activities Applicants must have an overall minimum GPA of 3. 0 scale for merit-based scholarships. Applicants may have a minimum 2.",
+    "provider": "Great Minds in STEM"
+  },
+  {
     "id": "sciencesaves-scholarship-may-11",
     "name": "ScienceSaves Scholarship",
     "deadline": "May 11",
@@ -5071,7 +5168,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Enter to Win the $10,000 ScienceSaves Video Scholarship Our People's Choice Awards Contest is now open!! Vote for your favorite 2026 ScienceSaves Scholarship video!! Include #ScienceSaves both spoken aloud and visibly on screen. All United States high school seniors entering college in Fall 2026 or Spring 2027. All scholarship awards have been sponsored by the Stiefel Freethought Foundation and the Center for Inquiry.",
+    "description": "Enter to Win the $10,000 ScienceSaves Video Scholarship Our People's Choice Awards Contest is now open!! Vote for your favorite 2026 ScienceSaves Scholarship video!! Include #ScienceSaves both spoken aloud and visibly on screen. All United States high school seniors entering college in Fall 2026 or Spring 2027. What college or university will you be attending? All scholarship awards have been sponsored by the Stiefel Freethought Foundation and the Center for Inquiry.",
     "provider": "Sciencesaves"
   },
   {
@@ -5156,7 +5253,7 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "",
+    "description": "You are unable to access nordson.",
     "provider": "Nordson"
   },
   {
@@ -5174,7 +5271,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Applications will be available on major scholarship directories and require essays of at least 500 words. Scholarships will be awarded to high school seniors based on the most compelling stories -- regarding their life stories, their intended fields of study, careers and how they will make an impact on the world. The scholarship application is due by May 15, 2026 by 11:59 PM EST. The winner will be chosen by a committee of three judges and notified by early JUNE 2026.",
+    "description": "TWO SCHOLARSHIPS JUST AWARDED SUMMER 2026 Applications will be available on major scholarship directories and require essays of at least 500 words. Scholarships will be awarded to high school seniors based on the most compelling stories -- regarding their life stories, their intended fields of study, careers and how they will make an impact on the world. The scholarship application is due by May 15, 2026 by 11:59 PM EST.",
     "provider": "Ted & Holly Rollins Scholarship"
   },
   {
@@ -5192,7 +5289,7 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "The 2026 Scholarship application is now closed. Thank you to everyone that applied. We will now begin our selection process, and recipients will be notified later this summer. Applicant must be a high school senior heading into college ) A copy of the acceptance letter from the college you will be attending in the fall. If timing makes this impossible, a listing of your applications with plans to attend. Send any questions or additional details to: scholarship@aglfoundation.",
+    "description": "The AGL Over The Rainbow Foundation Scholarship Committee has completed its review of this year's applications, and scholarship recipients have been selected. This year, we received an incredible 460 applications from talented students pursuing their dreams in the fine and performing arts. The level of talent, dedication, and passion demonstrated by these students was truly inspiring. Thanks to the continued support of our donors and supporters, we are able to award eight scholarships this year.",
     "provider": "AGL Over The Rainbow Foundation"
   },
   {
@@ -5258,10 +5355,54 @@
     "provider": "Lucas Law"
   },
   {
+    "id": "innovation-in-education-scholarship-may-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "May 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
+  },
+  {
+    "id": "butler-kahns-make-the-world-better-scholarship-may-22",
+    "name": "Butler Kahn’s “Make-the-World-Better” Scholarship",
+    "deadline": "May 22",
+    "deadlineYear": 2027,
+    "awardAmount": "$500-$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://butlerfirm.com/about-the-firm/scholarship/",
+    "openDate": null,
+    "eligibility": "Open to any student who is currently enrolled in an accredited undergraduate or graduate program anywhere in the world. This includes accredited community college students, high school seniors, and students who possess a GED who have been accepted or enrolled into an accredited program.\nAll eligible candidates must be in good academic standing with a minimum cumulative GPA of 2.00 or above, or international equivalent.",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "Home   //   About the Firm   //   Scholarship Butler Kahn’s “Make-the-World-Better” Scholarship WE’D BE HONORED TO HELP YOU BY OFFERING THIS $1,000. 00 SCHOLARSHIP AND $500 2ND PLACE SCHOLARSHIP. At Butler Kahn, we help people and families. We are Atlanta personal injury lawyers, and we fight against powerful interests like insurance companies and huge corporations on behalf of people who have been injured or killed.",
+    "provider": "Butler Kahn"
+  },
+  {
     "id": "a-voice-for-animals-contest-may-25",
     "name": "A Voice for Animals Contest",
     "deadline": "May 25",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "Varies",
     "classification": [
       "K-12",
@@ -5280,7 +5421,7 @@
     "id": "schwartz-injury-law-perserverance-scholarship-may-27",
     "name": "Schwartz Injury Law Perserverance Scholarship",
     "deadline": "May 27",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "High School",
@@ -5295,14 +5436,14 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "Applications Open for Fall 2026 Scholarships At Schwartz Injury Law, we help our clients to overcome the most daunting of challenges. We understand that our services are simply a stepping stone in their journey, and we admire the great perseverance our clients show in the face of adversity. Our Orland Park personal injury law firm advocates for victims of serious car accidents, medical malpractice, and other catastrophic injuries.",
+    "description": "Applications Open for Spring 2027 Scholarships At Schwartz Injury Law, we help our clients to overcome the most daunting of challenges. We understand that our services are simply a stepping stone in their journey, and we admire the great perseverance our clients show in the face of adversity. Our Orland Park personal injury law firm advocates for victims of serious car accidents, medical malpractice, and other catastrophic injuries.",
     "provider": "Schwartz Injury Law"
   },
   {
     "id": "jenner-law-make-a-difference-scholarship-may-30",
     "name": "Jenner Law Make a Difference Scholarship",
     "deadline": "May 30",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$2,500",
     "classification": [
       "Undergraduate",
@@ -5316,14 +5457,14 @@
     ],
     "season": "spring",
     "image": "gradient",
-    "description": "The application process for the 2026 Make a Difference Scholarship is now open! Jenner Law is proud to support the next generation of change-makers through our Make a Difference Scholarship! Each year, we award two $2,500 scholarships—one to an outstanding undergraduate student and one to a graduate student—who exemplify academic excellence, a proven commitment to social justice, and a clear vision of how his or her education will create meaningful change in the world.",
+    "description": "The application process for the 2026 Make a Difference Scholarship is now CLOSED! The winner will be announced soon! Jenner Law is proud to support the next generation of change-makers through our Make a Difference Scholarship! Each year, we award two $2,500 scholarships—one to an outstanding undergraduate student and one to a graduate student—who exemplify academic excellence, a proven commitment to social justice, and a clear vision of how his or her education will create meaningful change in...",
     "provider": "Jenner Law"
   },
   {
     "id": "irene-adler-prize-may-30",
     "name": "Irene Adler Prize",
     "deadline": "May 30",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$250-$1,000",
     "classification": [
       "High School",
@@ -5346,7 +5487,7 @@
     "id": "annual-financial-empowerment-scholarship-may-30",
     "name": "Annual Financial Empowerment Scholarship",
     "deadline": "May 30",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$2,500",
     "classification": [
       "Undergraduate",
@@ -5364,10 +5505,28 @@
     "provider": "Bmtx"
   },
   {
+    "id": "ramsey-education-scholarship-program-may-31",
+    "name": "Ramsey Education Scholarship Program",
+    "deadline": "May 31",
+    "deadlineYear": 2027,
+    "awardAmount": "$1,500",
+    "classification": [
+      "High School"
+    ],
+    "link": "https://www.tun.com/scholarships/ramsey-education-scholarship/",
+    "openDate": null,
+    "eligibility": "Must be a high school senior who has successfully completed or is taking one of the following courses:\nFoundations in Economics\nFoundations in Entrepreneurship\nFoundations in Personal Finance\nAny Foundations Homeschool curriculum",
+    "eligibilityTags": [],
+    "season": "spring",
+    "image": "gradient",
+    "description": "Ramsey Education is committed to empowering students with the financial knowledge and skills they need to succeed after graduation. Through their comprehensive financial literacy curricula , they teach young people the right way to handle money, including  budgeting, saving, and avoiding debt. Their curriculum, designed for high school students, emphasizes the importance of financial responsibility, preparing students to navigate the real-world with confidence, security and hope.",
+    "provider": "The University Network"
+  },
+  {
     "id": "the-space-to-succeed-scholarship-may-31",
     "name": "The Space to Succeed Scholarship",
     "deadline": "May 31",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$5,000",
     "classification": [
       "Undergraduate",
@@ -5379,14 +5538,14 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "3 Scholarships valued at $5,000 each. Available to students attending accredited colleges and universities in the United States. The Storage Center offers six scholarships annually – three awarded in Spring 2026 and three more in Fall 2026. Soon to be accepting applications for Spring Scholarship to be awarded June 2026 Lauren Forney is a Health Science student at Spelman College from Katy, Texas, whose lifelong commit...",
+    "description": "3 Scholarships valued at $5,000 each. Available to students attending accredited colleges and universities in the United States. The Storage Center offers six scholarships annually – three awarded in Spring 2026 and three more in Fall 2026. Soon to be accepting applications for Fall Scholarship to be awarded January 2027 Mattison Wiley is a freshman at the University of Central Arkansas who has logged more than 847 veri...",
     "provider": "The Storage Center"
   },
   {
     "id": "general-education-and-mental-health-scholarship-may-31",
     "name": "General Education and Mental Health Scholarship",
     "deadline": "May 31",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,500",
     "classification": [
       "High School",
@@ -5399,14 +5558,14 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "HomeMental Health & General Education Scholarship General Education and Mental Health Scholarship To raise awareness as to the causes, consequences and treatment of addiction, Seasons in Malibu, a luxury addiction treatment center, is seeking to reward essay applicants $1,500 in scholarships- for students entering college or already enrolled in a higher education institution.",
+    "description": "HomeMental Health & General Education Scholarship General Education and Mental Health Scholarship To help raise awareness about the causes, consequences, and treatment of addiction, Seasons in Malibu is offering a $1,500 scholarship to students who are entering college or currently enrolled in a higher education program.",
     "provider": "Seasons In Malibu"
   },
   {
     "id": "trey-porter-law-scholarship-may-31",
     "name": "Trey Porter Law Scholarship",
     "deadline": "May 31",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "High School",
@@ -5426,7 +5585,7 @@
     "id": "college-is-power-cip-scholarship-may-31",
     "name": "College Is Power (C.I.P) Scholarship",
     "deadline": "May 31",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "High School",
@@ -5446,7 +5605,7 @@
     "id": "theres-space-for-everyone-scholarship-may-31",
     "name": "There’s Space for Everyone\nScholarship",
     "deadline": "May 31",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$3,000",
     "classification": [
       "High School",
@@ -5466,7 +5625,7 @@
     "id": "altruism-all-good-deeds-scholarship-may-31",
     "name": "Altruism + All Good Deeds Scholarship",
     "deadline": "May 31",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "High School",
@@ -5485,10 +5644,55 @@
     "provider": "National Parent Volunteer Association"
   },
   {
+    "id": "amy-g-injury-firm-access-to-education-scholarship-may-31",
+    "name": "Amy G Injury Firm Access to Education Scholarship",
+    "deadline": "May 31",
+    "deadlineYear": 2027,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://amyglaw.com/2026-amy-g-injury-firm-access-to-education-scholarship/",
+    "openDate": null,
+    "eligibility": "Open to students currently enrolled in any accredited degree program in the United States, whether a vocational program, community college, junior college, undergraduate, or graduate school. GED holders and upcoming high school graduates attending a college-level study program are also eligible for the award.\nApplicants must provide evidence of good academic standing from their current institution. Such proof will consist of a cumulative grade point average of no less than 3.0 on a 4.0 scale",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "Home » 2026 AMY G INJURY FIRM ACCESS TO EDUCATION SCHOLARSHIP Congratulations to Emma Fletcher for winning our 2025 scholarship award! To learn more about our previous scholarship winners, visit our scholarship winners’ page. The attorneys of the Amy G Injury Firm believe everyone is entitled to an equal opportunity to create a better future for themselves, their families, and society as a whole.",
+    "provider": "Amy G Injury Firm"
+  },
+  {
+    "id": "we-the-future-contest-may-31",
+    "name": "We The Future Contest",
+    "deadline": "May 31",
+    "deadlineYear": 2027,
+    "awardAmount": "$100-$5,000",
+    "classification": [
+      "K-12",
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://constitutingamerica.org/contest-categories-new/#toggle-id-5-closed",
+    "openDate": null,
+    "eligibility": "Open to elementary, middle school, high school, college and university students, law school and graduate school students",
+    "eligibilityTags": [
+      "Major-Specific:Law"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "We The Future Contest – Categories, Rules & Deadlines • Teachers: Earn a $50 Amazon gift card when at least 10 students from your class submit contest entries! • Bonus for Teachers: The teacher with the most student contest entries wins $1,000! (See the teacher category for details. COLLEGE / UNIVERSITY / TRADE SCHOOL STUDENTS ($2,000-$5,000) HILLSDALE / CONSTITUTING AMERICA SCHOLARSHIP FUND ($5,000) HOW DID YOU HEAR ABOUT THE 'WE THE FUTURE\" CONTEST?",
+    "provider": "Constituting America"
+  },
+  {
     "id": "supercollege-scholarship-may-31",
     "name": "SuperCollege Scholarship",
     "deadline": "May 31",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "High School",
@@ -5508,7 +5712,7 @@
     "id": "jandy-books-for-good-scholarship-may-31",
     "name": "J&Y “Books for Good” Scholarship",
     "deadline": "May 31",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$300",
     "classification": [
       "High School",
@@ -5521,14 +5725,34 @@
     "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
+  },
+  {
+    "id": "john-kitt-memorial-scholarship-may-31",
+    "name": "John Kitt Memorial Scholarship",
+    "deadline": "May 31",
+    "deadlineYear": 2027,
+    "awardAmount": "$2,500",
+    "classification": [
+      "Undergraduate"
+    ],
+    "link": "https://www.aactcandy.org/awards-scholarships/john-kitt-memorial-scholarship-application/",
+    "openDate": null,
+    "eligibility": "College sophomore, junior, or senior status (in 2026-2027)\nAttend an accredited, four-year college or university within North America\nBe majoring in a food science, chemical science, biological science, or related area\nAchieved a 3.0 (out of 4.0) GPA (or equivalent on another scale)\nHave a demonstrated interest in confectionery technology. Your demonstrated interest in confectionery technology can include many activities including but not limited to research projects, work experience, and formal study",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "spring",
+    "image": "gradient",
+    "description": "About Regional Chapters National Seminar Awards & Scholarships Technical Library Contact John Kitt Memorial Scholarship Application Interested students are encouraged to submit an application. Please fill out the form PDF below to apply. Submission deadline is May 31, 2026 (application must be received by this date). Semi-finalists will be selected from these applications. These students will be asked to submit a letter of recommendation.",
+    "provider": "American Association of Candy Technologists"
   },
   {
     "id": "dermer-appel-ruder-scholarship-june-1",
     "name": "Dermer Appel Ruder Scholarship",
     "deadline": "June 1",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "Undergraduate",
@@ -5550,7 +5774,7 @@
     "id": "acf-visionary-scholarship-june-1",
     "name": "ACF Visionary Scholarship",
     "deadline": "June 1",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "Varies",
     "classification": [
       "High School"
@@ -5561,14 +5785,14 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "Supporting high school students and their families. Eligible Grades:  2026, 2027, 2028, & 2029 2026 - 2027 Spring App Deadline (received by):  June 1, 2026 One application per student; non-winners may reapply. You will receive an Application Packet via Email within two (2) weeks from the time you register. If you have NOT received your application packet within two (2) weeks, please email us.",
+    "description": "Supporting high school students and their families. Eligible Grades:  2027, 2028, 2029, & 2030 2027 - 2028 Fall Deadline (received by):  October 31, 2026 One application per student; non-winners may reapply. After you apply, you may create a free account and receive immediate access to your Application Packet. Otherwise, your Application Packet will be sent to you via Email within two (2) weeks from the time you register.",
     "provider": "American College Foundation"
   },
   {
     "id": "the-richard-rawle-memorial-scholarship-june-1",
     "name": "The Richard Rawle Memorial Scholarship",
     "deadline": "June 1",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$2,000",
     "classification": [
       "High School",
@@ -5583,14 +5807,14 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "The Richard Rawle Memorial Scholarship From Check City Check City's $2,000 scholarship essay contest for college students is now open for 2026 applications. Students have until June 1st to submit their application. The Richard Rawle Memorial Scholarship is a scholarship essay contest where students can win a total of $2,000 in scholarship money. It is named for Richard Rawle, the father of Check City CEO Tracy Rawle and Todd Rawle.",
+    "description": "The Richard Rawle Memorial Scholarship From Check City Check City's $2,000 scholarship essay contest for college students is now closed for 2026 applications. The Richard Rawle Memorial Scholarship is a scholarship essay contest where students can win a total of $2,000 in scholarship money. It is named for Richard Rawle, the father of Check City CEO Tracy Rawle and Todd Rawle. The Rawle family believes that education is essential for making communities thrive.",
     "provider": "Checkcity"
   },
   {
     "id": "nursingexamsorg-nursing-scholarship-june-1",
     "name": "NursingExams.org Nursing Scholarship",
     "deadline": "June 1",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "Undergraduate",
@@ -5611,7 +5835,7 @@
     "id": "tobin-injury-laws-annual-chai-x-66-scholarship-award-june-1",
     "name": "Tobin Injury Law’s Annual Chai x 66 Scholarship Award",
     "deadline": "June 1",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,188",
     "classification": [
       "Undergraduate",
@@ -5630,7 +5854,7 @@
     "id": "exceptional-nurse-scholarship-june-1",
     "name": "Exceptional Nurse Scholarship",
     "deadline": "June 1",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$250-$500",
     "classification": [
       "High School",
@@ -5650,7 +5874,7 @@
     "id": "jasna-essay-contest-june-2",
     "name": "JASNA Essay Contest",
     "deadline": "June 2",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$250-$1,000",
     "classification": [
       "High School",
@@ -5670,7 +5894,7 @@
     "id": "stuck-at-prom-scholarship-june-3",
     "name": "Stuck At Prom Scholarship",
     "deadline": "June 3",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$500-$10,000",
     "classification": [
       "High School"
@@ -5683,14 +5907,32 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "The 26th annual Duck® Brand Stuck At Prom® Scholarship Contest Entry Period is now open! From now until June 3, submit your one-of-a-kind Duck Tape® promwear in this historic contest for a chance to win a $10,000 college scholarship. Check out our Stuck at Prom® Scholarship Contest Official Rules and FAQs for more details. DUCK® BRAND STUCK AT PROM® ENTRY PERIOD CLOSES IN Create and wear your original promwear using Duck® Brand Duct Tape and/or Duck® Brand Crafting Tape.",
+    "description": "Thanks to all of the contestants for their creative Duck Tape® promwear entries! Check back soon to see the top 10 Finalists in the Dress and Tux categories and to vote for your favorites! DUCK® BRAND STUCK AT PROM® VOTING PERIOD STARTS IN Create and wear your original promwear using Duck® Brand Duct Tape and/or Duck® Brand Crafting Tape. Remember to take a high resolution pic of the big moment! See Official Rules for details.",
     "provider": "Duck Brand"
+  },
+  {
+    "id": "ellevation-education-scholarship-june-4",
+    "name": "Ellevation Education Scholarship",
+    "deadline": "June 4",
+    "deadlineYear": 2027,
+    "awardAmount": "$2,000",
+    "classification": [
+      "High School"
+    ],
+    "link": "https://scholarshipamerica.org/scholarship/ellevationeducation/",
+    "openDate": "April 30",
+    "eligibility": "Be a high school senior who has been enrolled as an English Language Learner (ELL) at some point during their K-12 education.\nPlan to enroll in full-time undergraduate study at an accredited two- or four- year college, university or vocational-technical school",
+    "eligibilityTags": [],
+    "season": "summer",
+    "image": "gradient",
+    "description": "Ellevation Education Scholarship Program Ellevation is the nation’s leading K-12 software solution for English Learners — built on the belief that every EL deserves the chance to achieve their highest aspirations. This scholarship program puts that belief into action, supporting students pursuing college or vocational school. The program is currently closed. Information on on the upcoming cycle is tentative and subject to change.",
+    "provider": "Scholarship America"
   },
   {
     "id": "burress-injury-law-scholarship-june-8",
     "name": "Burress Injury Law Scholarship",
     "deadline": "June 8",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$2,500-$5,000",
     "classification": [
       "High School",
@@ -5702,14 +5944,14 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "Apply Today for One of Our Fall 2026 Scholarships Our team at Burress Injury Law is passionate about helping the “underdogs. ” We represent victims who have suffered serious injuries or lost loved ones due to the negligence of others. Specifically, we help our clients persevere in the face of adversity to receive the medical treatment they need and recover all of the compensation they are owed under the law for their losses and damages.",
+    "description": "Apply Today for One of Our Spring 2027 Scholarships Our team at Burress Injury Law is passionate about helping the “underdogs. ” We represent victims who have suffered serious injuries or lost loved ones due to the negligence of others. Specifically, we help our clients persevere in the face of adversity to receive the medical treatment they need and recover all of the compensation they are owed under the law for their losses and damages.",
     "provider": "Burress Injury Law"
   },
   {
     "id": "ocean-awareness-contest-june-8",
     "name": "Ocean Awareness Contest",
     "deadline": "June 8",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "Up to $1,500",
     "classification": [
       "K-12",
@@ -5721,14 +5963,14 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "The world’s largest environmental youth program for the creative arts 2026 Theme | Your Story, Our Ocean: How Our Ocean Sustains, Protects, and Inspires Us The 2026 Ocean Awareness Contest – Your Story, Our Ocean – encourages you to explore the many ways our ocean sustains, protects, and inspires us. We invite you to think about your personal connection to the ocean – whether you’re coastal or landlocked – through the value it brings to your life.",
+    "description": "The world’s largest environmental youth program for the creative arts Thank you to everyone who participated in the 2026 Ocean Awareness Contest! The 2026 Contest is now closed. Contest winners will be announced in late November. Keep an eye out for the 2027 Contest theme, which will be announced in September!",
     "provider": "Bow Seat Creative Action for Conservation • Activating the next wave of ocean leaders through the arts, science, and advocacy."
   },
   {
     "id": "ortho-dermatologics-aspire-higher-scholarships-june-10",
     "name": "Ortho Dermatologics ASPIRE HIGHER Scholarships",
     "deadline": "June 10",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "Up to $10,000",
     "classification": [
       "High School",
@@ -5745,10 +5987,28 @@
     "provider": "Aspirehigherscholarships Smapply"
   },
   {
+    "id": "the-max-mcelhaney-memorial-educational-scholarship-june-15",
+    "name": "The Max McElhaney Memorial Educational Scholarship",
+    "deadline": "June 15",
+    "deadlineYear": 2027,
+    "awardAmount": "$3,000",
+    "classification": [
+      "High School"
+    ],
+    "link": "https://www.rockylawfirm.com/max-mcelhaney-memorial-educational-scholarship/",
+    "openDate": null,
+    "eligibility": "Open to high school senior that plans to enroll in a 4-year program at a public or private college or university\nEligible student must be enrolled as a full-time student during the fall semester in which the award is paid",
+    "eligibilityTags": [],
+    "season": "summer",
+    "image": "gradient",
+    "description": "The Max McElhaney Memorial Educational Scholarship Sponsored by: The Rocky McElhaney Law Firm Sponsored by the Rocky McElhaney Law Firm, the Max McElhaney Memorial Educational Scholarship has been established to honor the life and love of Rocky’s Uncle Max and to award $3,000 to a high school senior that plans to enroll in a 4-year program at a public or private college or university. An eligible student must be enrolled as a full-time student during the fall semester in which the award is paid.",
+    "provider": "Rocky McElhaney Law Firm: Car Accident & Injury Lawyers"
+  },
+  {
     "id": "the-leon-harris-road-to-recovery-scholarship-june-15",
     "name": "The Leon Harris Road to Recovery Scholarship",
     "deadline": "June 15",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "Undergraduate"
@@ -5766,7 +6026,7 @@
     "id": "marcus-w-viles-community-growth-scholarship-june-15",
     "name": "Marcus W. Viles Community Growth Scholarship",
     "deadline": "June 15",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$2,500",
     "classification": [
       "High School",
@@ -5781,14 +6041,14 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "Viles & Beckman Foundation, Inc. awards a $2,500 academic-based scholarship to a deserving student who is pursuing higher education at an accredited college/university or graduate school. Students from all areas of study are invited to participate. Interested students must use the form on this page to apply. The new deadline to apply will be June 15, 2026.",
+    "description": "The application process for the 2026 Marcus W. Viles Community Growth Scholarship is now CLOSED! The winner will be announced soon!",
     "provider": "Viles & Beckman, LLC"
   },
   {
     "id": "horatio-alger-career-and-technical-scholarships-june-15",
     "name": "Horatio Alger: Career & Technical Scholarships",
     "deadline": "June 15",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "Up to $2,500",
     "classification": [
       "High School"
@@ -5801,14 +6061,14 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "CAREER & TECHNICAL EDUCATION SCHOLARSHIPS The CTE scholarship application is now open! Award Amount: 300 scholarships at $2,500 each John Hardin Hudiburg Career & Technical Scholarship John Rollins Career & Technical Scholarship Valencia College Career & Technical Scholarship Award Amount: 16 scholarships at $2,500 each Award Amount: 4 scholarships at $2,500 each I immigrated to the US from Russia when I was 10 years old.",
-    "provider": "Horatio Alger"
+    "description": "",
+    "provider": "Horatioalger"
   },
   {
     "id": "the-sandi-fuqua-scholarship-june-15",
     "name": "The Sandi Fuqua Scholarship",
     "deadline": "June 15",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$2,500",
     "classification": [
       "High School",
@@ -5821,14 +6081,14 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "Sandi Fuqua served as a beloved member of Whitley Law Firm’s legal team until her untimely death in 2020. She passed from Gerstmann-Straussler-Scheinker Disease after over 26 years with the firm. Her infectious laugh, warmth, and willingness to stick it to insurance claims adjusters are sorely missed. With Sandi’s memory in mind, Whitley Law Firm is offering its Sandi Fuqua Scholarship.",
+    "description": "The application process for the 2026 Whitley Law Firm Sandi Fuqua Scholarship is now CLOSED! The winner will be announced soon! Sandi Fuqua served as a beloved member of Whitley Law Firm’s legal team until her untimely death in 2020. She passed from Gerstmann-Straussler-Scheinker Disease after over 26 years with the firm. Her infectious laugh, warmth, and willingness to stick it to insurance claims adjusters are sorely missed.",
     "provider": "Whitley Law Firm Injury Lawyers"
   },
   {
     "id": "berger-and-green-heart-disease-scholarship-june-15",
     "name": "Berger and Green Heart Disease Scholarship",
     "deadline": "June 15",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$1,000",
     "classification": [
       "High School",
@@ -5850,7 +6110,7 @@
     "id": "gofoodservice-scholarship-june-15",
     "name": "GoFoodservice Scholarship",
     "deadline": "June 15",
-    "deadlineYear": 2026,
+    "deadlineYear": 2027,
     "awardAmount": "$500",
     "classification": [
       "High School",
@@ -5867,6 +6127,50 @@
     "image": "gradient",
     "description": "",
     "provider": "Gofoodservice"
+  },
+  {
+    "id": "the-wia-foundation-scholarship-june-16",
+    "name": "The WIA Foundation Scholarship",
+    "deadline": "June 16",
+    "deadlineYear": 2027,
+    "awardAmount": "$5,000",
+    "classification": [
+      "Undergraduate"
+    ],
+    "link": "https://www.womeninaerospacefoundation.org/foundation/",
+    "openDate": null,
+    "eligibility": "To be eligible for the WIA Foundation Scholarship:\nMust be interested in pursuing a career in the aerospace field and be a rising junior or senior working towards a bachelor’s degree in engineering, math or science\nMust have completed at least two and a half academic years of full-time college work at the time of application and must be currently enrolled in an accredited college or university in the United States or its territories, and plan to be enrolled in the subsequent academic year\nMust have a college grade point average of at least 3.0 on a 4.0 scale. Applicants must identify as female and be a U.S. citizen or Lawful Permanent Resident",
+    "eligibilityTags": [
+      "Merit-Based",
+      "Gender-Specific:Women",
+      "Major-Specific:STEM/Engineering"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "The Women in Aerospace Foundation, Inc. is a tax-exempt organization under Section 501(c)(3) of the Internal Revenue Code of 1986, as amended. All contributions to the organization are deductible to the full extent allowed by law. The WIA Foundation Scholarship in memory of Molly K. The WIA Foundation – Amr EISawy Scholarship (2 available), The scholarship recipients will be honored at the WIA Awards Dinner & Ceremony on December 10, 2026.",
+    "provider": "Womeninaerospacefoundation"
+  },
+  {
+    "id": "innovation-in-education-scholarship-june-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "June 20",
+    "deadlineYear": 2027,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
   },
   {
     "id": "newland-and-newland-single-parent-scholarship-june-24",
@@ -5965,8 +6269,72 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "Our Plano criminal defense practice, The Crowder Law Firm, protects the rights of individuals throughout North Texas who are facing very serious criminal charges. This takes incredibly hard work, skill, and knowledge. We appreciate the time, effort, and resources it takes to get results, and we hope to share that appreciation with students across the United States through our Crowder Law Firm Scholarship.",
-    "provider": "The Crowder Law Firm, P.C."
+    "description": "",
+    "provider": "Crowdercriminalfirm"
+  },
+  {
+    "id": "rose-pak-memorial-scholarship-june-30",
+    "name": "Rose Pak Memorial Scholarship",
+    "deadline": "June 30",
+    "deadlineYear": 2026,
+    "awardAmount": "",
+    "classification": [
+      "Undergraduate"
+    ],
+    "link": "https://www.rosepakcommunityfund.org/scholarship",
+    "openDate": "April 1",
+    "eligibility": "Target students of Asian and Pacific Islander Origin*\nIncoming Freshman, Sophomore, Junior, or Senior at a four-year university in 2026 - 2027\nStudent’s permanent residence must be in one of nine San Francisco Bay Area County**\nNo Major requirements, but students must be able to demonstrate strong leadership qualities and commitment to serve their community.",
+    "eligibilityTags": [
+      "State-Specific"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "The Rose Pak Memorial Scholarship, a program that awards multiple scholarships to assist students in meeting their college financial obligations. Named to commemorate legendary community leader Ms. Rose Pak, our scholarship program was established to nurture and inspire the leaders of tomorrow. The scholarship aims to support the next generation of Asian American students who demonstrate leadership qualities and intention to pursue a public-service career in the future.",
+    "provider": "RPCF"
+  },
+  {
+    "id": "women-in-stem-scholarship-june-30",
+    "name": "Women in STEM Scholarship",
+    "deadline": "June 30",
+    "deadlineYear": 2026,
+    "awardAmount": "$10,000",
+    "classification": [
+      "High School",
+      "Undergraduate"
+    ],
+    "link": "https://www.tun.com/scholarships/the-hyundai-women-in-stem-scholarship/",
+    "openDate": null,
+    "eligibility": "High school seniors and college undergraduates who identify as female, reside in the United States, and wish to pursue a STEM-related field of education.",
+    "eligibilityTags": [
+      "Gender-Specific:Women",
+      "Major-Specific:STEM/Engineering"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "At Hyundai, we know the success of a company is only equal to the talent of its team. We seek those who persevere, ask, “Why not? ” and dare to make a difference. In 500 words or less, tell us how, as a woman in STEM, you’ll redefine convention by doing things differently, more efficiently. We want you to succeed—and hopefully even consider working with us one day. Innovation thrives when great minds unite to work toward a better tomorrow.",
+    "provider": "The University Network"
+  },
+  {
+    "id": "supporting-stem-scholarship-june-30",
+    "name": "Supporting STEM Scholarship",
+    "deadline": "June 30",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate"
+    ],
+    "link": "https://hoshizakiicemaker.com/stem-scholarship",
+    "openDate": null,
+    "eligibility": "Be an undergraduate college student or high school senior\nHave a cumulative minimum of 3.0 GPA\nMaintain full-time enrollment of 12 credit hours or more per college term\nBe a declared major in a science, technology, engineering, or mathematic field of study\nDemonstrate passion for STEM subjects, strong moral character, and leadership ability\nReside in the U.S. attend a U.S. university, and be legally declared as a U.S. citizen",
+    "eligibilityTags": [
+      "Merit-Based",
+      "Major-Specific:STEM/Engineering"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "com, hosted by B & G Refrigeration in Jacksonville, FL, offers an annual scholarship for the spring and fall semester to support students involved in science, technology, engineering, and math focused fields of study. We encourage our youth to pursue these areas of study in order to create college graduates who are prepared to work in fields that enhance the economy and complement the business industry.",
+    "provider": "Main Website"
   },
   {
     "id": "delete-cyberbullying-mental-health-awareness-scholarship-june-30",
@@ -6275,7 +6643,7 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "The Home Depot Foundation Path to Pro Scholarship $2,500 Construction Careers Scholarships SkillPointe Foundation is now SKILLED Nation. Same trusted scholarships. Email: scholarships@skilled-nation. Plan to enroll, or be enrolled within 1 year, in an approved trade-related program at an accredited two-year school or institution (i. technical/vocational school, community college or training center) in the United States. Not be an employee or dependent of an employee of the The Home Depot.",
+    "description": "The Home Depot Foundation Path to Pro Scholarship $2,500 Construction Careers Scholarships SkillPointe Foundation is now SKILLED Nation. Same trusted scholarships. Plan to enroll, or be enrolled within 1 year, in an approved trade-related program at an accredited two-year school or institution (i. technical/vocational school, community college or training center) in the United States. Not be an employee or dependent of an employee of the The Home Depot.",
     "provider": "Webportalapp"
   },
   {
@@ -6312,7 +6680,7 @@
     ],
     "link": "https://couragetogrowscholarship.com/?kclt=8a84db160cef4687bd5145f93ab9d923",
     "openDate": null,
-    "eligibility": "You must be a junior or senior in high school or college student with a minimum GPA of 2.5 or better. U.S. citizens only please",
+    "eligibility": "You must be a junior or senior in high school or college student with a minimum GPA of 2.5 or better. U.S. citizens only",
     "eligibilityTags": [
       "Merit-Based"
     ],
@@ -6338,7 +6706,7 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
@@ -6358,6 +6726,66 @@
     "image": "gradient",
     "description": "1-919-372-8413 1-800-991-7026 sales@axcontrol. This year at AX Control Inc. , we want to recognize those who have taken steps to unite their communities and inspire others to do the same. We hope that this essay will encourage you to reflect on the power of community and the role that you can play in creating positive change, no matter what challenges may arise. The past few years have been marked by significant turmoil and division within America.",
     "provider": "Axcontrol"
+  },
+  {
+    "id": "esperanza-education-fund-june-30",
+    "name": "Esperanza Education Fund",
+    "deadline": "June 30",
+    "deadlineYear": 2026,
+    "awardAmount": "Up to $10,000",
+    "classification": [
+      "High School"
+    ],
+    "link": "https://www.esperanzafund.org/scholarship",
+    "openDate": null,
+    "eligibility": "Must have been born outside the U.S. OR have two parents who were born outside the U.S.\nMust be a graduating senior at a high school in DC, MD, or VA, ​OR have graduated high school within three (3) years and not yet started college and reside in DC, MD, or VA, OR have earned a GED within the last three (3) years and reside in DC, MD, or VA.\nMust plan to enroll full-time at one of the following in DC, MD, or VA: An accredited community college to pursue an Associate’s Degree OR An accredited college/university to pursue a Bachelor’s Degree\nMust have had a household income that is not more than the following (see website)",
+    "eligibilityTags": [],
+    "season": "summer",
+    "image": "gradient",
+    "description": "The Esperanza Education Fund provides scholarships to students from Maryland, Virginia, and Washington, DC who are immigrants or the children of immigrants. The Esperanza Education Fund awards a total of $20K - $60K in scholarships annually, depending on available funding. Esperanza selects approximately 6 - 10 scholarship recipients from a pool of 200+ applications each academic year.",
+    "provider": "Esperanza Fund"
+  },
+  {
+    "id": "alan-and-mary-jo-lincoln-scholarship-june-30",
+    "name": "Alan and Mary Jo Lincoln Scholarship",
+    "deadline": "June 30",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School"
+    ],
+    "link": "https://riversidesalesgroup.com/scholarship/",
+    "openDate": null,
+    "eligibility": "African American HS Senior graduating in 2026\nHave at least a 2.5 cumulative GPA\nBe involved in school activities and community service\nPlan to enroll as a full-time student at a College/University, or trade school during Fall 2026",
+    "eligibilityTags": [
+      "Merit-Based",
+      "Race/Ethnicity:African American/Black"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "We are offering a $1,000 scholarship to a graduating African American High School Senior who plans to attend College/University or Trade School full-time in the Fall of 2026. -Plan to enroll as a full-time student at a College/University, or trade school during Fall 2026 The winner will receive their scholarship in the Fall of 2026 after submitting proof of full-time enrollment in a College/University or Trade School. For questions, please email amjlscholarship@riversidesalesgroup.",
+    "provider": "RIVERSIDE SALES GROUP LLC"
+  },
+  {
+    "id": "abc-humane-wildlife-women-in-stem-academic-scholarship-july-1",
+    "name": "ABC Humane Wildlife Women In STEM Academic Scholarship",
+    "deadline": "July 1",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://abcwildlife.com/about-us/women-in-stem-scholarship/",
+    "openDate": null,
+    "eligibility": "Applicant must be a student currently enrolled at a college or university recognized by the U.S. Department of Education in the United States\nApplicants must be studying or planning to study the fields of science (excluding social sciences i.e. economics), engineering, mathematics, or technology",
+    "eligibilityTags": [
+      "Major-Specific:STEM/Engineering"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "ABC Humane Wildlife Women In STEM Academic Scholarship ABC Humane Wildlife Control & Prevention, Inc. At ABC Wildlife, we believe diversity is critical in every scientific field from biology to chemical engineering. While women represent 48 percent of the American workforce, they make up only 13 percent of engineering professionals and a mere 7. 2 percent in the field of mechanical engineering.",
+    "provider": "ABC Humane Wildlife Control and Prevention"
   },
   {
     "id": "do-it-for-donny-scholarship-july-1",
@@ -6423,8 +6851,8 @@
     "provider": "KB Delta"
   },
   {
-    "id": "scholarship-contest-from-smith-born-leventis-taylor-and-vegan-law-firm-july-1",
-    "name": "Scholarship Contest from Smith, Born, Leventis, Taylor & Vegan Law Firm",
+    "id": "smith-born-leventis-taylor-and-vega-scholarship-july-1",
+    "name": "Smith, Born, Leventis, Taylor & Vega Scholarship",
     "deadline": "July 1",
     "deadlineYear": 2026,
     "awardAmount": "$1,500",
@@ -6434,12 +6862,34 @@
     ],
     "link": "https://www.sbltv.law/scholarship/",
     "openDate": "May 1",
-    "eligibility": "U.S. residents or resident aliens currently enrolled in a U.S. college or university",
+    "eligibility": "Students currently enrolled in a U.S. college or university.",
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
     "description": "Scholarship Contest from Smith, Born, Leventis, Taylor & Vega At Smith, Born, Leventis, Taylor & Vega, we believe in supporting students as they pursue higher education and prepare to make a meaningful impact in their communities. Through our work, we’ve seen how unexpected events—like workplace injuries—can change the course of a person’s life.",
     "provider": "Smith Born Leventis Taylor & Vega, LLC"
+  },
+  {
+    "id": "the-karen-randall-mcclain-memorial-scholarship-july-1",
+    "name": "The Karen Randall McClain Memorial Scholarship",
+    "deadline": "July 1",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.karen-randall-mcclain-memorial.com/scholarship/",
+    "openDate": null,
+    "eligibility": "Must be African American\nGraduate of Pittsburgh Public Schools\nCurrently enrolled in an HBCU\nMay only win once per calendar year",
+    "eligibilityTags": [
+      "Race/Ethnicity:African American/Black"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "The Karen Randall McClain Memorial Scholarship To honor the legacy of Karen Randall McClain by providing educational opportunities for PPS graduates at HBCUs and funding critical brain aneurysm research.",
+    "provider": "Karen Randall McClain Memorial Scholarship"
   },
   {
     "id": "conflict-conquerer-scholarship-july-8",
@@ -6460,6 +6910,26 @@
     "image": "gradient",
     "description": "At The Bihm Firm, LLC, we believe in the power of problem-solving. Each day, our team uses thoughtful problem-solving skills to help our clients and their families through difficult situations. Now, we want to help others who have the courage and creativity to use their problem-solving skills to conquer conflict. We created The Bihm Firm, LLC Conflict Conqueror Scholarship as an opportunity for students who demonstrate their ability to overcome the challenges they face.",
     "provider": "The Bihm Firm, PLLC"
+  },
+  {
+    "id": "face-the-future-scholarship-july-9",
+    "name": "Face the Future Scholarship",
+    "deadline": "July 9",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000-$10,000",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://hellobubble.com/pages/community-scholarship-page?srsltid=AfmBOoqlyz7KNdVDEtjfOQZnDuYqfrjWVc7P3zuS4QEzT5Q4uaHKWkG1",
+    "openDate": null,
+    "eligibility": "Applicants must be 18+ \nApplicants must be current or prospective students based in US, UK, or Canada college or Trade/alternate schooling students\nStudents enrolled in part-time, online, trade, or vocational programs are all welcome to apply",
+    "eligibilityTags": [],
+    "season": "summer",
+    "image": "gradient",
+    "description": "You are unable to access hellobubble. This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page.",
+    "provider": "Hellobubble"
   },
   {
     "id": "study-a-bachelors-in-the-usa-scholarship-july-9",
@@ -6503,8 +6973,8 @@
     "provider": "MFMA"
   },
   {
-    "id": "tylenolr-scholarship-july-13",
-    "name": "TYLENOL® Scholarship",
+    "id": "tylenolr-future-care-scholarship-july-13",
+    "name": "TYLENOL® Future Care Scholarship",
     "deadline": "July 13",
     "deadlineYear": 2026,
     "awardAmount": "$5,000-10,000",
@@ -6544,24 +7014,46 @@
     "provider": "Aidsmemorial"
   },
   {
-    "id": "joy-cappel-scholarship-july-20",
-    "name": "Joy Cappel Scholarship",
+    "id": "innovation-in-education-scholarship-july-20",
+    "name": "Innovation in Education Scholarship",
     "deadline": "July 20",
     "deadlineYear": 2026,
-    "awardAmount": "$2,500",
+    "awardAmount": "$500",
     "classification": [
       "High School",
       "Undergraduate",
       "Graduate"
     ],
-    "link": "https://www.rockland.com/joy-cappel-scholarship/?srsltid=AfmBOoqBGrWtGb0S2aZ9VXuVxHh4o3BPuEwCVg8uSYSEhnlfTU6hrvzu",
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
     "openDate": null,
-    "eligibility": "Must be a high school senior, undergraduate, or graduate student currently accepted or enrolled at a college or university in the United States for the upcoming fall or spring term\nIntended major must be in Life Sciences or a related field",
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
+  },
+  {
+    "id": "the-ruben-lancaster-and-maryann-lancaster-thompson-scholarship-july-22",
+    "name": "The Ruben Lancaster & Maryann Lancaster Thompson Scholarship",
+    "deadline": "July 22",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.lancasterfamilyheritage.org/scholarship",
+    "openDate": null,
+    "eligibility": "Any family or community member, who plans to attend or is presently attending a two-year or four-year academic institution. The scholarship is also available to those who attend a trade school or seek training in a specified field.",
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "Each year, the Joy Cappel Innovation Scholarship will award two collegiate life science students with $2,500 each. The scholarship supports emerging researchers in their scientific training and encourages bold, creative thinking in the life sciences. Established in honor of Joy Cappel’s leadership and legacy at Rockland, this scholarship is part of the broader Joy Cappel Scholars Network, which celebrates scientific curiosity, perseverance, and discovery.",
-    "provider": "Rockland"
+    "description": "The Descendents of Ruben Lancaster and Maryann Lancaster Thompson Family Foundation This scholarship is made possible through the generous donations of members of the Lancaster Family. The scholarship was created to continue the Lancaster tradition of valuing education and supporting individuals who wish to pursue higher education, trade school, or career training programs that lead to future employment opportunities.",
+    "provider": "Lancaster Family"
   },
   {
     "id": "the-phyliss-j-mccarthy-scholarship-for-excellence-in-writing-july-23",
@@ -6578,7 +7070,7 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "On August 6th, 2026, a grand prize scholarship winner ($1,000) and two runners up ($tbd) will be announced, and (pending author approval) their stories will be featured on the Learncurious website and blog. Thank you for honoring Phyliss's love of the written word. Nota bene: LearnCurious is not holding a contest in 2025. We look forward to resuming the scholarship competition in 2026 and reading next year's entries! Our winners for the 2024 competition for the Phyliss J.",
+    "description": "Nota bene: LearnCurious is not holding a contest this year. We look forward to resuming the scholarship competition in the future. On August 6th, 20XX, a grand prize scholarship winner ($1,000) and two runners up ($tbd) will be announced, and (pending author approval) their stories will be featured on the Learncurious website and blog. Thank you for honoring Phyliss's love of the written word. Our winners for the 2024 competition for the Phyliss J.",
     "provider": "learncurious"
   },
   {
@@ -6618,7 +7110,7 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "Online Scholarships for College Students In November 2025, Dallas Cowboys defensive back Alijah Clark made headlines after completing a nearly impossible fumble recovery despite being knocked down several times. Elite Lawyer wants to support students who make game-winning plays despite the odds being stacked against them.",
+    "description": "",
     "provider": "Elitelawyer"
   },
   {
@@ -6639,8 +7131,28 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "The attorneys of Bachus & Schanker, LLC have dedicated their practice to helping the injured and their families receive justice through the civil justice system. Bachus & Schanker, LLC and their staff of more than 70 advocate for the rights of individuals and families who suffer injury or death caused by the negligent or reckless conduct of others. They also help those injured on the job or by dangerous products.",
+    "description": "The attorneys of Bachus & Schanker, LLC have dedicated their practice to helping the injured and their families receive justice through the civil justice system. Bachus & Schanker, LLC and their staff of more than 110 advocate for the rights of individuals and families who suffer injury or death caused by the negligent or reckless conduct of others. They also help those injured on the job or by dangerous products.",
     "provider": "Coloradolaw"
+  },
+  {
+    "id": "labroots-undergraduate-back-to-school-scholarship-july-31",
+    "name": "Labroots Undergraduate Back-to-School Scholarship",
+    "deadline": "July 31",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "Undergraduate"
+    ],
+    "link": "https://www.labroots.com/scholarships/details/33",
+    "openDate": "June 1",
+    "eligibility": "Applicants must be enrolled or accepted for an undergraduate degree (BA/BS) for the 26/27 academic year at a recognized institution.\nThe degree program/research area must be in a Science, Technology, Engineering, or Mathematics field.\nOpen worldwide",
+    "eligibilityTags": [
+      "Major-Specific:STEM/Engineering"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "",
+    "provider": "Labroots"
   },
   {
     "id": "spirit-of-giving-scholarship-july-31",
@@ -6681,8 +7193,8 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "Sixth Annual $2,000 Minecraft Scholarship Application Deadline is July 31st, 2026. All of us here at Apex Hosting believe that education is a fundamental part of living a full and joyful life. In the past, we have partnered with educational institutions and libraries as part of our commitment to education in the classroom and the power of Minecraft through our minecraft server hosting service.",
-    "provider": "Apex Hosting"
+    "description": "",
+    "provider": "Apexminecrafthosting"
   },
   {
     "id": "gen-and-kelly-tanabe-scholarship-july-31",
@@ -6721,7 +7233,7 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "Scholarships At American Graphics Institute Scholarships at American Graphics Institute American Graphics Institute offers multiple scholarships to encourage the use of design and creative thinking across various disciplines and fields. Several scholarships are available each year for students enrolled in any accredited post-secondary undergraduate degree-granting program in the United States.",
+    "description": "",
     "provider": "Agitraining"
   },
   {
@@ -6799,7 +7311,7 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
@@ -6901,7 +7413,7 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "",
+    "description": "You are unable to access mrsprindables. This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. You can email the site owner to let them know you were blocked. Please include what you were doing when this page came up and the Cloudflare Ray ID found at the bottom of this page.",
     "provider": "Mrsprindables"
   },
   {
@@ -7022,7 +7534,7 @@
     ],
     "season": "summer",
     "image": "gradient",
-    "description": "Supporting the next generation of aviation professionals. Four annual scholarships awarded to U. university students enrolled in accredited aviation programs. Writing Commitment Required: As part of the scholarship agreement, recipients are expected to maintain a blog or collaborate on social media content regularly throughout the school year, focused on topics relevant to their aviation program.",
+    "description": "",
     "provider": "Globalair"
   },
   {
@@ -7042,8 +7554,52 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "You don't have permission to access this resource. Additionally, a 403 Forbidden error was encountered while trying to use an ErrorDocument to handle the request.",
+    "description": "You are unable to access supplementrelief. This website is using a security service to protect itself from online attacks. The action you just performed triggered the security solution. There are several actions that could trigger this block including submitting a certain word or phrase, a SQL command or malformed data. You can email the site owner to let them know you were blocked.",
     "provider": "Supplementrelief"
+  },
+  {
+    "id": "sharma-law-associates-scholarship-august-15",
+    "name": "Sharma Law Associates Scholarship",
+    "deadline": "August 15",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.sharmalawassociates.com/scholarship-application",
+    "openDate": null,
+    "eligibility": "Be a U.S. citizen or have legal authorization to work in the United States.\nProvide proof of acceptance into an accredited undergraduate program in pre-law or a related field, or proof of acceptance and enrollment in an accredited U.S. law school for the Fall 2026 semester.\nMaintain a minimum cumulative GPA of 3.0 at the undergraduate level.",
+    "eligibilityTags": [
+      "Merit-Based",
+      "Major-Specific:Law"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "Sharma Law Associates, LLC is proud to offer an annual scholarship opportunity designed to support students pursuing a career in law or a related field. As a client-centered firm, we are guided by the values of Confidence, Courage, and Determination, and we seek to support future legal professionals who embody these same principles. One scholarship award of $1,000 will be granted to assist with tuition, academic fees, and other related educational expenses.",
+    "provider": "Sharma Law Associates"
+  },
+  {
+    "id": "innovation-in-education-scholarship-august-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "August 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
   },
   {
     "id": "probo-medical-scholarship-august-21",
@@ -7065,6 +7621,90 @@
     "image": "gradient",
     "description": "Our goal is to increase healthcare accessibility for all, which means supporting future medical professionals. We are excited to award the “Probo Medical Scholarship” to decrease the burden of educational costs for those pursuing degrees in the medical field. We hope to play a small part in helping students achieve their educational goals with a $500 scholarship.",
     "provider": "Probo Medical Foundation"
+  },
+  {
+    "id": "injury-scholarship-august-21",
+    "name": "Injury Scholarship",
+    "deadline": "August 21",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate"
+    ],
+    "link": "https://harrispersonalinjury.com/injury-scholarship/",
+    "openDate": null,
+    "eligibility": "Applicant must be currently enrolled in an accredited high school, college, or university in the US.\nApplicant must be enrolled as either an undergraduate or in their final year of high school.\nApplicant must be at least 17 years of age.",
+    "eligibilityTags": [],
+    "season": "summer",
+    "image": "gradient",
+    "description": "We offer free consultations over the phone or in person. If you cannot make it to us, we can come to you. At Harris Personal Injury Lawyers, we value higher education and believe all students should have the opportunity to attend college and achieve their goals. Our team understands the difficult process of recovery after sustaining a serious injury.",
+    "provider": "Harris Personal Injury Lawyers, Inc"
+  },
+  {
+    "id": "the-healing-journey-scholarship-august-31",
+    "name": "The Healing Journey Scholarship",
+    "deadline": "August 31",
+    "deadlineYear": 2026,
+    "awardAmount": "$2,500",
+    "classification": [
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.injuredinflorida.com/scholarship/",
+    "openDate": null,
+    "eligibility": "Undergraduate or graduate student who’s received a life-changing medical diagnosis\nApplicant must be at least 18 years old at the age of enrollment\nApplicant must have residency in the United States",
+    "eligibilityTags": [
+      "Major-Specific:Healthcare/Nursing"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "The I-95 Effect – An Analysis Of One Of America’s Most Dangerous Highways The Florida Counties With The Highest Traffic Fatalities Medical Malpractice In Florida: Key Numbers",
+    "provider": "The Schiller Kessler Group"
+  },
+  {
+    "id": "gravitate-scholarship-august-31",
+    "name": "Gravitate Scholarship",
+    "deadline": "August 31",
+    "deadlineYear": 2026,
+    "awardAmount": "$2,500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://siniardlaw.com/2026-gravitate-scholarship/",
+    "openDate": null,
+    "eligibility": "The Gravitate Scholarship is open to students currently enrolled in a vocational program or attending a two- to four-year accredited college or university. Eligible applicants include high school seniors, vocational students, undergraduate students, and graduate students who are legal residents of the United States and live in one of the 50 states or the District of Columbia.\nApplicants must have a cumulative GPA of 3.0 or above and be in good academic standing at their current educational institution.",
+    "eligibilityTags": [
+      "Merit-Based",
+      "State-Specific"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "Siniard Law, LLC is proud to call Huntsville, Alabama home. Known across the country as “Rocket City,” Huntsville has a storied history rooted in rocketry, innovation, and space exploration. The city played a central role in developing the rockets that sent astronauts to the moon and continues to be a hub for aerospace, defense, and technology industries.",
+    "provider": "Huntsville Personal Injury Lawyers | Siniard Law"
+  },
+  {
+    "id": "the-devadoss-law-firm-civil-rights-scholarship-august-31",
+    "name": "The Devadoss Law Firm Civil Rights Scholarship",
+    "deadline": "August 31",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.fedemploymentlaw.com/the-devadoss-law-firm-civil-rights-scholarship/",
+    "openDate": null,
+    "eligibility": "Must be a current or aspiring law student\nMust be a citizen or permanent resident of the United States\nMust be enrolled at an accredited college or university within the United States as an undergraduate or graduate student\nMust be at least 17 years of age",
+    "eligibilityTags": [
+      "Major-Specific:Law"
+    ],
+    "season": "summer",
+    "image": "gradient",
+    "description": "",
+    "provider": "Fedemploymentlaw"
   },
   {
     "id": "driver-education-initiative-award-annual-scholarship-opportunity-august-31",
@@ -7121,7 +7761,7 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "",
+    "description": "You are unable to access realtyhop.",
     "provider": "Realtyhop"
   },
   {
@@ -7242,8 +7882,29 @@
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
+  },
+  {
+    "id": "the-clarence-and-barbara-taliaferro-scholarship-program-september-1",
+    "name": "The Clarence & Barbara Taliaferro Scholarship Program",
+    "deadline": "September 1",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School"
+    ],
+    "link": "https://www.darryltaliaferro.org/the-clarence-barbara-taliaferro-scholarship-program/",
+    "openDate": null,
+    "eligibility": "Applicants must have a cumulative grade point average of 2.5 or higher on a 4.0 scale\nBe a high school senior who has applied to and enrolled in a full time course of study at an accredited four-year college or university\nBe a college freshman, sophomore or junior currently enrolled in a full time course of study at an accredited four-year college or university\nBe a community college student who has enrolled in a full time course of study\nMust demonstrate financial need according to the Free Application for Federal Student Aid Form (FASFA) and the Student Aid Report (SAR) form.",
+    "eligibilityTags": [
+      "Need-Based",
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "THE CLARENCE & BARBARA TALIAFERRO SCHOLARSHIP PROGRAM MAIL COMPLETED SCHOLARSHIP APPLICATIONS TO: The Clarence & Barbara Taliaferro Scholarship Program Attention: Scholarship Committee  Nashville, TN 37203",
+    "provider": "Darryl M. Taliaferro"
   },
   {
     "id": "naja-scholarship-september-1",
@@ -7407,7 +8068,7 @@
     ],
     "season": "fall",
     "image": "gradient",
-    "description": "A $1,500 scholarship to support students fueled by their love to reading and dedicated to advancing their education. Share your vision for a non-fiction book that has the potential to become a timeless handbook for humanity. Headway’s Book Lovers Scholarship aims to support students willing to achieve new heights in their education. This exclusive opportunity is available to US students seeking higher education in colleges, universities, and vocational-technical schools.",
+    "description": "A $1,500 scholarship to support students fueled by their love to reading and dedicated to advancing their education. Share your vision for a non-fiction book that has the potential to become a timeless handbook for humanity. Headway’s Book Lovers Scholarship aims to support students willing to achieve new heights in their education.",
     "provider": "Makeheadway"
   },
   {
@@ -7472,6 +8133,28 @@
     "image": "gradient",
     "description": "'Be the Boss' Scholarship for Women in Business Build the skills, confidence, and knowledge you need to turn your business idea into reality — and become part of a global community of women entrepreneurs. A scholarship for women who want to be the boss Women-led businesses deliver stronger returns, create more jobs, and outperform the status quo — yet they receive a fraction of the funding. We’re here to help change that.",
     "provider": "GoSkills.com"
+  },
+  {
+    "id": "innovation-in-education-scholarship-september-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "September 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
   },
   {
     "id": "nshss-foundation-business-and-public-policy-scholarship-september-22",
@@ -7637,7 +8320,7 @@
     ],
     "season": "fall",
     "image": "gradient",
-    "description": "The Home Depot Foundation Path to Pro Scholarship $2,500 Construction Careers Scholarships SkillPointe Foundation is now SKILLED Nation. Same trusted scholarships. Email: scholarships@skilled-nation. Plan to enroll, or be enrolled within 1 year, in an approved trade-related program at an accredited two-year school or institution (i. technical/vocational school, community college or training center) in the United States. Not be an employee or dependent of an employee of the The Home Depot.",
+    "description": "The Home Depot Foundation Path to Pro Scholarship $2,500 Construction Careers Scholarships SkillPointe Foundation is now SKILLED Nation. Same trusted scholarships. Plan to enroll, or be enrolled within 1 year, in an approved trade-related program at an accredited two-year school or institution (i. technical/vocational school, community college or training center) in the United States. Not be an employee or dependent of an employee of the The Home Depot.",
     "provider": "Webportalapp"
   },
   {
@@ -7675,7 +8358,7 @@
     ],
     "link": "https://www.jumpstart-scholarship.net/application-pay-it-forward-scholarship",
     "openDate": null,
-    "eligibility": "Current student (high school 10th-12th or college) or planning to enter college within the next 12 months",
+    "eligibility": "Current student (high school 10th-12th or college) or planning to enter college within the next 12 months\nU.S. citizen or legal resident",
     "eligibilityTags": [],
     "season": "fall",
     "image": "gradient",
@@ -7725,6 +8408,26 @@
     "provider": "Return2college"
   },
   {
+    "id": "jandy-books-for-good-scholarship-september-30",
+    "name": "J&Y “Books for Good” Scholarship",
+    "deadline": "September 30",
+    "deadlineYear": 2026,
+    "awardAmount": "$300",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://jnylaw.com/scholarship/",
+    "openDate": null,
+    "eligibility": "Students at accredited colleges, trade schools, universities, and graduate schools in the United States",
+    "eligibilityTags": [],
+    "season": "fall",
+    "image": "gradient",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
+    "provider": "J&Y Law"
+  },
+  {
     "id": "the-bank-family-education-fund-scholarship-september-30",
     "name": "The Bank Family Education Fund Scholarship",
     "deadline": "September 30",
@@ -7744,26 +8447,6 @@
     "image": "gradient",
     "description": "The Bank Family Education Fund was established by Daniel Banks, Barbara Banks, and their family to offer scholarships to students interested in outdoors, wildlife, and conservation, giving them the opportunity to further their education. The fund offers up to $2,000 yearly scholarships to current students who maintain a cumulative GPA of 3. The scholarships are awarded twice annually, in April and again in October of each year. Deadlines for scholarship submissions are March 30 and September 30.",
     "provider": "Dan's Fishing"
-  },
-  {
-    "id": "jandy-books-for-good-scholarship-september-30",
-    "name": "J&Y “Books for Good” Scholarship",
-    "deadline": "September 30",
-    "deadlineYear": 2026,
-    "awardAmount": "$300",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://jnylaw.com/scholarship/",
-    "openDate": null,
-    "eligibility": "Students at accredited colleges, trade schools, universities, and graduate schools in the United States",
-    "eligibilityTags": [],
-    "season": "fall",
-    "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
-    "provider": "J&Y Law"
   },
   {
     "id": "jmj-phillip-group-college-scholarship-october-1",
@@ -7887,7 +8570,7 @@
     "eligibilityTags": [],
     "season": "fall",
     "image": "gradient",
-    "description": "Free Consultations | Calls Answered 24/7  1-855-NICOLET Home >> Community Involvement >> Nicolet Law Scholarship",
+    "description": "Free Consultations | Calls Answered 24/7  1-855-NICOLET Home >> Community Involvement >> Nicolet Law Scholarship Nicolet Law believes in the value of a post-secondary education and that when hard work meets opportunity, great things can happen. We also understand the financial strain that can come with an undergraduate and graduate education. Since 2020, our firm has been offering a biannual scholarship, awarding $5,000 to a chosen recipient in the Spring and another in the Fall.",
     "provider": "Nicolet Law Accident & Injury Lawyers"
   },
   {
@@ -7930,6 +8613,28 @@
     "provider": "Lounge Lizard"
   },
   {
+    "id": "youngarts-competition-october-9",
+    "name": "YoungArts Competition",
+    "deadline": "October 9",
+    "deadlineYear": 2026,
+    "awardAmount": "$250-$10,000",
+    "classification": [
+      "K-12",
+      "High School"
+    ],
+    "link": "https://youngarts.org/apply/",
+    "openDate": "June 12",
+    "eligibility": "A citizen of the United States, a permanent resident/green card recipient, or can demonstrate that I am legally able to receive taxable income in the United States\nGrades 10–12 or 15–18 years of age on December 1 of the application year\nAccepting applications in 10 disciplines: Classical Music, Dance, Design, Film, Jazz, Photography, Theater, Visual Arts, Voice, Writing",
+    "eligibilityTags": [
+      "Creative/Arts",
+      "Major-Specific:Arts/Theater"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "Founded in 1981, YoungArts identifies exceptional young artists, amplifies their potential, and invests in their lifelong creative freedom. All award winners go on to receive critical, ongoing support. Artists ages 15–18, or grades 10–12, are encouraged to apply to our national competition in the discipline of their choice. The 2027 YoungArts application opens in Summer 2026.",
+    "provider": "YoungArts"
+  },
+  {
     "id": "ruth-abernathy-presidential-scholarship-october-15",
     "name": "Ruth Abernathy Presidential Scholarship",
     "deadline": "October 15",
@@ -7945,8 +8650,8 @@
     "eligibilityTags": [],
     "season": "fall",
     "image": "gradient",
-    "description": "Since 1995, SHAPE America has awarded scholarships to outstanding undergraduate and graduate student members majoring in the field of health, physical education, recreation or dance. The Ruth Abernathy Presidential Scholarship, developed by the past presidents of SHAPE America to honor deserving students, is awarded to three undergraduate students and two graduate students in January of each year. All scholarships are presented at the SHAPE America National Convention & Expo held in the spring.",
-    "provider": "Shapeamerica"
+    "description": "That page can’t be found. It looks like nothing was found at this location.",
+    "provider": "SHAPE America"
   },
   {
     "id": "bill-kane-undergraduate-scholarship-october-15",
@@ -7965,8 +8670,8 @@
     ],
     "season": "fall",
     "image": "gradient",
-    "description": "The award is a $1,000 scholarship awarded annually to an undergraduate student. Recipients may spend the award in any manner they desire. Recipients will also receive a one-year complimentary student membership in SHAPE America. The application materials must be received by October 15. The award is open to any student officially recognized as an undergraduate school-based health education major at an accredited college/university in the United States or a U.",
-    "provider": "Shapeamerica"
+    "description": "That page can’t be found. It looks like nothing was found at this location.",
+    "provider": "SHAPE America"
   },
   {
     "id": "pretty-photoshop-actions-annual-scholarship-october-15",
@@ -8047,6 +8752,28 @@
     "provider": "Nshss"
   },
   {
+    "id": "innovation-in-education-scholarship-october-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "October 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
+  },
+  {
     "id": "american-bullion-scholarship-october-31",
     "name": "American Bullion Scholarship",
     "deadline": "October 31",
@@ -8122,7 +8849,7 @@
     "eligibilityTags": [],
     "season": "fall",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
@@ -8208,6 +8935,28 @@
     "provider": "Charles E. Boyk Law Offices, LLC"
   },
   {
+    "id": "lucas-law-legal-leaders-scholarship-november-11",
+    "name": "Lucas Law Legal Leaders Scholarship",
+    "deadline": "November 11",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.lucaslaw.com/scholarship",
+    "openDate": null,
+    "eligibility": "The student is pursuing a career in the legal field.\nThe student maintains a 3.5 grade point average or higher (if you do not currently have a GPA, you may provide your GPA from your most recently completed academic semester).\nThe student is enrolled (or planning to enroll) in an accredited undergraduate or graduate program within the United States through the Fall 2026 semester.\nThe student is at least 17 years old.",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "Personalized Legal Services in Barrington & Schaumburg, IL For over 35 years, Attorney Joseph Lucas has been practicing law. This experience has provided him with an immense appreciation for the role each unique specialty plays in the success of the legal community. PLEASE SEND ALL QUESTIONS TO LUCASLAWSCHOLARSHIP@GMAIL.",
+    "provider": "Lucas Law"
+  },
+  {
     "id": "the-james-alan-cox-foundation-for-student-photojournalists-november-15",
     "name": "The James Alan Cox Foundation for Student Photojournalists",
     "deadline": "November 15",
@@ -8270,6 +9019,28 @@
     "provider": "Jack Kent Cooke Foundation - Advancing the education of exceptionally promising students who have financial need"
   },
   {
+    "id": "innovation-in-education-scholarship-november-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "November 20",
+    "deadlineYear": 2026,
+    "awardAmount": "$500",
+    "classification": [
+      "High School",
+      "Undergraduate",
+      "Graduate"
+    ],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
+    "season": "fall",
+    "image": "gradient",
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
+  },
+  {
     "id": "point-foundation-scholarship-november-20",
     "name": "Point Foundation Scholarship",
     "deadline": "November 20",
@@ -8308,7 +9079,7 @@
     "eligibilityTags": [],
     "season": "fall",
     "image": "gradient",
-    "description": "Are you enrolled or about to enroll in a college, university, or trade school? Are you looking for a little extra help in funding your education to cover expenses that other scholarships and financial aid don't cover? If your answer is \"yes,\" we have a solution that could help out with books, supplies, or anything else you need to cover your educational expenses. Apply now to our 2026 Scholarship, which will be in the amount of $1,000.",
+    "description": "ServiceScape is now editing. services: Same trusted editors and services — now with a new name. Are you enrolled or about to enroll in a college, university, or trade school? Are you looking for a little extra help in funding your education to cover expenses that other scholarships and financial aid don't cover? If your answer is \"yes,\" we have a solution that could help out with books, supplies, or anything else you need to cover your educational expenses.",
     "provider": "Servicescape"
   },
   {
@@ -8330,7 +9101,7 @@
     ],
     "season": "fall",
     "image": "gradient",
-    "description": "The attorneys of Bachus & Schanker, LLC have dedicated their practice to helping the injured and their families receive justice through the civil justice system. Bachus & Schanker, LLC and their staff of more than 70 advocate for the rights of individuals and families who suffer injury or death caused by the negligent or reckless conduct of others. They also help those injured on the job or by dangerous products.",
+    "description": "The attorneys of Bachus & Schanker, LLC have dedicated their practice to helping the injured and their families receive justice through the civil justice system. Bachus & Schanker, LLC and their staff of more than 110 advocate for the rights of individuals and families who suffer injury or death caused by the negligent or reckless conduct of others. They also help those injured on the job or by dangerous products.",
     "provider": "Coloradolaw"
   },
   {
@@ -8369,7 +9140,7 @@
     "eligibilityTags": [],
     "season": "fall",
     "image": "gradient",
-    "description": "3 Scholarships valued at $5,000 each. Available to students attending accredited colleges and universities in the United States. The Storage Center offers six scholarships annually – three awarded in Spring 2026 and three more in Fall 2026. Soon to be accepting applications for Spring Scholarship to be awarded June 2026 Lauren Forney is a Health Science student at Spelman College from Katy, Texas, whose lifelong commit...",
+    "description": "3 Scholarships valued at $5,000 each. Available to students attending accredited colleges and universities in the United States. The Storage Center offers six scholarships annually – three awarded in Spring 2026 and three more in Fall 2026. Soon to be accepting applications for Fall Scholarship to be awarded January 2027 Mattison Wiley is a freshman at the University of Central Arkansas who has logged more than 847 veri...",
     "provider": "The Storage Center"
   },
   {
@@ -8411,7 +9182,7 @@
     "eligibilityTags": [],
     "season": "fall",
     "image": "gradient",
-    "description": "HomeMental Health & General Education Scholarship General Education and Mental Health Scholarship To raise awareness as to the causes, consequences and treatment of addiction, Seasons in Malibu, a luxury addiction treatment center, is seeking to reward essay applicants $1,500 in scholarships- for students entering college or already enrolled in a higher education institution.",
+    "description": "HomeMental Health & General Education Scholarship General Education and Mental Health Scholarship To help raise awareness about the causes, consequences, and treatment of addiction, Seasons in Malibu is offering a $1,500 scholarship to students who are entering college or currently enrolled in a higher education program.",
     "provider": "Seasons In Malibu"
   },
   {
@@ -8431,7 +9202,7 @@
     "eligibilityTags": [],
     "season": "fall",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
@@ -8521,6 +9292,66 @@
     "provider": "Smartscholarship"
   },
   {
+    "id": "defense-against-distracted-driving-scholarship-december-12",
+    "name": "Defense Against Distracted Driving Scholarship",
+    "deadline": "December 12",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000",
+    "classification": [
+      "High School",
+      "Undergraduate"
+    ],
+    "link": "https://jnylaw.com/distracted-driving-scholarship/",
+    "openDate": null,
+    "eligibility": "Scholarship only available to high school seniors and college undergraduates.\nThe recipient must be enrolled in an accredited college or University in California.\nThe student must have a minimum of a 3.0 GPA (or B average in high school).\nThe recipient must be at least 18 years of age.",
+    "eligibilityTags": [
+      "Merit-Based",
+      "State-Specific"
+    ],
+    "season": "winter",
+    "image": "gradient",
+    "description": "Defense Against Distracted Driving Scholarship This Scholarship Is No Longer Available To Apply. We Thank You For Your Interest! This scholarship is no longer available to apply. We thank you for your interest! This $1,000 scholarship is to support high school seniors and college students who are committed to servicing their community by pledging to abstain from distracted driving.",
+    "provider": "J&Y Law"
+  },
+  {
+    "id": "lois-britt-memorial-pork-industry-scholarship-december-12",
+    "name": "Lois Britt Memorial Pork Industry Scholarship",
+    "deadline": "December 12",
+    "deadlineYear": 2026,
+    "awardAmount": "$2,500",
+    "classification": [
+      "Undergraduate"
+    ],
+    "link": "https://nppc.org/britt-scholarship/",
+    "openDate": null,
+    "eligibility": "Be a current undergraduate student in a two-year swine program or four-year college of agriculture.\nBe a U.S. citizen. High school students are not eligible.",
+    "eligibilityTags": [
+      "Major-Specific:Agriculture"
+    ],
+    "season": "winter",
+    "image": "gradient",
+    "description": "2026 Lois Britt Memorial Pork Industry Scholarship Winners will be announced in the new year, and we look forward to opening applications again in early fall 2026 for the next round of applicants. Sponsored by CME Group and the National Pork Industry Foundation (NPIF) and administered by the National Pork Producers Council (NPPC), this scholarship supports undergraduate students pursuing careers in agriculture.",
+    "provider": "National Pork Producers Council"
+  },
+  {
+    "id": "burger-king-foundation-december-15",
+    "name": "Burger King Foundation",
+    "deadline": "December 15",
+    "deadlineYear": 2026,
+    "awardAmount": "$1,000-$60,000",
+    "classification": [
+      "High School"
+    ],
+    "link": "https://www.burgerkingfoundation.org/programs/burger-king-sm-scholars",
+    "openDate": "October 15",
+    "eligibility": "Deserving high school seniors attending college or post-secondary vocational/technical school",
+    "eligibilityTags": [],
+    "season": "winter",
+    "image": "gradient",
+    "description": "Through the BK℠ Scholars program, we’ve awarded nearly $64 million to over 54,000 deserving students across North America. Our goal is to grant one scholarship for every BK® restaurant — that’s more than $7 million each year! Education is a key part of success, and we focus on bringing that to students in North America through our BK Scholars Program. The BK Scholars Program is the Foundation’s flagship program, established to honor the legacy of the Burger King brand’s co-founder James W.",
+    "provider": "Burgerkingfoundation"
+  },
+  {
     "id": "autism-scholarship-contest-december-18",
     "name": "Autism Scholarship Contest",
     "deadline": "December 18",
@@ -8541,22 +9372,26 @@
     "provider": "Phoenix Personal Injury Lawyer"
   },
   {
-    "id": "burger-king-foundation-december-15",
-    "name": "Burger King Foundation",
-    "deadline": "December 15",
+    "id": "innovation-in-education-scholarship-december-20",
+    "name": "Innovation in Education Scholarship",
+    "deadline": "December 20",
     "deadlineYear": 2026,
-    "awardAmount": "$1,000-$60,000",
+    "awardAmount": "$500",
     "classification": [
-      "High School"
+      "High School",
+      "Undergraduate",
+      "Graduate"
     ],
-    "link": "https://www.burgerkingfoundation.org/programs/burger-king-sm-scholars",
-    "openDate": "October 15",
-    "eligibility": "Deserving high school seniors attending college or post-secondary vocational/technical school",
-    "eligibilityTags": [],
+    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "openDate": null,
+    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibilityTags": [
+      "Merit-Based"
+    ],
     "season": "winter",
     "image": "gradient",
-    "description": "Through the BK℠ Scholars program, we’ve awarded nearly $64 million to over 54,000 deserving students across North America. Our goal is to grant one scholarship for every BK® restaurant — that’s more than $7 million each year! Education is a key part of success, and we focus on bringing that to students in North America through our BK Scholars Program. The BK Scholars Program is the Foundation’s flagship program, established to honor the legacy of the Burger King brand’s co-founder James W.",
-    "provider": "Burgerkingfoundation"
+    "description": "One way to showcase your creativity is to innovate either by solving a problem, by designing something that helps others solve problems, or by enhancing our relationship with whatever matters to us. Innovation is what brings our technical skills and our hopes together in unique ways.",
+    "provider": "LA Tutors 123"
   },
   {
     "id": "revpart-stem-scholarship-december-31",
@@ -8744,46 +9579,24 @@
     "provider": "College JumpStart Scholarship"
   },
   {
-    "id": "defense-against-distracted-driving-scholarship-december-12",
-    "name": "Defense Against Distracted Driving Scholarship",
-    "deadline": "December 12",
+    "id": "micklin-law-group-educational-scholarship-december-31",
+    "name": "Micklin Law Group Educational Scholarship",
+    "deadline": "December 31",
     "deadlineYear": 2026,
     "awardAmount": "$1,000",
     "classification": [
       "High School",
-      "Undergraduate"
+      "Undergraduate",
+      "Graduate"
     ],
-    "link": "https://jnylaw.com/distracted-driving-scholarship/",
+    "link": "https://www.micklinlawgroup.com/educational-scholarships/",
     "openDate": null,
-    "eligibility": "Scholarship only available to high school seniors and college undergraduates.\nThe recipient must be enrolled in an accredited college or University in California.\nThe student must have a minimum of a 3.0 GPA (or B average in high school).\nThe recipient must be at least 18 years of age.",
-    "eligibilityTags": [
-      "Merit-Based",
-      "State-Specific"
-    ],
+    "eligibility": "Applicants must be accepted into an accredited college in the United States.",
+    "eligibilityTags": [],
     "season": "winter",
     "image": "gradient",
-    "description": "Defense Against Distracted Driving Scholarship This Scholarship Is No Longer Available To Apply. We Thank You For Your Interest! This scholarship is no longer available to apply. We thank you for your interest! This $1,000 scholarship is to support high school seniors and college students who are committed to servicing their community by pledging to abstain from distracted driving.",
-    "provider": "J&Y Law"
-  },
-  {
-    "id": "lois-britt-memorial-pork-industry-scholarship-december-12",
-    "name": "Lois Britt Memorial Pork Industry Scholarship",
-    "deadline": "December 12",
-    "deadlineYear": 2026,
-    "awardAmount": "$2,500",
-    "classification": [
-      "Undergraduate"
-    ],
-    "link": "https://nppc.org/britt-scholarship/",
-    "openDate": null,
-    "eligibility": "Be a current undergraduate student in a two-year swine program or four-year college of agriculture.\nBe a U.S. citizen. High school students are not eligible.",
-    "eligibilityTags": [
-      "Major-Specific:Agriculture"
-    ],
-    "season": "winter",
-    "image": "gradient",
-    "description": "2026 Lois Britt Memorial Pork Industry Scholarship Winners will be announced in the new year, and we look forward to opening applications again in early fall 2026 for the next round of applicants. Sponsored by CME Group and the National Pork Industry Foundation (NPIF) and administered by the National Pork Producers Council (NPPC), this scholarship supports undergraduate students pursuing careers in agriculture.",
-    "provider": "National Pork Producers Council"
+    "description": "MICKLIN LAW GROUP EDUCATIONAL SCHOLARSHIP Brad Micklin, lead attorney and managing partner at The Micklin Law Group, LLC, is a family law attorney who focuses on fathers and men’s rights. from Temple University in Pennsylvania before attending Widener University of Law in Delaware. Brad’s education has afforded him a successful and fulfilling career that otherwise may not have been possible, so he understands the difference an education can make.",
+    "provider": "The Micklin Law Group, LLC"
   },
   {
     "id": "the-home-depot-foundation-path-to-pro-scholarship-december-31",
@@ -8804,7 +9617,7 @@
     ],
     "season": "winter",
     "image": "gradient",
-    "description": "The Home Depot Foundation Path to Pro Scholarship $2,500 Construction Careers Scholarships SkillPointe Foundation is now SKILLED Nation. Same trusted scholarships. Email: scholarships@skilled-nation. Plan to enroll, or be enrolled within 1 year, in an approved trade-related program at an accredited two-year school or institution (i. technical/vocational school, community college or training center) in the United States. Not be an employee or dependent of an employee of the The Home Depot.",
+    "description": "The Home Depot Foundation Path to Pro Scholarship $2,500 Construction Careers Scholarships SkillPointe Foundation is now SKILLED Nation. Same trusted scholarships. Plan to enroll, or be enrolled within 1 year, in an approved trade-related program at an accredited two-year school or institution (i. technical/vocational school, community college or training center) in the United States. Not be an employee or dependent of an employee of the The Home Depot.",
     "provider": "Webportalapp"
   },
   {
@@ -8820,7 +9633,7 @@
     ],
     "link": "https://www.mpowerfinancing.com/scholarships/global-citizen#gcscholarship",
     "openDate": null,
-    "eligibility": "Be accepted at, or enrolled in, a full-time degree program at an MPOWER-eligible school in the U.S. or Canada\nBe an international student allowed to legally study in the U.S. or Canada, as applicable:\nFor study in the U.S., this means that the applicant meets one of these criteria: Has a valid visa that permits study in the U.S. OR Is protected under the Deferred Action for Childhood Arrivals (DACA) ORIs a U.S. permanent resident (Green Card holder)\nFor study in Canada, this means the applicant meets one of these criteria: Is a Canadian permanent resident OR Has a valid Canadian study permit",
+    "eligibility": "Be accepted at, or enrolled in, a full-time degree program at an MPOWER-eligible school in the U.S. or Canada\nBe an international student allowed to legally study in the U.S. or Canada, as applicable:\nFor study in the U.S., this means that the applicant meets one of these criteria: Has a valid visa that permits study in the U.S. OR Is protected under the Deferred Action for Childhood Arrivals (DACA) OR Is a U.S. permanent resident (Green Card holder)\nFor study in Canada, this means the applicant meets one of these criteria: Is a Canadian permanent resident OR Has a valid Canadian study permit",
     "eligibilityTags": [],
     "season": "winter",
     "image": "gradient",
@@ -8864,52 +9677,50 @@
     "eligibilityTags": [],
     "season": "winter",
     "image": "gradient",
-    "description": "Selection And Award Notification Process The firm wants to award those students who’ve made a transformative impact on where they live and ensure that young people continue to have the means to improve the lives of the people around them. That’s where the Books for Good Scholarship comes in.",
+    "description": "Selection And Award Notification Process We are currently reviewing submissions for our May scholarship cycle. Thank you to everyone who applied! For June, we’re excited to announce a new scholarship format and partnership with Bold. Stay tuned for more details coming soon.",
     "provider": "J&Y Law"
   },
   {
-    "id": "innovation-in-education-scholarship-january-20",
-    "name": "Innovation in Education Scholarship",
+    "id": "joy-cappel-scholarship-january-20",
+    "name": "Joy Cappel Scholarship",
     "deadline": "January 20",
     "deadlineYear": 2027,
-    "awardAmount": "$500",
+    "awardAmount": "$2,500",
     "classification": [
       "High School",
       "Undergraduate",
       "Graduate"
     ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "link": "https://www.rockland.com/joy-cappel-scholarship/?srsltid=AfmBOoqBGrWtGb0S2aZ9VXuVxHh4o3BPuEwCVg8uSYSEhnlfTU6hrvzu",
     "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
+    "eligibility": "Must be a high school senior, undergraduate, or graduate student currently accepted or enrolled at a college or university in the United States for the upcoming fall or spring term\nIntended major must be in Life Sciences or a related field",
+    "eligibilityTags": [],
     "season": "winter",
     "image": "gradient",
     "description": "",
-    "provider": "Latutors123"
+    "provider": "Rockland"
   },
   {
-    "id": "innovation-in-education-scholarship-february-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "February 20",
+    "id": "baer-reintegration-scholarship-january-31",
+    "name": "Baer Reintegration Scholarship",
+    "deadline": "January 31",
     "deadlineYear": 2027,
-    "awardAmount": "$500",
+    "awardAmount": "Varies",
     "classification": [
       "High School",
       "Undergraduate",
       "Graduate"
     ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "link": "https://www.reintegration.com/2023-application-process",
     "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
+    "eligibility": "Be diagnosed with bipolar disorder, schizophrenia or schizoaffective disorder\nBe currently receiving medical treatment for the disease, including medications and psychiatric follow-up\nBe actively involved in rehabilitative or reintegration efforts, such as clubhouse membership, part-or full-time employment, volunteer efforts or\nschool enrollment.\nBe a U.S. citizen or legal resident and plan to attend a school in the United States\nBe age 18 years or older",
     "eligibilityTags": [
-      "Merit-Based"
+      "Major-Specific:Healthcare/Nursing"
     ],
     "season": "winter",
     "image": "gradient",
     "description": "",
-    "provider": "Latutors123"
+    "provider": "Reintegration"
   },
   {
     "id": "create-a-greeting-card-scholarship-march-9",
@@ -8932,26 +9743,22 @@
     "provider": "Gallerycollection"
   },
   {
-    "id": "innovation-in-education-scholarship-march-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "March 20",
+    "id": "gold-award-girl-scouts-march-31",
+    "name": "Gold Award Girl Scouts",
+    "deadline": "March 31",
     "deadlineYear": 2027,
-    "awardAmount": "$500",
+    "awardAmount": "$5,000",
     "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
+      "High School"
     ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "link": "https://www.girlscouts.org/en/members/for-girl-scouts/badges-journeys-awards/highest-awards/gold-award/gold-award-scholarship.html",
     "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
+    "eligibility": "Current high school seniors who earned or will earn anytime before April 1, 2026\nRecent high school graduates who earned in their senior year after March 31, 2025",
+    "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
     "description": "",
-    "provider": "Latutors123"
+    "provider": "Girlscouts"
   },
   {
     "id": "hbcu-bound-scholarship-april-1",
@@ -8975,70 +9782,40 @@
     "provider": "Thehbcualum"
   },
   {
-    "id": "innovation-in-education-scholarship-april-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "April 20",
+    "id": "gold-award-girl-scouts-april-14",
+    "name": "Gold Award Girl Scouts",
+    "deadline": "April 14",
     "deadlineYear": 2027,
-    "awardAmount": "$500",
+    "awardAmount": "$5,000",
     "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
+      "High School"
     ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
-    "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
+    "link": "https://www.girlscouts.org/en/members/for-girl-scouts/badges-journeys-awards/highest-awards/gold-award/gold-award-scholarship.html",
+    "openDate": "March 13",
+    "eligibility": "Current high school seniors who earned or will earn anytime before April 1, 2026 or recent high school graduates who earned in their senior year after March 31, 2025",
+    "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
     "description": "",
-    "provider": "Latutors123"
+    "provider": "Girlscouts"
   },
   {
-    "id": "innovation-in-education-scholarship-may-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "May 20",
+    "id": "pureland-supply-vocational-and-skilled-trade-scholarship-may-1",
+    "name": "Pureland Supply Vocational and Skilled Trade Scholarship",
+    "deadline": "May 1",
     "deadlineYear": 2027,
-    "awardAmount": "$500",
+    "awardAmount": "$250",
     "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
+      "Undergraduate"
     ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "link": "https://www.purelandsupply.com/t-scholarship.aspx",
     "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
+    "eligibility": "Designed to support students who are enrolled in accredited trade schools, vocational colleges, technical schools, or community colleges pursuing careers in trade, craft, or labor-related fields.",
+    "eligibilityTags": [],
     "season": "spring",
     "image": "gradient",
     "description": "",
-    "provider": "Latutors123"
-  },
-  {
-    "id": "innovation-in-education-scholarship-june-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "June 20",
-    "deadlineYear": 2026,
-    "awardAmount": "$500",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
-    "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "summer",
-    "image": "gradient",
-    "description": "",
-    "provider": "Latutors123"
+    "provider": "Purelandsupply"
   },
   {
     "id": "adam-ferrari-health-science-scholarship-june-30",
@@ -9060,198 +9837,24 @@
     "provider": "Theferrarifoundation"
   },
   {
-    "id": "innovation-in-education-scholarship-july-20",
-    "name": "Innovation in Education Scholarship",
+    "id": "joy-cappel-scholarship-july-20",
+    "name": "Joy Cappel Scholarship",
     "deadline": "July 20",
     "deadlineYear": 2026,
-    "awardAmount": "$500",
+    "awardAmount": "$2,500",
     "classification": [
       "High School",
       "Undergraduate",
       "Graduate"
     ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
+    "link": "https://www.rockland.com/joy-cappel-scholarship/?srsltid=AfmBOoqBGrWtGb0S2aZ9VXuVxHh4o3BPuEwCVg8uSYSEhnlfTU6hrvzu",
     "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "summer",
-    "image": "gradient",
-    "description": "",
-    "provider": "Latutors123"
-  },
-  {
-    "id": "innovation-in-education-scholarship-august-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "August 20",
-    "deadlineYear": 2026,
-    "awardAmount": "$500",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
-    "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "summer",
-    "image": "gradient",
-    "description": "",
-    "provider": "Latutors123"
-  },
-  {
-    "id": "injury-scholarship-august-21",
-    "name": "Injury Scholarship",
-    "deadline": "August 21",
-    "deadlineYear": 2026,
-    "awardAmount": "$1,000",
-    "classification": [
-      "High School",
-      "Undergraduate"
-    ],
-    "link": "https://harrispersonalinjury.com/injury-scholarship/",
-    "openDate": null,
-    "eligibility": "Applicant must be currently enrolled in an accredited high school, college, or university in the US.\nApplicant must be enrolled as either an undergraduate or in their final year of high school.\nApplicant must be at least 17 years of age.",
+    "eligibility": "Must be a high school senior, undergraduate, or graduate student currently accepted or enrolled at a college or university in the United States for the upcoming fall or spring term\nIntended major must be in Life Sciences or a related field",
     "eligibilityTags": [],
     "season": "summer",
     "image": "gradient",
     "description": "",
-    "provider": "Harrispersonalinjury"
-  },
-  {
-    "id": "the-devadoss-law-firm-civil-rights-scholarship-august-31",
-    "name": "The Devadoss Law Firm Civil Rights Scholarship",
-    "deadline": "August 31",
-    "deadlineYear": 2026,
-    "awardAmount": "$1,000",
-    "classification": [
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.fedemploymentlaw.com/the-devadoss-law-firm-civil-rights-scholarship/",
-    "openDate": null,
-    "eligibility": "Must be a current or aspiring law student\nMust be a citizen or permanent resident of the United States\nMust be enrolled at an accredited college or university within the United States as an undergraduate or graduate student\nMust be at least 17 years of age",
-    "eligibilityTags": [
-      "Major-Specific:Law"
-    ],
-    "season": "summer",
-    "image": "gradient",
-    "description": "",
-    "provider": "Fedemploymentlaw"
-  },
-  {
-    "id": "innovation-in-education-scholarship-september-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "September 20",
-    "deadlineYear": 2026,
-    "awardAmount": "$500",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
-    "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "fall",
-    "image": "gradient",
-    "description": "",
-    "provider": "Latutors123"
-  },
-  {
-    "id": "youngarts-competition-october-9",
-    "name": "YoungArts Competition",
-    "deadline": "October 9",
-    "deadlineYear": 2026,
-    "awardAmount": "$250-$10,000",
-    "classification": [
-      "K-12",
-      "High School"
-    ],
-    "link": "https://youngarts.org/apply/",
-    "openDate": "June 12",
-    "eligibility": "A citizen of the United States, a permanent resident/green card recipient, or can demonstrate that I am legally able to receive taxable income in the United States\nGrades 10–12 or 15–18 years of age on December 1 of the application year\nAccepting applications in 10 disciplines: Classical Music, Dance, Design, Film, Jazz, Photography, Theater, Visual Arts, Voice, Writing",
-    "eligibilityTags": [
-      "Creative/Arts",
-      "Major-Specific:Arts/Theater"
-    ],
-    "season": "fall",
-    "image": "gradient",
-    "description": "",
-    "provider": "Youngarts"
-  },
-  {
-    "id": "innovation-in-education-scholarship-october-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "October 20",
-    "deadlineYear": 2026,
-    "awardAmount": "$500",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
-    "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "fall",
-    "image": "gradient",
-    "description": "",
-    "provider": "Latutors123"
-  },
-  {
-    "id": "lucas-law-legal-leaders-scholarship-november-11",
-    "name": "Lucas Law Legal Leaders Scholarship",
-    "deadline": "November 11",
-    "deadlineYear": 2026,
-    "awardAmount": "$1,000",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.lucaslaw.com/scholarship",
-    "openDate": null,
-    "eligibility": "The student is pursuing a career in the legal field.\nThe student maintains a 3.5 grade point average or higher (if you do not currently have a GPA, you may provide your GPA from your most recently completed academic semester).\nThe student is enrolled (or planning to enroll) in an accredited undergraduate or graduate program within the United States through the Fall 2026 semester.\nThe student is at least 17 years old.",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "fall",
-    "image": "gradient",
-    "description": "",
-    "provider": "Lucaslaw"
-  },
-  {
-    "id": "innovation-in-education-scholarship-november-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "November 20",
-    "deadlineYear": 2026,
-    "awardAmount": "$500",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
-    "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "fall",
-    "image": "gradient",
-    "description": "",
-    "provider": "Latutors123"
+    "provider": "Rockland"
   },
   {
     "id": "avacare-medical-scholarship-december-15",
@@ -9275,47 +9878,5 @@
     "image": "gradient",
     "description": "",
     "provider": "Avacaremedical"
-  },
-  {
-    "id": "innovation-in-education-scholarship-december-20",
-    "name": "Innovation in Education Scholarship",
-    "deadline": "December 20",
-    "deadlineYear": 2026,
-    "awardAmount": "$500",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.latutors123.com/scholarships/innovation-in-education/",
-    "openDate": null,
-    "eligibility": "Must currently be enrolled as a high school, college/university, or graduate student.\nMust have a cumulative GPA of at least 3.0 (or the equivalent).",
-    "eligibilityTags": [
-      "Merit-Based"
-    ],
-    "season": "winter",
-    "image": "gradient",
-    "description": "",
-    "provider": "Latutors123"
-  },
-  {
-    "id": "micklin-law-group-educational-scholarship-december-31",
-    "name": "Micklin Law Group Educational Scholarship",
-    "deadline": "December 31",
-    "deadlineYear": 2026,
-    "awardAmount": "$1,000",
-    "classification": [
-      "High School",
-      "Undergraduate",
-      "Graduate"
-    ],
-    "link": "https://www.micklinlawgroup.com/educational-scholarships/",
-    "openDate": null,
-    "eligibility": "Applicants must be accepted into an accredited college in the United States.",
-    "eligibilityTags": [],
-    "season": "winter",
-    "image": "gradient",
-    "description": "",
-    "provider": "Micklinlawgroup"
   }
 ]

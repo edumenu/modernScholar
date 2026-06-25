@@ -8,6 +8,9 @@ Future todos:
 - Web animation best practices: [[web-animation-best-practices]]
 - Explore converting to bun
 - On the scholarship page, look into various ways scholarships can be categorized. eg https://bold.org/scholarships/, https://bigfuture.collegeboard.org/scholarship-search
+- Rebrand ideas for home page:
+	- https://www.mod.construction/
+	- 
 
 Privacy:
 - Update children policy (possibly remove it)

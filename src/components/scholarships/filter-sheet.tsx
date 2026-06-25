@@ -301,7 +301,7 @@ export function FilterSheet({
                 <button
                   type="button"
                   onClick={clearAll}
-                  className="text-sm font-medium text-primary underline-offset-2 hover:underline"
+                  className="text-sm cursor-pointer font-medium text-primary underline-offset-2 hover:underline"
                 >
                   Clear all
                 </button>
