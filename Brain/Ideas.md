@@ -19,6 +19,7 @@ Dark them generator: [https://colorffy.com/dark-theme-generator?colors=2c3bfd-12
 Inspiration:
 
 - https://www.getmitra.com/
+- https://defiant.vc/ (neumorphism)
 
 
 Typography
