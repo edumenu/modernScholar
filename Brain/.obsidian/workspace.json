@@ -6,7 +6,7 @@
       {
         "id": "16818629ce420a3c",
         "type": "tabs",
-        "dimension": 58.434221146085555,
+        "dimension": 68.68327402135232,
         "children": [
           {
             "id": "f79f9fa4eddc9d7c",
@@ -28,12 +28,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ideas.md",
+                "file": "UI Ideas.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ideas"
+              "title": "UI Ideas"
             }
           }
         ],
@@ -42,7 +42,7 @@
       {
         "id": "8a8ecd5cfe9421e2",
         "type": "tabs",
-        "dimension": 41.565778853914445,
+        "dimension": 31.316725978647685,
         "children": [
           {
             "id": "5fe2b9542194849b",
@@ -218,6 +218,9 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
+    "Welcome.md",
+    "UI Ideas.md",
+    "audits/mobile-audit-2026-05-17.md",
     "future/Website UI tips.md",
     "future/Todos.md",
     "future/web-animation-best-practices.md",
@@ -225,9 +228,6 @@
     "future/seo-and-metadata.md",
     "future/breach-runbook.md",
     "audits/qa-findings-2026-05-17.md",
-    "audits/mobile-audit-2026-05-17.md",
-    "Ideas.md",
-    "Welcome.md",
     "PRDs/05_31_2026/scholarships-tutorial-reel/scholarships-tutorial-reel.md",
     "PRDs/05_31_2026/scholarships-tutorial-reel",
     "PRDs/05_31_2026",
