@@ -28,12 +28,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "UI Ideas.md",
+                "file": "future/Todos.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "UI Ideas"
+              "title": "Todos"
             }
           }
         ],
@@ -218,12 +218,17 @@
   },
   "active": "1902dff09a92fbce",
   "lastOpenFiles": [
-    "Welcome.md",
     "UI Ideas.md",
-    "audits/mobile-audit-2026-05-17.md",
-    "future/Website UI tips.md",
+    "Welcome.md",
     "future/Todos.md",
     "future/web-animation-best-practices.md",
+    "future/Website UI tips.md",
+    "PRDs/07_07_2026/homepage-rebrand/homepage-rebrand.md",
+    "PRDs/07_07_2026/homepage-rebrand",
+    "PRDs/07_07_2026",
+    "PRDs/2026-07-07/homepage-rebrand-design.md",
+    "PRDs/2026-07-07",
+    "audits/mobile-audit-2026-05-17.md",
     "future/spline-3d-performance-testing.md",
     "future/seo-and-metadata.md",
     "future/breach-runbook.md",
@@ -246,14 +251,9 @@
     "PRDs/05_17_2026/mobile-fixes-phase-2-cross-cutting/mobile-fixes-phase-2-cross-cutting.md",
     "PRDs/05_17_2026/mobile-fixes-phase-2-cross-cutting/mobile-fixes-phase-2-cross-cutting-verification.md",
     "PRDs/05_17_2026/mobile-fixes-phase-1-critical/mobile-fixes-phase-1-critical.md",
-    "PRDs/05_17_2026/mobile-fixes-phase-1-critical/mobile-fixes-phase-1-critical-verification.md",
     "PRDs/05_17_2026/mobile-fixes-phase-1-critical/mobile-fixes-phase-1-critical-tasks.json",
     "PRDs/05_17_2026/mobile-fixes-phase-1-critical/mobile-fixes-phase-1-critical-progress.txt",
-    "PRDs/05_17_2026/mobile-fixes-out-of-scope/mobile-fixes-out-of-scope.md",
     "PRDs/05_17_2026/mobile-fixes-phase-4-polish",
-    "PRDs/05_17_2026/mobile-fixes-phase-3-per-page",
-    "PRDs/05_17_2026/mobile-fixes-phase-2-cross-cutting",
-    "PRDs/05_17_2026/mobile-fixes-phase-1-critical",
     "audits/screenshots/not-found-320.png",
     "audits/screenshots/not-found-375.png",
     "audits/screenshots/terms-320.png",

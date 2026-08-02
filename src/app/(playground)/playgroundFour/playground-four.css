@@ -1,0 +1,132 @@
+/* Playground Four — "Registrar" concept design system.
+   Light, clinical, architectural. Independent from the Academic Curator tokens. */
+
+[data-pg4-root] {
+  --pg4-paper: #f2f1ec;
+  --pg4-panel: #fbfaf7;
+  --pg4-ink: #141519;
+  --pg4-ink-soft: #6b6c72;
+  --pg4-line: rgba(20, 21, 25, 0.14);
+  --pg4-line-soft: rgba(20, 21, 25, 0.08);
+  --pg4-blue: #2334f0;
+  --pg4-blue-soft: rgba(35, 52, 240, 0.08);
+  --pg4-ivory: #e9e5d9;
+
+  font-family: var(--font-pg4-sans), sans-serif;
+  background-color: var(--pg4-paper);
+  color: var(--pg4-ink);
+}
+
+/* This route replaces the global chrome with its own nav + footer. The div
+   selectors also catch the global footer's sticky-reveal spacer wrappers. */
+body:has([data-pg4-root])
+  :is(header, footer, div:has(> footer), div:has(> div > footer)):not(
+    [data-pg4-root],
+    [data-pg4-root] *
+  ):not(:has([data-pg4-root])) {
+  display: none !important;
+}
+
+/* Re-tint the global custom cursor to match the concept palette. */
+body:has([data-pg4-root]) {
+  --primary-400: #2334f0;
+}
+
+[data-pg4-root] ::selection {
+  background: var(--pg4-blue);
+  color: #fff;
+}
+
+.pg4-display {
+  font-family: var(--font-pg4-sans), sans-serif;
+  font-stretch: 118%;
+  font-weight: 620;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+
+.pg4-mono {
+  font-family: var(--font-pg4-mono), monospace;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.pg4-outline {
+  -webkit-text-stroke: 1.5px var(--pg4-ink);
+  color: transparent;
+}
+
+@media (max-width: 640px) {
+  .pg4-outline {
+    -webkit-text-stroke-width: 1px;
+  }
+}
+
+/* Fine horizontal rules that extend edge-to-edge. */
+.pg4-rule {
+  border-top: 1px solid var(--pg4-line);
+}
+
+/* Blueprint grid backdrop for the hero. */
+.pg4-blueprint {
+  background-image:
+    linear-gradient(var(--pg4-line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pg4-line-soft) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(
+    ellipse 90% 75% at 50% 60%,
+    black 30%,
+    transparent 75%
+  );
+}
+
+/* Soft ellipse that grounds the 3D building on the page. */
+.pg4-ground-shadow {
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(20, 21, 25, 0.1),
+    transparent 70%
+  );
+}
+
+@keyframes pg4-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.pg4-marquee {
+  animation: pg4-marquee 44s linear infinite;
+}
+
+.pg4-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes pg4-scroll-pulse {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 0.35;
+  }
+}
+
+.pg4-scroll-cue {
+  animation: pg4-scroll-pulse 2.2s ease-in-out infinite;
+}
+
+/* Console mock: thin scrollbar-free rows with hairline separators. */
+.pg4-console-row + .pg4-console-row {
+  border-top: 1px solid var(--pg4-line-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg4-marquee,
+  .pg4-scroll-cue {
+    animation: none;
+  }
+}

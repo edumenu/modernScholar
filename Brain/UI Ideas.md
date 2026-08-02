@@ -64,16 +64,7 @@ Footer Section:
 - Contact Us
 - How it works
 - Terms and conditions / Privacy policy
-- Get in touch (email, social media links)
-
-Ideas after MVP:
-- Step-by-step application flow
-- Progress bars
-- Scholarship listing cards
-- Saved/bookmarked scholarships
-- Application scoring panel
-- Side-by-side viewing (essay + rubric)
-- Dashboard metrics
+- Get in touch (email, social media links) 
 
 ### Layout Concept (MVP): Scholarship page
 

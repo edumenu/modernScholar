@@ -51,7 +51,13 @@ export function HomeSplineLoader({ children }: { children: ReactNode }) {
   // flush the floor timer, and unmount the overlay on the very next render.
   useEffect(() => {
     if (window.sessionStorage.getItem(SPA_SESSION_FLAG) === "true") {
+      // The splash is painted during SSR, so this SPA-skip decision can only be
+      // made post-mount (sessionStorage is browser-only). The updates must be
+      // synchronous — deferring them (as the floor timer below does) would flash
+      // the splash for a frame on every in-app re-entry to `/`. This is the
+      // sanctioned set-state-in-effect case: reconciling SSR-divergent state.
       setSplineReady(true);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMinElapsed(true);
       setUnmountAfterFade(true);
       return;

@@ -1,0 +1,130 @@
+/* Playground Two — "First Light" concept design system.
+   Intentionally independent from the Academic Curator tokens. */
+
+[data-pg2-root] {
+  --pg2-void: #07070d;
+  --pg2-night: #0d0c18;
+  --pg2-nebula: #241e3f;
+  --pg2-star: #f0c25c;
+  --pg2-star-soft: #f7e3b0;
+  --pg2-moon: #e9e4f5;
+  --pg2-dusk: #9a93b8;
+  --pg2-paper: #f7f2e8;
+  --pg2-parchment: #efe6d3;
+  --pg2-ink: #1a1712;
+  --pg2-umber: #6e6455;
+  --pg2-gold-deep: #8f6a1c;
+  --pg2-line: rgba(26, 23, 18, 0.14);
+  --pg2-line-dark: rgba(233, 228, 245, 0.14);
+
+  font-family: var(--font-pg2-sans), sans-serif;
+  background-color: var(--pg2-void);
+  color: var(--pg2-ink);
+}
+
+/* This route replaces the global chrome with its own nav + footer. The div
+   selectors also catch the global footer's sticky-reveal spacer wrappers. */
+body:has([data-pg2-root])
+  :is(header, footer, div:has(> footer), div:has(> div > footer)):not(
+    [data-pg2-root] *
+  ):not(:has([data-pg2-root])) {
+  display: none !important;
+}
+
+/* Re-tint the global custom cursor to match the concept palette. */
+body:has([data-pg2-root]) {
+  --primary-400: #f0c25c;
+}
+
+[data-pg2-root] ::selection {
+  background: var(--pg2-star);
+  color: var(--pg2-void);
+}
+
+.pg2-display {
+  font-family: var(--font-pg2-display), serif;
+}
+
+.pg2-mono {
+  font-family: var(--font-pg2-mono), monospace;
+}
+
+/* Filmic grain unifies the dark and light halves of the page. */
+.pg2-grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes pg2-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.pg2-marquee {
+  animation: pg2-marquee 46s linear infinite;
+}
+
+.pg2-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes pg2-scroll-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.pg2-scroll-cue {
+  animation: pg2-scroll-cue 2.2s ease-in-out infinite;
+}
+
+.pg2-outline-num {
+  -webkit-text-stroke: 1.5px var(--pg2-ink);
+  color: transparent;
+}
+
+/* Static speckle field for the finale — cheaper than a second WebGL context. */
+.pg2-speckles {
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 24%, rgba(240, 194, 92, 0.9), transparent 100%),
+    radial-gradient(1px 1px at 28% 68%, rgba(233, 228, 245, 0.8), transparent 100%),
+    radial-gradient(2px 2px at 41% 18%, rgba(247, 227, 176, 0.9), transparent 100%),
+    radial-gradient(1px 1px at 55% 47%, rgba(233, 228, 245, 0.7), transparent 100%),
+    radial-gradient(1.5px 1.5px at 66% 12%, rgba(240, 194, 92, 0.8), transparent 100%),
+    radial-gradient(1px 1px at 74% 61%, rgba(233, 228, 245, 0.75), transparent 100%),
+    radial-gradient(2px 2px at 86% 33%, rgba(247, 227, 176, 0.85), transparent 100%),
+    radial-gradient(1px 1px at 92% 74%, rgba(233, 228, 245, 0.7), transparent 100%),
+    radial-gradient(1.5px 1.5px at 7% 82%, rgba(240, 194, 92, 0.7), transparent 100%),
+    radial-gradient(1px 1px at 35% 89%, rgba(233, 228, 245, 0.6), transparent 100%),
+    radial-gradient(1px 1px at 61% 84%, rgba(247, 227, 176, 0.7), transparent 100%),
+    radial-gradient(1.5px 1.5px at 81% 91%, rgba(233, 228, 245, 0.65), transparent 100%),
+    radial-gradient(1px 1px at 19% 44%, rgba(233, 228, 245, 0.6), transparent 100%),
+    radial-gradient(1px 1px at 48% 71%, rgba(240, 194, 92, 0.55), transparent 100%),
+    radial-gradient(1.5px 1.5px at 95% 9%, rgba(233, 228, 245, 0.8), transparent 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg2-marquee,
+  .pg2-scroll-cue {
+    animation: none;
+  }
+}

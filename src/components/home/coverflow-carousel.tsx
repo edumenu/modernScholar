@@ -135,9 +135,9 @@ function CoverflowCard({
 }) {
   const tint = getClassificationTint(scholarship.classification);
 
-  const seasonLabel = `${scholarship.season} '${String(
-    scholarship.deadlineYear,
-  ).slice(-2)}`;
+  // const seasonLabel = `${scholarship.season} '${String(
+  //   scholarship.deadlineYear,
+  // ).slice(-2)}`;
   const eligibilityLabel =
     scholarship.eligibilityTags.length > 0
       ? scholarship.eligibilityTags

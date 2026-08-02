@@ -1,0 +1,183 @@
+/* Playground Three — "Quad" concept design system.
+   Intentionally independent from the Academic Curator tokens. */
+
+[data-pg3-root] {
+  --pg3-paper: #fdf7ea;
+  --pg3-cloud: #ffffff;
+  --pg3-ink: #1f2a44;
+  --pg3-ink-soft: #55608a;
+  --pg3-marigold: #ffb43a;
+  --pg3-marigold-deep: #e89a1b;
+  --pg3-coral: #ff6b52;
+  --pg3-grass: #57b26b;
+  --pg3-grass-deep: #2f8a49;
+  --pg3-sky: #8ed0f5;
+  --pg3-sky-soft: #bfe0f4;
+  --pg3-sand: #f7e9cd;
+  --pg3-sand-deep: #efddb4;
+  --pg3-terracotta: #e4593c;
+  --pg3-line: rgba(31, 42, 68, 0.14);
+
+  font-family: var(--font-pg3-sans), sans-serif;
+  background-color: var(--pg3-paper);
+  color: var(--pg3-ink);
+}
+
+/* This route replaces the global chrome with its own nav + footer. The div
+   selectors also catch the global footer's sticky-reveal spacer wrappers. */
+body:has([data-pg3-root])
+  :is(header, footer, div:has(> footer), div:has(> div > footer)):not(
+    [data-pg3-root],
+    [data-pg3-root] *
+  ):not(:has([data-pg3-root])) {
+  display: none !important;
+}
+
+/* Re-tint the global custom cursor to match the concept palette. */
+body:has([data-pg3-root]) {
+  --primary-400: #ffb43a;
+}
+
+[data-pg3-root] ::selection {
+  background: var(--pg3-marigold);
+  color: var(--pg3-ink);
+}
+
+.pg3-display {
+  font-family: var(--font-pg3-sans), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.pg3-serif {
+  font-family: var(--font-pg3-serif), serif;
+}
+
+.pg3-mono {
+  font-family: var(--font-pg3-mono), monospace;
+}
+
+/* Subtle notebook dot-grid over the paper background. */
+.pg3-dots {
+  background-image: radial-gradient(
+    rgba(31, 42, 68, 0.09) 1.2px,
+    transparent 1.2px
+  );
+  background-size: 26px 26px;
+}
+
+/* Sticker look: hard offset shadow that presses flat on :active. */
+.pg3-sticker {
+  border: 2px solid var(--pg3-ink);
+  box-shadow: 0 4px 0 var(--pg3-ink);
+}
+
+.pg3-sticker-sm {
+  border: 2px solid var(--pg3-ink);
+  box-shadow: 0 3px 0 var(--pg3-ink);
+}
+
+.pg3-btn {
+  border: 2px solid var(--pg3-ink);
+  box-shadow: 0 4px 0 var(--pg3-ink);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.pg3-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--pg3-ink);
+}
+
+.pg3-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--pg3-ink);
+}
+
+.pg3-outline-num {
+  -webkit-text-stroke: 2px var(--pg3-ink);
+  color: transparent;
+}
+
+@keyframes pg3-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.pg3-marquee {
+  animation: pg3-marquee 38s linear infinite;
+}
+
+.pg3-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* --- Building scene animations (SVG, view-box coordinate origins) --- */
+
+@keyframes pg3-flag-wave {
+  0%,
+  100% {
+    transform: skewY(0deg) scaleX(1);
+  }
+  50% {
+    transform: skewY(-4deg) scaleX(0.96);
+  }
+}
+
+.pg3-flag {
+  transform-origin: 460px 78px;
+  animation: pg3-flag-wave 2.6s ease-in-out infinite;
+}
+
+@keyframes pg3-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pg3-hand-min {
+  transform-origin: 460px 280px;
+  animation: pg3-rotate 48s linear infinite;
+}
+
+.pg3-hand-hour {
+  transform-origin: 460px 280px;
+  animation: pg3-rotate 240s linear infinite;
+}
+
+.pg3-sun-rays {
+  transform-origin: 806px 92px;
+  animation: pg3-rotate 60s linear infinite;
+}
+
+@keyframes pg3-cloud-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(26px);
+  }
+}
+
+.pg3-cloud-a {
+  animation: pg3-cloud-drift 14s ease-in-out infinite;
+}
+
+.pg3-cloud-b {
+  animation: pg3-cloud-drift 18s ease-in-out infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg3-marquee,
+  .pg3-flag,
+  .pg3-hand-min,
+  .pg3-hand-hour,
+  .pg3-sun-rays,
+  .pg3-cloud-a,
+  .pg3-cloud-b {
+    animation: none;
+  }
+}
