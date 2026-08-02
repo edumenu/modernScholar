@@ -1,4 +1,4 @@
-import type { ElementType } from "react"
+import type { ComponentType } from "react"
 import type { Meta, StoryObj } from "@storybook/nextjs-vite"
 
 import { Callout } from "./callout"
@@ -17,19 +17,24 @@ const FIRST_SCHOLARSHIP_SLUG = "engebretson-foundation-scholarship-march-1"
  * Storybook does not compile MDX here; we render JSX through the map directly
  * so the class strings stay in sync without a build step.
  */
+// @react-three/fiber augments the global JSX namespace, widening `ElementType`
+// until its intersected `children` prop collapses to `never`. Cast the MDX map
+// entries to a props-permissive component type instead.
+type MDXComponent = ComponentType<Record<string, unknown>>
+
 function MDXKitchenSink() {
   const mdx = useMDXComponents({})
-  const H2 = mdx.h2 as ElementType
-  const H3 = mdx.h3 as ElementType
-  const P = mdx.p as ElementType
-  const Ul = mdx.ul as ElementType
-  const Ol = mdx.ol as ElementType
-  const Li = mdx.li as ElementType
-  const A = mdx.a as ElementType
-  const Code = mdx.code as ElementType
-  const Pre = mdx.pre as ElementType
-  const Blockquote = mdx.blockquote as ElementType
-  const Img = mdx.img as ElementType
+  const H2 = mdx.h2 as MDXComponent
+  const H3 = mdx.h3 as MDXComponent
+  const P = mdx.p as MDXComponent
+  const Ul = mdx.ul as MDXComponent
+  const Ol = mdx.ol as MDXComponent
+  const Li = mdx.li as MDXComponent
+  const A = mdx.a as MDXComponent
+  const Code = mdx.code as MDXComponent
+  const Pre = mdx.pre as MDXComponent
+  const Blockquote = mdx.blockquote as MDXComponent
+  const Img = mdx.img as MDXComponent
 
   return (
     <article>
