@@ -14,6 +14,7 @@ npm run build             # Production build (webpack)
 npm run lint              # ESLint
 npm test                  # Vitest: unit + component
 npm run storybook         # Storybook on :6006
+npm run validate-csv      # Data pipeline step 0 — CSV pre-flight (fast, no network)
 npm run check-links       # Data pipeline step 1
 npm run scrape-scholarships  # Data pipeline step 2
 npm run tag-eligibilities    # Data pipeline step 3 (re-tag only)

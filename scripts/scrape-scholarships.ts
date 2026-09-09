@@ -133,15 +133,6 @@ async function processScholarship(
 }> {
   const slug = entry.slug
 
-  // Check cache (skip if --force)
-  const scrapedPath = path.join(SCRAPED_DIR, `${slug}.json`)
-  if (!force && fs.existsSync(scrapedPath)) {
-    const existing = JSON.parse(fs.readFileSync(scrapedPath, "utf-8"))
-    return { scholarship: existing, scraped: false }
-  }
-
-  const result = await scrapeUrl(entry.url)
-
   const eligibility = csvRow.Eligibility?.trim() ?? ""
 
   const scholarship: Partial<EnrichedScholarship> = {
@@ -160,6 +151,30 @@ async function processScholarship(
     description: "",
     provider: "",
   }
+
+  // Cache holds scraped *web* content only. The CSV stays the source of truth
+  // for curated fields, so rebuild them every run — otherwise a CSV edit never
+  // reaches the enriched output for an already-cached slug.
+  const scrapedPath = path.join(SCRAPED_DIR, `${slug}.json`)
+  if (!force && fs.existsSync(scrapedPath)) {
+    const existing = JSON.parse(fs.readFileSync(scrapedPath, "utf-8"))
+    // The slug is name + deadline, so a URL swap alone keeps the same cache
+    // entry. Re-scrape rather than pair a new link with the old site's copy.
+    const urlUnchanged = !existing.link || existing.link === scholarship.link
+    if (urlUnchanged) {
+      return {
+        scholarship: {
+          ...existing,
+          ...scholarship,
+          provider: existing.provider ?? "",
+          description: existing.description ?? "",
+        },
+        scraped: false,
+      }
+    }
+  }
+
+  const result = await scrapeUrl(entry.url)
 
   if (result) {
     scholarship.provider =

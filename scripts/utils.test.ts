@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest"
 import {
+  validateCsvRows,
+  type CsvRow,
   correctMonthTypo,
   extractMonth,
   deriveSeason,
@@ -277,5 +279,110 @@ describe("generateDescription", () => {
     const ogDesc = "A prestigious scholarship providing $25,000 to outstanding students in engineering fields."
     const result = generateDescription(text, "Engineering Award", ogDesc)
     expect(result.length).toBeGreaterThan(30)
+  })
+})
+
+describe("validateCsvRows", () => {
+  function row(overrides: Partial<CsvRow> = {}): CsvRow {
+    return {
+      Deadline: "March 15",
+      "Scholarship Name": "Example Scholarship",
+      "Award amount": "$1,000",
+      "Education Level": "Undergraduate",
+      Link: "https://example.com/apply",
+      "Open date": "",
+      Eligibility: "Open to undergraduates",
+      ...overrides,
+    }
+  }
+
+  it("passes a well-formed row", () => {
+    expect(validateCsvRows([row()])).toEqual([])
+  })
+
+  it("flags a blank education level", () => {
+    const issues = validateCsvRows([row({ "Education Level": "" })])
+    expect(issues).toHaveLength(1)
+    expect(issues[0].kind).toBe("missing-education-level")
+    expect(issues[0].record).toBe(1)
+  })
+
+  it("flags an unrecognized education level", () => {
+    const issues = validateCsvRows([row({ "Education Level": "Postdoc" })])
+    expect(issues[0].kind).toBe("missing-education-level")
+    expect(issues[0].detail).toContain("Postdoc")
+  })
+
+  it("accepts the legacy K-8 label", () => {
+    expect(validateCsvRows([row({ "Education Level": "K-8, High school" })])).toEqual([])
+  })
+
+  it("flags deadlines that are not 'Month DD'", () => {
+    const kinds = ["CLOSED", "", "Rolling", "March"].map(
+      (Deadline) => validateCsvRows([row({ Deadline })])[0]?.kind,
+    )
+    expect(kinds).toEqual(Array(4).fill("malformed-deadline"))
+  })
+
+  it("flags an out-of-range day", () => {
+    expect(validateCsvRows([row({ Deadline: "March 47" })])[0].kind).toBe(
+      "malformed-deadline",
+    )
+  })
+
+  it("flags a day that does not exist in that month", () => {
+    // `new Date("February 30, 2027")` silently becomes March 2.
+    for (const Deadline of ["February 30", "April 31", "March 0"]) {
+      expect(validateCsvRows([row({ Deadline })])[0].kind).toBe(
+        "malformed-deadline",
+      )
+    }
+  })
+
+  it("accepts February 29 — the CSV carries no year", () => {
+    expect(validateCsvRows([row({ Deadline: "February 29" })])).toEqual([])
+  })
+
+  it("flags a miscased month, which reaches the site verbatim", () => {
+    for (const Deadline of ["march 15", "MARCH 15"]) {
+      const issues = validateCsvRows([row({ Deadline })])
+      expect(issues).toHaveLength(1)
+      expect(issues[0].kind).toBe("misspelled-month")
+      expect(issues[0].detail).toContain('should be "March"')
+    }
+  })
+
+  it("flags a misspelled month separately from a malformed one", () => {
+    const issues = validateCsvRows([row({ Deadline: "Feburary 12" })])
+    expect(issues).toHaveLength(1)
+    expect(issues[0].kind).toBe("misspelled-month")
+    expect(issues[0].detail).toContain("February")
+  })
+
+  it("flags a missing link", () => {
+    expect(validateCsvRows([row({ Link: "  " })])[0].kind).toBe("missing-link")
+  })
+
+  it("flags the second of two rows sharing name + deadline", () => {
+    const issues = validateCsvRows([row(), row({ "Award amount": "$2,000" })])
+    expect(issues).toHaveLength(1)
+    expect(issues[0].kind).toBe("duplicate-slug")
+    expect(issues[0].record).toBe(2)
+    expect(issues[0].detail).toContain("record 1")
+  })
+
+  it("does not flag same-name rows with different deadlines", () => {
+    expect(validateCsvRows([row(), row({ Deadline: "April 15" })])).toEqual([])
+  })
+
+  it("reports every issue on a single bad row", () => {
+    const issues = validateCsvRows([
+      row({ Deadline: "CLOSED", "Education Level": "", Link: "" }),
+    ])
+    expect(issues.map((i) => i.kind).sort()).toEqual([
+      "malformed-deadline",
+      "missing-education-level",
+      "missing-link",
+    ])
   })
 })

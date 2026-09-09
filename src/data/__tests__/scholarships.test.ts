@@ -100,7 +100,7 @@ describe("getClassificationTint", () => {
 
   it("returns fallback for unknown classification", () => {
     const tint = getClassificationTint([] as unknown as EducationLevel[])
-    expect(tint.bg).toBe("bg-surface-container")
+    expect(tint.bg).toBe("bg-white dark:bg-surface-container-low")
     expect(tint.border).toBe("border-t-4 border-outline-variant")
   })
 })
