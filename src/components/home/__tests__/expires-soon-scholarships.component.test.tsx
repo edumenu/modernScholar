@@ -88,11 +88,45 @@ vi.mock("@/lib/pretext/fonts", () => ({
   },
 }));
 
-// Freeze "now" so the in-month slice stays stable as the corpus ages. The
-// component reads `SESSION_DATE` (captured at module load via `new Date()`),
-// so `vi.resetModules()` in beforeEach ensures session-date re-evaluates with
-// the faked system time.
-const FROZEN_NOW = new Date("2026-05-07T12:00:00Z");
+// Freeze "now" so the in-month slice stays stable. The component reads
+// `SESSION_DATE` (captured at module load via `new Date()`), so
+// `vi.resetModules()` in beforeEach ensures session-date re-evaluates with the
+// faked system time.
+//
+// The date is derived from the corpus rather than hard-coded: `deadlineYear` is
+// baked in when the pipeline runs, so every re-run rolls past deadlines to the
+// next year and any fixed date eventually falls outside the data, leaving the
+// slice empty. Pick the first day of the earliest month still holding a full
+// 10-card slice.
+const { scholarships: CORPUS } = await import("@/data/scholarships");
+
+const FROZEN_NOW = (() => {
+  const perMonth = new Map<number, number>();
+  for (const s of CORPUS) {
+    const ms = new Date(`${s.deadline}, ${s.deadlineYear}`).getTime();
+    if (!Number.isFinite(ms) || ms === 0) continue;
+    const d = new Date(ms);
+    perMonth.set(
+      d.getFullYear() * 12 + d.getMonth(),
+      (perMonth.get(d.getFullYear() * 12 + d.getMonth()) ?? 0) + 1,
+    );
+  }
+  // Floor at the real current month: malformed deadline strings ("CLOSED", "")
+  // parse leniently to Jan 1 of the pipeline year and would otherwise win as
+  // the "earliest" month.
+  const now = new Date();
+  const currentMonth = now.getFullYear() * 12 + now.getMonth();
+  const firstFullMonth = [...perMonth.entries()]
+    .filter(([month, count]) => count >= 10 && month >= currentMonth)
+    .map(([month]) => month)
+    .sort((a, b) => a - b)[0];
+  if (firstFullMonth === undefined) {
+    throw new Error(
+      "corpus has no current-or-future month with 10+ deadlines — re-run the scholarship pipeline",
+    );
+  }
+  return new Date(Math.floor(firstFullMonth / 12), firstFullMonth % 12, 1);
+})();
 
 describe("ExpiresSoonScholarships with CoverflowCarousel", () => {
   beforeEach(() => {
@@ -265,7 +299,9 @@ describe("ExpiresSoonScholarships with CoverflowCarousel", () => {
 
     const heading = container.querySelector("#expires-soon-heading");
     expect(heading).not.toBeNull();
-    expect(heading!.textContent).toBe("Expires in May");
+    expect(heading!.textContent).toBe(
+      `Expires in ${FROZEN_NOW.toLocaleString("en-US", { month: "long" })}`,
+    );
   });
 });
 

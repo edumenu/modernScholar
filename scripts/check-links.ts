@@ -1,4 +1,12 @@
-import { parseCsv, cleanUrl, generateSlug, type LinkReport } from "./utils"
+import {
+  parseCsv,
+  cleanUrl,
+  generateSlug,
+  validateCsvRows,
+  type CsvIssue,
+  type CsvIssueKind,
+  type LinkReport,
+} from "./utils"
 import { Impit } from "impit"
 import { chromium, type Browser } from "playwright"
 import fs from "fs"
@@ -161,11 +169,59 @@ async function processBatch(entries: { url: string; slug: string; name: string }
   )
 }
 
+const ISSUE_LABELS: Record<CsvIssueKind, string> = {
+  "missing-education-level": "Missing education level",
+  "malformed-deadline": "Malformed deadline",
+  "misspelled-month": "Misspelled or miscased month",
+  "missing-link": "Missing link",
+  "duplicate-slug": "Duplicate name + deadline",
+}
+
+const MAX_LISTED_PER_KIND = 10
+
+function reportCsvIssues(issues: CsvIssue[], strict: boolean): void {
+  if (issues.length === 0) {
+    console.log("CSV pre-flight: no issues found\n")
+    return
+  }
+
+  console.log(`CSV pre-flight: ${issues.length} issue(s)\n`)
+
+  for (const kind of Object.keys(ISSUE_LABELS) as CsvIssueKind[]) {
+    const matching = issues.filter((issue) => issue.kind === kind)
+    if (matching.length === 0) continue
+
+    console.log(`  ${ISSUE_LABELS[kind]} — ${matching.length}`)
+    for (const issue of matching.slice(0, MAX_LISTED_PER_KIND)) {
+      console.log(`    record ${issue.record}: ${issue.name || "(unnamed)"} — ${issue.detail}`)
+    }
+    if (matching.length > MAX_LISTED_PER_KIND) {
+      console.log(`    ... and ${matching.length - MAX_LISTED_PER_KIND} more`)
+    }
+    console.log("")
+  }
+
+  if (strict) {
+    console.error("Aborting: --strict was passed and the CSV has issues.")
+    process.exit(1)
+  }
+
+  console.log("Continuing anyway — pass --strict to make these fatal.\n")
+}
+
 async function main() {
   console.log("--- Scholarship Link Health Check ---\n")
 
+  const strict = process.argv.includes("--strict")
+
   const rows = parseCsv(CSV_PATH)
   console.log(`Parsed ${rows.length} scholarships from CSV\n`)
+
+  // Runs before the URL sweep so a bad list fails in seconds, not after a
+  // full HEAD-check pass over the corpus.
+  reportCsvIssues(validateCsvRows(rows), strict)
+
+  if (process.argv.includes("--validate-only")) return
 
   fs.mkdirSync(OUTPUT_DIR, { recursive: true })
 

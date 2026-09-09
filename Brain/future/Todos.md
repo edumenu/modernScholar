@@ -33,6 +33,7 @@ Ideas after MVP:
 - Dashboard metrics
 - Follow the idea of Letterboxd, Every scholarship should have a dedicated page for people to write comments, show their interest/disinterest, view stats of each scholarship
 - A dedicated explore page for popular scholarship and stats
+- Use the claude to figure out some of the issues and problems have with scholarship applications
 
 
 

@@ -116,7 +116,7 @@ export const CLASSIFICATION_TINTS: Record<EducationLevel, { bg: string; border: 
 export function getClassificationTint(classification: EducationLevel[]) {
   const primary = classification[0]
   return CLASSIFICATION_TINTS[primary] ?? {
-    bg: "bg-surface-container",
+    bg: "bg-white dark:bg-surface-container-low",
     border: "border-t-4 border-outline-variant",
     accent: "from-on-surface/20",
     text: "text-on-surface",

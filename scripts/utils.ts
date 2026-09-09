@@ -173,6 +173,114 @@ export function generateSlug(name: string, deadline: string): string {
   return slugify(raw, { lower: true, strict: true })
 }
 
+export type CsvIssueKind =
+  | "missing-education-level"
+  | "misspelled-month"
+  | "malformed-deadline"
+  | "missing-link"
+  | "duplicate-slug"
+
+export interface CsvIssue {
+  kind: CsvIssueKind
+  /** 1-based index among parsed data records — not a file line number, since
+   *  quoted fields contain newlines. */
+  record: number
+  name: string
+  detail: string
+}
+
+const DEADLINE_PATTERN = /^([A-Za-z]+)\s+(\d{1,2})$/
+
+// February is 29 here: the CSV carries no year, so a leap-day deadline is valid.
+const MONTH_MAX_DAY = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+/**
+ * Pre-flight check on the hand-curated CSV. Every issue here survives the whole
+ * pipeline silently — a blank education level, for instance, produces a card
+ * that no education-level filter can match.
+ */
+export function validateCsvRows(rows: CsvRow[]): CsvIssue[] {
+  const issues: CsvIssue[] = []
+  const slugOrigin = new Map<string, number>()
+
+  rows.forEach((row, i) => {
+    const record = i + 1
+    const name = (row["Scholarship Name"] ?? "").trim()
+    const deadline = (row.Deadline ?? "").trim()
+    const rawLevel = (row["Education Level"] ?? "").trim()
+
+    if (normalizeClassification(rawLevel).length === 0) {
+      issues.push({
+        kind: "missing-education-level",
+        record,
+        name,
+        detail: rawLevel
+          ? `unrecognized value "${rawLevel}" — expected some of: High school, Undergraduate, Graduate, K-12`
+          : "blank — the scholarship will only ever appear under the All filter",
+      })
+    }
+
+    const match = DEADLINE_PATTERN.exec(deadline)
+    const corrected = match ? correctMonthTypo(match[1]) : null
+    const monthIndex =
+      corrected === null ? undefined : MONTH_INDEX[corrected.toLowerCase()]
+    const day = match ? Number(match[2]) : NaN
+
+    if (!match || corrected === null || monthIndex === undefined) {
+      issues.push({
+        kind: "malformed-deadline",
+        record,
+        name,
+        detail: `"${deadline}" is not "Month DD" — it will parse to January 1 and sort wrongly`,
+      })
+    } else if (day < 1 || day > MONTH_MAX_DAY[monthIndex]) {
+      issues.push({
+        kind: "malformed-deadline",
+        record,
+        name,
+        detail: `"${deadline}" is not a real date — it will roll silently into the following month`,
+      })
+    } else {
+      // The scrapers keep the raw CSV spelling, so a typo or odd casing reaches
+      // the site verbatim and trips the dataset integrity tests.
+      const canonical =
+        corrected.charAt(0).toUpperCase() + corrected.slice(1).toLowerCase()
+      if (canonical !== match[1]) {
+        issues.push({
+          kind: "misspelled-month",
+          record,
+          name,
+          detail: `"${match[1]}" should be "${canonical}"`,
+        })
+      }
+    }
+
+    if (!(row.Link ?? "").trim()) {
+      issues.push({
+        kind: "missing-link",
+        record,
+        name,
+        detail: "no URL — imported without a scraped description or provider",
+      })
+    }
+
+    const slug = generateSlug(name, deadline)
+    const origin = slugOrigin.get(slug)
+    if (origin === undefined) {
+      slugOrigin.set(slug, record)
+    } else {
+      issues.push({
+        kind: "duplicate-slug",
+        record,
+        name,
+        detail: `same name + deadline as record ${origin} — only one of the two survives`,
+      })
+    }
+  })
+
+  return issues
+}
+
 export function parseCsv(filePath: string): CsvRow[] {
   const content = fs.readFileSync(filePath, "utf-8")
   const result = Papa.parse<CsvRow>(content, {
