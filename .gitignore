@@ -53,3 +53,7 @@ storybook-static
 
 # scholarship enrichment pipeline working files
 scripts/output/
+
+# local scratch copy of the scholarship list — the pipeline reads the
+# single-t MasterScholarshipList.csv, this one is a working backup
+MasterScholarshipListt.csv
