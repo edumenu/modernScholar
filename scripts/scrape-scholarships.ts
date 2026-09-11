@@ -157,7 +157,11 @@ async function processScholarship(
   // reaches the enriched output for an already-cached slug.
   const scrapedPath = path.join(SCRAPED_DIR, `${slug}.json`)
   if (!force && fs.existsSync(scrapedPath)) {
-    const existing = JSON.parse(fs.readFileSync(scrapedPath, "utf-8"))
+    // `_scraped` is raw page capture kept for cache debugging only. Drop it here
+    // so it never reaches the committed enriched JSON.
+    const { _scraped, ...existing } = JSON.parse(
+      fs.readFileSync(scrapedPath, "utf-8"),
+    )
     // The slug is name + deadline, so a URL swap alone keeps the same cache
     // entry. Re-scrape rather than pair a new link with the old site's copy.
     const urlUnchanged = !existing.link || existing.link === scholarship.link

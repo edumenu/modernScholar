@@ -61,7 +61,7 @@ const baseScholarship: Scholarship = {
 }
 
 describe("ScholarshipCard", () => {
-  it("renders title, provider, amount, deadline, and description", () => {
+  it("renders title, provider, amount, deadline, and eligibility", () => {
     render(<ScholarshipCard scholarship={baseScholarship} onExpand={() => {}} />)
 
     expect(screen.getByText("Test Scholarship")).toBeInTheDocument()
@@ -78,7 +78,9 @@ describe("ScholarshipCard", () => {
         )
       }),
     ).toBeInTheDocument()
-    expect(screen.getByText("A test scholarship for students.")).toBeInTheDocument()
+    // The card body shows eligibility, not the scraped description — who
+    // qualifies is what a student scanning the grid needs.
+    expect(screen.getByText("Must be enrolled")).toBeInTheDocument()
   })
 
   it("renders classification pills", () => {
@@ -164,10 +166,10 @@ describe("ScholarshipCard", () => {
     expect(underline?.className).toContain("group-hover:w-full")
   })
 
-  it("does not render description when empty", () => {
-    const noDesc = { ...baseScholarship, description: "" }
-    render(<ScholarshipCard scholarship={noDesc} onExpand={() => {}} />)
-    expect(screen.queryByText("A test scholarship for students.")).not.toBeInTheDocument()
+  it("does not render eligibility when empty", () => {
+    const noEligibility = { ...baseScholarship, eligibility: "" }
+    render(<ScholarshipCard scholarship={noEligibility} onExpand={() => {}} />)
+    expect(screen.queryByText("Must be enrolled")).not.toBeInTheDocument()
   })
 
   it("clamps long titles to 2 lines", () => {
